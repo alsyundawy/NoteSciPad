@@ -1141,7 +1141,16 @@
   </action>
   <action name="actionBase64Encode">
    <property name="text">
-    <string>Base 64 Encode</string>
+    <string>Base64 Encode</string>
+   </property>
+   <property name="toolTip">
+    <string>Base64 encode selection or entire document</string>
+   </property>
+   <property name="statusTip">
+    <string>Base64 encode selection or entire document</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+B</string>
    </property>
   </action>
   <action name="actionURLEncode">
@@ -1151,7 +1160,16 @@
   </action>
   <action name="actionBase64Decode">
    <property name="text">
-    <string>Base 64 Decode</string>
+    <string>Base64 Decode</string>
+   </property>
+   <property name="toolTip">
+    <string>Base64 decode selection or entire document</string>
+   </property>
+   <property name="statusTip">
+    <string>Base64 decode selection or entire document</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+D</string>
    </property>
   </action>
   <action name="actionURLDecode">

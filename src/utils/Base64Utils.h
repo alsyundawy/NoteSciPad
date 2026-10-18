@@ -1,0 +1,37 @@
+/*
+ * This file is part of NoteSciPad.
+ *
+ * Adapted from Notepad4 Base64 conversion utilities.
+ * Source: zufuliu/Notepad4 (src/Edit.cpp)
+ *
+ * NoteSciPad is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ */
+
+#ifndef BASE64UTILS_H
+#define BASE64UTILS_H
+
+#include <QString>
+#include <QByteArray>
+
+class ScintillaNext;
+
+class Base64Utils
+{
+public:
+    struct Result {
+        bool success {false};
+        bool wholeDocument {false};
+        QString errorMessage;
+    };
+
+    // Encodes selection if present, otherwise encodes the entire document.
+    static Result encode(ScintillaNext *editor);
+
+    // Decodes selection if present, otherwise decodes the entire document.
+    static Result decode(ScintillaNext *editor);
+};
+
+#endif // BASE64UTILS_H

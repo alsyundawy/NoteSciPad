@@ -65,6 +65,7 @@
 #include "EditorInspectorDock.h"
 #include "FolderAsWorkspaceDock.h"
 #include "FileBrowserDock.h"
+#include "Base64Utils.h"
 #include "SearchResultsDock.h"
 #include "DebugLogDock.h"
 #include "FileListDock.h"
@@ -184,8 +185,12 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
 
     connect(ui->actionBase64Encode, &QAction::triggered, this, [this]() {
         ScintillaNext *editor = currentEditor();
-        const QByteArray selection = editor->getSelText();
-        editor->replaceSel(selection.toBase64().constData());
+        auto result = Base64Utils::encode(editor);
+        if (result.success) {
+            ui->statusBar->showMessage(result.wholeDocument ? tr("Base64 encoded entire document") : tr("Base64 encoded selection"), 3000);
+        } else {
+            ui->statusBar->showMessage(result.errorMessage, 4000);
+        }
     });
     connect(ui->actionURLEncode, &QAction::triggered, this, [this]() {
         ScintillaNext *editor = currentEditor();
@@ -194,9 +199,11 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
     });
     connect(ui->actionBase64Decode, &QAction::triggered, this, [this]() {
         ScintillaNext *editor = currentEditor();
-        const QByteArray selection = editor->getSelText();
-        if (auto result = QByteArray::fromBase64Encoding(selection)) {
-            editor->replaceSel((*result).constData());
+        auto result = Base64Utils::decode(editor);
+        if (result.success) {
+            ui->statusBar->showMessage(result.wholeDocument ? tr("Base64 decoded entire document") : tr("Base64 decoded selection"), 3000);
+        } else {
+            ui->statusBar->showMessage(result.errorMessage, 4000);
         }
     });
     connect(ui->actionURLDecode,&QAction::triggered, this, [this]() {
@@ -1865,9 +1872,9 @@ void MainWindow::updateContentBasedUi(ScintillaNext *editor)
     ui->actionLowerCase->setEnabled(hasAnySelections);
     ui->actionUpperCase->setEnabled(hasAnySelections);
 
-    ui->actionBase64Encode->setEnabled(hasAnySelections);
+    ui->actionBase64Encode->setEnabled(editor != nullptr);
     ui->actionURLEncode->setEnabled(hasAnySelections);
-    ui->actionBase64Decode->setEnabled(hasAnySelections);
+    ui->actionBase64Decode->setEnabled(editor != nullptr);
     ui->actionURLDecode->setEnabled(hasAnySelections);
 }
 
