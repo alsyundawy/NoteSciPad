@@ -100,7 +100,7 @@ Use this as the living task board. Check items as they are completed.
 
 ## Phase 2 — High-Value Enhancements (Tier 2)
 
-- [ ] Color preview via CallTip (hex/RGB detection + swatch)
+- [x] Color preview via CallTip (hex/RGB detection + swatch)
 - [ ] Compress & Pretty for CSS, JavaScript, JSON, JSON5
 - [ ] Copy as RTF (syntax-colored)
 - [ ] Evaluate expression (math — start simple, evolve toward TinyExpr++ style)
