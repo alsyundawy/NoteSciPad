@@ -126,7 +126,7 @@ Use this as the living task board. Check items as they are completed.
 - [x] Clipboard monitoring mode (optional)
 - [x] Transparent window mode
 - [x] Lexer / API data updates from Notepad4 (selective, keep Lexilla)
-- [ ] Optional: Evaluate JS Expression
+- [x] Optional: Evaluate JS Expression
 - [ ] Optional: Monitoring / tail mode improvements
 - [ ] Performance profiling & optimization (Apple Silicon + Linux)
 
