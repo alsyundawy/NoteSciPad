@@ -102,7 +102,7 @@ Use this as the living task board. Check items as they are completed.
 
 - [x] Color preview via CallTip (hex/RGB detection + swatch)
 - [x] Compress & Pretty for CSS, JavaScript, JSON, JSON5
-- [ ] Copy as RTF (syntax-colored)
+- [x] Copy as RTF (syntax-colored)
 - [ ] Evaluate expression (math — start simple, evolve toward TinyExpr++ style)
 - [ ] Focused View (filter to matching lines)
 - [ ] Customizable status bar fields
