@@ -124,7 +124,7 @@ Use this as the living task board. Check items as they are completed.
 - [x] Stronger regex option exploration (PCRE2 / Boost)
 - [x] AES-256 encryption (evaluate security & UX carefully)
 - [x] Clipboard monitoring mode (optional)
-- [ ] Transparent window mode
+- [x] Transparent window mode
 - [ ] Lexer / API data updates from Notepad4 (selective, keep Lexilla)
 - [ ] Optional: Evaluate JS Expression
 - [ ] Optional: Monitoring / tail mode improvements
