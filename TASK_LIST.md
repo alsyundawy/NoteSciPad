@@ -163,6 +163,19 @@ Use this as the living task board. Check items as they are completed.
 ## Definition of Done (per feature)
 
 - [ ] Code reviewed
+  - BUG REVIEW.
+  - SYNTAX REVIEW.
+  - RUNTIME REVIEW.
+  - LOGIC REVIEW.
+  - MEMORY REVIEW.
+  - DEAD CODE REVIEW.
+  - DUPLICATE CODE REVIEW.
+  - CIRCULAR DEPENDENCY REVIEW.
+  - PERFORMANCE BOTTLENECK REVIEW.
+  - SECURITY VULNERABILITY REVIEW.
+  - MAINTAINABILITY REVIEW.
+  - SCALABILITY REVIEW.
+  - READABILITY REVIEW.
 - [ ] Works on both arm64 and x64 (macOS) and Linux
 - [ ] Keyboard shortcut assigned (where applicable)
 - [ ] Menu item added
