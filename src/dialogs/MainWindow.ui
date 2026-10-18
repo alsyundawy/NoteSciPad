@@ -1184,6 +1184,15 @@
    <property name="text">
     <string>Copy as RTF</string>
    </property>
+   <property name="toolTip">
+    <string>Copy selection or document as syntax-colored Rich Text Format</string>
+   </property>
+   <property name="statusTip">
+    <string>Copy selection or document as syntax-colored Rich Text Format</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+R</string>
+   </property>
   </action>
   <action name="actionBase64Encode">
    <property name="text">

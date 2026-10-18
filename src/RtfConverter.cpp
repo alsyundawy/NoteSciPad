@@ -1,115 +1,160 @@
 /*
- * This file is part of Notepad Next.
- * Copyright 2022 Justin Dailey
+ * This file is part of NoteSciPad.
  *
- * Notepad Next is free software: you can redistribute it and/or modify
+ * Adapted from Notepad4 (zufuliu/notepad4) and NotepadNext Copy as RTF syntax coloring.
+ * Source: zufuliu/notepad4 (src/Edit.cpp, src/Styles.cpp)
+ *
+ * NoteSciPad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
- * Notepad Next is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "RtfConverter.h"
+#include "ScintillaNext.h"
 
+#include <QColor>
 #include <QTextStream>
-#include <QMap>
+#include <QVector>
 
-static void AddCharEscaped(QTextStream &stream, int ch)
+static inline QColor ScintillaColorToQColor(int color)
 {
-    switch (ch) {
-    case '\n':
-        stream << QByteArrayLiteral("\\par") << Qt::endl;
-        break;
-    case '{':
-        stream << QByteArrayLiteral("\\{");
-        break;
-    case '}':
-        stream << QByteArrayLiteral("\\}");
-        break;
-    case '\t':
-        stream << QByteArrayLiteral("\\tab ");
-        break;
-    default:
-        stream << static_cast<char>(ch);
-    }
+    return QColor::fromRgb(color & 0xFF, (color >> 8) & 0xFF, (color >> 16) & 0xFF);
 }
 
-static QColor ScintillaColorToQColor(int color)
+static void AddCharToRtf(QTextStream &stream, uint ucs4)
 {
-    int r = color & 0xFF;
-    int g = (color >> 8) & 0xFF;
-    int b = (color >> 16) & 0xFF;
-
-    return QColor::fromRgb(r, g, b);
+    if (ucs4 == '\\') {
+        stream << "\\\\";
+    } else if (ucs4 == '{') {
+        stream << "\\{";
+    } else if (ucs4 == '}') {
+        stream << "\\}";
+    } else if (ucs4 == '\t') {
+        stream << "\\tab ";
+    } else if (ucs4 == '\n') {
+        stream << "\\par\n";
+    } else if (ucs4 == '\r') {
+        // Skip CR; line endings handled by LF
+    } else if (ucs4 >= 32 && ucs4 <= 126) {
+        stream << static_cast<char>(ucs4);
+    } else if (ucs4 <= 0xFFFF) {
+        // RTF signed 16-bit integer for unicode
+        const short val = (ucs4 < 32768) ? static_cast<short>(ucs4) : static_cast<short>(static_cast<int>(ucs4) - 65536);
+        stream << "\\u" << val << '?';
+    } else if (ucs4 <= 0x10FFFF) {
+        // Astral plane surrogate pair
+        const uint high = 0xD800 + ((ucs4 - 0x10000) >> 10);
+        const uint low = 0xDC00 + ((ucs4 - 0x10000) & 0x3FF);
+        const short val_h = (high < 32768) ? static_cast<short>(high) : static_cast<short>(static_cast<int>(high) - 65536);
+        const short val_l = (low < 32768) ? static_cast<short>(low) : static_cast<short>(static_cast<int>(low) - 65536);
+        stream << "\\u" << val_h << "?\\u" << val_l << '?';
+    }
 }
 
 void RtfConverter::convertRange(QTextStream &stream, int start, int end)
 {
+    if (!editor || start >= end) {
+        return;
+    }
+
     ensureDocumentStyled(start, end);
 
     QByteArray rtf_body;
     QTextStream rtf_stream(&rtf_body);
     QVector<QColor> styleColors;
+
     int prevStyle = -1;
+    bool prevBold = false;
+    bool prevItalic = false;
+    bool prevUnderline = false;
 
-    for (int i = start; i < end; ++i) {
-        const int newStyle = editor->styleAt(i);
+    int pos = start;
+    while (pos < end) {
+        const int style = editor->styleAt(pos);
 
-        if (newStyle != prevStyle) {
-            const QColor c = ScintillaColorToQColor(editor->styleFore(newStyle));
+        if (style != prevStyle) {
+            const QColor foreColor = ScintillaColorToQColor(editor->styleFore(style));
+            if (!styleColors.contains(foreColor)) {
+                styleColors.append(foreColor);
+            }
+            const int colorIndex = styleColors.indexOf(foreColor) + 1; // 1-based index in RTF colortbl
 
-            if (!styleColors.contains(c)) {
-                styleColors.append(c);
+            // Font weight (bold)
+            const bool bold = editor->styleBold(style);
+            if (bold != prevBold) {
+                rtf_stream << (bold ? "\\b " : "\\b0 ");
+                prevBold = bold;
             }
 
-            // Turn bold off or non
-            if (prevStyle != -1 && editor->styleBold(prevStyle) && !editor->styleBold(newStyle)) {
-                rtf_stream << "\\b0";
-            }
-            else if (editor->styleBold(newStyle)) {
-                rtf_stream << "\\b";
+            // Italic
+            const bool italic = editor->styleItalic(style);
+            if (italic != prevItalic) {
+                rtf_stream << (italic ? "\\i " : "\\i0 ");
+                prevItalic = italic;
             }
 
-            // Set the foreground color
-            rtf_stream << "\\cf" << styleColors.indexOf(c) << ' ';
+            // Underline
+            const bool underline = editor->styleUnderline(style);
+            if (underline != prevUnderline) {
+                rtf_stream << (underline ? "\\ul " : "\\ulnone ");
+                prevUnderline = underline;
+            }
 
-            prevStyle = newStyle;
+            // Foreground color
+            rtf_stream << "\\cf" << colorIndex << ' ';
+
+            prevStyle = style;
         }
 
-        // Output the character
-        const int ch = editor->charAt(i);
-        if (ch == '\r'){
-            if (editor->charAt(i + 1) != '\n') {
-                AddCharEscaped(rtf_stream, ch);
-            }
+        const int nextPos = editor->positionRelative(pos, 1);
+        const int charLen = (nextPos > pos) ? (nextPos - pos) : 1;
+
+        const QByteArray bytes = editor->get_text_range(pos, pos + charLen);
+        const QString utfText = QString::fromUtf8(bytes);
+        for (const QChar &qc : utfText) {
+            AddCharToRtf(rtf_stream, qc.unicode());
         }
-        else {
-            AddCharEscaped(rtf_stream, ch);
-        }
+
+        pos += charLen;
     }
+
+    // Reset styles at the end
+    if (prevBold) rtf_stream << "\\b0 ";
+    if (prevItalic) rtf_stream << "\\i0 ";
+    if (prevUnderline) rtf_stream << "\\ulnone ";
+
     rtf_stream.flush();
 
-    stream << R"({\rtf1\ansi\deff0\deftab480)" << Qt::endl;
-    stream << R"({\fonttbl)" << Qt::endl;
-    stream << R"({\f0 )" << editor->styleFont(STYLE_DEFAULT) << ";}" << Qt::endl;
-    stream << R"(})" << Qt::endl;
-    stream << Qt::endl;
-    stream << R"({\colortbl)" << Qt::endl;
-    for (const auto &c : styleColors) {
-        stream << "\\red" << c.red() <<"\\green" << c.green() << "\\blue" << c.blue() << ";" << Qt::endl;
+    // Determine font name
+    QString fontName = editor->styleFont(STYLE_DEFAULT);
+    if (fontName.isEmpty()) {
+#if defined(Q_OS_MACOS)
+        fontName = QStringLiteral("Menlo");
+#elif defined(Q_OS_WIN)
+        fontName = QStringLiteral("Consolas");
+#else
+        fontName = QStringLiteral("Monospace");
+#endif
     }
-    stream << R"(})" << Qt::endl;
-    stream << Qt::endl;
-    stream << "{" << Qt::endl;
-    stream << rtf_body << Qt::endl;
-    stream << "}" << Qt::endl;
+
+    const int fontSizePt = editor->styleSize(STYLE_DEFAULT);
+    const int fontSizeHalfPt = (fontSizePt > 0 ? fontSizePt : 10) * 2;
+
+    // Header & font table
+    stream << "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang1033\n";
+    stream << "{\\fonttbl{\\f0\\fnil\\fcharset0 " << fontName << ";}}\n";
+
+    // RTF Color Table (slot 0 is default/auto text)
+    stream << "{\\colortbl ;";
+    for (const auto &c : styleColors) {
+        stream << "\\red" << c.red() << "\\green" << c.green() << "\\blue" << c.blue() << ";";
+    }
+    stream << "}\n\n";
+
+    stream << "\\f0\\fs" << fontSizeHalfPt << "\\cf0\n";
+    stream << "{\n";
+    stream << rtf_body << "\n";
+    stream << "}\n}\n";
     stream.flush();
 }

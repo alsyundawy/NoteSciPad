@@ -1753,21 +1753,42 @@ void MainWindow::exportAsFormat(Converter *converter, const QString &filter)
 
 void MainWindow::copyAsFormat(Converter *converter, const QString &mimeType)
 {
-    // This is not ideal as we are *assuming* the converter is currently associated with the currentEditor()
     ScintillaNext *editor = currentEditor();
+    if (!editor) {
+        return;
+    }
+
     QByteArray buffer;
     QTextStream stream(&buffer);
 
-    if (editor->selectionEmpty())
-        converter->convert(stream);
-    else {
-        converter->convertRange(stream, editor->selectionStart(), editor->selectionEnd());
-    }
+    const int startPos = editor->selectionEmpty() ? 0 : editor->selectionStart();
+    const int endPos = editor->selectionEmpty() ? editor->length() : editor->selectionEnd();
+
+    converter->convertRange(stream, startPos, endPos);
+    stream.flush();
 
     QMimeData *mimeData = new QMimeData();
     mimeData->setData(mimeType, buffer);
 
+    if (mimeType.contains(QLatin1String("rtf"), Qt::CaseInsensitive) || mimeType == QLatin1String("Rich Text Format")) {
+        mimeData->setData(QStringLiteral("text/rtf"), buffer);
+        mimeData->setData(QStringLiteral("application/rtf"), buffer);
+        mimeData->setData(QStringLiteral("public.rtf"), buffer);
+        mimeData->setData(QStringLiteral("Rich Text Format"), buffer);
+    } else if (mimeType == QLatin1String("text/html")) {
+        mimeData->setHtml(QString::fromUtf8(buffer));
+    }
+
+    // Always provide plain text fallback
+    const QString plainText = QString::fromUtf8(editor->get_text_range(startPos, endPos));
+    mimeData->setText(plainText);
+
     QApplication::clipboard()->setMimeData(mimeData);
+
+    const QString formatName = (mimeType.contains(QLatin1String("rtf"), Qt::CaseInsensitive) || mimeType == QLatin1String("Rich Text Format")) ? tr("RTF") : tr("HTML");
+    ui->statusBar->showMessage(tr("Copied syntax-colored %1 to clipboard (%2)")
+        .arg(formatName)
+        .arg(editor->selectionEmpty() ? tr("entire document") : tr("selection")), 3000);
 }
 
 void MainWindow::renameFile()
@@ -2074,6 +2095,8 @@ void MainWindow::updateContentBasedUi(ScintillaNext *editor)
     ui->actionMinifyCss->setEnabled(canInsert);
     ui->actionFormatJs->setEnabled(canInsert);
     ui->actionMinifyJs->setEnabled(canInsert);
+    ui->actionCopyAsRtf->setEnabled(editor != nullptr);
+    ui->actionCopyAsHtml->setEnabled(editor != nullptr);
     ui->actionURLEncode->setEnabled(hasAnySelections);
     ui->actionURLDecode->setEnabled(hasAnySelections);
 }
