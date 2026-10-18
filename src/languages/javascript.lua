@@ -10,8 +10,6 @@ L.extensions = {
     "cjs",
     "jsm",
     "jsx",
-    "ts",
-    "tsx",
 }
 
 L.properties = {

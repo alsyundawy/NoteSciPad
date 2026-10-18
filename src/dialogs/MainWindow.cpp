@@ -1539,9 +1539,13 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
     editorInspectorDock->hide();
     addDockWidget(Qt::RightDockWidgetArea, editorInspectorDock);
 
-    LanguageInspectorDock *languageInspectorDock = new LanguageInspectorDock(this);
+    languageInspectorDock = new LanguageInspectorDock(this);
     languageInspectorDock->hide();
     addDockWidget(Qt::RightDockWidgetArea, languageInspectorDock);
+    QAction *toggleLanguageInspectorAction = languageInspectorDock->toggleViewAction();
+    toggleLanguageInspectorAction->setText(tr("Language Inspector"));
+    toggleLanguageInspectorAction->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_L));
+    ui->menuView->addAction(toggleLanguageInspectorAction);
 
     LuaConsoleDock *luaConsoleDock = new LuaConsoleDock(app->getLuaState(), this);
     luaConsoleDock->hide();
@@ -1692,6 +1696,11 @@ void MainWindow::setupLanguageMenu()
             ui->menuLanguage->addMenu(compactMenu);
         }
         i = j;
+    }
+
+    ui->menuLanguage->addSeparator();
+    if (languageInspectorDock) {
+        ui->menuLanguage->addAction(languageInspectorDock->toggleViewAction());
     }
 }
 

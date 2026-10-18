@@ -15,7 +15,8 @@ L.properties = {
 }
 
 L.keywords = {
-    [0] = "bool byte break case chan complex64 complex128 const continue defer default else for func go goto fallthrough false float32 float64 if import int interface int8 int16 int32 int64 len map nil package range return select string struct switch true type uint uintptr uint8 uint16 uint32 uint64 var",
+    [0] = "break case chan const continue default defer else fallthrough for func go goto if import package range return select struct switch type var",
+    [1] = "any bool byte comparable complex64 complex128 error float32 float64 int int8 int16 int32 int64 rune string uint uintptr uint8 uint16 uint32 uint64 false true nil iota append cap clear close copy delete len make max min new panic recover real imag",
     [5] = "FIXME TODO XXX HACK NOTE",
 }
 

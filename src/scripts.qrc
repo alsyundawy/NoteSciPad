@@ -88,5 +88,9 @@
         <file>languages/markdown.lua</file>
         <file>languages/nix.lua</file>
         <file>languages/abaqus.lua</file>
+        <file>languages/dart.lua</file>
+        <file>languages/toml.lua</file>
+        <file>languages/typescript.lua</file>
+        <file>languages/zig.lua</file>
     </qresource>
 </RCC>

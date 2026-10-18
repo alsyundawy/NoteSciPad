@@ -51,6 +51,7 @@ class FunctionListDock;
 class RunDialog;
 class ManageToolsDialog;
 class RegexHelperDialog;
+class LanguageInspectorDock;
 
 class MainWindow : public QMainWindow
 {
@@ -253,6 +254,7 @@ private:
     QAction *actionTransparencyOptions = nullptr;
     FocusedView *focusedView = nullptr;
     FocusedViewDialog *focusedViewDialog = nullptr;
+    LanguageInspectorDock *languageInspectorDock = nullptr;
 
     //NppImporter *npp;
 

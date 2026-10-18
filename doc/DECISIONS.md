@@ -73,3 +73,25 @@ NoteSciPad implements authenticated document encryption using the `NSPENC01` bin
 - **Cross-Platform Interoperability**: Encrypted files created on macOS can be opened and decrypted seamlessly on Linux and vice-versa.
 - **Data Safety**: Memory-only ephemeral passphrase retention per tab, with atomic file save preventing corruption.
 - **Full Report**: Security evaluation, threat modeling, and UX specifications documented in `doc/ENCRYPTION_SECURITY_AND_UX.md`.
+
+
+## ADR-005: Selective Lexer and Language Definition Updates from Notepad4 (Keeping Lexilla)
+
+### Status
+Accepted (2026-10-19)
+
+### Context
+NoteSciPad is committed to maintaining its vendored, statically compiled Scintilla 5.5.x and Lexilla 5.4.x engines (`thirdparty/scintilla`, `thirdparty/lexilla`, `src/ScintillaNext`). However, modern programming and configuration languages (such as TOML, Zig, Dart, and TypeScript) were either absent or improperly categorized in NoteSciPad's Lua language catalog. Notepad4 (by Zufu Liu) contains battle-tested lexer definitions and modern language catalogs designed specifically for Scintilla/Lexilla.
+
+### Decision
+NoteSciPad selectively ports language definitions, keyword lists, and style indices from Notepad4 into NoteSciPad's native Lua language layer without modifying or replacing the underlying Lexilla C++ engine:
+1. **New Languages**: Added full definitions for `TOML` (`LexTOML.cxx`), `Zig` (`LexZig.cxx`), `Dart` (`LexDart.cxx`), and `TypeScript` (`LexCPP.cxx` with backquoted string support).
+2. **Modern Keyword Sets**: Enhanced `cpp.lua` (C++20/C++23 coroutines and modules), `rust.lua` (Rust 2021/2024 `await`, `macro_rules`, and stdlib types), and `go.lua` (Go 1.18–1.24 generics, built-in functions, and type separation).
+3. **Dedicated TypeScript Routing**: Removed `.ts` and `.tsx` from `javascript.lua` to ensure distinct TypeScript styling and metadata.
+4. **Language Inspector Access**: Assigned `Ctrl+Alt+L` (`Cmd+Alt+L` on macOS) to `LanguageInspectorDock` and placed it prominently in both the `Language` and `View` menus.
+5. **Engine Integrity**: Zero changes to Scintilla or Lexilla C++ source trees; all lexer IDs bind to existing compiled Lexilla modules.
+
+### Rationale & Consequences
+- **Expanded Modern Ecosystem**: Increases total registered languages from 87 to 91, delivering instant syntax highlighting for modern systems languages (Zig, Rust), modern web/mobile development (TypeScript, Dart), and configuration formats (TOML).
+- **Zero Risk of Engine Instability**: By relying on Lexilla's existing built-in lexers (`lmTOML`, `lmZig`, `lmDart`, `lmCPP`), performance and memory characteristics remain strictly identical.
+- **Detailed Reference**: Full mapping documentation recorded in `doc/LEXER_UPDATES_NOTEPAD4.md`.
