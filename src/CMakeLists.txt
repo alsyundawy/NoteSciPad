@@ -101,6 +101,10 @@ qt_add_executable(NoteSciPad
 	features/AutoClosePairs.cpp
 	features/ColorPreviewCallTip.h
 	features/ColorPreviewCallTip.cpp
+	features/FocusedView.h
+	features/FocusedView.cpp
+	features/FocusedViewDialog.h
+	features/FocusedViewDialog.cpp
 	utils/Base64Utils.h
 	utils/Base64Utils.cpp
 	utils/NumberConverter.h

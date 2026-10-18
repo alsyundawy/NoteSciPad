@@ -45,6 +45,8 @@ class ShiftWheelToHorizontalScrollFilter;
 class Converter;
 class DefaultDirectoryManager;
 class TabsQuickActionsBar;
+class FocusedView;
+class FocusedViewDialog;
 
 class MainWindow : public QMainWindow
 {
@@ -194,6 +196,8 @@ private:
     TabsQuickActionsBar *tabsQuickActionsBar = Q_NULLPTR;
     MarkOccurrences *markOccurrences = nullptr;
     FileBrowserDock *fileBrowserDock = nullptr;
+    FocusedView *focusedView = nullptr;
+    FocusedViewDialog *focusedViewDialog = nullptr;
 
     //NppImporter *npp;
 

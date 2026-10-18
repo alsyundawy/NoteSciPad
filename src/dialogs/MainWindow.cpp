@@ -71,6 +71,8 @@
 #include "ColorPreviewCallTip.h"
 #include "CodeCompressPretty.h"
 #include "MathEvaluator.h"
+#include "FocusedView.h"
+#include "FocusedViewDialog.h"
 #include "SearchResultsDock.h"
 #include "DebugLogDock.h"
 #include "FileListDock.h"
@@ -722,6 +724,67 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
             }
         }
     };
+
+    focusedView = new FocusedView(this);
+
+    connect(ui->actionToggleFocusedView, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        if (!editor) {
+            ui->statusBar->showMessage(tr("No active editor"), 3000);
+            return;
+        }
+        bool dialogNeeded = false;
+        auto result = focusedView->toggleFocusedView(editor, &dialogNeeded);
+        if (dialogNeeded) {
+            if (!focusedViewDialog) {
+                focusedViewDialog = new FocusedViewDialog(focusedView, this, this);
+            }
+            focusedViewDialog->prepareForEditor(editor);
+            focusedViewDialog->show();
+            focusedViewDialog->raise();
+            focusedViewDialog->activateWindow();
+        } else {
+            ui->statusBar->showMessage(result.message, 4000);
+            updateContentBasedUi(editor);
+        }
+    });
+
+    connect(ui->actionFocusedViewFilterDialog, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        if (!editor) {
+            ui->statusBar->showMessage(tr("No active editor"), 3000);
+            return;
+        }
+        if (!focusedViewDialog) {
+            focusedViewDialog = new FocusedViewDialog(focusedView, this, this);
+        }
+        focusedViewDialog->prepareForEditor(editor);
+        focusedViewDialog->show();
+        focusedViewDialog->raise();
+        focusedViewDialog->activateWindow();
+    });
+
+    connect(ui->actionFocusedViewBookmarks, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        if (!editor) {
+            ui->statusBar->showMessage(tr("No active editor"), 3000);
+            return;
+        }
+        auto result = focusedView->filterByBookmarks(editor);
+        ui->statusBar->showMessage(result.message, 4000);
+        updateContentBasedUi(editor);
+    });
+
+    connect(ui->actionFocusedViewClear, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        if (!editor) {
+            ui->statusBar->showMessage(tr("No active editor"), 3000);
+            return;
+        }
+        auto result = focusedView->clearFilter(editor);
+        ui->statusBar->showMessage(result.message, 4000);
+        updateContentBasedUi(editor);
+    });
 
     markOccurrences = new MarkOccurrences(this);
 
@@ -2130,6 +2193,14 @@ void MainWindow::updateContentBasedUi(ScintillaNext *editor)
     ui->actionCopyAsHtml->setEnabled(editor != nullptr);
     ui->actionURLEncode->setEnabled(hasAnySelections);
     ui->actionURLDecode->setEnabled(hasAnySelections);
+
+    const bool hasEditor = (editor != nullptr);
+    const bool isFocused = hasEditor && focusedView && focusedView->isFocused(editor);
+    ui->actionToggleFocusedView->setEnabled(hasEditor);
+    ui->actionToggleFocusedView->setChecked(isFocused);
+    ui->actionFocusedViewFilterDialog->setEnabled(hasEditor);
+    ui->actionFocusedViewBookmarks->setEnabled(hasEditor);
+    ui->actionFocusedViewClear->setEnabled(isFocused);
 }
 
 void MainWindow::detectLanguage(ScintillaNext *editor)

@@ -359,11 +359,22 @@
      <addaction name="actionUnfoldLevel8"/>
      <addaction name="actionUnfoldLevel9"/>
     </widget>
+    <widget class="QMenu" name="menuFocusedView">
+     <property name="title">
+      <string>Focused View</string>
+     </property>
+     <addaction name="actionToggleFocusedView"/>
+     <addaction name="actionFocusedViewFilterDialog"/>
+     <addaction name="actionFocusedViewBookmarks"/>
+     <addaction name="separator"/>
+     <addaction name="actionFocusedViewClear"/>
+    </widget>
     <addaction name="actionFullScreen"/>
     <addaction name="separator"/>
     <addaction name="menuShowSymbol"/>
     <addaction name="menuZoom"/>
     <addaction name="actionWordWrap"/>
+    <addaction name="menuFocusedView"/>
     <addaction name="separator"/>
     <addaction name="actionFoldAll"/>
     <addaction name="actionUnfoldAll"/>
