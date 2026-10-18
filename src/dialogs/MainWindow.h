@@ -192,6 +192,7 @@ private:
 
     TabsQuickActionsBar *tabsQuickActionsBar = Q_NULLPTR;
     MarkOccurrences *markOccurrences = nullptr;
+    FileBrowserDock *fileBrowserDock = nullptr;
 
     //NppImporter *npp;
 

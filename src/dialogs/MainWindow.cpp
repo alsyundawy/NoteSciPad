@@ -64,6 +64,7 @@
 #include "LanguageInspectorDock.h"
 #include "EditorInspectorDock.h"
 #include "FolderAsWorkspaceDock.h"
+#include "FileBrowserDock.h"
 #include "SearchResultsDock.h"
 #include "DebugLogDock.h"
 #include "FileListDock.h"
@@ -1016,6 +1017,15 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
                                     editorInspectorDock->toggleViewAction(),
                                     debugLogDock->toggleViewAction()
                                 });
+
+    fileBrowserDock = new FileBrowserDock(this);
+    fileBrowserDock->hide();
+    addDockWidget(Qt::LeftDockWidgetArea, fileBrowserDock);
+    QAction *toggleFileBrowserAction = fileBrowserDock->toggleViewAction();
+    toggleFileBrowserAction->setText(tr("File Browser"));
+    toggleFileBrowserAction->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_O));
+    ui->menuView->addAction(toggleFileBrowserAction);
+    connect(fileBrowserDock, &FileBrowserDock::fileOpenRequested, this, &MainWindow::openFile);
 
     FolderAsWorkspaceDock *fawDock = new FolderAsWorkspaceDock(this);
     fawDock->hide();

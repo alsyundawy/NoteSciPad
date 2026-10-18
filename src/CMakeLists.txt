@@ -162,6 +162,9 @@ qt_add_executable(NoteSciPad
 	docks/FolderAsWorkspaceDock.cpp
 	docks/FolderAsWorkspaceDock.h
 	docks/FolderAsWorkspaceDock.ui
+	docks/FileBrowserDock.cpp
+	docks/FileBrowserDock.h
+	docks/FileBrowserDock.ui
 
 
 
