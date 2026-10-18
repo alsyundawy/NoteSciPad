@@ -108,7 +108,7 @@ Use this as the living task board. Check items as they are completed.
 - [x] Customizable status bar fields
 - [x] .LOG auto-timestamp behavior
 - [x] URL highlighting with configurable size threshold (UrlThreshold)
-- [ ] Improved encoding detection (study & port useful parts from Notepad4/Notepad3)
+- [x] Improved encoding detection (study & port useful parts from Notepad4/Notepad3)
 - [ ] **Show Character Info** (code point, name, category, UTF-8/UTF-16)
 - [ ] **Update File Time** (touch file without changing content)
 - [ ] **Save with Original Time** (preserve original mtime on save)
