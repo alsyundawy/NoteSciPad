@@ -40,13 +40,13 @@ Use this as the living task board. Check items as they are completed.
 
 ### 1. Mark All Occurrences + Matched Count
 
-- [ ] Design indicator/marker strategy (using Scintilla indicators)
-- [ ] Implement mark-all action (selection or word under caret)
-- [ ] Add matched count display (status bar or dedicated label)
-- [ ] Options: case sensitive, whole word, regex (optional)
-- [ ] Keyboard shortcut + menu entry
-- [ ] Clear marks action
-- [ ] Test with large files and CJK text
+- [x] Design indicator/marker strategy (using Scintilla indicators)
+- [x] Implement mark-all action (selection or word under caret)
+- [x] Add matched count display (status bar or dedicated label)
+- [x] Options: case sensitive, whole word, regex (optional)
+- [x] Keyboard shortcut + menu entry
+- [x] Clear marks action
+- [x] Test with large files and CJK text
 
 ### 2. Enhanced Auto-completion
 
