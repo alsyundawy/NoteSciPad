@@ -446,6 +446,7 @@
     <addaction name="separator"/>
     <addaction name="actionAboutQt"/>
     <addaction name="actionAboutNotepadNext"/>
+    <addaction name="actionPerformanceDiagnostics"/>
     <addaction name="actionDebugInfo"/>
    </widget>
    <widget class="QMenu" name="menuEncodings">
@@ -1761,6 +1762,20 @@
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionPerformanceDiagnostics">
+   <property name="text">
+    <string>&amp;Performance &amp;&amp; Diagnostics...</string>
+   </property>
+   <property name="toolTip">
+    <string>Inspect Apple Silicon and Linux system performance, memory footprint, and Scintilla benchmarks</string>
+   </property>
+   <property name="statusTip">
+    <string>Inspect Apple Silicon and Linux system performance, memory footprint, and Scintilla benchmarks</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+P</string>
    </property>
   </action>
   <action name="actionDebugInfo">

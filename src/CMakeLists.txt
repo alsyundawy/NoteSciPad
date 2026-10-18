@@ -111,6 +111,8 @@ qt_add_executable(NoteSciPad
 	features/ClipboardMonitor.cpp
 	features/TailMonitoringManager.h
 	features/TailMonitoringManager.cpp
+	features/PerformanceProfiler.h
+	features/PerformanceProfiler.cpp
 	features/TransparentWindowManager.h
 	features/TransparentWindowManager.cpp
 	features/UrlUtils.h
@@ -217,6 +219,9 @@ qt_add_executable(NoteSciPad
 	dialogs/TailOptionsDialog.cpp
 	dialogs/TailOptionsDialog.h
 	dialogs/TailOptionsDialog.ui
+	dialogs/PerformanceDiagnosticsDialog.cpp
+	dialogs/PerformanceDiagnosticsDialog.h
+	dialogs/PerformanceDiagnosticsDialog.ui
 	dialogs/EncryptDialog.cpp
 	dialogs/EncryptDialog.h
 	dialogs/EncryptDialog.ui

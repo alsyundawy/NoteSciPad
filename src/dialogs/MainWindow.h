@@ -53,6 +53,7 @@ class ManageToolsDialog;
 class RegexHelperDialog;
 class LanguageInspectorDock;
 class TailOptionsDialog;
+class PerformanceDiagnosticsDialog;
 
 class MainWindow : public QMainWindow
 {

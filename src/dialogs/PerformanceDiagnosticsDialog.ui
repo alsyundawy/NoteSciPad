@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PerformanceDiagnosticsDialog</class>
+ <widget class="QDialog" name="PerformanceDiagnosticsDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>580</width>
+    <height>440</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Performance Diagnostics &amp; Hardware Profiler</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="groupHardware">
+     <property name="title">
+      <string>Hardware &amp; Architecture</string>
+     </property>
+     <layout class="QFormLayout" name="formLayout_1">
+      <item row="0" column="0">
+       <widget class="QLabel" name="lblOsTitle">
+        <property name="text">
+         <string>Operating System:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="lblOsVal">
+        <property name="font">
+         <font><bold>true</bold></font>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lblCpuTitle">
+        <property name="text">
+         <string>CPU Model:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="lblCpuVal">
+        <property name="font">
+         <font><bold>true</bold></font>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lblArchTitle">
+        <property name="text">
+         <string>Architecture:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="lblArchVal">
+        <property name="font">
+         <font><bold>true</bold></font>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupMemory">
+     <property name="title">
+      <string>Live Process &amp; Document Metrics</string>
+     </property>
+     <layout class="QFormLayout" name="formLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="lblRssTitle">
+        <property name="text">
+         <string>Resident Memory (RSS):</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="lblRssVal">
+        <property name="font">
+         <font><bold>true</bold></font>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lblVmsTitle">
+        <property name="text">
+         <string>Virtual Memory (VMS):</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="lblVmsVal"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lblDocTitle">
+        <property name="text">
+         <string>Active Document:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="lblDocVal"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupOptimizations">
+     <property name="title">
+      <string>Large-File Performance Optimization</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QCheckBox" name="chkHighPerf">
+        <property name="text">
+         <string>Enable High-Performance Mode (Disables word-wrap layout bottleneck, enables double buffering)</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBenchmark">
+     <property name="title">
+      <string>Scintilla Throughput Benchmark</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <layout class="QHBoxLayout" name="benchRow">
+        <item>
+         <widget class="QPushButton" name="btnRunBenchmark">
+          <property name="text">
+           <string>Run Scintilla Benchmark (50,000 Lines)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="lblBenchmarkStatus">
+        <property name="text">
+         <string>Ready to run benchmark.</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="bottomRow">
+     <item>
+      <widget class="QPushButton" name="btnCopyReport">
+       <property name="text">
+        <string>Copy Diagnostic Report</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="spacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnClose">
+       <property name="text">
+        <string>Close</string>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -144,3 +144,27 @@ NoteSciPad implements live file monitoring through `TailMonitoringManager` and `
 - **High-Performance Log Viewing**: Can stream high-throughput logs without UI lag or memory allocation churn.
 - **Uninterrupted Workflow**: Eliminates modal popups during active development, test runs, and system monitoring.
 - **Reference**: Full details documented in `doc/TAIL_MONITORING.md`.
+
+
+## ADR-008: Hardware-Aware Performance Profiling, Memory Diagnostics, and Large-File Optimization
+
+### Status
+Accepted (2026-10-19)
+
+### Context
+Maintaining high responsiveness on modern hardware (Apple Silicon ARM64 and Linux multi-core architectures) requires transparent memory visibility, performance diagnostics, and optimization strategies for massive documents.
+
+### Decision
+NoteSciPad implements a hardware-aware performance engine through `PerformanceProfiler` and `PerformanceDiagnosticsDialog`:
+1. **Zero-Overhead Native Diagnostics**:
+   - macOS: Uses Mach kernel APIs (`mach_task_basic_info`, `machdep.cpu.brand_string`) to report true process RSS and CPU architecture without child processes.
+   - Linux: Uses `/proc/self/statm` page calculation.
+2. **Scintilla Throughput Benchmark**: Built-in 50,000-line ingestion test providing empirical throughput measurements (MB/s and lines/s).
+3. **Large-File High-Performance Mode**: Provides an instant toggle to bypass word-wrap reflow calculation bottlenecks and enable double-buffered rendering on huge documents.
+4. **Menu & Shortcut**: Integrated under `Help -> Performance & Diagnostics...` with shortcut `Ctrl+Alt+P` (`Cmd+Alt+P` on macOS).
+5. **Engine Integrity**: Strictly preserves vendored `ScintillaNext + thirdparty/scintilla + thirdparty/lexilla`.
+
+### Rationale & Consequences
+- **Transparent Diagnostics**: Developers can inspect real-time memory usage and system capabilities directly inside the editor.
+- **Smooth Large-File Handling**: Prevents UI stuttering when viewing multi-megabyte log files or large source code files.
+- **Reference**: Full details documented in `doc/PERFORMANCE_PROFILING.md`.
