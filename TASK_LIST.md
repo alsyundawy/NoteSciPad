@@ -127,7 +127,7 @@ Use this as the living task board. Check items as they are completed.
 - [x] Transparent window mode
 - [x] Lexer / API data updates from Notepad4 (selective, keep Lexilla)
 - [x] Optional: Evaluate JS Expression
-- [ ] Optional: Monitoring / tail mode improvements
+- [x] Optional: Monitoring / tail mode improvements
 - [ ] Performance profiling & optimization (Apple Silicon + Linux)
 
 ---
