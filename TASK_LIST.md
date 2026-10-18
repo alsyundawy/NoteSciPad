@@ -110,8 +110,8 @@ Use this as the living task board. Check items as they are completed.
 - [x] URL highlighting with configurable size threshold (UrlThreshold)
 - [x] Improved encoding detection (study & port useful parts from Notepad4/Notepad3)
 - [x] **Show Character Info** (code point, name, category, UTF-8/UTF-16)
-- [ ] **Update File Time** (touch file without changing content)
-- [ ] **Save with Original Time** (preserve original mtime on save)
+- [x] **Update File Time** (touch file without changing content)
+- [x] **Save with Original Time** (preserve original mtime on save)
 - [ ] Improved case conversion (invert / title / sentence) + context menu entries + multi-selection support
 
 ---
