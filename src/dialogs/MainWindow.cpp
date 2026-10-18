@@ -1,3 +1,4 @@
+#include "MarkOccurrences.h"
 /*
  * This file is part of Notepad Next.
  * Copyright 2019 Justin Dailey
@@ -515,6 +516,29 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
             }
         }
     };
+
+    markOccurrences = new MarkOccurrences(this);
+
+    connect(ui->actionMarkAllOccurrences, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        if (!editor) return;
+        int count = markOccurrences->markAll(editor);
+        QString query = markOccurrences->lastQuery();
+        if (count > 0) {
+            ui->statusBar->showMessage(tr("Marked %1 occurrence(s) of \"%2\"").arg(count).arg(query), 5000);
+        } else if (!query.isEmpty()) {
+            ui->statusBar->showMessage(tr("No occurrences found for \"%1\"").arg(query), 4000);
+        } else {
+            ui->statusBar->showMessage(tr("No text selected to mark"), 3000);
+        }
+    });
+
+    connect(ui->actionClearAllOccurrencesMarks, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        if (!editor) return;
+        markOccurrences->clearMarks(editor);
+        ui->statusBar->showMessage(tr("Occurrence marks cleared"), 3000);
+    });
 
     connect(ui->actionMarkStyle1, &QAction::triggered, this, mark_callback);
     connect(ui->actionMarkStyle2, &QAction::triggered, this, mark_callback);

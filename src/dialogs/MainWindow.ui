@@ -220,6 +220,8 @@
      <property name="title">
       <string>Mark All Occurrences</string>
      </property>
+     <addaction name="actionMarkAllOccurrences"/>
+     <addaction name="separator"/>
      <addaction name="actionMarkStyle1"/>
      <addaction name="actionMarkStyle2"/>
      <addaction name="actionMarkStyle3"/>
@@ -228,6 +230,8 @@
      <property name="title">
       <string>Clear Marks</string>
      </property>
+     <addaction name="actionClearAllOccurrencesMarks"/>
+     <addaction name="separator"/>
      <addaction name="actionClearStyle1"/>
      <addaction name="actionClearStyle2"/>
      <addaction name="actionClearStyle3"/>
@@ -1596,4 +1600,32 @@
   <include location="../resources.qrc"/>
  </resources>
  <connections/>
+  <action name="actionMarkAllOccurrences">
+   <property name="text">
+    <string>Mark All Occurrences</string>
+   </property>
+   <property name="toolTip">
+    <string>Mark all occurrences of selected text or word under cursor and display matched count</string>
+   </property>
+   <property name="statusTip">
+    <string>Mark all occurrences of selected text or word under cursor and display matched count</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+M</string>
+   </property>
+  </action>
+  <action name="actionClearAllOccurrencesMarks">
+   <property name="text">
+    <string>Clear Marked Occurrences</string>
+   </property>
+   <property name="toolTip">
+    <string>Clear all marked occurrence highlights</string>
+   </property>
+   <property name="statusTip">
+    <string>Clear all marked occurrence highlights</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+U</string>
+   </property>
+  </action>
 </ui>

@@ -95,6 +95,8 @@ qt_add_executable(NoteSciPad
 	TranslationManager.cpp
 	UndoAction.cpp
 	ZoomEventWatcher.cpp
+	features/MarkOccurrences.h
+	features/MarkOccurrences.cpp
 	decorators/ApplicationDecorator.cpp
 	decorators/ApplicationDecorator.h
 	decorators/AutoCompletion.cpp
@@ -210,6 +212,8 @@ target_include_directories(NoteSciPad
         ${CMAKE_CURRENT_SOURCE_DIR}/decorators
         ${CMAKE_CURRENT_SOURCE_DIR}/dialogs
         ${CMAKE_CURRENT_SOURCE_DIR}/docks
+        ${CMAKE_CURRENT_SOURCE_DIR}/features
+        ${CMAKE_CURRENT_SOURCE_DIR}/utils
         ${CMAKE_CURRENT_SOURCE_DIR}/widgets
         ${CMAKE_CURRENT_SOURCE_DIR}
 )

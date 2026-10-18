@@ -191,6 +191,7 @@ private:
     QActionGroup *languageActionGroup;
 
     TabsQuickActionsBar *tabsQuickActionsBar = Q_NULLPTR;
+    MarkOccurrences *markOccurrences = nullptr;
 
     //NppImporter *npp;
 
