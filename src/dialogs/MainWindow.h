@@ -226,6 +226,10 @@ private:
     void onRegexHelperTriggered();
     void onEncryptDocumentTriggered();
     void onDecryptDocumentTriggered();
+    void onToggleClipboardMonitoringTriggered();
+    void onClipboardHistoryTriggered();
+    void onClipboardMonitoringStateChanged(bool active);
+    void onClipboardClipCaptured(const ClipboardMonitor::CapturedClip &clip, int totalCount);
 
     QMenu *menuRun = nullptr;
     QMenu *menuSavedTools = nullptr;
@@ -233,6 +237,9 @@ private:
     QMenu *menuEncryption = nullptr;
     QAction *actionEncryptDoc = nullptr;
     QAction *actionDecryptDoc = nullptr;
+    QMenu *menuClipboardMonitoring = nullptr;
+    QAction *actionToggleClipboardMonitoring = nullptr;
+    QAction *actionClipboardHistory = nullptr;
     FocusedView *focusedView = nullptr;
     FocusedViewDialog *focusedViewDialog = nullptr;
 

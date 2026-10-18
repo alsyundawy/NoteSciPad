@@ -107,6 +107,8 @@ qt_add_executable(NoteSciPad
 	features/FocusedViewDialog.cpp
 	features/LogAutoTimestamp.h
 	features/LogAutoTimestamp.cpp
+	features/ClipboardMonitor.h
+	features/ClipboardMonitor.cpp
 	features/UrlUtils.h
 	features/UrlUtils.cpp
 	features/CharacterInfo.h
@@ -209,6 +211,9 @@ qt_add_executable(NoteSciPad
 	dialogs/DecryptDialog.cpp
 	dialogs/DecryptDialog.h
 	dialogs/DecryptDialog.ui
+	dialogs/ClipboardHistoryDialog.cpp
+	dialogs/ClipboardHistoryDialog.h
+	dialogs/ClipboardHistoryDialog.ui
 	docks/DebugLogDock.cpp
 	docks/DebugLogDock.h
 	docks/DebugLogDock.ui

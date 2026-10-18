@@ -92,6 +92,8 @@
 #include "RegexHelperDialog.h"
 #include "EncryptDialog.h"
 #include "DecryptDialog.h"
+#include "ClipboardHistoryDialog.h"
+#include "../features/ClipboardMonitor.h"
 #include "../utils/CryptoManager.h"
 
 #include "FindReplaceDialog.h"
@@ -744,6 +746,23 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
     connect(actionDecryptDoc, &QAction::triggered, this, &MainWindow::onDecryptDocumentTriggered);
     menuEncryption->addAction(actionDecryptDoc);
     ui->menuTools->addMenu(menuEncryption);
+
+    menuClipboardMonitoring = new QMenu(tr("Clipboard &Monitoring"), this);
+    actionToggleClipboardMonitoring = new QAction(tr("&Monitor Clipboard (Append to Document)"), this);
+    actionToggleClipboardMonitoring->setCheckable(true);
+    actionToggleClipboardMonitoring->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_B));
+    connect(actionToggleClipboardMonitoring, &QAction::triggered, this, &MainWindow::onToggleClipboardMonitoringTriggered);
+    menuClipboardMonitoring->addAction(actionToggleClipboardMonitoring);
+
+    actionClipboardHistory = new QAction(tr("View Clipboard &History..."), this);
+    connect(actionClipboardHistory, &QAction::triggered, this, &MainWindow::onClipboardHistoryTriggered);
+    menuClipboardMonitoring->addAction(actionClipboardHistory);
+
+    ui->menuEdit->addSeparator();
+    ui->menuEdit->addMenu(menuClipboardMonitoring);
+
+    connect(ClipboardMonitor::instance(), &ClipboardMonitor::monitoringStateChanged, this, &MainWindow::onClipboardMonitoringStateChanged);
+    connect(ClipboardMonitor::instance(), &ClipboardMonitor::clipCaptured, this, &MainWindow::onClipboardClipCaptured);
 
     connect(ui->actionFind, &QAction::triggered, this, [this]() {
         showFindReplaceDialog(FindReplaceDialog::FIND_TAB);
@@ -2706,6 +2725,10 @@ void MainWindow::activateEditor(ScintillaNext *editor)
     checkFileForModification(editor);
     updateGui(editor);
 
+    if (editor && ClipboardMonitor::instance()->isMonitoring()) {
+        ClipboardMonitor::instance()->setTargetEditor(editor);
+    }
+
     if (editor && LogAutoTimestamp::isAutoLogEnabled() && !editor->property("LogTimestampApplied").toBool()) {
         if (LogAutoTimestamp::checkAndApplyLogTimestamp(editor)) {
             ui->statusBar->showMessage(tr(".LOG auto-timestamp appended to log file"), 3000);
@@ -3515,5 +3538,34 @@ void MainWindow::onDecryptDocumentTriggered()
         editor->insertText(editor->currentPos(), "");
         ui->statusBar->showMessage(tr("🔓 Encryption removed. Save to write as plain text."), 4000);
     }
+}
+
+void MainWindow::onToggleClipboardMonitoringTriggered()
+{
+    ClipboardMonitor *mon = ClipboardMonitor::instance();
+    mon->toggleMonitoring(currentEditor());
+}
+
+void MainWindow::onClipboardHistoryTriggered()
+{
+    ClipboardHistoryDialog dlg(this, currentEditor());
+    dlg.exec();
+}
+
+void MainWindow::onClipboardMonitoringStateChanged(bool active)
+{
+    if (actionToggleClipboardMonitoring) {
+        actionToggleClipboardMonitoring->setChecked(active);
+    }
+    if (active) {
+        ui->statusBar->showMessage(tr("📋 Clipboard Monitoring: ACTIVE (capturing copied text to document)"), 5000);
+    } else {
+        ui->statusBar->showMessage(tr("📋 Clipboard Monitoring: STOPPED (Total captured: %1)").arg(ClipboardMonitor::instance()->capturedCount()), 4000);
+    }
+}
+
+void MainWindow::onClipboardClipCaptured(const ClipboardMonitor::CapturedClip &clip, int totalCount)
+{
+    ui->statusBar->showMessage(tr("📋 Captured clipboard item #%1 (%2 chars)").arg(totalCount).arg(clip.charCount), 3000);
 }
 
