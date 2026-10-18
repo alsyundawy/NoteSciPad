@@ -1,0 +1,46 @@
+/*
+ * This file is part of NoteSciPad.
+ *
+ * Adapted from Notepad4 (zufuliu/notepad4) Calculate Expression feature.
+ * Source: zufuliu/notepad4 (src/Edit.cpp, PR #1230)
+ *
+ * NoteSciPad is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ */
+
+#ifndef MATHEVALUATOR_H
+#define MATHEVALUATOR_H
+
+#include <QString>
+
+class ScintillaNext;
+
+class MathEvaluator
+{
+public:
+    enum Action {
+        AppendResult,     // "15 * 4" -> "15 * 4 = 60"
+        ReplaceExpression // "15 * 4" -> "60"
+    };
+
+    struct Result {
+        bool success {false};
+        double value {0.0};
+        QString expression;
+        QString formattedResult;
+        QString errorMessage;
+    };
+
+    // Evaluates math expression from active editor (selection or line at caret)
+    static Result evaluateInEditor(ScintillaNext *editor, Action action = AppendResult);
+
+    // Direct string evaluation
+    static Result evaluateString(const QString &expr);
+
+    // Format double value cleanly (stripping trailing .0 for whole numbers)
+    static QString formatValue(double val);
+};
+
+#endif // MATHEVALUATOR_H

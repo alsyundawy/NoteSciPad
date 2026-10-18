@@ -109,6 +109,8 @@ qt_add_executable(NoteSciPad
 	utils/GuidTimestampUtils.cpp
 	utils/CodeCompressPretty.h
 	utils/CodeCompressPretty.cpp
+	utils/MathEvaluator.h
+	utils/MathEvaluator.cpp
 	decorators/ApplicationDecorator.cpp
 	decorators/ApplicationDecorator.h
 	decorators/AutoCompletion.cpp

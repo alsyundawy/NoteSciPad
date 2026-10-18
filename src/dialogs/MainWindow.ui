@@ -192,6 +192,7 @@
     <addaction name="menuInsert"/>
     <addaction name="actionColorPreview"/>
     <addaction name="menuCodeFormatter"/>
+    <addaction name="menuMathExpression"/>
     <addaction name="menuEOLConversion"/>
     <addaction name="menuLine_Operations"/>
     <addaction name="menuCommentUncomment"/>
@@ -239,6 +240,13 @@
      <addaction name="separator"/>
      <addaction name="actionFormatJs"/>
      <addaction name="actionMinifyJs"/>
+    </widget>
+    <widget class="QMenu" name="menuMathExpression">
+     <property name="title">
+      <string>Math Expression</string>
+     </property>
+     <addaction name="actionEvaluateMathAppend"/>
+     <addaction name="actionEvaluateMathReplace"/>
     </widget>
    </widget>
    <widget class="QMenu" name="menuSearch">
@@ -1939,6 +1947,34 @@
   <action name="actionMinifyJs">
    <property name="text">
     <string>JavaScript Minify</string>
+   </property>
+  </action>
+  <action name="actionEvaluateMathAppend">
+   <property name="text">
+    <string>Calculate &amp; Append Result (= ...)</string>
+   </property>
+   <property name="toolTip">
+    <string>Calculate mathematical expression and append result</string>
+   </property>
+   <property name="statusTip">
+    <string>Calculate mathematical expression and append result</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+E</string>
+   </property>
+  </action>
+  <action name="actionEvaluateMathReplace">
+   <property name="text">
+    <string>Calculate &amp; Replace with Result</string>
+   </property>
+   <property name="toolTip">
+    <string>Calculate mathematical expression and replace with result</string>
+   </property>
+   <property name="statusTip">
+    <string>Calculate mathematical expression and replace with result</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+E</string>
    </property>
   </action>
 </ui>

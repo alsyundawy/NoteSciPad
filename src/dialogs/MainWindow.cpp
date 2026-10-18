@@ -70,6 +70,7 @@
 #include "GuidTimestampUtils.h"
 #include "ColorPreviewCallTip.h"
 #include "CodeCompressPretty.h"
+#include "MathEvaluator.h"
 #include "SearchResultsDock.h"
 #include "DebugLogDock.h"
 #include "FileListDock.h"
@@ -333,6 +334,34 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
     connect(ui->actionMinifyCss, &QAction::triggered, this, [=]() { handleFormat(CodeCompressPretty::Css, true); });
     connect(ui->actionFormatJs, &QAction::triggered, this, [=]() { handleFormat(CodeCompressPretty::JavaScript, false); });
     connect(ui->actionMinifyJs, &QAction::triggered, this, [=]() { handleFormat(CodeCompressPretty::JavaScript, true); });
+
+    connect(ui->actionEvaluateMathAppend, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        if (!editor) {
+            ui->statusBar->showMessage(tr("No active editor"), 3000);
+            return;
+        }
+        auto result = MathEvaluator::evaluateInEditor(editor, MathEvaluator::AppendResult);
+        if (result.success) {
+            ui->statusBar->showMessage(tr("Calculated: %1 = %2").arg(result.expression, result.formattedResult), 3000);
+        } else {
+            ui->statusBar->showMessage(result.errorMessage, 4000);
+        }
+    });
+
+    connect(ui->actionEvaluateMathReplace, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        if (!editor) {
+            ui->statusBar->showMessage(tr("No active editor"), 3000);
+            return;
+        }
+        auto result = MathEvaluator::evaluateInEditor(editor, MathEvaluator::ReplaceExpression);
+        if (result.success) {
+            ui->statusBar->showMessage(tr("Calculated: %1 → %2").arg(result.expression, result.formattedResult), 3000);
+        } else {
+            ui->statusBar->showMessage(result.errorMessage, 4000);
+        }
+    });
 
     connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
         ScintillaNext *editor = currentEditor();
@@ -2095,6 +2124,8 @@ void MainWindow::updateContentBasedUi(ScintillaNext *editor)
     ui->actionMinifyCss->setEnabled(canInsert);
     ui->actionFormatJs->setEnabled(canInsert);
     ui->actionMinifyJs->setEnabled(canInsert);
+    ui->actionEvaluateMathAppend->setEnabled(canInsert);
+    ui->actionEvaluateMathReplace->setEnabled(canInsert);
     ui->actionCopyAsRtf->setEnabled(editor != nullptr);
     ui->actionCopyAsHtml->setEnabled(editor != nullptr);
     ui->actionURLEncode->setEnabled(hasAnySelections);
