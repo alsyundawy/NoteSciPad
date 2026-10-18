@@ -128,7 +128,7 @@ Use this as the living task board. Check items as they are completed.
 - [x] Lexer / API data updates from Notepad4 (selective, keep Lexilla)
 - [x] Optional: Evaluate JS Expression
 - [x] Optional: Monitoring / tail mode improvements
-- [ ] Performance profiling & optimization (Apple Silicon + Linux)
+- [x] Performance profiling & optimization (Apple Silicon + Linux)
 
 ---
 
