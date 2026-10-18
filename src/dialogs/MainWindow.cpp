@@ -803,6 +803,49 @@ connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
     ui->menuEdit->addSeparator();
     ui->menuEdit->addMenu(menuClipboardMonitoring);
 
+    // Setup Tail Monitoring (tail -f) Menu
+    menuTailMonitoring = new QMenu(tr("Monitoring (tail -f)"), this);
+    actionToggleTailMonitoring = new QAction(tr("&Monitoring (tail -f)"), this);
+    actionToggleTailMonitoring->setCheckable(true);
+    actionToggleTailMonitoring->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_Y));
+    actionToggleTailMonitoring->setToolTip(tr("Live disk tail monitoring: streaming appended log lines without modal dialogs"));
+    actionToggleTailMonitoring->setStatusTip(tr("Live disk tail monitoring: streaming appended log lines without modal dialogs"));
+    connect(actionToggleTailMonitoring, &QAction::triggered, this, &MainWindow::onToggleTailMonitoringTriggered);
+
+    actionTailAutoScroll = new QAction(tr("&Auto-scroll to End on Update"), this);
+    actionTailAutoScroll->setCheckable(true);
+    actionTailAutoScroll->setChecked(true);
+    connect(actionTailAutoScroll, &QAction::toggled, this, [this](bool checked) {
+        TailMonitoringManager::instance()->setAutoScrollToEnd(currentEditor(), checked);
+    });
+
+    actionTailReloadNow = new QAction(tr("&Force Check / Reload Now"), this);
+    connect(actionTailReloadNow, &QAction::triggered, this, [this]() {
+        TailMonitoringManager::instance()->forceCheck(currentEditor());
+    });
+
+    actionTailOptions = new QAction(tr("Tail Monitoring &Options..."), this);
+    connect(actionTailOptions, &QAction::triggered, this, [this]() {
+        TailOptionsDialog dlg(this, currentEditor());
+        dlg.exec();
+    });
+
+    menuTailMonitoring->addAction(actionToggleTailMonitoring);
+    menuTailMonitoring->addAction(actionTailAutoScroll);
+    menuTailMonitoring->addAction(actionTailReloadNow);
+    menuTailMonitoring->addSeparator();
+    menuTailMonitoring->addAction(actionTailOptions);
+
+    ui->menuView->addMenu(menuTailMonitoring);
+
+    connect(TailMonitoringManager::instance(), &TailMonitoringManager::monitoringStateChanged,
+            this, &MainWindow::onTailMonitoringStateChanged);
+    connect(TailMonitoringManager::instance(), &TailMonitoringManager::statusMessage,
+            this, [this](const QString &msg) {
+                ui->statusBar->showMessage(msg, 4000);
+            });
+
+
     transparentWindowManager = new TransparentWindowManager(this, this);
     connect(transparentWindowManager, &TransparentWindowManager::transparencyChanged, this, &MainWindow::onTransparencyChanged);
 
@@ -1584,7 +1627,7 @@ connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
     addDockWidget(Qt::RightDockWidgetArea, languageInspectorDock);
     QAction *toggleLanguageInspectorAction = languageInspectorDock->toggleViewAction();
     toggleLanguageInspectorAction->setText(tr("Language Inspector"));
-    toggleLanguageInspectorAction->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_L));
+    toggleLanguageInspectorAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_I));
     ui->menuView->addAction(toggleLanguageInspectorAction);
 
     LuaConsoleDock *luaConsoleDock = new LuaConsoleDock(app->getLuaState(), this);
@@ -2818,6 +2861,7 @@ void MainWindow::activateEditor(ScintillaNext *editor)
 
     checkFileForModification(editor);
     updateGui(editor);
+    updateTailMonitoringUi(editor);
 
     if (editor && ClipboardMonitor::instance()->isMonitoring()) {
         ClipboardMonitor::instance()->setTargetEditor(editor);
@@ -2914,6 +2958,10 @@ void MainWindow::bringWindowToForeground()
 bool MainWindow::checkFileForModification(ScintillaNext *editor)
 {
     qInfo(Q_FUNC_INFO);
+
+    if (editor && TailMonitoringManager::instance()->isMonitoring(editor)) {
+        return false;
+    }
 
     auto state = editor->checkFileForStateChange();
 
@@ -3705,3 +3753,42 @@ void MainWindow::onTransparencyChanged(bool enabled, int opacity, TransparentWin
     }
 }
 
+
+void MainWindow::onToggleTailMonitoringTriggered()
+{
+    ScintillaNext *editor = currentEditor();
+    if (!editor) {
+        ui->statusBar->showMessage(tr("No active editor"), 3000);
+        if (actionToggleTailMonitoring) actionToggleTailMonitoring->setChecked(false);
+        return;
+    }
+
+    const QString filePath = editor->getFilePath();
+    if (filePath.isEmpty() || !QFile::exists(filePath)) {
+        ui->statusBar->showMessage(tr("Cannot monitor: File is not saved to disk."), 4000);
+        if (actionToggleTailMonitoring) actionToggleTailMonitoring->setChecked(false);
+        return;
+    }
+
+    TailMonitoringManager::instance()->toggleMonitoring(editor);
+}
+
+void MainWindow::onTailMonitoringStateChanged(ScintillaNext *editor, bool isMonitoring)
+{
+    if (editor == currentEditor() && actionToggleTailMonitoring) {
+        actionToggleTailMonitoring->setChecked(isMonitoring);
+        if (actionTailAutoScroll) {
+            actionTailAutoScroll->setChecked(TailMonitoringManager::instance()->autoScrollToEnd(editor));
+        }
+    }
+}
+
+void MainWindow::updateTailMonitoringUi(ScintillaNext *editor)
+{
+    if (!actionToggleTailMonitoring) return;
+    const bool isMon = TailMonitoringManager::instance()->isMonitoring(editor);
+    actionToggleTailMonitoring->setChecked(isMon);
+    if (actionTailAutoScroll) {
+        actionTailAutoScroll->setChecked(TailMonitoringManager::instance()->autoScrollToEnd(editor));
+    }
+}

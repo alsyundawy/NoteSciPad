@@ -52,6 +52,7 @@ class RunDialog;
 class ManageToolsDialog;
 class RegexHelperDialog;
 class LanguageInspectorDock;
+class TailOptionsDialog;
 
 class MainWindow : public QMainWindow
 {
@@ -230,6 +231,9 @@ private:
     void onToggleClipboardMonitoringTriggered();
     void onClipboardHistoryTriggered();
     void onClipboardMonitoringStateChanged(bool active);
+    void onToggleTailMonitoringTriggered();
+    void onTailMonitoringStateChanged(ScintillaNext *editor, bool isMonitoring);
+    void updateTailMonitoringUi(ScintillaNext *editor);
     void onClipboardClipCaptured(const ClipboardMonitor::CapturedClip &clip, int totalCount);
     void onToggleTransparencyTriggered();
     void onIncreaseOpacityTriggered();
@@ -246,6 +250,11 @@ private:
     QMenu *menuClipboardMonitoring = nullptr;
     QAction *actionToggleClipboardMonitoring = nullptr;
     QAction *actionClipboardHistory = nullptr;
+    QMenu *menuTailMonitoring = nullptr;
+    QAction *actionToggleTailMonitoring = nullptr;
+    QAction *actionTailAutoScroll = nullptr;
+    QAction *actionTailReloadNow = nullptr;
+    QAction *actionTailOptions = nullptr;
     TransparentWindowManager *transparentWindowManager = nullptr;
     QMenu *menuTransparency = nullptr;
     QAction *actionToggleTransparency = nullptr;

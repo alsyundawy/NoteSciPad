@@ -109,6 +109,8 @@ qt_add_executable(NoteSciPad
 	features/LogAutoTimestamp.cpp
 	features/ClipboardMonitor.h
 	features/ClipboardMonitor.cpp
+	features/TailMonitoringManager.h
+	features/TailMonitoringManager.cpp
 	features/TransparentWindowManager.h
 	features/TransparentWindowManager.cpp
 	features/UrlUtils.h
@@ -212,6 +214,9 @@ qt_add_executable(NoteSciPad
 	dialogs/JsEvaluationDialog.cpp
 	dialogs/JsEvaluationDialog.h
 	dialogs/JsEvaluationDialog.ui
+	dialogs/TailOptionsDialog.cpp
+	dialogs/TailOptionsDialog.h
+	dialogs/TailOptionsDialog.ui
 	dialogs/EncryptDialog.cpp
 	dialogs/EncryptDialog.h
 	dialogs/EncryptDialog.ui

@@ -121,3 +121,26 @@ NoteSciPad implements JavaScript expression evaluation through a modular `JsEval
 - **Instant Developer Utility**: Developers can quickly calculate numbers, format JSON, manipulate text, or run snippets without switching windows or launching a browser.
 - **Zero Heavy Dependencies**: Avoids pulling in `qt6-declarative-dev` (QML), keeping NoteSciPad's build dependencies minimal and lean.
 - **Complete Documentation**: Full architectural details recorded in `doc/JS_EVALUATOR.md`.
+
+
+## ADR-007: Zero-Modal File Tail Monitoring Mode (tail -f) with Delta Appending
+
+### Status
+Accepted (2026-10-19)
+
+### Context
+Text editors typically alert users to external disk modifications using modal message boxes. When inspecting live log files, this behavior causes frustrating interruptions and repetitive dialogs. Notepad++ and Notepad4 provide dedicated "Monitoring (tail -f)" modes to solve this. NoteSciPad requires an efficient, zero-modal log streaming capability that operates safely on top of Scintilla.
+
+### Decision
+NoteSciPad implements live file monitoring through `TailMonitoringManager` and `TailOptionsDialog`:
+1. **Delta Appending**: Instead of reloading the full file on disk writes, seeks to the previous file offset and appends only newly streamed bytes directly into `ScintillaNext` using `appendText()`.
+2. **Modal Bypass**: Skips modal reload prompts in `checkFileForModification` when monitoring is active.
+3. **Rotation Detection**: Detects file truncation or log rotation (`size < lastSize`), triggering a clean document reload.
+4. **Auto-Scroll & Read-Only**: Locks document editing during streaming and scrolls caret to the bottom on every appended batch.
+5. **Configurable Heartbeat**: Dual-mode notification with `QFileSystemWatcher` and customizable polling timer (250ms–5000ms).
+6. **Shortcut & Menu**: Accessible under `View -> Monitoring (tail -f)` with shortcut `Ctrl+Shift+Y` (`Cmd+Shift+Y` on macOS).
+
+### Rationale & Consequences
+- **High-Performance Log Viewing**: Can stream high-throughput logs without UI lag or memory allocation churn.
+- **Uninterrupted Workflow**: Eliminates modal popups during active development, test runs, and system monitoring.
+- **Reference**: Full details documented in `doc/TAIL_MONITORING.md`.
