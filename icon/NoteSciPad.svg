@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <!-- Background Squircle Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="50%" stop-color="#1E293B"/>
+      <stop offset="100%" stop-color="#0A0F1D"/>
+    </linearGradient>
+
+    <linearGradient id="borderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#818CF8" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#0284C7" stop-opacity="0.6"/>
+    </linearGradient>
+
+    <!-- Pad Gradients -->
+    <linearGradient id="padGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+
+    <!-- Accent Spark Gradient -->
+    <linearGradient id="sparkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="50%" stop-color="#06B6D4"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+
+    <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#67E8F9"/>
+      <stop offset="100%" stop-color="#3B82F6"/>
+    </linearGradient>
+
+    <!-- Shadows -->
+    <filter id="shadow" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#000000" flood-opacity="0.55"/>
+    </filter>
+
+    <filter id="sparkGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#06B6D4" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- Squircle Base -->
+  <rect x="64" y="64" width="896" height="896" rx="200" ry="200" fill="url(#bgGrad)" filter="url(#shadow)"/>
+  <rect x="66" y="66" width="892" height="892" rx="198" ry="198" fill="none" stroke="url(#borderGrad)" stroke-width="4"/>
+
+  <!-- Editor Pad Sheet -->
+  <g filter="url(#shadow)">
+    <!-- Back Page Accent -->
+    <rect x="180" y="160" width="664" height="690" rx="36" fill="#334155" opacity="0.5"/>
+    <!-- Main Pad -->
+    <rect x="196" y="176" width="632" height="674" rx="32" fill="url(#padGrad)" stroke="#475569" stroke-width="2"/>
+  </g>
+
+  <!-- Title bar / Header of Editor -->
+  <path d="M 196,208 C 196,190.3 210.3,176 228,176 L 796,176 C 813.7,176 828,190.3 828,208 L 828,248 L 196,248 Z" fill="#0F172A" opacity="0.8"/>
+  <line x1="196" y1="248" x2="828" y2="248" stroke="#334155" stroke-width="2"/>
+
+  <!-- macOS Window Dots -->
+  <circle cx="240" cy="212" r="10" fill="#EF4444"/>
+  <circle cx="272" cy="212" r="10" fill="#F59E0B"/>
+  <circle cx="304" cy="212" r="10" fill="#10B981"/>
+
+  <!-- Tab indicator -->
+  <rect x="350" y="188" width="160" height="48" rx="8" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/>
+  <rect x="372" y="208" width="80" height="8" rx="4" fill="#E2E8F0"/>
+  <circle cx="488" cy="212" r="6" fill="#94A3B8"/>
+
+  <!-- Line Number Margin -->
+  <rect x="216" y="270" width="56" height="540" rx="8" fill="#090D16" opacity="0.6"/>
+  <rect x="232" y="300" width="24" height="6" rx="3" fill="#475569"/>
+  <rect x="232" y="350" width="24" height="6" rx="3" fill="#475569"/>
+  <rect x="232" y="400" width="24" height="6" rx="3" fill="#475569"/>
+  <rect x="232" y="450" width="24" height="6" rx="3" fill="#475569"/>
+  <rect x="232" y="500" width="24" height="6" rx="3" fill="#475569"/>
+  <rect x="232" y="550" width="24" height="6" rx="3" fill="#475569"/>
+  <rect x="232" y="600" width="24" height="6" rx="3" fill="#475569"/>
+  <rect x="232" y="650" width="24" height="6" rx="3" fill="#475569"/>
+  <rect x="232" y="700" width="24" height="6" rx="3" fill="#475569"/>
+  <rect x="232" y="750" width="24" height="6" rx="3" fill="#475569"/>
+
+  <!-- Code Syntax Highlighting Lines (Scintilla style) -->
+  <!-- Line 1: Keyword + Identifier + Symbol -->
+  <rect x="296" y="296" width="80" height="14" rx="7" fill="#C084FC"/>
+  <rect x="390" y="296" width="130" height="14" rx="7" fill="#38BDF8"/>
+  <rect x="532" y="296" width="28" height="14" rx="7" fill="#94A3B8"/>
+
+  <!-- Line 2: Indented String -->
+  <rect x="336" y="346" width="180" height="14" rx="7" fill="#4ADE80"/>
+  <rect x="528" y="346" width="50" height="14" rx="7" fill="#F472B6"/>
+
+  <!-- Line 3: Function call -->
+  <rect x="336" y="396" width="110" height="14" rx="7" fill="#60A5FA"/>
+  <rect x="458" y="396" width="160" height="14" rx="7" fill="#FCD34D"/>
+
+  <!-- Line 4: Control statement -->
+  <rect x="296" y="446" width="70" height="14" rx="7" fill="#F43F5E"/>
+  <rect x="378" y="446" width="140" height="14" rx="7" fill="#A78BFA"/>
+
+  <!-- Line 5: Type declaration -->
+  <rect x="336" y="496" width="95" height="14" rx="7" fill="#38BDF8"/>
+  <rect x="443" y="496" width="130" height="14" rx="7" fill="#E2E8F0"/>
+
+  <!-- Line 6: Comment -->
+  <rect x="336" y="546" width="240" height="14" rx="7" fill="#64748B"/>
+
+  <!-- Line 7: Return -->
+  <rect x="336" y="596" width="80" height="14" rx="7" fill="#C084FC"/>
+  <rect x="428" y="596" width="60" height="14" rx="7" fill="#34D399"/>
+
+  <!-- Line 8: Closing brace -->
+  <rect x="296" y="646" width="24" height="14" rx="7" fill="#94A3B8"/>
+
+  <!-- Scintilla Spark Badge (Bottom-Right Radiant Emblem) -->
+  <g filter="url(#sparkGlow)">
+    <circle cx="700" cy="690" r="100" fill="url(#sparkGrad)"/>
+    <circle cx="700" cy="690" r="92" fill="none" stroke="#E0F2FE" stroke-width="4" opacity="0.6"/>
+  </g>
+
+  <!-- Glowing Core Star / Spark Emblem -->
+  <!-- 4-pointed radiant Scintilla spark -->
+  <path d="M 700,610 Q 700,690 620,690 Q 700,690 700,770 Q 700,690 780,690 Q 700,690 700,610 Z" fill="#FFFFFF"/>
+  <circle cx="700" cy="690" r="14" fill="#67E8F9"/>
+
+  <!-- Diagonal Mini Spark Flares -->
+  <path d="M 700,645 Q 700,690 655,690 Q 700,690 700,735 Q 700,690 745,690 Q 700,690 700,645 Z" fill="#BAE6FD" opacity="0.75" transform="rotate(45 700 690)"/>
+</svg>
