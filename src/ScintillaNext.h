@@ -139,7 +139,9 @@ public:
 
 public slots:
     void close();
-    QFileDevice::FileError save();
+    QFileDevice::FileError save(bool preserveTimestamp = false);
+    QDateTime fileTimestamp();
+    void updateTimestamp();
     void reload();
     void omitModifications();
     QFileDevice::FileError saveAs(const QString &newFilePath);
@@ -180,8 +182,6 @@ private:
     bool temporary = false; // Temporary file loaded from a session. It can either be a 'New' file or actual 'File'
 
     bool readFromDisk(QFile &file);
-    QDateTime fileTimestamp();
-    void updateTimestamp();
 
 };
 

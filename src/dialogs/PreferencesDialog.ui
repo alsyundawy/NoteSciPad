@@ -271,6 +271,13 @@
         </widget>
        </item>
        <item>
+        <widget class="QCheckBox" name="checkBoxPreserveFileTime">
+         <property name="text">
+          <string>Preserve file modification timestamp on save</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QGroupBox" name="groupBox_2">
          <property name="title">
           <string>Default Directory</string>

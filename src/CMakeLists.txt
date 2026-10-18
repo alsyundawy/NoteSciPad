@@ -123,6 +123,8 @@ qt_add_executable(NoteSciPad
 	utils/MathEvaluator.cpp
 	utils/EncodingDetector.h
 	utils/EncodingDetector.cpp
+	utils/FileTimeUtils.h
+	utils/FileTimeUtils.cpp
 	decorators/ApplicationDecorator.cpp
 	decorators/ApplicationDecorator.h
 	decorators/AutoCompletion.cpp

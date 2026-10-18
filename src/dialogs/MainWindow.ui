@@ -78,7 +78,12 @@
     <addaction name="actionSave"/>
     <addaction name="actionSaveAs"/>
     <addaction name="actionSaveCopyAs"/>
+    <addaction name="actionSaveWithOriginalTime"/>
     <addaction name="actionSaveAll"/>
+    <addaction name="separator"/>
+    <addaction name="actionUpdateFileTime"/>
+    <addaction name="actionPreserveFileTime"/>
+    <addaction name="separator"/>
     <addaction name="menuExportAs"/>
     <addaction name="actionRename"/>
     <addaction name="actionClose"/>
@@ -710,6 +715,39 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionSaveWithOriginalTime">
+   <property name="text">
+    <string>Save with Original &amp;Time</string>
+   </property>
+   <property name="toolTip">
+    <string>Save file while preserving original modification timestamp (Alt+Shift+S)</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">Alt+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionUpdateFileTime">
+   <property name="text">
+    <string>&amp;Update File Time (Touch)</string>
+   </property>
+   <property name="toolTip">
+    <string>Update file modification timestamp to current time without modifying content (Alt+F5)</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">Alt+F5</string>
+   </property>
+  </action>
+  <action name="actionPreserveFileTime">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Preserve File Time on Save</string>
+   </property>
+   <property name="toolTip">
+    <string>Always preserve original file modification timestamp when saving</string>
    </property>
   </action>
   <action name="actionSelectAll">

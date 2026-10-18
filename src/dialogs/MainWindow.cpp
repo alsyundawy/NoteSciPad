@@ -29,6 +29,7 @@
 #include "EncodingSelectionDialog.h"
 #include "CharacterInfo.h"
 #include "CharacterInfoDialog.h"
+#include "FileTimeUtils.h"
 #include "SessionManager.h"
 #include "UndoAction.h"
 #include "ui_MainWindow.h"
@@ -177,7 +178,13 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
     connect(ui->actionSave, &QAction::triggered, this, &MainWindow::saveCurrentFile);
     connect(ui->actionSaveAs, &QAction::triggered, this, &MainWindow::saveCurrentFileAsDialog);
     connect(ui->actionSaveCopyAs, &QAction::triggered, this, &MainWindow::saveCopyAsDialog);
+    connect(ui->actionSaveWithOriginalTime, &QAction::triggered, this, &MainWindow::saveCurrentFileWithOriginalTime);
     connect(ui->actionSaveAll, &QAction::triggered, this, &MainWindow::saveAll);
+    connect(ui->actionUpdateFileTime, &QAction::triggered, this, &MainWindow::updateCurrentFileTime);
+    connect(ui->actionPreserveFileTime, &QAction::toggled, this, &MainWindow::togglePreserveFileTime);
+
+    ui->actionPreserveFileTime->setChecked(app->getSettings()->preserveFileTime());
+    connect(app->getSettings(), &ApplicationSettings::preserveFileTimeChanged, ui->actionPreserveFileTime, &QAction::setChecked);
     connect(ui->actionRename, &QAction::triggered, this, &MainWindow::renameFile);
 
     connect(ui->actionExportHtml, &QAction::triggered, this, [this]() {
@@ -1869,8 +1876,18 @@ bool MainWindow::saveFile(ScintillaNext *editor)
         return saveCurrentFileAsDialog();
     }
     else {
-        QFileDevice::FileError error = editor->save();
+        bool preserve = app->getSettings()->preserveFileTime();
+        QDateTime origTime;
+        if (preserve) {
+            origTime = FileTimeUtils::getFileModificationTime(editor->getFilePath());
+        }
+
+        QFileDevice::FileError error = editor->save(preserve);
         if (error == QFileDevice::NoError) {
+            if (preserve) {
+                ui->statusBar->showMessage(tr("Saved \"%1\" with original modification time preserved (%2)")
+                    .arg(editor->getName(), origTime.isValid() ? origTime.toString(Qt::ISODate) : tr("unchanged")), 4000);
+            }
             return true;
         }
         else {
@@ -1878,6 +1895,62 @@ bool MainWindow::saveFile(ScintillaNext *editor)
             return false;
         }
     }
+}
+
+bool MainWindow::saveCurrentFileWithOriginalTime()
+{
+    ScintillaNext *editor = currentEditor();
+    if (!editor)
+        return false;
+
+    if (!editor->isFile()) {
+        dockedEditor->switchToEditor(editor);
+        return saveCurrentFileAsDialog();
+    }
+
+    if (editor->isSavedToDisk()) {
+        ui->statusBar->showMessage(tr("File \"%1\" has no unsaved changes").arg(editor->getName()), 3000);
+        return true;
+    }
+
+    QDateTime origTime = FileTimeUtils::getFileModificationTime(editor->getFilePath());
+    QFileDevice::FileError error = editor->save(/*preserveTimestamp=*/true);
+    if (error == QFileDevice::NoError) {
+        ui->statusBar->showMessage(tr("Saved \"%1\" with original modification time preserved (%2)")
+            .arg(editor->getName(), origTime.isValid() ? origTime.toString(Qt::ISODate) : tr("unchanged")), 4000);
+        return true;
+    } else {
+        showSaveErrorMessage(editor, error);
+        return false;
+    }
+}
+
+void MainWindow::updateCurrentFileTime()
+{
+    ScintillaNext *editor = currentEditor();
+    if (!editor) {
+        ui->statusBar->showMessage(tr("No active editor"), 3000);
+        return;
+    }
+
+    if (!editor->isFile()) {
+        ui->statusBar->showMessage(tr("Cannot update file time: document has not been saved to disk yet"), 4000);
+        return;
+    }
+
+    FileTimeUtils::FileTimeResult res = FileTimeUtils::touchEditorFile(editor);
+    if (res.success) {
+        ui->statusBar->showMessage(tr("Updated file timestamp for \"%1\" to %2")
+            .arg(editor->getName(), res.newTime.toString(Qt::ISODate)), 4000);
+    } else {
+        ui->statusBar->showMessage(tr("Failed to update file time: %1").arg(res.errorMessage), 5000);
+    }
+}
+
+void MainWindow::togglePreserveFileTime(bool checked)
+{
+    app->getSettings()->setPreserveFileTime(checked);
+    ui->statusBar->showMessage(checked ? tr("Preserve File Time on Save: Enabled") : tr("Preserve File Time on Save: Disabled"), 3000);
 }
 
 bool MainWindow::saveCurrentFileAsDialog()
@@ -2173,6 +2246,7 @@ void MainWindow::updateFileStatusBasedUi(ScintillaNext *editor)
     ui->actionCopyFileDirectory->setEnabled(isFile);
     ui->actionShowInExplorer->setEnabled(isFile);
     ui->actionOpenTerminalHere->setEnabled(isFile);
+    ui->actionUpdateFileTime->setEnabled(isFile);
 }
 
 bool MainWindow::isAnyUnsaved() const
@@ -2212,7 +2286,9 @@ void MainWindow::updateSaveStatusBasedUi(ScintillaNext *editor)
     setWindowModified(isDirty);
 
     ui->actionSave->setEnabled(isDirty);
+    ui->actionSaveWithOriginalTime->setEnabled(isDirty);
     ui->actionSaveAll->setEnabled(isDirty || isAnyUnsaved());
+    ui->actionUpdateFileTime->setEnabled(editor && editor->isFile());
 
     if (editorCount() == 1) {
         bool ableToClose = editor->isFile() || isDirty;

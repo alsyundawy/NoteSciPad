@@ -84,6 +84,9 @@ public slots:
 
     bool saveCurrentFile();
     bool saveFile(ScintillaNext *editor);
+    bool saveCurrentFileWithOriginalTime();
+    void updateCurrentFileTime();
+    void togglePreserveFileTime(bool checked);
 
     bool saveCurrentFileAsDialog();
     bool saveCurrentFileAs(const QString &fileName);

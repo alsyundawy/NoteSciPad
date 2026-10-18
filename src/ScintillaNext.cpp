@@ -19,6 +19,7 @@
 
 #include "ScintillaNext.h"
 #include "EncodingDetector.h"
+#include "FileTimeUtils.h"
 #include "Finder.h"
 #include "ScintillaCommenter.h"
 
@@ -366,7 +367,7 @@ void ScintillaNext::close()
     deleteLater();
 }
 
-QFileDevice::FileError ScintillaNext::save()
+QFileDevice::FileError ScintillaNext::save(bool preserveTimestamp)
 {
     qInfo(Q_FUNC_INFO);
 
@@ -374,11 +375,22 @@ QFileDevice::FileError ScintillaNext::save()
 
     emit aboutToSave();
 
+    QDateTime originalTime;
+    QDateTime originalAccessTime;
+    if (preserveTimestamp && fileInfo.exists()) {
+        fileInfo.refresh();
+        originalTime = fileInfo.lastModified();
+        originalAccessTime = fileInfo.lastRead();
+    }
+
     const QByteArray data = QByteArray::fromRawData((char*)characterPointer(), textLength());
     const QString path = fileInfo.filePath();
     QFileDevice::FileError writeSuccessful = writeToDisk(data, path, bomType, fileEncoding);
 
     if (writeSuccessful == QFileDevice::NoError) {
+        if (preserveTimestamp && originalTime.isValid()) {
+            FileTimeUtils::setFileTimes(path, originalTime, originalAccessTime);
+        }
         updateTimestamp();
         setSavePoint();
 

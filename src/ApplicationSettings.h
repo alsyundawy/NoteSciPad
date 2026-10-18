@@ -125,4 +125,5 @@ public:
     DEFINE_SETTING(AutoCloseQuotes, autoCloseQuotes, bool)
     DEFINE_SETTING(ColorPreviewCallTip, colorPreviewCallTip, bool)
     DEFINE_SETTING(SmartAutoIndent, smartAutoIndent, bool)
+    DEFINE_SETTING(PreserveFileTime, preserveFileTime, bool)
 };
