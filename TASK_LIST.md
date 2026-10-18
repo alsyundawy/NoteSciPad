@@ -118,7 +118,7 @@ Use this as the living task board. Check items as they are completed.
 
 ## Phase 3 — Polish & Advanced (Tier 3)
 
-- [ ] Function List dock
+- [x] Function List dock
 - [ ] Run / External tools menu
 - [ ] Change History margin (optional)
 - [ ] Stronger regex option exploration (PCRE2 / Boost)
