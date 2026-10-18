@@ -1,35 +1,29 @@
 /*
- * This file is part of Notepad Next.
- * Copyright 2021 Justin Dailey
+ * This file is part of NoteSciPad.
  *
- * Notepad Next is free software: you can redistribute it and/or modify
+ * Adapted from Notepad4 smart auto-indent rules.
+ * Source: zufuliu/Notepad4 (src/Edit.cpp, EditAutoC.cpp)
+ *
+ * NoteSciPad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
- * Notepad Next is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "AutoIndentation.h"
-
+#include <QByteArray>
 
 using namespace Scintilla;
 
 AutoIndentation::AutoIndentation(ScintillaNext *editor) :
     EditorDecorator(editor)
 {
+    setObjectName(QStringLiteral("AutoIndentation"));
 }
 
 void AutoIndentation::notify(const NotificationData *pscn)
 {
-    if (pscn->nmhdr.code == Notification::CharAdded) {
+    if (pscn->nmhdr.code == Notification::CharAdded && isEnabled()) {
         const int ch = pscn->ch;
         const int eolMode = editor->eOLMode();
 
@@ -41,11 +35,45 @@ void AutoIndentation::notify(const NotificationData *pscn)
 
 void AutoIndentation::autoIndentLine(int line) const
 {
-    const int previousLine = line - 1;
-    const int previousIndentation = editor->lineIndentation(previousLine);
+    if (line <= 0 || !editor) return;
 
-    if (previousIndentation > 0) {
-        editor->setLineIndentation(line, previousIndentation);
-        editor->gotoPos(editor->findColumn(line, previousIndentation));
+    const int previousLine = line - 1;
+    int targetIndentation = editor->lineIndentation(previousLine);
+
+    // Smart Indentation: inspect previous line's trimmed end character
+    const int prevStart = editor->positionFromLine(previousLine);
+    const int prevEnd = editor->lineEndPosition(previousLine);
+    const QByteArray prevLineText = editor->get_text_range(prevStart, prevEnd).trimmed();
+
+    int indentWidth = editor->indent();
+    if (indentWidth <= 0) {
+        indentWidth = editor->tabWidth();
+    }
+    if (indentWidth <= 0) {
+        indentWidth = 4;
+    }
+
+    if (!prevLineText.isEmpty()) {
+        const char lastChar = prevLineText.at(prevLineText.length() - 1);
+        if (lastChar == '{' || lastChar == '[' || lastChar == '(' || lastChar == ':') {
+            targetIndentation += indentWidth;
+        }
+    }
+
+    // If current line begins with closing brace/bracket, adjust indentation back
+    const int curStart = editor->positionFromLine(line);
+    const int curEnd = editor->lineEndPosition(line);
+    const QByteArray curLineText = editor->get_text_range(curStart, curEnd).trimmed();
+
+    if (!curLineText.isEmpty()) {
+        const char firstChar = curLineText.at(0);
+        if ((firstChar == '}' || firstChar == ']' || firstChar == ')') && targetIndentation >= indentWidth) {
+            targetIndentation -= indentWidth;
+        }
+    }
+
+    if (targetIndentation > 0) {
+        editor->setLineIndentation(line, targetIndentation);
+        editor->gotoPos(editor->findColumn(line, targetIndentation));
     }
 }

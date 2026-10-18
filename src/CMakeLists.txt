@@ -97,6 +97,8 @@ qt_add_executable(NoteSciPad
 	ZoomEventWatcher.cpp
 	features/MarkOccurrences.h
 	features/MarkOccurrences.cpp
+	features/AutoClosePairs.h
+	features/AutoClosePairs.cpp
 	decorators/ApplicationDecorator.cpp
 	decorators/ApplicationDecorator.h
 	decorators/AutoCompletion.cpp

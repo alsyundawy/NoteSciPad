@@ -33,6 +33,7 @@
 #include "BetterMultiSelection.h"
 #include "AutoIndentation.h"
 #include "AutoCompletion.h"
+#include "AutoClosePairs.h"
 #include "URLFinder.h"
 #include "BookMarkDecorator.h"
 #include "HTMLAutoCompleteDecorator.h"
@@ -401,6 +402,12 @@ void EditorManager::setupEditor(ScintillaNext *editor)
 
     AutoCompletion *ac = new AutoCompletion(editor);
     ac->setEnabled(settings->autoCompletion());
+
+    AutoClosePairs *acp = new AutoClosePairs(editor);
+    acp->setAutoCloseBrackets(settings->autoCloseBrackets());
+    acp->setAutoCloseQuotes(settings->autoCloseQuotes());
+    connect(settings, &ApplicationSettings::autoCloseBracketsChanged, acp, &AutoClosePairs::setAutoCloseBrackets);
+    connect(settings, &ApplicationSettings::autoCloseQuotesChanged, acp, &AutoClosePairs::setAutoCloseQuotes);
 
     URLFinder *uf = new URLFinder(editor);
     uf->setEnabled(settings->urlHighlighting());

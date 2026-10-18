@@ -120,4 +120,7 @@ public:
     DEFINE_SETTING(URLHighlighting, urlHighlighting, bool)
     DEFINE_SETTING(ShowLineNumbers, showLineNumbers, bool)
     DEFINE_SETTING(AutoCompletion, autoCompletion, bool)
+    DEFINE_SETTING(AutoCloseBrackets, autoCloseBrackets, bool)
+    DEFINE_SETTING(AutoCloseQuotes, autoCloseQuotes, bool)
+    DEFINE_SETTING(SmartAutoIndent, smartAutoIndent, bool)
 };
