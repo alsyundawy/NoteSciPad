@@ -123,7 +123,7 @@ Use this as the living task board. Check items as they are completed.
 - [x] Change History margin (optional)
 - [x] Stronger regex option exploration (PCRE2 / Boost)
 - [x] AES-256 encryption (evaluate security & UX carefully)
-- [ ] Clipboard monitoring mode (optional)
+- [x] Clipboard monitoring mode (optional)
 - [ ] Transparent window mode
 - [ ] Lexer / API data updates from Notepad4 (selective, keep Lexilla)
 - [ ] Optional: Evaluate JS Expression
