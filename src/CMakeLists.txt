@@ -125,6 +125,8 @@ qt_add_executable(NoteSciPad
 	utils/EncodingDetector.cpp
 	utils/FileTimeUtils.h
 	utils/FileTimeUtils.cpp
+	utils/CryptoManager.h
+	utils/CryptoManager.cpp
 	utils/CaseConverter.h
 	utils/CaseConverter.cpp
 	utils/FunctionParser.h
@@ -201,6 +203,12 @@ qt_add_executable(NoteSciPad
 	dialogs/RegexHelperDialog.cpp
 	dialogs/RegexHelperDialog.h
 	dialogs/RegexHelperDialog.ui
+	dialogs/EncryptDialog.cpp
+	dialogs/EncryptDialog.h
+	dialogs/EncryptDialog.ui
+	dialogs/DecryptDialog.cpp
+	dialogs/DecryptDialog.h
+	dialogs/DecryptDialog.ui
 	docks/DebugLogDock.cpp
 	docks/DebugLogDock.h
 	docks/DebugLogDock.ui
@@ -311,6 +319,7 @@ target_link_libraries(NoteSciPad
 
 if(APPLE)
     target_link_directories(NoteSciPad PRIVATE "${CMAKE_BINARY_DIR}/dummy_frameworks")
+    target_link_libraries(NoteSciPad PRIVATE "-framework Security")
 endif()
 
 target_compile_definitions(NoteSciPad

@@ -90,6 +90,9 @@
 #include "RunDialog.h"
 #include "ManageToolsDialog.h"
 #include "RegexHelperDialog.h"
+#include "EncryptDialog.h"
+#include "DecryptDialog.h"
+#include "../utils/CryptoManager.h"
 
 #include "FindReplaceDialog.h"
 #include "MacroRunDialog.h"
@@ -729,6 +732,18 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
     actionRegexHelper->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::SHIFT | Qt::Key_R));
     connect(actionRegexHelper, &QAction::triggered, this, &MainWindow::onRegexHelperTriggered);
     ui->menuSearch->addAction(actionRegexHelper);
+
+    menuEncryption = new QMenu(tr("&Encryption (AES-256)"), this);
+    actionEncryptDoc = new QAction(tr("&Encrypt Current Document..."), this);
+    actionEncryptDoc->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_E));
+    connect(actionEncryptDoc, &QAction::triggered, this, &MainWindow::onEncryptDocumentTriggered);
+    menuEncryption->addAction(actionEncryptDoc);
+
+    actionDecryptDoc = new QAction(tr("&Remove Encryption / Decrypt..."), this);
+    actionDecryptDoc->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_D));
+    connect(actionDecryptDoc, &QAction::triggered, this, &MainWindow::onDecryptDocumentTriggered);
+    menuEncryption->addAction(actionDecryptDoc);
+    ui->menuTools->addMenu(menuEncryption);
 
     connect(ui->actionFind, &QAction::triggered, this, [this]() {
         showFindReplaceDialog(FindReplaceDialog::FIND_TAB);
@@ -1721,7 +1736,47 @@ void MainWindow::openFileList(const QStringList &fileNames)
                 }
             }
             else {
-                editor = app->getEditorManager()->createEditorFromFile(filePath);
+                if (CryptoManager::isEncryptedFile(filePath)) {
+                    DecryptDialog dlg(this, fileInfo.fileName());
+                    bool decryptedSuccess = false;
+                    while (dlg.exec() == QDialog::Accepted) {
+                        QString pass = dlg.passphrase();
+                        QFile encFile(filePath);
+                        if (!encFile.open(QIODevice::ReadOnly)) {
+                            dlg.setErrorMessage(tr("Cannot open file: %1").arg(encFile.errorString()));
+                            continue;
+                        }
+                        QByteArray cipherData = encFile.readAll();
+                        encFile.close();
+
+                        CryptoManager::CryptoResult decRes = CryptoManager::decrypt(cipherData, pass);
+                        if (!decRes.success) {
+                            dlg.setErrorMessage(decRes.errorMessage);
+                            continue;
+                        }
+
+                        editor = app->getEditorManager()->createEditorFromFile(filePath);
+                        if (editor) {
+                            editor->clearAll();
+                            editor->setUndoCollection(false);
+                            editor->appendText(decRes.data.size(), decRes.data.constData());
+                            editor->setUndoCollection(true);
+                            editor->setSavePoint();
+                            editor->setProperty("IsEncrypted", true);
+                            editor->setProperty("EncryptionPassword", pass);
+                            ui->statusBar->showMessage(tr("Unlocked encrypted file \"%1\" (AES-256)").arg(fileInfo.fileName()), 4000);
+                            decryptedSuccess = true;
+                        }
+                        break;
+                    }
+                    if (!decryptedSuccess) {
+                        app->getRecentFilesListManager()->removeFile(filePath);
+                        continue;
+                    }
+                }
+                else {
+                    editor = app->getEditorManager()->createEditorFromFile(filePath);
+                }
             }
         }
 
@@ -1928,6 +1983,41 @@ bool MainWindow::saveFile(ScintillaNext *editor)
         return saveCurrentFileAsDialog();
     }
     else {
+        if (editor->property("IsEncrypted").toBool()) {
+            QString pass = editor->property("EncryptionPassword").toString();
+            if (pass.isEmpty()) {
+                EncryptDialog dlg(this);
+                if (dlg.exec() != QDialog::Accepted) {
+                    return false;
+                }
+                pass = dlg.passphrase();
+                editor->setProperty("EncryptionPassword", pass);
+            }
+
+            const QByteArray rawText = editor->getText();
+            CryptoManager::CryptoResult encRes = CryptoManager::encrypt(rawText, pass);
+            if (!encRes.success) {
+                QMessageBox::critical(this, tr("Encryption Failed"), tr("Could not encrypt document: %1").arg(encRes.errorMessage));
+                return false;
+            }
+
+            const QString path = editor->getFilePath();
+            QFile file(path);
+            if (!file.open(QIODevice::WriteOnly)) {
+                showSaveErrorMessage(editor, file.error());
+                return false;
+            }
+            if (file.write(encRes.data) == -1) {
+                showSaveErrorMessage(editor, file.error());
+                return false;
+            }
+            file.close();
+
+            editor->setSavePoint();
+            ui->statusBar->showMessage(tr("Saved \"%1\" encrypted (AES-256)").arg(editor->getName()), 4000);
+            return true;
+        }
+
         bool preserve = app->getSettings()->preserveFileTime();
         QDateTime origTime;
         if (preserve) {
@@ -2108,6 +2198,41 @@ bool MainWindow::saveCurrentFileAs(const QString &fileName)
 bool MainWindow::saveFileAs(ScintillaNext *editor, const QString &fileName)
 {
     qInfo("saveFileAs(%s)", qUtf8Printable(fileName));
+
+    if (editor->property("IsEncrypted").toBool()) {
+        QString pass = editor->property("EncryptionPassword").toString();
+        if (pass.isEmpty()) {
+            EncryptDialog dlg(this);
+            if (dlg.exec() != QDialog::Accepted) {
+                return false;
+            }
+            pass = dlg.passphrase();
+            editor->setProperty("EncryptionPassword", pass);
+        }
+
+        const QByteArray rawText = editor->getText();
+        CryptoManager::CryptoResult encRes = CryptoManager::encrypt(rawText, pass);
+        if (!encRes.success) {
+            QMessageBox::critical(this, tr("Encryption Failed"), tr("Could not encrypt document: %1").arg(encRes.errorMessage));
+            return false;
+        }
+
+        QFile file(fileName);
+        if (!file.open(QIODevice::WriteOnly)) {
+            showSaveErrorMessage(editor, file.error());
+            return false;
+        }
+        if (file.write(encRes.data) == -1) {
+            showSaveErrorMessage(editor, file.error());
+            return false;
+        }
+        file.close();
+
+        editor->setFileInfo(fileName);
+        editor->setSavePoint();
+        ui->statusBar->showMessage(tr("Saved \"%1\" encrypted (AES-256)").arg(editor->getName()), 4000);
+        return true;
+    }
 
     QFileDevice::FileError error = editor->saveAs(fileName);
 
@@ -3347,3 +3472,48 @@ void MainWindow::onRegexHelperTriggered()
     RegexHelperDialog dlg(this, pattern);
     dlg.exec();
 }
+
+void MainWindow::onEncryptDocumentTriggered()
+{
+    ScintillaNext *editor = currentEditor();
+    if (!editor) {
+        ui->statusBar->showMessage(tr("No active editor"), 3000);
+        return;
+    }
+
+    EncryptDialog dlg(this);
+    if (dlg.exec() == QDialog::Accepted) {
+        editor->setProperty("IsEncrypted", true);
+        editor->setProperty("EncryptionPassword", dlg.passphrase());
+        editor->insertText(editor->currentPos(), "");
+        ui->statusBar->showMessage(tr("🔒 Document configured for AES-256 encryption. Save to write to disk."), 5000);
+        QMessageBox::information(this, tr("Encryption Configured"),
+            tr("This document is now set to be encrypted with AES-256 upon saving.\n\n"
+               "Warning: Lost passphrases cannot be recovered by NoteSciPad. Ensure you keep your passphrase secure."));
+    }
+}
+
+void MainWindow::onDecryptDocumentTriggered()
+{
+    ScintillaNext *editor = currentEditor();
+    if (!editor) {
+        ui->statusBar->showMessage(tr("No active editor"), 3000);
+        return;
+    }
+
+    if (!editor->property("IsEncrypted").toBool()) {
+        ui->statusBar->showMessage(tr("Document is not encrypted"), 3000);
+        return;
+    }
+
+    auto reply = QMessageBox::question(this, tr("Remove Encryption"),
+        tr("Are you sure you want to remove encryption from <b>%1</b>?<br>The next save will store it as plain unencrypted text.").arg(editor->getName()));
+
+    if (reply == QMessageBox::Yes) {
+        editor->setProperty("IsEncrypted", false);
+        editor->setProperty("EncryptionPassword", QString());
+        editor->insertText(editor->currentPos(), "");
+        ui->statusBar->showMessage(tr("🔓 Encryption removed. Save to write as plain text."), 4000);
+    }
+}
+

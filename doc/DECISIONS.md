@@ -51,3 +51,25 @@ We decided to retain and optimize Qt embedded PCRE2 rather than linking external
 - **High Performance**: Native PCRE2 JIT execution.
 - **Full Compatibility**: Full support for backreferences, character classes, lookaheads, lookbehinds, and multiline mode.
 - **Architectural Report**: Complete benchmarks and findings documented in `doc/REGEX_ENGINE_EXPLORATION.md`.
+
+---
+
+## ADR-004: Authenticated AES-256 Document Encryption (NSPENC01)
+
+### Context
+Users require robust, transparent file encryption for confidential notes, source code, and credentials. Prior implementations in Notepad3 utilized unauthenticated raw AES-256-CBC with 0 PBKDF iterations (vulnerable to bit-flipping, padding oracle, and dictionary attacks), while NppCrypt in Notepad++ introduced confusing menus with obsolete ciphers (DES, Blowfish) and external DLL dependencies.
+
+### Decision
+NoteSciPad implements authenticated document encryption using the `NSPENC01` binary format:
+1. **Cipher**: AES-256-CBC with PKCS#7 padding (Apple CommonCrypto on macOS, portable standard FIPS-197 AES in pure C++ on Linux).
+2. **Key Derivation**: PBKDF2-HMAC-SHA256 with 100,000 iterations and 16-byte random salt, deriving 64 bytes (32 bytes AES key + 32 bytes HMAC key).
+3. **Authentication**: Mandatory Encrypt-then-MAC using HMAC-SHA256 over all container metadata and ciphertext.
+4. **Timing Attack Defense**: Constant-time HMAC comparison before decryption.
+5. **Zero New Dependencies**: Uses platform native CommonCrypto on macOS and Qt Core primitives + portable AES on Linux.
+6. **UX**: Automatic recognition upon opening encrypted files (`DecryptDialog`), interactive live strength evaluation in `EncryptDialog`, and menu actions under `Tools -> Encryption`.
+
+### Rationale & Consequences
+- **Proven Cryptographic Security**: Fully compliant with NIST SP 800-38A, SP 800-132, and RFC 8018 standards.
+- **Cross-Platform Interoperability**: Encrypted files created on macOS can be opened and decrypted seamlessly on Linux and vice-versa.
+- **Data Safety**: Memory-only ephemeral passphrase retention per tab, with atomic file save preventing corruption.
+- **Full Report**: Security evaluation, threat modeling, and UX specifications documented in `doc/ENCRYPTION_SECURITY_AND_UX.md`.

@@ -224,10 +224,15 @@ private:
     void onSearchStackOverflowTriggered();
     void onManageToolsTriggered();
     void onRegexHelperTriggered();
+    void onEncryptDocumentTriggered();
+    void onDecryptDocumentTriggered();
 
     QMenu *menuRun = nullptr;
     QMenu *menuSavedTools = nullptr;
     QList<QAction *> customToolActions;
+    QMenu *menuEncryption = nullptr;
+    QAction *actionEncryptDoc = nullptr;
+    QAction *actionDecryptDoc = nullptr;
     FocusedView *focusedView = nullptr;
     FocusedViewDialog *focusedViewDialog = nullptr;
 
