@@ -121,7 +121,7 @@ Use this as the living task board. Check items as they are completed.
 - [x] Function List dock
 - [x] Run / External tools menu
 - [x] Change History margin (optional)
-- [ ] Stronger regex option exploration (PCRE2 / Boost)
+- [x] Stronger regex option exploration (PCRE2 / Boost)
 - [ ] AES-256 encryption (evaluate security & UX carefully)
 - [ ] Clipboard monitoring mode (optional)
 - [ ] Transparent window mode
