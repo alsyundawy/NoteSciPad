@@ -125,7 +125,7 @@ Use this as the living task board. Check items as they are completed.
 - [x] AES-256 encryption (evaluate security & UX carefully)
 - [x] Clipboard monitoring mode (optional)
 - [x] Transparent window mode
-- [ ] Lexer / API data updates from Notepad4 (selective, keep Lexilla)
+- [x] Lexer / API data updates from Notepad4 (selective, keep Lexilla)
 - [ ] Optional: Evaluate JS Expression
 - [ ] Optional: Monitoring / tail mode improvements
 - [ ] Performance profiling & optimization (Apple Silicon + Linux)
