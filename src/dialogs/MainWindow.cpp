@@ -30,6 +30,7 @@
 #include "CharacterInfo.h"
 #include "CharacterInfoDialog.h"
 #include "FileTimeUtils.h"
+#include "CaseConverter.h"
 #include "SessionManager.h"
 #include "UndoAction.h"
 #include "ui_MainWindow.h"
@@ -574,8 +575,11 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
     connect(ui->actionMacintosh, &QAction::triggered, this, handleEolTrigger);
 
 
-    connectEditorAction(ui->actionUpperCase, &ScintillaNext::upperCase);
-    connectEditorAction(ui->actionLowerCase, &ScintillaNext::lowerCase);
+    connect(ui->actionUpperCase, &QAction::triggered, this, &MainWindow::upperCaseSelection);
+    connect(ui->actionLowerCase, &QAction::triggered, this, &MainWindow::lowerCaseSelection);
+    connect(ui->actionInvertCase, &QAction::triggered, this, &MainWindow::invertCaseSelection);
+    connect(ui->actionTitleCase, &QAction::triggered, this, &MainWindow::titleCaseSelection);
+    connect(ui->actionSentenceCase, &QAction::triggered, this, &MainWindow::sentenceCaseSelection);
 
     connectEditorAction(ui->actionDuplicateCurrentLine, &ScintillaNext::lineDuplicate);
     connectEditorAction(ui->actionMoveSelectedLinesUp, &ScintillaNext::moveSelectedLinesUp);
@@ -1953,6 +1957,81 @@ void MainWindow::togglePreserveFileTime(bool checked)
     ui->statusBar->showMessage(checked ? tr("Preserve File Time on Save: Enabled") : tr("Preserve File Time on Save: Disabled"), 3000);
 }
 
+void MainWindow::upperCaseSelection()
+{
+    ScintillaNext *editor = currentEditor();
+    if (!editor) {
+        ui->statusBar->showMessage(tr("No active editor"), 3000);
+        return;
+    }
+    auto res = CaseConverter::upperCase(editor);
+    if (res.success) {
+        ui->statusBar->showMessage(res.message, 3000);
+    } else {
+        ui->statusBar->showMessage(res.errorMessage, 4000);
+    }
+}
+
+void MainWindow::lowerCaseSelection()
+{
+    ScintillaNext *editor = currentEditor();
+    if (!editor) {
+        ui->statusBar->showMessage(tr("No active editor"), 3000);
+        return;
+    }
+    auto res = CaseConverter::lowerCase(editor);
+    if (res.success) {
+        ui->statusBar->showMessage(res.message, 3000);
+    } else {
+        ui->statusBar->showMessage(res.errorMessage, 4000);
+    }
+}
+
+void MainWindow::invertCaseSelection()
+{
+    ScintillaNext *editor = currentEditor();
+    if (!editor) {
+        ui->statusBar->showMessage(tr("No active editor"), 3000);
+        return;
+    }
+    auto res = CaseConverter::invertCase(editor);
+    if (res.success) {
+        ui->statusBar->showMessage(res.message, 3000);
+    } else {
+        ui->statusBar->showMessage(res.errorMessage, 4000);
+    }
+}
+
+void MainWindow::titleCaseSelection()
+{
+    ScintillaNext *editor = currentEditor();
+    if (!editor) {
+        ui->statusBar->showMessage(tr("No active editor"), 3000);
+        return;
+    }
+    auto res = CaseConverter::titleCase(editor);
+    if (res.success) {
+        ui->statusBar->showMessage(res.message, 3000);
+    } else {
+        ui->statusBar->showMessage(res.errorMessage, 4000);
+    }
+}
+
+void MainWindow::sentenceCaseSelection()
+{
+    ScintillaNext *editor = currentEditor();
+    if (!editor) {
+        ui->statusBar->showMessage(tr("No active editor"), 3000);
+        return;
+    }
+    auto res = CaseConverter::sentenceCase(editor);
+    if (res.success) {
+        ui->statusBar->showMessage(res.message, 3000);
+    } else {
+        ui->statusBar->showMessage(res.errorMessage, 4000);
+    }
+}
+
 bool MainWindow::saveCurrentFileAsDialog()
 {
     const QString filter = app->getFileDialogFilter();
@@ -2374,8 +2453,12 @@ void MainWindow::updateContentBasedUi(ScintillaNext *editor)
 
     ui->actionPaste->setEnabled(editor->canPaste());
 
-    ui->actionLowerCase->setEnabled(hasAnySelections);
-    ui->actionUpperCase->setEnabled(hasAnySelections);
+    const bool canConvert = (editor != nullptr && !editor->readOnly() && editor->textLength() > 0);
+    ui->actionLowerCase->setEnabled(canConvert);
+    ui->actionUpperCase->setEnabled(canConvert);
+    ui->actionInvertCase->setEnabled(canConvert);
+    ui->actionTitleCase->setEnabled(canConvert);
+    ui->actionSentenceCase->setEnabled(canConvert);
 
     ui->actionBase64Encode->setEnabled(editor != nullptr);
     ui->actionBase64Decode->setEnabled(editor != nullptr);
@@ -2778,6 +2861,7 @@ void MainWindow::addEditor(ScintillaNext *editor)
 
         auto menu = buildMenu(actionNames);
         menu->addSeparator();
+        menu->addMenu(ui->menuConvertCase);
         menu->addMenu(ui->menuMarkAllOccurrences);
         menu->addMenu(ui->menuClearMarks);
 

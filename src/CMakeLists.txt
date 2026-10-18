@@ -125,6 +125,8 @@ qt_add_executable(NoteSciPad
 	utils/EncodingDetector.cpp
 	utils/FileTimeUtils.h
 	utils/FileTimeUtils.cpp
+	utils/CaseConverter.h
+	utils/CaseConverter.cpp
 	decorators/ApplicationDecorator.cpp
 	decorators/ApplicationDecorator.h
 	decorators/AutoCompletion.cpp

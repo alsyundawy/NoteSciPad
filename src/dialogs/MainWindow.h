@@ -88,6 +88,12 @@ public slots:
     void updateCurrentFileTime();
     void togglePreserveFileTime(bool checked);
 
+    void upperCaseSelection();
+    void lowerCaseSelection();
+    void invertCaseSelection();
+    void titleCaseSelection();
+    void sentenceCaseSelection();
+
     bool saveCurrentFileAsDialog();
     bool saveCurrentFileAs(const QString &fileName);
     bool saveFileAs(ScintillaNext *editor, const QString &fileName);

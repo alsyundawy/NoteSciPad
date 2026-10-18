@@ -132,6 +132,10 @@
      </property>
      <addaction name="actionUpperCase"/>
      <addaction name="actionLowerCase"/>
+     <addaction name="separator"/>
+     <addaction name="actionTitleCase"/>
+     <addaction name="actionSentenceCase"/>
+     <addaction name="actionInvertCase"/>
     </widget>
     <widget class="QMenu" name="menuLine_Operations">
      <property name="title">
@@ -816,18 +820,57 @@
   </action>
   <action name="actionUpperCase">
    <property name="text">
-    <string>UPPER CASE</string>
+    <string>&amp;UPPER CASE</string>
    </property>
    <property name="toolTip">
-    <string>Convert text to upper case</string>
+    <string>Convert text to upper case (Ctrl+Shift+U)</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">Ctrl+Shift+U</string>
    </property>
   </action>
   <action name="actionLowerCase">
    <property name="text">
-    <string>lower case</string>
+    <string>&amp;lower case</string>
    </property>
    <property name="toolTip">
-    <string>Convert text to lower case</string>
+    <string>Convert text to lower case (Ctrl+U)</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">Ctrl+U</string>
+   </property>
+  </action>
+  <action name="actionTitleCase">
+   <property name="text">
+    <string>&amp;Title Case</string>
+   </property>
+   <property name="toolTip">
+    <string>Capitalize first letter of each word (Ctrl+Alt+T)</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">Ctrl+Alt+T</string>
+   </property>
+  </action>
+  <action name="actionSentenceCase">
+   <property name="text">
+    <string>&amp;Sentence case</string>
+   </property>
+   <property name="toolTip">
+    <string>Capitalize first letter of each sentence (Ctrl+Alt+J)</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">Ctrl+Alt+J</string>
+   </property>
+  </action>
+  <action name="actionInvertCase">
+   <property name="text">
+    <string>&amp;iNVERT cASE</string>
+   </property>
+   <property name="toolTip">
+    <string>Invert / toggle letter casing (Ctrl+Alt+X)</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">Ctrl+Alt+X</string>
    </property>
   </action>
   <action name="actionDuplicateCurrentLine">
@@ -1907,7 +1950,7 @@
     <string>Clear all marked occurrence highlights</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Shift+U</string>
+    <string>Alt+Shift+M</string>
    </property>
   </action>
   <action name="actionConvertToHex">
