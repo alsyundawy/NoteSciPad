@@ -119,6 +119,8 @@ qt_add_executable(NoteSciPad
 	utils/CodeCompressPretty.cpp
 	utils/MathEvaluator.h
 	utils/MathEvaluator.cpp
+	utils/EncodingDetector.h
+	utils/EncodingDetector.cpp
 	decorators/ApplicationDecorator.cpp
 	decorators/ApplicationDecorator.h
 	decorators/AutoCompletion.cpp
@@ -172,6 +174,9 @@ qt_add_executable(NoteSciPad
 	dialogs/PreferencesDialog.ui
 	dialogs/StatusBarCustomizerDialog.cpp
 	dialogs/StatusBarCustomizerDialog.h
+	dialogs/EncodingSelectionDialog.cpp
+	dialogs/EncodingSelectionDialog.h
+	dialogs/EncodingSelectionDialog.ui
 	docks/DebugLogDock.cpp
 	docks/DebugLogDock.h
 	docks/DebugLogDock.ui
@@ -266,6 +271,7 @@ target_link_libraries(NoteSciPad
         Qt6::Widgets
         Qt6::Network
         Qt6::PrintSupport
+        Qt6::Core5Compat
         qtadvanceddocking-qt6
         QSimpleUpdater
         SingleApplication::SingleApplication

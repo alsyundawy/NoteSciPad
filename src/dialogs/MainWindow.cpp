@@ -25,6 +25,8 @@
 #include "ScintillaSorter.h"
 #include "URLFinder.h"
 #include "UrlUtils.h"
+#include "EncodingDetector.h"
+#include "EncodingSelectionDialog.h"
 #include "SessionManager.h"
 #include "UndoAction.h"
 #include "ui_MainWindow.h"
@@ -427,6 +429,78 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
         int pos = (contextMenuPos != -1) ? contextMenuPos : editor->currentPos();
         contextMenuPos = -1;
         UrlUtils::openUrlAtPosition(editor, pos);
+    });
+
+    // Encoding actions
+    connect(ui->actionShowEncodingInfo, &QAction::triggered, this, [this]() {
+        if (auto *ed = currentEditor()) {
+            EncodingSelectionDialog dlg(ed, this);
+            if (dlg.exec() == QDialog::Accepted) {
+                infoStatusBar->updateEncoding(ed);
+            }
+        }
+    });
+
+    connect(ui->actionConvertToUtf8, &QAction::triggered, this, [this]() {
+        if (auto *ed = currentEditor()) {
+            ed->convertToEncoding(QStringLiteral("UTF-8"), ScintillaNext::BomType::None);
+            infoStatusBar->updateEncoding(ed);
+        }
+    });
+    connect(ui->actionConvertToUtf8Bom, &QAction::triggered, this, [this]() {
+        if (auto *ed = currentEditor()) {
+            ed->convertToEncoding(QStringLiteral("UTF-8"), ScintillaNext::BomType::Utf8);
+            infoStatusBar->updateEncoding(ed);
+        }
+    });
+    connect(ui->actionConvertToAnsi, &QAction::triggered, this, [this]() {
+        if (auto *ed = currentEditor()) {
+            ed->convertToEncoding(QStringLiteral("windows-1252"), ScintillaNext::BomType::None);
+            infoStatusBar->updateEncoding(ed);
+        }
+    });
+    connect(ui->actionConvertToUtf16Le, &QAction::triggered, this, [this]() {
+        if (auto *ed = currentEditor()) {
+            ed->convertToEncoding(QStringLiteral("UTF-16LE"), ScintillaNext::BomType::Utf16LE);
+            infoStatusBar->updateEncoding(ed);
+        }
+    });
+    connect(ui->actionConvertToUtf16Be, &QAction::triggered, this, [this]() {
+        if (auto *ed = currentEditor()) {
+            ed->convertToEncoding(QStringLiteral("UTF-16BE"), ScintillaNext::BomType::Utf16BE);
+            infoStatusBar->updateEncoding(ed);
+        }
+    });
+
+    auto reopenWith = [this](const QString &enc) {
+        if (auto *ed = currentEditor()) {
+            if (!ed->isFile()) {
+                QMessageBox::information(this, tr("NoteSciPad"), tr("Cannot reopen unsaved new buffer from disk."));
+                return;
+            }
+            ed->reloadWithEncoding(enc);
+            infoStatusBar->updateEncoding(ed);
+        }
+    };
+
+    connect(ui->actionReopenUtf8, &QAction::triggered, this, [reopenWith]() { reopenWith(QStringLiteral("UTF-8")); });
+    connect(ui->actionReopenAnsi, &QAction::triggered, this, [reopenWith]() { reopenWith(QStringLiteral("windows-1252")); });
+    connect(ui->actionReopenUtf16Le, &QAction::triggered, this, [reopenWith]() { reopenWith(QStringLiteral("UTF-16LE")); });
+    connect(ui->actionReopenUtf16Be, &QAction::triggered, this, [reopenWith]() { reopenWith(QStringLiteral("UTF-16BE")); });
+    connect(ui->actionReopenShiftJis, &QAction::triggered, this, [reopenWith]() { reopenWith(QStringLiteral("Shift-JIS")); });
+    connect(ui->actionReopenGbk, &QAction::triggered, this, [reopenWith]() { reopenWith(QStringLiteral("GB18030")); });
+    connect(ui->actionReopenBig5, &QAction::triggered, this, [reopenWith]() { reopenWith(QStringLiteral("Big5")); });
+    connect(ui->actionReopenEucKr, &QAction::triggered, this, [reopenWith]() { reopenWith(QStringLiteral("EUC-KR")); });
+    connect(ui->actionReopenWin1251, &QAction::triggered, this, [reopenWith]() { reopenWith(QStringLiteral("windows-1251")); });
+    connect(ui->actionReopenWin1250, &QAction::triggered, this, [reopenWith]() { reopenWith(QStringLiteral("windows-1250")); });
+    connect(ui->actionReopenCp437, &QAction::triggered, this, [reopenWith]() { reopenWith(QStringLiteral("IBM850")); });
+    connect(ui->actionReopenMore, &QAction::triggered, this, [this]() {
+        if (auto *ed = currentEditor()) {
+            EncodingSelectionDialog dlg(ed, this);
+            if (dlg.exec() == QDialog::Accepted) {
+                infoStatusBar->updateEncoding(ed);
+            }
+        }
     });
 
     connect(ui->actionClearRecentFilesList, &QAction::triggered, app->getRecentFilesListManager(), &RecentFilesListManager::clear);

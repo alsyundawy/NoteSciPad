@@ -118,6 +118,13 @@ public:
     };
 
     BomType bom() const { return bomType; }
+    void setBom(BomType bom) { bomType = bom; }
+
+    QString encodingName() const { return fileEncoding; }
+    void setFileEncoding(const QString &encoding) { fileEncoding = encoding; }
+
+    void convertToEncoding(const QString &newEncoding, BomType newBom);
+    bool reloadWithEncoding(const QString &newEncoding);
 
     bool isTemporary() const { return temporary; }
     void setTemporary(bool temp);
@@ -165,6 +172,7 @@ private:
     QString name;
     BufferType bufferType = BufferType::New;
     BomType bomType = BomType::None;
+    QString fileEncoding = QStringLiteral("UTF-8");
     QFileInfo fileInfo;
     QDateTime modifiedTime;
     RangeAllocator indicatorResources;
