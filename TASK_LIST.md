@@ -92,9 +92,9 @@ Use this as the living task board. Check items as they are completed.
 
 ### 7. Full-screen Mode
 
-- [ ] Toggle full-screen (native macOS + Qt)
-- [ ] Menu entry + shortcut (F11 or Cmd+Ctrl+F)
-- [ ] Persist preference if desired
+- [x] Toggle full-screen (native macOS + Qt)
+- [x] Menu entry + shortcut (F11 or Cmd+Ctrl+F)
+- [x] Persist preference if desired
 
 ---
 
