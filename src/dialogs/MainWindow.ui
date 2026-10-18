@@ -191,6 +191,7 @@
     <addaction name="menuConvertNumber"/>
     <addaction name="menuInsert"/>
     <addaction name="actionColorPreview"/>
+    <addaction name="menuCodeFormatter"/>
     <addaction name="menuEOLConversion"/>
     <addaction name="menuLine_Operations"/>
     <addaction name="menuCommentUncomment"/>
@@ -220,6 +221,24 @@
      <addaction name="actionInsertGuidHyphens"/>
      <addaction name="actionInsertGuidBraces"/>
      <addaction name="actionInsertGuidCompact"/>
+    </widget>
+    <widget class="QMenu" name="menuCodeFormatter">
+     <property name="title">
+      <string>Code Formatter &amp; Minifier</string>
+     </property>
+     <addaction name="actionFormatAuto"/>
+     <addaction name="actionMinifyAuto"/>
+     <addaction name="separator"/>
+     <addaction name="actionFormatJson"/>
+     <addaction name="actionMinifyJson"/>
+     <addaction name="actionFormatJson5"/>
+     <addaction name="actionMinifyJson5"/>
+     <addaction name="separator"/>
+     <addaction name="actionFormatCss"/>
+     <addaction name="actionMinifyCss"/>
+     <addaction name="separator"/>
+     <addaction name="actionFormatJs"/>
+     <addaction name="actionMinifyJs"/>
     </widget>
    </widget>
    <widget class="QMenu" name="menuSearch">
@@ -1843,6 +1862,74 @@
    </property>
    <property name="shortcut">
     <string>Alt+C</string>
+   </property>
+  </action>
+  <action name="actionFormatAuto">
+   <property name="text">
+    <string>Format / Prettify (Auto)</string>
+   </property>
+   <property name="toolTip">
+    <string>Format and indent current selection or entire document</string>
+   </property>
+   <property name="statusTip">
+    <string>Format and indent current selection or entire document</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Shift+F</string>
+   </property>
+  </action>
+  <action name="actionMinifyAuto">
+   <property name="text">
+    <string>Minify / Compress (Auto)</string>
+   </property>
+   <property name="toolTip">
+    <string>Minify and compact current selection or entire document</string>
+   </property>
+   <property name="statusTip">
+    <string>Minify and compact current selection or entire document</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+M</string>
+   </property>
+  </action>
+  <action name="actionFormatJson">
+   <property name="text">
+    <string>JSON Prettify</string>
+   </property>
+  </action>
+  <action name="actionMinifyJson">
+   <property name="text">
+    <string>JSON Minify</string>
+   </property>
+  </action>
+  <action name="actionFormatJson5">
+   <property name="text">
+    <string>JSON5 Prettify</string>
+   </property>
+  </action>
+  <action name="actionMinifyJson5">
+   <property name="text">
+    <string>JSON5 Minify</string>
+   </property>
+  </action>
+  <action name="actionFormatCss">
+   <property name="text">
+    <string>CSS Prettify</string>
+   </property>
+  </action>
+  <action name="actionMinifyCss">
+   <property name="text">
+    <string>CSS Minify</string>
+   </property>
+  </action>
+  <action name="actionFormatJs">
+   <property name="text">
+    <string>JavaScript Prettify</string>
+   </property>
+  </action>
+  <action name="actionMinifyJs">
+   <property name="text">
+    <string>JavaScript Minify</string>
    </property>
   </action>
 </ui>

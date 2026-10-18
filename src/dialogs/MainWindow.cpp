@@ -69,6 +69,7 @@
 #include "NumberConverter.h"
 #include "GuidTimestampUtils.h"
 #include "ColorPreviewCallTip.h"
+#include "CodeCompressPretty.h"
 #include "SearchResultsDock.h"
 #include "DebugLogDock.h"
 #include "FileListDock.h"
@@ -304,6 +305,34 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
             ui->statusBar->showMessage(result.errorMessage, 4000);
         }
     });
+
+    auto handleFormat = [this](CodeCompressPretty::Language lang, bool minify) {
+        ScintillaNext *editor = currentEditor();
+        if (!editor) {
+            ui->statusBar->showMessage(tr("No active editor"), 3000);
+            return;
+        }
+        auto result = minify ? CodeCompressPretty::compress(editor, lang) : CodeCompressPretty::prettify(editor, lang);
+        if (result.success) {
+            const QString actionName = minify ? tr("Minified") : tr("Prettified");
+            const QString target = result.wholeDocument ? tr("entire document") : tr("selection");
+            const QString langStr = CodeCompressPretty::languageName(result.detectedLanguage);
+            ui->statusBar->showMessage(tr("%1 %2 as %3").arg(actionName, target, langStr), 3000);
+        } else {
+            ui->statusBar->showMessage(result.errorMessage, 5000);
+        }
+    };
+
+    connect(ui->actionFormatAuto, &QAction::triggered, this, [=]() { handleFormat(CodeCompressPretty::Auto, false); });
+    connect(ui->actionMinifyAuto, &QAction::triggered, this, [=]() { handleFormat(CodeCompressPretty::Auto, true); });
+    connect(ui->actionFormatJson, &QAction::triggered, this, [=]() { handleFormat(CodeCompressPretty::Json, false); });
+    connect(ui->actionMinifyJson, &QAction::triggered, this, [=]() { handleFormat(CodeCompressPretty::Json, true); });
+    connect(ui->actionFormatJson5, &QAction::triggered, this, [=]() { handleFormat(CodeCompressPretty::Json5, false); });
+    connect(ui->actionMinifyJson5, &QAction::triggered, this, [=]() { handleFormat(CodeCompressPretty::Json5, true); });
+    connect(ui->actionFormatCss, &QAction::triggered, this, [=]() { handleFormat(CodeCompressPretty::Css, false); });
+    connect(ui->actionMinifyCss, &QAction::triggered, this, [=]() { handleFormat(CodeCompressPretty::Css, true); });
+    connect(ui->actionFormatJs, &QAction::triggered, this, [=]() { handleFormat(CodeCompressPretty::JavaScript, false); });
+    connect(ui->actionMinifyJs, &QAction::triggered, this, [=]() { handleFormat(CodeCompressPretty::JavaScript, true); });
 
     connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
         ScintillaNext *editor = currentEditor();
@@ -2035,6 +2064,16 @@ void MainWindow::updateContentBasedUi(ScintillaNext *editor)
     ui->actionInsertGuidBraces->setEnabled(canInsert);
     ui->actionInsertGuidCompact->setEnabled(canInsert);
     ui->actionColorPreview->setEnabled(canInsert);
+    ui->actionFormatAuto->setEnabled(canInsert);
+    ui->actionMinifyAuto->setEnabled(canInsert);
+    ui->actionFormatJson->setEnabled(canInsert);
+    ui->actionMinifyJson->setEnabled(canInsert);
+    ui->actionFormatJson5->setEnabled(canInsert);
+    ui->actionMinifyJson5->setEnabled(canInsert);
+    ui->actionFormatCss->setEnabled(canInsert);
+    ui->actionMinifyCss->setEnabled(canInsert);
+    ui->actionFormatJs->setEnabled(canInsert);
+    ui->actionMinifyJs->setEnabled(canInsert);
     ui->actionURLEncode->setEnabled(hasAnySelections);
     ui->actionURLDecode->setEnabled(hasAnySelections);
 }
