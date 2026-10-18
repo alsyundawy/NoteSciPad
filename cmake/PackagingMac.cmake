@@ -3,36 +3,39 @@ message(STATUS "Configuring macOS packaging")
 set(INSTALL_DIR ${CMAKE_BINARY_DIR}/install)
 
 # Custom Info.plist
-set_target_properties(NotepadNext PROPERTIES
+set_target_properties(NoteSciPad PROPERTIES
     MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/deploy/macos/info.plist
 )
 
 # Application icon
-set(APP_ICON_MACOS ${CMAKE_SOURCE_DIR}/icon/NotepadNext.icns)
+set(APP_ICON_MACOS ${CMAKE_SOURCE_DIR}/icon/NoteSciPad.icns)
+if(NOT EXISTS ${APP_ICON_MACOS})
+    set(APP_ICON_MACOS ${CMAKE_SOURCE_DIR}/icon/NotepadNext.icns)
+endif()
 
 set_source_files_properties(${APP_ICON_MACOS}
     PROPERTIES MACOSX_PACKAGE_LOCATION "Resources"
 )
 
-target_sources(NotepadNext PRIVATE ${APP_ICON_MACOS})
+target_sources(NoteSciPad PRIVATE ${APP_ICON_MACOS})
 
-set_target_properties(NotepadNext PROPERTIES
-    MACOSX_BUNDLE_ICON_FILE NotepadNext.icns
+set_target_properties(NoteSciPad PROPERTIES
+    MACOSX_BUNDLE_ICON_FILE NoteSciPad.icns
 )
 
-install(TARGETS NotepadNext
+install(TARGETS NoteSciPad
     BUNDLE DESTINATION .
 )
 
 install(FILES ${APP_ICON_MACOS}
-    DESTINATION NotepadNext.app/Contents/Resources
+    DESTINATION NoteSciPad.app/Contents/Resources
 )
 
 add_custom_target(install_local
     COMMAND ${CMAKE_COMMAND}
         --install ${CMAKE_BINARY_DIR}
         --prefix ${INSTALL_DIR}
-    DEPENDS NotepadNext
+    DEPENDS NoteSciPad
 )
 
 # Determine macOS target architecture suffix (arm64 or x64)
@@ -48,16 +51,16 @@ if(NOT DEFINED MAC_ARCH_SUFFIX OR MAC_ARCH_SUFFIX STREQUAL "")
     endif()
 endif()
 
-set(MAC_DMG_NAME "NotepadNext-v${PROJECT_VERSION}-${MAC_ARCH_SUFFIX}.dmg")
+set(MAC_DMG_NAME "NoteSciPad-v${PROJECT_VERSION}-${MAC_ARCH_SUFFIX}.dmg")
 
 find_program(MACDEPLOYQT_EXECUTABLE macdeployqt REQUIRED)
 
 add_custom_target(dmg
     COMMAND ${MACDEPLOYQT_EXECUTABLE}
-        ${INSTALL_DIR}/NotepadNext.app
+        ${INSTALL_DIR}/NoteSciPad.app
         -dmg
     COMMAND ${CMAKE_COMMAND} -E rename
-        ${INSTALL_DIR}/NotepadNext.dmg
+        ${INSTALL_DIR}/NoteSciPad.dmg
         ${CMAKE_BINARY_DIR}/${MAC_DMG_NAME}
     DEPENDS install_local
 )

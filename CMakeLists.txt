@@ -1,16 +1,16 @@
 cmake_minimum_required(VERSION 3.21)
 
-project(NotepadNext
+project(NoteSciPad
     VERSION 0.15
-    DESCRIPTION "Cross-platform text editor"
+    DESCRIPTION "Lightweight Scintilla-based text editor for macOS and Linux"
     LANGUAGES C CXX
 )
 
 set(APP_VERSION "0.15-03")
 set(APP_DISTRIBUTION "" CACHE STRING "Distribution type")
 string(TIMESTAMP CURRENT_YEAR "%Y")
-set(APP_COPYRIGHT "Copyright 2019-${CURRENT_YEAR} Justin Dailey")
-set(APP_COPYRIGHT_BUILDER "Copyright ${CURRENT_YEAR} HARRY DS ALSYUNDAWY (MacOS-Builder)")
+set(APP_COPYRIGHT "Copyright 2019-${CURRENT_YEAR} Justin Dailey & NoteSciPad Contributors")
+set(APP_COPYRIGHT_BUILDER "Copyright ${CURRENT_YEAR} HARRY DS ALSYUNDAWY (NoteSciPad Maintainer)")
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

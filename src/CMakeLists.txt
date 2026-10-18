@@ -1,4 +1,4 @@
-qt_add_executable(NotepadNext
+qt_add_executable(NoteSciPad
 	WIN32
 	MACOSX_BUNDLE
 	ActionUtils.h
@@ -188,7 +188,9 @@ qt_add_executable(NotepadNext
 
 )
 
-set_target_properties(NotepadNext PROPERTIES
+set_target_properties(NoteSciPad PROPERTIES
+    OUTPUT_NAME NoteSciPad
+    MACOSX_BUNDLE_BUNDLE_NAME NoteSciPad
     MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/deploy/macos/info.plist
 )
 
@@ -197,13 +199,13 @@ file(GLOB TS_FILES
 )
 
 find_package(Qt6 REQUIRED COMPONENTS LinguistTools)
-qt_add_translations(NotepadNext
+qt_add_translations(NoteSciPad
     TS_FILES ${TS_FILES}
     RESOURCE_PREFIX "/i18n"
 )
 
 
-target_include_directories(NotepadNext
+target_include_directories(NoteSciPad
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/decorators
         ${CMAKE_CURRENT_SOURCE_DIR}/dialogs
@@ -218,7 +220,7 @@ if(WIN32)
 		"${CMAKE_BINARY_DIR}/version.rc"
 		@ONLY
 	)
-	target_sources(NotepadNext PRIVATE "${CMAKE_BINARY_DIR}/version.rc")
+	target_sources(NoteSciPad PRIVATE "${CMAKE_BINARY_DIR}/version.rc")
 	configure_file(
 		"${CMAKE_SOURCE_DIR}/icon/NotepadNext.ico"
 		"${CMAKE_BINARY_DIR}/NotepadNext.ico"
@@ -226,7 +228,7 @@ if(WIN32)
 	)
 endif()
 
-target_link_libraries(NotepadNext
+target_link_libraries(NoteSciPad
     PRIVATE
         Qt6::Core
         Qt6::Gui
@@ -244,10 +246,10 @@ target_link_libraries(NotepadNext
 )
 
 if(APPLE)
-    target_link_directories(NotepadNext PRIVATE "${CMAKE_BINARY_DIR}/dummy_frameworks")
+    target_link_directories(NoteSciPad PRIVATE "${CMAKE_BINARY_DIR}/dummy_frameworks")
 endif()
 
-target_compile_definitions(NotepadNext
+target_compile_definitions(NoteSciPad
     PRIVATE
         ADS_STATIC
         QSIMPLEUPDATER_STATIC
@@ -257,3 +259,5 @@ target_compile_definitions(NotepadNext
         APP_COPYRIGHT_BUILDER="${APP_COPYRIGHT_BUILDER}"
         APP_DISTRIBUTION="${APP_DISTRIBUTION}"
 )
+
+add_executable(NotepadNext ALIAS NoteSciPad)

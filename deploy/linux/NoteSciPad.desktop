@@ -1,0 +1,23 @@
+[Desktop Entry]
+Categories=Qt;TextEditor;Utility;
+Exec=NoteSciPad %f
+Icon=NoteSciPad
+MimeType=text/plain;
+StartupNotify=true
+Type=Application
+Terminal=false
+
+Name=NoteSciPad
+Name[id]=NoteSciPad
+Name[pt_BR]=NoteSciPad
+
+GenericName=Text Editor
+GenericName[id]=Editor Teks
+GenericName[pt_BR]=Editor de Texto
+
+Comment=A lightweight Scintilla-based text editor for macOS and Linux
+Comment[id]=Editor teks ringan berbasis Scintilla untuk macOS dan Linux
+Comment[pt_BR]=Editor de texto leve baseado em Scintilla para macOS e Linux
+
+Keywords=notesci;notesci-pad;notepad;text;editor;scintilla;lexilla;tabs;programming;
+Keywords[id]=notesci;notesci-pad;notepad;teks;editor;scintilla;lexilla;tab;pemrograman;

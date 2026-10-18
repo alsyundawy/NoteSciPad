@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.alsyundawy.NoteSciPad</id>
+  <name>NoteSciPad</name>
+  <summary>Lightweight Scintilla-based text editor for macOS and Linux</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <description>
+    <p>
+      NoteSciPad is a lightweight, high-performance cross-platform text and source code editor
+      built with Qt 6 and powered by vendored Scintilla and Lexilla engines.
+    </p>
+  </description>
+  <url type="homepage">https://github.com/alsyundawy/NoteSciPad</url>
+  <launchable type="desktop-id">NoteSciPad.desktop</launchable>
+  <provides>
+    <binary>NoteSciPad</binary>
+  </provides>
+</component>

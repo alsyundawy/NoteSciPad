@@ -74,7 +74,7 @@ NotepadNextApplication::NotepadNextApplication(int &argc, char **argv)
 {
 #ifdef Q_OS_WIN
     // Create a system-wide mutex so the installer can detect if it is running
-    CreateMutex(NULL, false, L"NotepadNextMutex");
+    CreateMutex(NULL, false, L"NoteSciPadMutex");
 #endif
     parseCommandLine(parser, arguments());
 

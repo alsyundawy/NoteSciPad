@@ -911,9 +911,11 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
     ui->actionAboutNotepadNext->setShortcut(QKeySequence::HelpContents);
     connect(ui->actionAboutNotepadNext, &QAction::triggered, this, [this]() {
         QMessageBox::about(this, QString(),
-                            QStringLiteral("<h3>Notepad Next For MacOS v%1</h3>"
+                            QStringLiteral("<h3>NoteSciPad v%1</h3>"
                                     "<p>%2<br>%3</p>"
-                                    "<p><a href=\"https://github.com/alsyundawy/NotepadNext-MacOS\">Notepad Next Home Page</a></p>"
+                                    "<p><a href=\"https://github.com/alsyundawy/NoteSciPad\">NoteSciPad Home Page</a></p>"
+                                    "<p><b>NoteSciPad</b> is an independent, lightweight text and code editor for macOS and Linux powered by vendored Scintilla and Lexilla engines.</p>"
+                                    "<p><i>Notice: NoteSciPad is an independent project. It is not affiliated with, endorsed by, or associated with Notepad++, NotepadNext, Notepad4, or Notepad3.</i></p>"
                                     R"(<p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p> <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</p> <p>You should have received a copy of the GNU General Public License along with this program. If not, see &lt;<a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>&gt;.</p>)")
                                 .arg(APP_VERSION, QStringLiteral(APP_COPYRIGHT).toHtmlEscaped(), QStringLiteral(APP_COPYRIGHT_BUILDER).toHtmlEscaped()));
     });
@@ -1689,7 +1691,7 @@ void MainWindow::updateFileStatusBasedUi(ScintillaNext *editor)
         fileName = editor->getName();
     }
 
-    QString title = QStringLiteral("[*]%1").arg(fileName);
+    QString title = QStringLiteral("[*]%1 - NoteSciPad").arg(fileName);
     if (app->isRunningAsAdmin()) {
         title += QStringLiteral(" - [%1]").arg(tr("Administrator"));
     }
