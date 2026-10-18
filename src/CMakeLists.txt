@@ -125,6 +125,8 @@ qt_add_executable(NoteSciPad
 	utils/CodeCompressPretty.cpp
 	utils/MathEvaluator.h
 	utils/MathEvaluator.cpp
+	utils/JsEvaluator.h
+	utils/JsEvaluator.cpp
 	utils/EncodingDetector.h
 	utils/EncodingDetector.cpp
 	utils/FileTimeUtils.h
@@ -207,6 +209,9 @@ qt_add_executable(NoteSciPad
 	dialogs/RegexHelperDialog.cpp
 	dialogs/RegexHelperDialog.h
 	dialogs/RegexHelperDialog.ui
+	dialogs/JsEvaluationDialog.cpp
+	dialogs/JsEvaluationDialog.h
+	dialogs/JsEvaluationDialog.ui
 	dialogs/EncryptDialog.cpp
 	dialogs/EncryptDialog.h
 	dialogs/EncryptDialog.ui
@@ -329,7 +334,7 @@ target_link_libraries(NoteSciPad
 
 if(APPLE)
     target_link_directories(NoteSciPad PRIVATE "${CMAKE_BINARY_DIR}/dummy_frameworks")
-    target_link_libraries(NoteSciPad PRIVATE "-framework Security")
+    target_link_libraries(NoteSciPad PRIVATE "-framework Security" "-framework JavaScriptCore")
 endif()
 
 target_compile_definitions(NoteSciPad

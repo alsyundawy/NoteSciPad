@@ -206,6 +206,7 @@
     <addaction name="actionShowCharacterInfo"/>
     <addaction name="menuCodeFormatter"/>
     <addaction name="menuMathExpression"/>
+    <addaction name="menuJsExpression"/>
     <addaction name="menuEOLConversion"/>
     <addaction name="menuLine_Operations"/>
     <addaction name="menuCommentUncomment"/>
@@ -257,6 +258,15 @@
      <addaction name="separator"/>
      <addaction name="actionFormatJs"/>
      <addaction name="actionMinifyJs"/>
+    </widget>
+    <widget class="QMenu" name="menuJsExpression">
+     <property name="title">
+      <string>JavaScript Expression</string>
+     </property>
+     <addaction name="actionEvaluateJsReplace"/>
+     <addaction name="actionEvaluateJsAppend"/>
+     <addaction name="separator"/>
+     <addaction name="actionEvaluateJsDialog"/>
     </widget>
     <widget class="QMenu" name="menuMathExpression">
      <property name="title">
@@ -2191,6 +2201,45 @@
   <action name="actionMinifyJs">
    <property name="text">
     <string>JavaScript Minify</string>
+   </property>
+  </action>
+  <action name="actionEvaluateJsReplace">
+   <property name="text">
+    <string>Evaluate JS Expression (Replace)</string>
+   </property>
+   <property name="toolTip">
+    <string>Evaluate selected JavaScript expression and replace with result</string>
+   </property>
+   <property name="statusTip">
+    <string>Evaluate selected JavaScript expression and replace with result</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+J</string>
+   </property>
+  </action>
+  <action name="actionEvaluateJsAppend">
+   <property name="text">
+    <string>Evaluate JS Expression (Append // -&gt; ...)</string>
+   </property>
+   <property name="toolTip">
+    <string>Evaluate selected JavaScript expression and append result as comment</string>
+   </property>
+   <property name="statusTip">
+    <string>Evaluate selected JavaScript expression and append result as comment</string>
+   </property>
+  </action>
+  <action name="actionEvaluateJsDialog">
+   <property name="text">
+    <string>Interactive JS Evaluation Dialog...</string>
+   </property>
+   <property name="toolTip">
+    <string>Open interactive JavaScript expression evaluator dialog</string>
+   </property>
+   <property name="statusTip">
+    <string>Open interactive JavaScript expression evaluator dialog</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+J</string>
    </property>
   </action>
   <action name="actionEvaluateMathAppend">

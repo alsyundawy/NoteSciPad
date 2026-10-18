@@ -78,6 +78,8 @@
 #include "ColorPreviewCallTip.h"
 #include "CodeCompressPretty.h"
 #include "MathEvaluator.h"
+#include "JsEvaluator.h"
+#include "JsEvaluationDialog.h"
 #include "FocusedView.h"
 #include "FocusedViewDialog.h"
 #include "LogAutoTimestamp.h"
@@ -392,7 +394,45 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
         }
     });
 
-    connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
+        connect(ui->actionEvaluateJsReplace, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        if (!editor) {
+            ui->statusBar->showMessage(tr("No active editor"), 3000);
+            return;
+        }
+        auto result = JsEvaluator::evaluateInEditor(editor, JsEvaluator::ReplaceSelection);
+        if (result.success) {
+            ui->statusBar->showMessage(tr("JS Evaluated in %1 ms: %2").arg(QString::number(result.executionTimeMs, 'f', 2), result.resultString), 3000);
+        } else {
+            ui->statusBar->showMessage(tr("JS Error: %1").arg(result.errorMessage), 4000);
+        }
+    });
+
+    connect(ui->actionEvaluateJsAppend, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        if (!editor) {
+            ui->statusBar->showMessage(tr("No active editor"), 3000);
+            return;
+        }
+        auto result = JsEvaluator::evaluateInEditor(editor, JsEvaluator::AppendComment);
+        if (result.success) {
+            ui->statusBar->showMessage(tr("JS Evaluated in %1 ms").arg(QString::number(result.executionTimeMs, 'f', 2)), 3000);
+        } else {
+            ui->statusBar->showMessage(tr("JS Error: %1").arg(result.errorMessage), 4000);
+        }
+    });
+
+    connect(ui->actionEvaluateJsDialog, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        QString initialCode;
+        if (editor && editor->selectionStart() != editor->selectionEnd()) {
+            initialCode = QString::fromUtf8(editor->get_text_range(editor->selectionStart(), editor->selectionEnd()));
+        }
+        JsEvaluationDialog dlg(this, editor, initialCode);
+        dlg.exec();
+    });
+
+connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
         ScintillaNext *editor = currentEditor();
         if (!editor) {
             ui->statusBar->showMessage(tr("No active editor"), 3000);

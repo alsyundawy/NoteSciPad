@@ -95,3 +95,29 @@ NoteSciPad selectively ports language definitions, keyword lists, and style indi
 - **Expanded Modern Ecosystem**: Increases total registered languages from 87 to 91, delivering instant syntax highlighting for modern systems languages (Zig, Rust), modern web/mobile development (TypeScript, Dart), and configuration formats (TOML).
 - **Zero Risk of Engine Instability**: By relying on Lexilla's existing built-in lexers (`lmTOML`, `lmZig`, `lmDart`, `lmCPP`), performance and memory characteristics remain strictly identical.
 - **Detailed Reference**: Full mapping documentation recorded in `doc/LEXER_UPDATES_NOTEPAD4.md`.
+
+
+## ADR-006: Native JavaScriptCore and Portable JavaScript Expression Evaluation
+
+### Status
+Accepted (2026-10-19)
+
+### Context
+NoteSciPad's roadmap (Phase 3, Task 9) includes an optional JavaScript expression evaluation feature inspired by Notepad4's "Evaluate JS Expression" tool. In Notepad4, Windows Chakra/JScript was used. NoteSciPad requires a high-performance, cross-platform solution that does not introduce heavy runtime dependencies or alter the Scintilla/Lexilla engine.
+
+### Decision
+NoteSciPad implements JavaScript expression evaluation through a modular `JsEvaluator` utility and `JsEvaluationDialog`:
+1. **Engine Selection**:
+   - On macOS: Links directly to Apple's native, system-bundled `JavaScriptCore.framework`. Requires zero package installations and delivers sub-millisecond execution.
+   - On Linux / POSIX: Auto-detects standard CLI runtimes (`node`, `bun`, `deno`, or `qjs`) via `QStandardPaths` with process isolation and timeout protection.
+2. **Result Formatting**: Automatically formats objects and arrays via `JSON.stringify(..., null, 2)` and captures detailed exception backtraces.
+3. **Editor Integration**:
+   - In-place replacement with shortcut `Ctrl+Shift+J` (`Cmd+Shift+J` on macOS).
+   - In-place comment append (`// -> <result>`).
+   - Interactive scratchpad dialog with shortcut `Ctrl+Alt+J` (`Cmd+Alt+J` on macOS).
+4. **Scintilla Safety**: All document changes occur through `ScintillaNext` with undo/redo transactions.
+
+### Rationale & Consequences
+- **Instant Developer Utility**: Developers can quickly calculate numbers, format JSON, manipulate text, or run snippets without switching windows or launching a browser.
+- **Zero Heavy Dependencies**: Avoids pulling in `qt6-declarative-dev` (QML), keeping NoteSciPad's build dependencies minimal and lean.
+- **Complete Documentation**: Full architectural details recorded in `doc/JS_EVALUATOR.md`.
