@@ -105,7 +105,7 @@ Use this as the living task board. Check items as they are completed.
 - [x] Copy as RTF (syntax-colored)
 - [x] Evaluate expression (math — start simple, evolve toward TinyExpr++ style)
 - [x] Focused View (filter to matching lines)
-- [ ] Customizable status bar fields
+- [x] Customizable status bar fields
 - [ ] .LOG auto-timestamp behavior
 - [ ] URL highlighting with configurable size threshold (UrlThreshold)
 - [ ] Improved encoding detection (study & port useful parts from Notepad4/Notepad3)
