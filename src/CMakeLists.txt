@@ -127,6 +127,8 @@ qt_add_executable(NoteSciPad
 	utils/FileTimeUtils.cpp
 	utils/CaseConverter.h
 	utils/CaseConverter.cpp
+	utils/FunctionParser.h
+	utils/FunctionParser.cpp
 	decorators/ApplicationDecorator.cpp
 	decorators/ApplicationDecorator.h
 	decorators/AutoCompletion.cpp
@@ -201,6 +203,9 @@ qt_add_executable(NoteSciPad
 	docks/FileBrowserDock.cpp
 	docks/FileBrowserDock.h
 	docks/FileBrowserDock.ui
+	docks/FunctionListDock.cpp
+	docks/FunctionListDock.h
+	docks/FunctionListDock.ui
 
 
 

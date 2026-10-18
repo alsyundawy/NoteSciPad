@@ -84,6 +84,7 @@
 #include "SearchResultsDock.h"
 #include "DebugLogDock.h"
 #include "FileListDock.h"
+#include "FunctionListDock.h"
 
 #include "FindReplaceDialog.h"
 #include "MacroRunDialog.h"
@@ -1459,6 +1460,14 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
     fileListDock->hide();
     addDockWidget(Qt::LeftDockWidgetArea, fileListDock);
     ui->menuView->addAction(fileListDock->toggleViewAction());
+
+    functionListDock = new FunctionListDock(this);
+    functionListDock->hide();
+    addDockWidget(Qt::RightDockWidgetArea, functionListDock);
+    QAction *toggleFunctionListAction = functionListDock->toggleViewAction();
+    toggleFunctionListAction->setText(tr("Function List"));
+    toggleFunctionListAction->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_F));
+    ui->menuView->addAction(toggleFunctionListAction);
 
     connect(app->getSettings(), &ApplicationSettings::showMenuBarChanged, this, [this](bool showMenuBar) {
         // Don't 'hide' it, else the actions won't be enabled

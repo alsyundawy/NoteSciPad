@@ -47,6 +47,7 @@ class DefaultDirectoryManager;
 class TabsQuickActionsBar;
 class FocusedView;
 class FocusedViewDialog;
+class FunctionListDock;
 
 class MainWindow : public QMainWindow
 {
@@ -205,6 +206,7 @@ private:
     TabsQuickActionsBar *tabsQuickActionsBar = Q_NULLPTR;
     MarkOccurrences *markOccurrences = nullptr;
     FileBrowserDock *fileBrowserDock = nullptr;
+    FunctionListDock *functionListDock = nullptr;
     FocusedView *focusedView = nullptr;
     FocusedViewDialog *focusedViewDialog = nullptr;
 
