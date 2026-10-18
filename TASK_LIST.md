@@ -70,11 +70,11 @@ Use this as the living task board. Check items as they are completed.
 
 ### 4. Base64 Encode / Decode
 
-- [ ] Action: Encode selection (or whole document)
-- [ ] Action: Decode selection
-- [ ] Encoding awareness (UTF-8 default)
-- [ ] Error handling for invalid Base64
-- [ ] Menu placement (Tools or Edit)
+- [x] Action: Encode selection (or whole document)
+- [x] Action: Decode selection
+- [x] Encoding awareness (UTF-8 default)
+- [x] Error handling for invalid Base64
+- [x] Menu placement (Tools or Edit)
 
 ### 5. Number Conversion
 
