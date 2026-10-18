@@ -78,11 +78,11 @@ Use this as the living task board. Check items as they are completed.
 
 ### 5. Number Conversion
 
-- [ ] Decimal ↔ Hexadecimal
-- [ ] Decimal ↔ Octal
-- [ ] Decimal ↔ Binary
-- [ ] Handle selection or number under caret
-- [ ] Prefix options (0x, 0b, etc.)
+- [x] Decimal ↔ Hexadecimal
+- [x] Decimal ↔ Octal
+- [x] Decimal ↔ Binary
+- [x] Handle selection or number under caret
+- [x] Prefix options (0x, 0b, etc.)
 
 ### 6. Insert GUID + Timestamps
 
