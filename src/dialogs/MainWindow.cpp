@@ -66,6 +66,7 @@
 #include "FolderAsWorkspaceDock.h"
 #include "FileBrowserDock.h"
 #include "Base64Utils.h"
+#include "NumberConverter.h"
 #include "SearchResultsDock.h"
 #include "DebugLogDock.h"
 #include "FileListDock.h"
@@ -182,6 +183,43 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
     connectEditorAction(ui->actionToggleSingleLineComment, &ScintillaNext::toggleCommentSelection);
     connectEditorAction(ui->actionSingleLineComment, &ScintillaNext::commentLineSelection);
     connectEditorAction(ui->actionSingleLineUncomment, &ScintillaNext::uncommentLineSelection);
+
+    connect(ui->actionConvertToHex, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        auto result = NumberConverter::convert(editor, NumberConverter::ToHex);
+        if (result.success) {
+            ui->statusBar->showMessage(tr("Converted '%1' → %2").arg(result.original, result.converted), 3000);
+        } else {
+            ui->statusBar->showMessage(result.errorMessage, 4000);
+        }
+    });
+    connect(ui->actionConvertToDec, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        auto result = NumberConverter::convert(editor, NumberConverter::ToDec);
+        if (result.success) {
+            ui->statusBar->showMessage(tr("Converted '%1' → %2").arg(result.original, result.converted), 3000);
+        } else {
+            ui->statusBar->showMessage(result.errorMessage, 4000);
+        }
+    });
+    connect(ui->actionConvertToBin, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        auto result = NumberConverter::convert(editor, NumberConverter::ToBin);
+        if (result.success) {
+            ui->statusBar->showMessage(tr("Converted '%1' → %2").arg(result.original, result.converted), 3000);
+        } else {
+            ui->statusBar->showMessage(result.errorMessage, 4000);
+        }
+    });
+    connect(ui->actionConvertToOct, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        auto result = NumberConverter::convert(editor, NumberConverter::ToOct);
+        if (result.success) {
+            ui->statusBar->showMessage(tr("Converted '%1' → %2").arg(result.original, result.converted), 3000);
+        } else {
+            ui->statusBar->showMessage(result.errorMessage, 4000);
+        }
+    });
 
     connect(ui->actionBase64Encode, &QAction::triggered, this, [this]() {
         ScintillaNext *editor = currentEditor();
@@ -1873,8 +1911,12 @@ void MainWindow::updateContentBasedUi(ScintillaNext *editor)
     ui->actionUpperCase->setEnabled(hasAnySelections);
 
     ui->actionBase64Encode->setEnabled(editor != nullptr);
-    ui->actionURLEncode->setEnabled(hasAnySelections);
     ui->actionBase64Decode->setEnabled(editor != nullptr);
+    ui->actionConvertToHex->setEnabled(editor != nullptr);
+    ui->actionConvertToDec->setEnabled(editor != nullptr);
+    ui->actionConvertToBin->setEnabled(editor != nullptr);
+    ui->actionConvertToOct->setEnabled(editor != nullptr);
+    ui->actionURLEncode->setEnabled(hasAnySelections);
     ui->actionURLDecode->setEnabled(hasAnySelections);
 }
 

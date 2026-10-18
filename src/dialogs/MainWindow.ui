@@ -188,12 +188,22 @@
     <addaction name="menuCopyAs"/>
     <addaction name="menuIndent"/>
     <addaction name="menuConvertCase"/>
+    <addaction name="menuConvertNumber"/>
     <addaction name="menuEOLConversion"/>
     <addaction name="menuLine_Operations"/>
     <addaction name="menuCommentUncomment"/>
     <addaction name="menuEncodingDecoding"/>
     <addaction name="separator"/>
     <addaction name="actionColumnMode"/>
+    <widget class="QMenu" name="menuConvertNumber">
+     <property name="title">
+      <string>Convert Number</string>
+     </property>
+     <addaction name="actionConvertToHex"/>
+     <addaction name="actionConvertToDec"/>
+     <addaction name="actionConvertToBin"/>
+     <addaction name="actionConvertToOct"/>
+    </widget>
    </widget>
    <widget class="QMenu" name="menuSearch">
     <property name="title">
@@ -1644,6 +1654,56 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+U</string>
+   </property>
+  </action>
+  <action name="actionConvertToHex">
+   <property name="text">
+    <string>To Hexadecimal (0x...)</string>
+   </property>
+   <property name="toolTip">
+    <string>Convert number at cursor or selection to hexadecimal</string>
+   </property>
+   <property name="statusTip">
+    <string>Convert number at cursor or selection to hexadecimal</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+H</string>
+   </property>
+  </action>
+  <action name="actionConvertToDec">
+   <property name="text">
+    <string>To Decimal</string>
+   </property>
+   <property name="toolTip">
+    <string>Convert number at cursor or selection to decimal</string>
+   </property>
+   <property name="statusTip">
+    <string>Convert number at cursor or selection to decimal</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+I</string>
+   </property>
+  </action>
+  <action name="actionConvertToBin">
+   <property name="text">
+    <string>To Binary (0b...)</string>
+   </property>
+   <property name="toolTip">
+    <string>Convert number at cursor or selection to binary</string>
+   </property>
+   <property name="statusTip">
+    <string>Convert number at cursor or selection to binary</string>
+   </property>
+  </action>
+  <action name="actionConvertToOct">
+   <property name="text">
+    <string>To Octal (0o...)</string>
+   </property>
+   <property name="toolTip">
+    <string>Convert number at cursor or selection to octal</string>
+   </property>
+   <property name="statusTip">
+    <string>Convert number at cursor or selection to octal</string>
    </property>
   </action>
 </ui>

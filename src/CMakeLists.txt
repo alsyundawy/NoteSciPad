@@ -101,6 +101,8 @@ qt_add_executable(NoteSciPad
 	features/AutoClosePairs.cpp
 	utils/Base64Utils.h
 	utils/Base64Utils.cpp
+	utils/NumberConverter.h
+	utils/NumberConverter.cpp
 	decorators/ApplicationDecorator.cpp
 	decorators/ApplicationDecorator.h
 	decorators/AutoCompletion.cpp
