@@ -806,6 +806,11 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
 
     ui->pushExitFullScreen->setParent(this); // This is important
     ui->pushExitFullScreen->setVisible(false);
+#if defined(Q_OS_MACOS)
+    ui->actionFullScreen->setShortcuts({QKeySequence(Qt::META | Qt::CTRL | Qt::Key_F), QKeySequence(Qt::Key_F11)});
+#else
+    ui->actionFullScreen->setShortcut(QKeySequence::FullScreen);
+#endif
     connect(ui->pushExitFullScreen, &QPushButton::clicked, ui->actionFullScreen, &QAction::trigger);
     connect(ui->actionFullScreen, &QAction::triggered, this, [this](bool b) {
         static bool wasMaximized;
@@ -2219,6 +2224,7 @@ void MainWindow::saveSettings() const
 
     settings->setValue("MainWindow/geometry", saveGeometry());
     settings->setValue("MainWindow/windowState", saveState());
+    settings->setValue("MainWindow/isFullScreen", isFullScreen());
 
     settings->setValue("Editor/ZoomLevel", zoomLevel);
 }
@@ -2260,6 +2266,11 @@ void MainWindow::restoreWindowState()
 
     restoreGeometry(settings->value("MainWindow/geometry").toByteArray());
     restoreState(settings->value("MainWindow/windowState").toByteArray());
+
+    if (settings->value("MainWindow/isFullScreen", false).toBool()) {
+        ui->actionFullScreen->setChecked(true);
+        ui->actionFullScreen->trigger();
+    }
 
     // Always hide the dock no matter how the application was closed
     SearchResultsDock *srDock = findChild<SearchResultsDock *>();
@@ -2529,6 +2540,26 @@ void MainWindow::dropEvent(QDropEvent *event)
     else {
         event->ignore();
     }
+}
+
+void MainWindow::changeEvent(QEvent *event)
+{
+    if (event->type() == QEvent::WindowStateChange) {
+        const bool fs = isFullScreen();
+        if (ui->actionFullScreen->isChecked() != fs) {
+            ui->actionFullScreen->setChecked(fs);
+        }
+        if (!fs) {
+            ui->menuBar->setMaximumHeight(QWIDGETSIZE_MAX);
+            ui->mainToolBar->setMaximumHeight(QWIDGETSIZE_MAX);
+            ui->pushExitFullScreen->hide();
+        } else {
+            ui->pushExitFullScreen->setGeometry(width() - 20, 0, 20, 20);
+            ui->pushExitFullScreen->show();
+            ui->pushExitFullScreen->raise();
+        }
+    }
+    QMainWindow::changeEvent(event);
 }
 
 QMenu *MainWindow::buildMenu(QStringList actionNames)
