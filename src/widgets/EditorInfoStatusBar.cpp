@@ -12,6 +12,7 @@
 
 #include "EditorInfoStatusBar.h"
 #include "EncodingDetector.h"
+#include "CharacterInfo.h"
 #include "MainWindow.h"
 #include "StatusLabel.h"
 #include "StatusBarCustomizerDialog.h"
@@ -39,7 +40,14 @@ EditorInfoStatusBar::EditorInfoStatusBar(QMainWindow *window) :
 
     unicodeChar = new StatusLabel(90);
     addPermanentWidget(unicodeChar, 0);
-    unicodeChar->setToolTip(tr("Character Unicode Code Point at Cursor"));
+    unicodeChar->setToolTip(tr("Character Unicode Code Point at Cursor (Click for full details)"));
+    connect(unicodeChar, &ClickableLabel::clicked, this, [this]() {
+        if (MainWindow *mw = qobject_cast<MainWindow *>(window)) {
+            if (QAction *act = mw->findChild<QAction *>("actionShowCharacterInfo")) {
+                act->trigger();
+            }
+        }
+    });
 
     occurrences = new StatusLabel(80);
     addPermanentWidget(occurrences, 0);
@@ -297,28 +305,13 @@ void EditorInfoStatusBar::updateUnicodeChar(ScintillaNext *editor)
 {
     if (!editor || !unicodeChar || !isFieldVisible(FieldUnicodeChar)) return;
 
-    const int pos = editor->currentPos();
-    if (pos >= editor->length()) {
-        unicodeChar->setText(QStringLiteral("U+EOF"));
-        return;
-    }
-
-    int nextPos = static_cast<int>(editor->positionAfter(pos));
-    if (nextPos <= pos) {
-        nextPos = pos + 1;
-    }
-
-    const QByteArray bytes = editor->get_text_range(pos, nextPos);
-    const QString str = QString::fromUtf8(bytes);
-    if (!str.isEmpty()) {
-        const uint codePoint = str.toUcs4().value(0, 0);
-        if (codePoint <= 0xFFFF) {
-            unicodeChar->setText(QStringLiteral("U+%1").arg(codePoint, 4, 16, QLatin1Char('0')).toUpper());
-        } else {
-            unicodeChar->setText(QStringLiteral("U+%1").arg(codePoint, 6, 16, QLatin1Char('0')).toUpper());
-        }
+    CharacterInfo::Details d = CharacterInfo::getDetailsAt(editor);
+    if (d.isValid) {
+        unicodeChar->setText(CharacterInfo::formatCodePoint(d.codePoint));
+        unicodeChar->setToolTip(CharacterInfo::formatSummary(d) + tr("\n(Click for full details)"));
     } else {
         unicodeChar->setText(QStringLiteral("U+----"));
+        unicodeChar->setToolTip(tr("No character at cursor"));
     }
 }
 

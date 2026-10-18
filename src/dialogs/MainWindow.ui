@@ -194,6 +194,7 @@
     <addaction name="menuConvertNumber"/>
     <addaction name="menuInsert"/>
     <addaction name="actionColorPreview"/>
+    <addaction name="actionShowCharacterInfo"/>
     <addaction name="menuCodeFormatter"/>
     <addaction name="menuMathExpression"/>
     <addaction name="menuEOLConversion"/>
@@ -384,6 +385,7 @@
     <addaction name="actionToggleURLHighlighting"/>
     <addaction name="menuFocusedView"/>
     <addaction name="actionCustomizeStatusBarFields"/>
+    <addaction name="actionShowCharacterInfo"/>
     <addaction name="separator"/>
     <addaction name="actionFoldAll"/>
     <addaction name="actionUnfoldAll"/>
@@ -2248,6 +2250,20 @@
    </property>
    <property name="statusTip">
     <string>Automatically append timestamp when opening files with .LOG header</string>
+   </property>
+  </action>
+  <action name="actionShowCharacterInfo">
+   <property name="text">
+    <string>Show Character &amp;Info</string>
+   </property>
+   <property name="toolTip">
+    <string>Show Unicode code point, name, category, and encoding bytes for character under caret</string>
+   </property>
+   <property name="statusTip">
+    <string>Show Unicode code point, name, category, and encoding bytes for character under caret</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Shift+I</string>
    </property>
   </action>
 </ui>

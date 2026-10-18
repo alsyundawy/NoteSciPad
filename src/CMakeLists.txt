@@ -109,6 +109,8 @@ qt_add_executable(NoteSciPad
 	features/LogAutoTimestamp.cpp
 	features/UrlUtils.h
 	features/UrlUtils.cpp
+	features/CharacterInfo.h
+	features/CharacterInfo.cpp
 	utils/Base64Utils.h
 	utils/Base64Utils.cpp
 	utils/NumberConverter.h
@@ -177,6 +179,9 @@ qt_add_executable(NoteSciPad
 	dialogs/EncodingSelectionDialog.cpp
 	dialogs/EncodingSelectionDialog.h
 	dialogs/EncodingSelectionDialog.ui
+	dialogs/CharacterInfoDialog.cpp
+	dialogs/CharacterInfoDialog.h
+	dialogs/CharacterInfoDialog.ui
 	docks/DebugLogDock.cpp
 	docks/DebugLogDock.h
 	docks/DebugLogDock.ui

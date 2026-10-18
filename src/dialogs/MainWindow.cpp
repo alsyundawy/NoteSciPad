@@ -27,6 +27,8 @@
 #include "UrlUtils.h"
 #include "EncodingDetector.h"
 #include "EncodingSelectionDialog.h"
+#include "CharacterInfo.h"
+#include "CharacterInfoDialog.h"
 #include "SessionManager.h"
 #include "UndoAction.h"
 #include "ui_MainWindow.h"
@@ -501,6 +503,18 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
                 infoStatusBar->updateEncoding(ed);
             }
         }
+    });
+
+    connect(ui->actionShowCharacterInfo, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        if (!editor) return;
+        CharacterInfo::Details details = CharacterInfo::getDetailsAt(editor);
+        if (!details.isValid) {
+            QMessageBox::information(this, tr("NoteSciPad"), tr("No character found at the current position."));
+            return;
+        }
+        CharacterInfoDialog dlg(details, this);
+        dlg.exec();
     });
 
     connect(ui->actionClearRecentFilesList, &QAction::triggered, app->getRecentFilesListManager(), &RecentFilesListManager::clear);
@@ -2662,6 +2676,8 @@ void MainWindow::addEditor(ScintillaNext *editor)
             "Delete",
             "",
             "SelectAll",
+            "",
+            "ShowCharacterInfo",
             "",
             "Base64Encode",
             "URLEncode",
