@@ -68,6 +68,7 @@
 #include "Base64Utils.h"
 #include "NumberConverter.h"
 #include "GuidTimestampUtils.h"
+#include "ColorPreviewCallTip.h"
 #include "SearchResultsDock.h"
 #include "DebugLogDock.h"
 #include "FileListDock.h"
@@ -301,6 +302,24 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
             ui->statusBar->showMessage(tr("Converted '%1' → %2").arg(result.original, result.converted), 3000);
         } else {
             ui->statusBar->showMessage(result.errorMessage, 4000);
+        }
+    });
+
+    connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        if (!editor) {
+            ui->statusBar->showMessage(tr("No active editor"), 3000);
+            return;
+        }
+
+        auto *cp = editor->findChild<ColorPreviewCallTip *>(QString(), Qt::FindDirectChildrenOnly);
+        if (cp) {
+            const int pos = (editor->selectionStart() != editor->selectionEnd()) ? editor->selectionStart() : editor->currentPos();
+            if (cp->showPreviewAt(pos)) {
+                cp->openColorDialogAndReplace();
+            } else {
+                ui->statusBar->showMessage(tr("No color code found under cursor (supports #HEX, rgb(), rgba(), hsl())"), 4000);
+            }
         }
     });
 
@@ -2015,6 +2034,7 @@ void MainWindow::updateContentBasedUi(ScintillaNext *editor)
     ui->actionInsertGuidHyphens->setEnabled(canInsert);
     ui->actionInsertGuidBraces->setEnabled(canInsert);
     ui->actionInsertGuidCompact->setEnabled(canInsert);
+    ui->actionColorPreview->setEnabled(canInsert);
     ui->actionURLEncode->setEnabled(hasAnySelections);
     ui->actionURLDecode->setEnabled(hasAnySelections);
 }

@@ -190,6 +190,7 @@
     <addaction name="menuConvertCase"/>
     <addaction name="menuConvertNumber"/>
     <addaction name="menuInsert"/>
+    <addaction name="actionColorPreview"/>
     <addaction name="menuEOLConversion"/>
     <addaction name="menuLine_Operations"/>
     <addaction name="menuCommentUncomment"/>
@@ -1828,6 +1829,20 @@
    </property>
    <property name="statusTip">
     <string>Insert new GUID without hyphens</string>
+   </property>
+  </action>
+  <action name="actionColorPreview">
+   <property name="text">
+    <string>Color Preview / Pick Color...</string>
+   </property>
+   <property name="toolTip">
+    <string>Preview color under cursor or open color picker</string>
+   </property>
+   <property name="statusTip">
+    <string>Preview color under cursor or open color picker</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+C</string>
    </property>
   </action>
 </ui>

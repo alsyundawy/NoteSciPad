@@ -99,6 +99,8 @@ qt_add_executable(NoteSciPad
 	features/MarkOccurrences.cpp
 	features/AutoClosePairs.h
 	features/AutoClosePairs.cpp
+	features/ColorPreviewCallTip.h
+	features/ColorPreviewCallTip.cpp
 	utils/Base64Utils.h
 	utils/Base64Utils.cpp
 	utils/NumberConverter.h

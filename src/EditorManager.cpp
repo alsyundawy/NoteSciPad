@@ -34,6 +34,7 @@
 #include "AutoIndentation.h"
 #include "AutoCompletion.h"
 #include "AutoClosePairs.h"
+#include "ColorPreviewCallTip.h"
 #include "URLFinder.h"
 #include "BookMarkDecorator.h"
 #include "HTMLAutoCompleteDecorator.h"
@@ -414,6 +415,10 @@ void EditorManager::setupEditor(ScintillaNext *editor)
 
     BookMarkDecorator *bm = new BookMarkDecorator(editor);
     bm->setEnabled(true);
+
+    ColorPreviewCallTip *cp = new ColorPreviewCallTip(editor);
+    cp->setEnabled(settings->colorPreviewCallTip());
+    connect(settings, &ApplicationSettings::colorPreviewCallTipChanged, cp, &ColorPreviewCallTip::setEnabled);
 
     new HTMLAutoCompleteDecorator(editor);
 }
