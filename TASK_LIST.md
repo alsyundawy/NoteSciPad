@@ -14,25 +14,25 @@ Use this as the living task board. Check items as they are completed.
 
 ### Source Acquisition (Mandatory)
 
-- [ ] Download latest source zip/tar.gz from <https://github.com/alsyundawy/NotepadNext-MacOS/releases> (prefer tag `0.15-02` or newer)
-- [ ] Extract into `/Users/alsyundawy/Downloads/GitHub/NoteSciPad`
-- [ ] Verify `thirdparty/scintilla/` and `thirdparty/lexilla/` exist and are complete
-- [ ] Verify `src/ScintillaNext.*` and CMake integration are intact
-- [ ] `git init` + initial commit (new history, no clone)
-- [ ] Create new remote repository `NoteSciPad` (or `notesci-pad`) and push
+- [x] Download latest source zip/tar.gz from <https://github.com/alsyundawy/NotepadNext-MacOS/releases> (prefer tag `0.15-02` or newer)
+- [x] Extract into `/Users/alsyundawy/Downloads/GitHub/NoteSciPad`
+- [x] Verify `thirdparty/scintilla/` and `thirdparty/lexilla/` exist and are complete
+- [x] Verify `src/ScintillaNext.*` and CMake integration are intact
+- [x] `git init` + initial commit (new history, no clone)
+- [x] Create new remote repository `NoteSciPad` (or `notesci-pad`) and push
 
 ### Project Setup
 
-- [ ] Update branding: application name **NoteSciPad**, About dialog, window title, Info.plist
-- [ ] Replace icons with NoteSciPad specific icons (.icns + high-res)
-- [ ] Update README (Indonesian + English) — mention Scintilla + Lexilla, source origin, and that it is **not** affiliated with Notepad++
-- [ ] Establish coding standards document (see WORKGROUND.md)
-- [ ] Verify clean build on arm64 and x64 (Qt 6.5 / 6.8 / 6.10)
-- [ ] Confirm Scintilla and Lexilla are statically linked and functional
-- [ ] Set up basic CI (GitHub Actions macOS + Linux runners)
-- [ ] Document current feature inventory of base NotepadNext
-- [ ] Create feature branch strategy (`main` / `develop` / `feature/*`)
-- [ ] Decide binary/package name: `notesci` or `notesci-pad`
+- [x] Update branding: application name **NoteSciPad**, About dialog, window title, Info.plist
+- [x] Replace icons with NoteSciPad specific icons (.icns + high-res)
+- [x] Update README (Indonesian + English) — mention Scintilla + Lexilla, source origin, and that it is **not** affiliated with Notepad++
+- [x] Establish coding standards document (see WORKGROUND.md)
+- [x] Verify clean build on arm64 and x64 (Qt 6.5 / 6.8 / 6.10)
+- [x] Confirm Scintilla and Lexilla are statically linked and functional
+- [x] Set up basic CI (GitHub Actions macOS + Linux runners)
+- [x] Document current feature inventory of base NotepadNext
+- [x] Create feature branch strategy (`main` / `develop` / `feature/*`)
+- [x] Decide binary/package name: `notesci` or `notesci-pad`
 
 ---
 
