@@ -73,6 +73,7 @@
 #include "MathEvaluator.h"
 #include "FocusedView.h"
 #include "FocusedViewDialog.h"
+#include "LogAutoTimestamp.h"
 #include "SearchResultsDock.h"
 #include "DebugLogDock.h"
 #include "FileListDock.h"
@@ -788,6 +789,35 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
 
     connect(ui->actionCustomizeStatusBarFields, &QAction::triggered, this, [this]() {
         ui->statusBar->showCustomizerDialog();
+    });
+
+    ui->actionToggleAutoLogTimestamp->setChecked(LogAutoTimestamp::isAutoLogEnabled());
+    connect(ui->actionToggleAutoLogTimestamp, &QAction::toggled, this, [](bool checked) {
+        LogAutoTimestamp::setAutoLogEnabled(checked);
+    });
+
+    connect(ui->actionInsertLogHeader, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        if (!editor) {
+            ui->statusBar->showMessage(tr("No active editor"), 3000);
+            return;
+        }
+        if (LogAutoTimestamp::insertLogHeader(editor)) {
+            ui->statusBar->showMessage(tr("Inserted .LOG header at line 1"), 3000);
+        } else {
+            ui->statusBar->showMessage(tr("Document already contains .LOG header"), 3000);
+        }
+    });
+
+    connect(ui->actionAppendLogTimestamp, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        if (!editor) {
+            ui->statusBar->showMessage(tr("No active editor"), 3000);
+            return;
+        }
+        if (LogAutoTimestamp::appendLogTimestamp(editor)) {
+            ui->statusBar->showMessage(tr("Appended log timestamp at end of document"), 3000);
+        }
     });
 
     markOccurrences = new MarkOccurrences(this);
@@ -1621,7 +1651,11 @@ void MainWindow::reloadFile()
     auto reply = QMessageBox::question(this, tr("Reload File"), tr("Are you sure you want to reload <b>%1</b>? Any unsaved changes will be lost.").arg(filePath));
 
     if (reply == QMessageBox::Yes) {
+        editor->setProperty("LogTimestampApplied", false);
         editor->reload();
+        if (LogAutoTimestamp::isAutoLogEnabled() && LogAutoTimestamp::checkAndApplyLogTimestamp(editor)) {
+            ui->statusBar->showMessage(tr(".LOG auto-timestamp appended to log file"), 3000);
+        }
     }
 }
 
@@ -2208,6 +2242,9 @@ void MainWindow::updateContentBasedUi(ScintillaNext *editor)
     ui->actionFocusedViewBookmarks->setEnabled(hasEditor);
     ui->actionFocusedViewClear->setEnabled(isFocused);
     ui->actionCustomizeStatusBarFields->setEnabled(true);
+    ui->actionInsertLogHeader->setEnabled(canInsert);
+    ui->actionAppendLogTimestamp->setEnabled(canInsert);
+    ui->actionToggleAutoLogTimestamp->setEnabled(true);
 }
 
 void MainWindow::detectLanguage(ScintillaNext *editor)
@@ -2234,6 +2271,12 @@ void MainWindow::activateEditor(ScintillaNext *editor)
 
     checkFileForModification(editor);
     updateGui(editor);
+
+    if (editor && LogAutoTimestamp::isAutoLogEnabled() && !editor->property("LogTimestampApplied").toBool()) {
+        if (LogAutoTimestamp::checkAndApplyLogTimestamp(editor)) {
+            ui->statusBar->showMessage(tr(".LOG auto-timestamp appended to log file"), 3000);
+        }
+    }
 
     emit editorActivated(editor);
 }

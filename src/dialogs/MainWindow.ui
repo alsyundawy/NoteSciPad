@@ -222,6 +222,10 @@
      <addaction name="actionInsertGuidHyphens"/>
      <addaction name="actionInsertGuidBraces"/>
      <addaction name="actionInsertGuidCompact"/>
+     <addaction name="separator"/>
+     <addaction name="actionInsertLogHeader"/>
+     <addaction name="actionAppendLogTimestamp"/>
+     <addaction name="actionToggleAutoLogTimestamp"/>
     </widget>
     <widget class="QMenu" name="menuCodeFormatter">
      <property name="title">
@@ -1987,6 +1991,118 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Alt+E</string>
+   </property>
+  </action>
+  <action name="actionToggleFocusedView">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Toggle &amp;Focused View</string>
+   </property>
+   <property name="toolTip">
+    <string>Toggle line filtering based on current word or selection</string>
+   </property>
+   <property name="statusTip">
+    <string>Toggle line filtering based on current word or selection</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+V</string>
+   </property>
+  </action>
+  <action name="actionFocusedViewFilterDialog">
+   <property name="text">
+    <string>&amp;Filter Lines...</string>
+   </property>
+   <property name="toolTip">
+    <string>Open Focused View line filter dialog</string>
+   </property>
+   <property name="statusTip">
+    <string>Open Focused View line filter dialog</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+F10</string>
+   </property>
+  </action>
+  <action name="actionFocusedViewBookmarks">
+   <property name="text">
+    <string>Filter to &amp;Bookmarked Lines</string>
+   </property>
+   <property name="toolTip">
+    <string>Show only lines with bookmarks</string>
+   </property>
+   <property name="statusTip">
+    <string>Show only lines with bookmarks</string>
+   </property>
+  </action>
+  <action name="actionFocusedViewClear">
+   <property name="text">
+    <string>&amp;Show All Hidden Lines (Reset)</string>
+   </property>
+   <property name="toolTip">
+    <string>Restore visibility of all lines in document</string>
+   </property>
+   <property name="statusTip">
+    <string>Restore visibility of all lines in document</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Shift+V</string>
+   </property>
+  </action>
+  <action name="actionCustomizeStatusBarFields">
+   <property name="text">
+    <string>&amp;Status Bar Fields...</string>
+   </property>
+   <property name="toolTip">
+    <string>Customize fields displayed on the status bar</string>
+   </property>
+   <property name="statusTip">
+    <string>Customize fields displayed on the status bar</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Shift+B</string>
+   </property>
+  </action>
+  <action name="actionInsertLogHeader">
+   <property name="text">
+    <string>Insert .LOG Header</string>
+   </property>
+   <property name="toolTip">
+    <string>Insert .LOG header at beginning of document</string>
+   </property>
+   <property name="statusTip">
+    <string>Insert .LOG header at beginning of document</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+L</string>
+   </property>
+  </action>
+  <action name="actionAppendLogTimestamp">
+   <property name="text">
+    <string>Append .LOG Timestamp</string>
+   </property>
+   <property name="toolTip">
+    <string>Append current timestamp at end of document</string>
+   </property>
+   <property name="statusTip">
+    <string>Append current timestamp at end of document</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F5</string>
+   </property>
+  </action>
+  <action name="actionToggleAutoLogTimestamp">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Auto .LOG Timestamp on Open</string>
+   </property>
+   <property name="toolTip">
+    <string>Automatically append timestamp when opening files with .LOG header</string>
+   </property>
+   <property name="statusTip">
+    <string>Automatically append timestamp when opening files with .LOG header</string>
    </property>
   </action>
 </ui>
