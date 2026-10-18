@@ -375,6 +375,7 @@
     <addaction name="menuZoom"/>
     <addaction name="actionWordWrap"/>
     <addaction name="menuFocusedView"/>
+    <addaction name="actionCustomizeStatusBarFields"/>
     <addaction name="separator"/>
     <addaction name="actionFoldAll"/>
     <addaction name="actionUnfoldAll"/>

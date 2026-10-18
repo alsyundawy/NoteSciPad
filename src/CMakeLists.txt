@@ -166,6 +166,8 @@ qt_add_executable(NoteSciPad
 	dialogs/PreferencesDialog.cpp
 	dialogs/PreferencesDialog.h
 	dialogs/PreferencesDialog.ui
+	dialogs/StatusBarCustomizerDialog.cpp
+	dialogs/StatusBarCustomizerDialog.h
 	docks/DebugLogDock.cpp
 	docks/DebugLogDock.h
 	docks/DebugLogDock.ui

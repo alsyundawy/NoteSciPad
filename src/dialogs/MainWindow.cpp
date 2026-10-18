@@ -786,7 +786,13 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
         updateContentBasedUi(editor);
     });
 
+    connect(ui->actionCustomizeStatusBarFields, &QAction::triggered, this, [this]() {
+        ui->statusBar->showCustomizerDialog();
+    });
+
     markOccurrences = new MarkOccurrences(this);
+    connect(markOccurrences, &MarkOccurrences::occurrencesMarked, ui->statusBar, &EditorInfoStatusBar::setOccurrencesCount);
+    connect(markOccurrences, &MarkOccurrences::marksCleared, ui->statusBar, &EditorInfoStatusBar::clearOccurrencesCount);
 
     connect(ui->actionMarkAllOccurrences, &QAction::triggered, this, [this]() {
         ScintillaNext *editor = currentEditor();
@@ -2201,6 +2207,7 @@ void MainWindow::updateContentBasedUi(ScintillaNext *editor)
     ui->actionFocusedViewFilterDialog->setEnabled(hasEditor);
     ui->actionFocusedViewBookmarks->setEnabled(hasEditor);
     ui->actionFocusedViewClear->setEnabled(isFocused);
+    ui->actionCustomizeStatusBarFields->setEnabled(true);
 }
 
 void MainWindow::detectLanguage(ScintillaNext *editor)

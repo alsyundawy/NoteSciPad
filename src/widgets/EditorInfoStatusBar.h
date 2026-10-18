@@ -1,29 +1,21 @@
 /*
- * This file is part of Notepad Next.
- * Copyright 2022 Justin Dailey
+ * This file is part of NoteSciPad.
  *
- * Notepad Next is free software: you can redistribute it and/or modify
+ * Adapted from Notepad3 status bar customization architecture.
+ * Sources: rizonesoft/Notepad3 (src/Notepad3.ini, Statusbar Settings)
+ *
+ * NoteSciPad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
- * Notepad Next is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 
 #ifndef EDITORINFOSTATUSBAR_H
 #define EDITORINFOSTATUSBAR_H
 
 #include <QStatusBar>
-
+#include <QMap>
 #include "ScintillaTypes.h"
-
 
 class QLabel;
 class QMainWindow;
@@ -34,32 +26,66 @@ class EditorInfoStatusBar : public QStatusBar
     Q_OBJECT
 
 public:
+    enum Field {
+        FieldLanguage = 0,
+        FieldDocSize,
+        FieldDocPos,
+        FieldUnicodeChar,
+        FieldOccurrences,
+        FieldEol,
+        FieldEncoding,
+        FieldOverType,
+        FieldCount
+    };
+    Q_ENUM(Field)
+
     explicit EditorInfoStatusBar(QMainWindow *window);
 
     void refresh(ScintillaNext *editor);
 
+    void setFieldVisible(Field field, bool visible);
+    bool isFieldVisible(Field field) const;
+
+    void resetToDefaults();
+    void showCustomizerDialog();
+
+public slots:
+    void setOccurrencesCount(const QString &query, int count);
+    void clearOccurrencesCount();
+
 signals:
     void customContextMenuRequestedForEOLLabel(const QPoint &pos);
 
+protected:
+    void contextMenuEvent(QContextMenuEvent *event) override;
+
 private slots:
     void connectToEditor(ScintillaNext *editor);
-
     void editorUpdated(Scintilla::Update updated);
 
     void updateDocumentSize(ScintillaNext *editor);
     void updateSelectionInfo(ScintillaNext *editor);
+    void updateUnicodeChar(ScintillaNext *editor);
     void updateLanguage(ScintillaNext *editor);
     void updateEol(ScintillaNext *editor);
     void updateEncoding(ScintillaNext *editor);
     void updateOverType(ScintillaNext *editor);
 
 private:
-    QLabel *docType;
-    QLabel *docSize;
-    QLabel *docPos;
-    QLabel *unicodeType;
-    QLabel *eolFormat;
-    QLabel *overType;
+    void loadSettings();
+    void saveSettings();
+    QLabel *labelForField(Field field) const;
+
+    QLabel *docType {nullptr};
+    QLabel *docSize {nullptr};
+    QLabel *docPos {nullptr};
+    QLabel *unicodeChar {nullptr};
+    QLabel *occurrences {nullptr};
+    QLabel *eolFormat {nullptr};
+    QLabel *unicodeType {nullptr};
+    QLabel *overType {nullptr};
+
+    QMap<Field, bool> m_fieldVisibility;
 
     QMetaObject::Connection editorUiUpdated;
     QMetaObject::Connection documentLexerChanged;

@@ -1,68 +1,225 @@
 /*
- * This file is part of Notepad Next.
- * Copyright 2022 Justin Dailey
+ * This file is part of NoteSciPad.
  *
- * Notepad Next is free software: you can redistribute it and/or modify
+ * Adapted from Notepad3 status bar customization architecture.
+ * Sources: rizonesoft/Notepad3 (src/Notepad3.ini, Statusbar Settings)
+ *
+ * NoteSciPad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
- * Notepad Next is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 
 #include "EditorInfoStatusBar.h"
 #include "MainWindow.h"
 #include "StatusLabel.h"
+#include "StatusBarCustomizerDialog.h"
 
+#include <QMenu>
+#include <QAction>
+#include <QContextMenuEvent>
+#include <QSettings>
 
 EditorInfoStatusBar::EditorInfoStatusBar(QMainWindow *window) :
     QStatusBar(window)
 {
-    // Set up the status bar
+    // Set up the status bar fields
     docType = new StatusLabel();
     addWidget(docType, 1);
+    docType->setToolTip(tr("Document Language / Syntax Scheme"));
 
-    docSize = new StatusLabel(200);
+    docSize = new StatusLabel(180);
     addPermanentWidget(docSize, 0);
+    docSize->setToolTip(tr("Document Size & Line Count"));
 
-    docPos = new StatusLabel(250);
+    docPos = new StatusLabel(230);
     addPermanentWidget(docPos, 0);
+    docPos->setToolTip(tr("Cursor Position & Selection"));
+
+    unicodeChar = new StatusLabel(90);
+    addPermanentWidget(unicodeChar, 0);
+    unicodeChar->setToolTip(tr("Character Unicode Code Point at Cursor"));
+
+    occurrences = new StatusLabel(80);
+    addPermanentWidget(occurrences, 0);
+    occurrences->setToolTip(tr("Marked Occurrences Count"));
+    occurrences->setText(tr("Occ: -"));
 
     eolFormat = new StatusLabel(100);
     addPermanentWidget(eolFormat, 0);
+    eolFormat->setToolTip(tr("End of Line Format (Right-click to convert)"));
     eolFormat->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(qobject_cast<StatusLabel*>(eolFormat), &StatusLabel::customContextMenuRequested, this, [=, this](const QPoint &pos) {
         emit customContextMenuRequestedForEOLLabel(eolFormat->mapToGlobal(pos));
     });
 
-    unicodeType = new StatusLabel(125);
+    unicodeType = new StatusLabel(110);
     addPermanentWidget(unicodeType, 0);
+    unicodeType->setToolTip(tr("Encoding / BOM"));
 
-    overType = new StatusLabel(25);
+    overType = new StatusLabel(30);
     addPermanentWidget(overType, 0);
+    overType->setToolTip(tr("Typing Mode: Insert (INS) / Overtype (OVR)"));
 
     MainWindow *w = qobject_cast<MainWindow *>(window);
-
     connect(w, &MainWindow::editorActivated, this, &EditorInfoStatusBar::connectToEditor);
 
     connect(qobject_cast<StatusLabel*>(overType), &StatusLabel::clicked, w, [=, this]() {
         ScintillaNext *editor = w->currentEditor();
-        editor->editToggleOvertype();
-        updateOverType(editor);
+        if (editor) {
+            editor->editToggleOvertype();
+            updateOverType(editor);
+        }
     });
+
+    loadSettings();
+}
+
+QLabel *EditorInfoStatusBar::labelForField(Field field) const
+{
+    switch (field) {
+    case FieldLanguage: return docType;
+    case FieldDocSize: return docSize;
+    case FieldDocPos: return docPos;
+    case FieldUnicodeChar: return unicodeChar;
+    case FieldOccurrences: return occurrences;
+    case FieldEol: return eolFormat;
+    case FieldEncoding: return unicodeType;
+    case FieldOverType: return overType;
+    default: return nullptr;
+    }
+}
+
+void EditorInfoStatusBar::loadSettings()
+{
+    QSettings settings;
+    settings.beginGroup(QStringLiteral("StatusBarFields"));
+    m_fieldVisibility[FieldLanguage] = settings.value(QStringLiteral("Language"), true).toBool();
+    m_fieldVisibility[FieldDocSize] = settings.value(QStringLiteral("DocSize"), true).toBool();
+    m_fieldVisibility[FieldDocPos] = settings.value(QStringLiteral("DocPos"), true).toBool();
+    m_fieldVisibility[FieldUnicodeChar] = settings.value(QStringLiteral("UnicodeChar"), true).toBool();
+    m_fieldVisibility[FieldOccurrences] = settings.value(QStringLiteral("Occurrences"), true).toBool();
+    m_fieldVisibility[FieldEol] = settings.value(QStringLiteral("Eol"), true).toBool();
+    m_fieldVisibility[FieldEncoding] = settings.value(QStringLiteral("Encoding"), true).toBool();
+    m_fieldVisibility[FieldOverType] = settings.value(QStringLiteral("OverType"), true).toBool();
+    settings.endGroup();
+
+    for (int i = 0; i < FieldCount; ++i) {
+        Field f = static_cast<Field>(i);
+        QLabel *label = labelForField(f);
+        if (label) {
+            label->setVisible(m_fieldVisibility.value(f, true));
+        }
+    }
+}
+
+void EditorInfoStatusBar::saveSettings()
+{
+    QSettings settings;
+    settings.beginGroup(QStringLiteral("StatusBarFields"));
+    settings.setValue(QStringLiteral("Language"), m_fieldVisibility.value(FieldLanguage, true));
+    settings.setValue(QStringLiteral("DocSize"), m_fieldVisibility.value(FieldDocSize, true));
+    settings.setValue(QStringLiteral("DocPos"), m_fieldVisibility.value(FieldDocPos, true));
+    settings.setValue(QStringLiteral("UnicodeChar"), m_fieldVisibility.value(FieldUnicodeChar, true));
+    settings.setValue(QStringLiteral("Occurrences"), m_fieldVisibility.value(FieldOccurrences, true));
+    settings.setValue(QStringLiteral("Eol"), m_fieldVisibility.value(FieldEol, true));
+    settings.setValue(QStringLiteral("Encoding"), m_fieldVisibility.value(FieldEncoding, true));
+    settings.setValue(QStringLiteral("OverType"), m_fieldVisibility.value(FieldOverType, true));
+    settings.endGroup();
+}
+
+void EditorInfoStatusBar::setFieldVisible(Field field, bool visible)
+{
+    m_fieldVisibility[field] = visible;
+    QLabel *label = labelForField(field);
+    if (label) {
+        label->setVisible(visible);
+    }
+    saveSettings();
+}
+
+bool EditorInfoStatusBar::isFieldVisible(Field field) const
+{
+    return m_fieldVisibility.value(field, true);
+}
+
+void EditorInfoStatusBar::resetToDefaults()
+{
+    for (int i = 0; i < FieldCount; ++i) {
+        Field f = static_cast<Field>(i);
+        m_fieldVisibility[f] = true;
+        QLabel *label = labelForField(f);
+        if (label) {
+            label->setVisible(true);
+        }
+    }
+    saveSettings();
+}
+
+void EditorInfoStatusBar::showCustomizerDialog()
+{
+    StatusBarCustomizerDialog dialog(this, window());
+    dialog.exec();
+}
+
+void EditorInfoStatusBar::contextMenuEvent(QContextMenuEvent *event)
+{
+    QMenu menu(this);
+    menu.setTitle(tr("Status Bar Fields"));
+
+    auto addFieldAction = [&](Field field, const QString &text) {
+        QAction *action = menu.addAction(text);
+        action->setCheckable(true);
+        action->setChecked(isFieldVisible(field));
+        connect(action, &QAction::toggled, this, [this, field](bool checked) {
+            setFieldVisible(field, checked);
+        });
+    };
+
+    addFieldAction(FieldLanguage, tr("Document Language"));
+    addFieldAction(FieldDocSize, tr("Document Size (Length / Lines)"));
+    addFieldAction(FieldDocPos, tr("Cursor Position & Selection"));
+    addFieldAction(FieldUnicodeChar, tr("Unicode Character (U+XXXX)"));
+    addFieldAction(FieldOccurrences, tr("Marked Occurrences Count"));
+    addFieldAction(FieldEol, tr("End-of-Line Format"));
+    addFieldAction(FieldEncoding, tr("File Encoding"));
+    addFieldAction(FieldOverType, tr("Insert / Overtype Mode"));
+
+    menu.addSeparator();
+
+    QAction *dialogAction = menu.addAction(tr("Customize Status Bar Fields..."));
+    connect(dialogAction, &QAction::triggered, this, &EditorInfoStatusBar::showCustomizerDialog);
+
+    QAction *resetAction = menu.addAction(tr("Reset to Default Fields"));
+    connect(resetAction, &QAction::triggered, this, &EditorInfoStatusBar::resetToDefaults);
+
+    menu.exec(event->globalPos());
+}
+
+void EditorInfoStatusBar::setOccurrencesCount(const QString &query, int count)
+{
+    Q_UNUSED(query);
+    if (occurrences) {
+        if (count > 0) {
+            occurrences->setText(tr("Occ: %L1").arg(count));
+        } else {
+            occurrences->setText(tr("Occ: 0"));
+        }
+    }
+}
+
+void EditorInfoStatusBar::clearOccurrencesCount()
+{
+    if (occurrences) {
+        occurrences->setText(tr("Occ: -"));
+    }
 }
 
 void EditorInfoStatusBar::refresh(ScintillaNext *editor)
 {
     updateDocumentSize(editor);
     updateSelectionInfo(editor);
+    updateUnicodeChar(editor);
     updateLanguage(editor);
     updateEol(editor);
     updateEncoding(editor);
@@ -71,11 +228,11 @@ void EditorInfoStatusBar::refresh(ScintillaNext *editor)
 
 void EditorInfoStatusBar::connectToEditor(ScintillaNext *editor)
 {
-    // Remove any previous connections
     disconnect(editorUiUpdated);
     disconnect(documentLexerChanged);
 
-    // Connect to the new editor
+    if (!editor) return;
+
     editorUiUpdated = connect(editor, &ScintillaNext::updateUi, this, &EditorInfoStatusBar::editorUpdated);
     documentLexerChanged = connect(editor, &ScintillaNext::lexerChanged, this, [=, this]() { updateLanguage(editor); });
 
@@ -85,6 +242,7 @@ void EditorInfoStatusBar::connectToEditor(ScintillaNext *editor)
 void EditorInfoStatusBar::editorUpdated(Scintilla::Update updated)
 {
     ScintillaNext *editor = qobject_cast<ScintillaNext *>(sender());
+    if (!editor) return;
 
     if (Scintilla::FlagSet(updated, Scintilla::Update::Text)) {
         updateDocumentSize(editor);
@@ -92,17 +250,20 @@ void EditorInfoStatusBar::editorUpdated(Scintilla::Update updated)
 
     if (Scintilla::FlagSet(updated, Scintilla::Update::Text) || Scintilla::FlagSet(updated, Scintilla::Update::Selection)) {
         updateSelectionInfo(editor);
+        updateUnicodeChar(editor);
     }
 }
 
 void EditorInfoStatusBar::updateDocumentSize(ScintillaNext *editor)
 {
+    if (!editor || !docSize) return;
     QString sizeText = tr("Length: %L1    Lines: %L2").arg(editor->length()).arg(editor->lineCount());
     docSize->setText(sizeText);
 }
 
 void EditorInfoStatusBar::updateSelectionInfo(ScintillaNext *editor)
 {
+    if (!editor || !docPos) return;
     QString selectionText;
 
     if (editor->selections() > 1) {
@@ -124,16 +285,44 @@ void EditorInfoStatusBar::updateSelectionInfo(ScintillaNext *editor)
     docPos->setText(positionText + selectionText);
 }
 
+void EditorInfoStatusBar::updateUnicodeChar(ScintillaNext *editor)
+{
+    if (!editor || !unicodeChar || !isFieldVisible(FieldUnicodeChar)) return;
+
+    const int pos = editor->currentPos();
+    if (pos >= editor->length()) {
+        unicodeChar->setText(QStringLiteral("U+EOF"));
+        return;
+    }
+
+    int nextPos = static_cast<int>(editor->positionAfter(pos));
+    if (nextPos <= pos) {
+        nextPos = pos + 1;
+    }
+
+    const QByteArray bytes = editor->get_text_range(pos, nextPos);
+    const QString str = QString::fromUtf8(bytes);
+    if (!str.isEmpty()) {
+        const uint codePoint = str.toUcs4().value(0, 0);
+        if (codePoint <= 0xFFFF) {
+            unicodeChar->setText(QStringLiteral("U+%1").arg(codePoint, 4, 16, QLatin1Char('0')).toUpper());
+        } else {
+            unicodeChar->setText(QStringLiteral("U+%1").arg(codePoint, 6, 16, QLatin1Char('0')).toUpper());
+        }
+    } else {
+        unicodeChar->setText(QStringLiteral("U+----"));
+    }
+}
+
 void EditorInfoStatusBar::updateLanguage(ScintillaNext *editor)
 {
+    if (!editor || !docType) return;
     docType->setText(editor->languageName);
 }
 
-
 void EditorInfoStatusBar::updateEol(ScintillaNext *editor)
 {
-    // No good way to keep these in sync with the Main Window menu items :(
-
+    if (!editor || !eolFormat) return;
     switch(editor->eOLMode()) {
     case SC_EOL_CR:
         eolFormat->setText(tr("Macintosh (CR)"));
@@ -149,6 +338,7 @@ void EditorInfoStatusBar::updateEol(ScintillaNext *editor)
 
 void EditorInfoStatusBar::updateEncoding(ScintillaNext *editor)
 {
+    if (!editor || !unicodeType) return;
     QString text;
     switch(editor->codePage()) {
     case 0:
@@ -172,13 +362,12 @@ void EditorInfoStatusBar::updateEncoding(ScintillaNext *editor)
 
 void EditorInfoStatusBar::updateOverType(ScintillaNext *editor)
 {
+    if (!editor || !overType) return;
     bool overtype = editor->overtype();
     if (overtype) {
-        //: This is a short abbreviation to indicate characters will be replaced when typing
         overType->setText(tr("OVR"));
     }
     else {
-        //: This is a short abbreviation to indicate characters will be inserted when typing
         overType->setText(tr("INS"));
     }
 }

@@ -36,7 +36,13 @@ signals:
     void clicked();
 
 protected:
-    void mouseReleaseEvent(QMouseEvent *event) override { Q_UNUSED(event); emit clicked(); }
+    void mouseReleaseEvent(QMouseEvent *event) override {
+        if (event->button() == Qt::LeftButton) {
+            emit clicked();
+        } else {
+            QLabel::mouseReleaseEvent(event);
+        }
+    }
     void mouseDoubleClickEvent(QMouseEvent *event) override { emit customContextMenuRequested(event->pos()); }
 };
 
