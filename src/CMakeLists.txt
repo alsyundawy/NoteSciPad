@@ -109,6 +109,8 @@ qt_add_executable(NoteSciPad
 	features/LogAutoTimestamp.cpp
 	features/ClipboardMonitor.h
 	features/ClipboardMonitor.cpp
+	features/TransparentWindowManager.h
+	features/TransparentWindowManager.cpp
 	features/UrlUtils.h
 	features/UrlUtils.cpp
 	features/CharacterInfo.h
@@ -214,6 +216,9 @@ qt_add_executable(NoteSciPad
 	dialogs/ClipboardHistoryDialog.cpp
 	dialogs/ClipboardHistoryDialog.h
 	dialogs/ClipboardHistoryDialog.ui
+	dialogs/TransparencyDialog.cpp
+	dialogs/TransparencyDialog.h
+	dialogs/TransparencyDialog.ui
 	docks/DebugLogDock.cpp
 	docks/DebugLogDock.h
 	docks/DebugLogDock.ui

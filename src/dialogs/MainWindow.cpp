@@ -93,6 +93,8 @@
 #include "EncryptDialog.h"
 #include "DecryptDialog.h"
 #include "ClipboardHistoryDialog.h"
+#include "TransparencyDialog.h"
+#include "../features/TransparentWindowManager.h"
 #include "../features/ClipboardMonitor.h"
 #include "../utils/CryptoManager.h"
 
@@ -760,6 +762,49 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
 
     ui->menuEdit->addSeparator();
     ui->menuEdit->addMenu(menuClipboardMonitoring);
+
+    transparentWindowManager = new TransparentWindowManager(this, this);
+    connect(transparentWindowManager, &TransparentWindowManager::transparencyChanged, this, &MainWindow::onTransparencyChanged);
+
+    menuTransparency = new QMenu(tr("&Window Transparency"), this);
+    actionToggleTransparency = new QAction(tr("&Toggle Transparent Mode"), this);
+    actionToggleTransparency->setCheckable(true);
+    actionToggleTransparency->setChecked(transparentWindowManager->isEnabled());
+    actionToggleTransparency->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_T));
+    connect(actionToggleTransparency, &QAction::triggered, this, &MainWindow::onToggleTransparencyTriggered);
+    menuTransparency->addAction(actionToggleTransparency);
+
+    actionIncreaseOpacity = new QAction(tr("&Increase Opacity (+10%)"), this);
+    actionIncreaseOpacity->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_Up));
+    connect(actionIncreaseOpacity, &QAction::triggered, this, &MainWindow::onIncreaseOpacityTriggered);
+    menuTransparency->addAction(actionIncreaseOpacity);
+
+    actionDecreaseOpacity = new QAction(tr("&Decrease Opacity (-10%)"), this);
+    actionDecreaseOpacity->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_Down));
+    connect(actionDecreaseOpacity, &QAction::triggered, this, &MainWindow::onDecreaseOpacityTriggered);
+    menuTransparency->addAction(actionDecreaseOpacity);
+
+    QMenu *menuPresets = new QMenu(tr("Opacity &Presets"), this);
+    const QVector<int> presets = {100, 90, 80, 75, 60, 50, 40, 25};
+    for (int p : presets) {
+        QAction *act = new QAction(QStringLiteral("%1%").arg(p), this);
+        connect(act, &QAction::triggered, this, [this, p]() {
+            transparentWindowManager->setOpacity(p);
+            if (!transparentWindowManager->isEnabled()) {
+                transparentWindowManager->setEnabled(true);
+            }
+        });
+        menuPresets->addAction(act);
+    }
+    menuTransparency->addMenu(menuPresets);
+
+    menuTransparency->addSeparator();
+    actionTransparencyOptions = new QAction(tr("Transparency &Options..."), this);
+    connect(actionTransparencyOptions, &QAction::triggered, this, &MainWindow::onTransparencyOptionsTriggered);
+    menuTransparency->addAction(actionTransparencyOptions);
+
+    ui->menuView->addSeparator();
+    ui->menuView->addMenu(menuTransparency);
 
     connect(ClipboardMonitor::instance(), &ClipboardMonitor::monitoringStateChanged, this, &MainWindow::onClipboardMonitoringStateChanged);
     connect(ClipboardMonitor::instance(), &ClipboardMonitor::clipCaptured, this, &MainWindow::onClipboardClipCaptured);
@@ -3567,5 +3612,47 @@ void MainWindow::onClipboardMonitoringStateChanged(bool active)
 void MainWindow::onClipboardClipCaptured(const ClipboardMonitor::CapturedClip &clip, int totalCount)
 {
     ui->statusBar->showMessage(tr("📋 Captured clipboard item #%1 (%2 chars)").arg(totalCount).arg(clip.charCount), 3000);
+}
+
+void MainWindow::onToggleTransparencyTriggered()
+{
+    if (transparentWindowManager) {
+        transparentWindowManager->toggle();
+    }
+}
+
+void MainWindow::onIncreaseOpacityTriggered()
+{
+    if (transparentWindowManager) {
+        transparentWindowManager->increaseOpacity(10);
+    }
+}
+
+void MainWindow::onDecreaseOpacityTriggered()
+{
+    if (transparentWindowManager) {
+        transparentWindowManager->decreaseOpacity(10);
+    }
+}
+
+void MainWindow::onTransparencyOptionsTriggered()
+{
+    if (transparentWindowManager) {
+        TransparencyDialog dlg(transparentWindowManager, this);
+        dlg.exec();
+    }
+}
+
+void MainWindow::onTransparencyChanged(bool enabled, int opacity, TransparentWindowManager::TransparencyMode mode)
+{
+    Q_UNUSED(mode);
+    if (actionToggleTransparency) {
+        actionToggleTransparency->setChecked(enabled);
+    }
+    if (enabled) {
+        ui->statusBar->showMessage(tr("Window Transparency: ON (Opacity: %1%)").arg(opacity), 3000);
+    } else {
+        ui->statusBar->showMessage(tr("Window Transparency: OFF (100% Opaque)"), 3000);
+    }
 }
 

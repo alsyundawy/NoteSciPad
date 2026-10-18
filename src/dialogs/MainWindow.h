@@ -230,6 +230,11 @@ private:
     void onClipboardHistoryTriggered();
     void onClipboardMonitoringStateChanged(bool active);
     void onClipboardClipCaptured(const ClipboardMonitor::CapturedClip &clip, int totalCount);
+    void onToggleTransparencyTriggered();
+    void onIncreaseOpacityTriggered();
+    void onDecreaseOpacityTriggered();
+    void onTransparencyOptionsTriggered();
+    void onTransparencyChanged(bool enabled, int opacity, TransparentWindowManager::TransparencyMode mode);
 
     QMenu *menuRun = nullptr;
     QMenu *menuSavedTools = nullptr;
@@ -240,6 +245,12 @@ private:
     QMenu *menuClipboardMonitoring = nullptr;
     QAction *actionToggleClipboardMonitoring = nullptr;
     QAction *actionClipboardHistory = nullptr;
+    TransparentWindowManager *transparentWindowManager = nullptr;
+    QMenu *menuTransparency = nullptr;
+    QAction *actionToggleTransparency = nullptr;
+    QAction *actionIncreaseOpacity = nullptr;
+    QAction *actionDecreaseOpacity = nullptr;
+    QAction *actionTransparencyOptions = nullptr;
     FocusedView *focusedView = nullptr;
     FocusedViewDialog *focusedViewDialog = nullptr;
 
