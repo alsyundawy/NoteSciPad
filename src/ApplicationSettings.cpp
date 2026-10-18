@@ -72,6 +72,7 @@ CREATE_SETTING(Editor, DefaultEOLMode, defaultEOLMode, QString, QStringLiteral("
 CREATE_SETTING(Editor, URLHighlighting, urlHighlighting, bool, true)
 CREATE_SETTING(Editor, UrlThreshold, urlThreshold, int, 5)
 CREATE_SETTING(Editor, ShowLineNumbers, showLineNumbers, bool, true)
+    CREATE_SETTING(Editor, ShowChangeHistory, showChangeHistory, bool, true)
 CREATE_SETTING(Editor, AutoCompletion, autoCompletion, bool, true)
 CREATE_SETTING(Editor, AutoCloseBrackets, autoCloseBrackets, bool, true)
 CREATE_SETTING(Editor, AutoCloseQuotes, autoCloseQuotes, bool, true)

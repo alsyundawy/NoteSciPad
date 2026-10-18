@@ -161,6 +161,8 @@ qt_add_executable(NoteSciPad
 	decorators/SurroundSelection.h
 	decorators/URLFinder.cpp
 	decorators/URLFinder.h
+	decorators/ChangeHistoryDecorator.cpp
+	decorators/ChangeHistoryDecorator.h
 	dialogs/ColumnEditorDialog.cpp
 	dialogs/ColumnEditorDialog.h
 	dialogs/ColumnEditorDialog.ui

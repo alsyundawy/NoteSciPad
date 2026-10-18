@@ -37,6 +37,7 @@
 #include "ColorPreviewCallTip.h"
 #include "URLFinder.h"
 #include "BookMarkDecorator.h"
+#include "ChangeHistoryDecorator.h"
 #include "HTMLAutoCompleteDecorator.h"
 
 
@@ -134,6 +135,15 @@ EditorManager::EditorManager(ApplicationSettings *settings, QObject *parent)
     connect(settings, &ApplicationSettings::showLineNumbersChanged, this, [=, this](bool b){
         for (auto &editor : getEditors()) {
             LineNumbers *decorator = editor->findChild<LineNumbers *>(QString(), Qt::FindDirectChildrenOnly);
+            if (decorator) {
+                decorator->setEnabled(b);
+            }
+        }
+    });
+
+    connect(settings, &ApplicationSettings::showChangeHistoryChanged, this, [=, this](bool b){
+        for (auto &editor : getEditors()) {
+            ChangeHistoryDecorator *decorator = editor->findChild<ChangeHistoryDecorator *>(QString(), Qt::FindDirectChildrenOnly);
             if (decorator) {
                 decorator->setEnabled(b);
             }
@@ -425,6 +435,9 @@ void EditorManager::setupEditor(ScintillaNext *editor)
 
     BookMarkDecorator *bm = new BookMarkDecorator(editor);
     bm->setEnabled(true);
+
+    ChangeHistoryDecorator *ch = new ChangeHistoryDecorator(editor);
+    ch->setEnabled(settings->showChangeHistory());
 
     ColorPreviewCallTip *cp = new ColorPreviewCallTip(editor);
     cp->setEnabled(settings->colorPreviewCallTip());

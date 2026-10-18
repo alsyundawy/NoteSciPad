@@ -236,6 +236,13 @@
         </widget>
        </item>
        <item>
+        <widget class="QCheckBox" name="checkBoxShowChangeHistory">
+         <property name="text">
+          <string>Show Change History Margin</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QCheckBox" name="checkBoxAutoCompletion">
          <property name="text">
           <string>Auto Completion</string>

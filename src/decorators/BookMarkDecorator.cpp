@@ -20,7 +20,7 @@
 #include "BookMarkDecorator.h"
 #include "UndoAction.h"
 
-const int MARK_BOOKMARK = 24;
+const int MARK_BOOKMARK = 20;
 const int MARGIN = 1;
 
 BookMarkDecorator::BookMarkDecorator(ScintillaNext *editor) :

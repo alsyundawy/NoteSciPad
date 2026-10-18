@@ -120,6 +120,7 @@ public:
     DEFINE_SETTING(URLHighlighting, urlHighlighting, bool)
     DEFINE_SETTING(UrlThreshold, urlThreshold, int)
     DEFINE_SETTING(ShowLineNumbers, showLineNumbers, bool)
+    DEFINE_SETTING(ShowChangeHistory, showChangeHistory, bool)
     DEFINE_SETTING(AutoCompletion, autoCompletion, bool)
     DEFINE_SETTING(AutoCloseBrackets, autoCloseBrackets, bool)
     DEFINE_SETTING(AutoCloseQuotes, autoCloseQuotes, bool)

@@ -85,6 +85,7 @@
 #include "DebugLogDock.h"
 #include "FileListDock.h"
 #include "FunctionListDock.h"
+#include "ChangeHistoryDecorator.h"
 #include "ExternalToolManager.h"
 #include "RunDialog.h"
 #include "ManageToolsDialog.h"
@@ -1179,6 +1180,49 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
     ui->actionToggleURLHighlighting->setChecked(app->getSettings()->urlHighlighting());
     connect(app->getSettings(), &ApplicationSettings::urlHighlightingChanged, ui->actionToggleURLHighlighting, &QAction::setChecked);
     connect(ui->actionToggleURLHighlighting, &QAction::toggled, app->getSettings(), &ApplicationSettings::setURLHighlighting);
+
+    // Change History Margin
+    QAction *actionChangeHistory = new QAction(tr("Change &History Margin"), this);
+    actionChangeHistory->setCheckable(true);
+    actionChangeHistory->setChecked(app->getSettings()->showChangeHistory());
+    actionChangeHistory->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_H));
+    connect(app->getSettings(), &ApplicationSettings::showChangeHistoryChanged, actionChangeHistory, &QAction::setChecked);
+    connect(actionChangeHistory, &QAction::toggled, app->getSettings(), &ApplicationSettings::setShowChangeHistory);
+    ui->menuView->addAction(actionChangeHistory);
+
+    QAction *actionNextChange = new QAction(tr("&Next Change"), this);
+    actionNextChange->setShortcut(QKeySequence(Qt::ALT | Qt::Key_F7));
+    connect(actionNextChange, &QAction::triggered, this, [this]() {
+        if (auto *ed = currentEditor()) {
+            if (auto *dec = ed->findChild<ChangeHistoryDecorator *>(QString(), Qt::FindDirectChildrenOnly)) {
+                int curLine = ed->lineFromPosition(ed->currentPos());
+                int targetLine = dec->nextChangeAfter(curLine);
+                if (targetLine != -1) {
+                    ed->gotoLine(targetLine);
+                    ed->scrollVertical(targetLine, 0);
+                    ed->setFocus();
+                }
+            }
+        }
+    });
+    ui->menuView->addAction(actionNextChange);
+
+    QAction *actionPrevChange = new QAction(tr("&Previous Change"), this);
+    actionPrevChange->setShortcut(QKeySequence(Qt::ALT | Qt::SHIFT | Qt::Key_F7));
+    connect(actionPrevChange, &QAction::triggered, this, [this]() {
+        if (auto *ed = currentEditor()) {
+            if (auto *dec = ed->findChild<ChangeHistoryDecorator *>(QString(), Qt::FindDirectChildrenOnly)) {
+                int curLine = ed->lineFromPosition(ed->currentPos());
+                int targetLine = dec->previousChangeBefore(curLine);
+                if (targetLine != -1) {
+                    ed->gotoLine(targetLine);
+                    ed->scrollVertical(targetLine, 0);
+                    ed->setFocus();
+                }
+            }
+        }
+    });
+    ui->menuView->addAction(actionPrevChange);
 
     // Zooming controls all editors simulaneously
     connect(ui->actionZoomIn, &QAction::triggered, this, [this]() {

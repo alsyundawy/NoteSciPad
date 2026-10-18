@@ -104,6 +104,7 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
     connect(ui->spinBoxUrlThreshold, &QSpinBox::valueChanged, settings, &ApplicationSettings::setUrlThreshold);
     connect(settings, &ApplicationSettings::urlThresholdChanged, ui->spinBoxUrlThreshold, &QSpinBox::setValue);
     MapSettingToCheckBox(ui->checkBoxShowLineNumbers, &ApplicationSettings::showLineNumbers, &ApplicationSettings::setShowLineNumbers, &ApplicationSettings::showLineNumbersChanged);
+    MapSettingToCheckBox(ui->checkBoxShowChangeHistory, &ApplicationSettings::showChangeHistory, &ApplicationSettings::setShowChangeHistory, &ApplicationSettings::showChangeHistoryChanged);
     MapSettingToCheckBox(ui->checkBoxAutoCompletion, &ApplicationSettings::autoCompletion, &ApplicationSettings::setAutoCompletion, &ApplicationSettings::autoCompletionChanged);
     MapSettingToCheckBox(ui->checkBoxAutoCloseBrackets, &ApplicationSettings::autoCloseBrackets, &ApplicationSettings::setAutoCloseBrackets, &ApplicationSettings::autoCloseBracketsChanged);
     MapSettingToCheckBox(ui->checkBoxAutoCloseQuotes, &ApplicationSettings::autoCloseQuotes, &ApplicationSettings::setAutoCloseQuotes, &ApplicationSettings::autoCloseQuotesChanged);
