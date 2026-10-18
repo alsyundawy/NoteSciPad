@@ -198,6 +198,9 @@ qt_add_executable(NoteSciPad
 	dialogs/ManageToolsDialog.cpp
 	dialogs/ManageToolsDialog.h
 	dialogs/ManageToolsDialog.ui
+	dialogs/RegexHelperDialog.cpp
+	dialogs/RegexHelperDialog.h
+	dialogs/RegexHelperDialog.ui
 	docks/DebugLogDock.cpp
 	docks/DebugLogDock.h
 	docks/DebugLogDock.ui

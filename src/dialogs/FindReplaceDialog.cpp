@@ -92,11 +92,9 @@ FindReplaceDialog::FindReplaceDialog(ISearchResultsHandler *searchResults, MainW
 
     connect(ui->radioRegexSearch, &QRadioButton::toggled, this, [=, this](bool checked) {
         if (checked) {
-            ui->checkBoxBackwardsDirection->setChecked(false);
             ui->checkBoxMatchWholeWord->setChecked(false);
         }
 
-        ui->checkBoxBackwardsDirection->setDisabled(checked);
         ui->checkBoxMatchWholeWord->setDisabled(checked);
         ui->checkBoxRegexMatchesNewline->setEnabled(checked);
     });
@@ -161,9 +159,7 @@ FindReplaceDialog::FindReplaceDialog(ISearchResultsHandler *searchResults, MainW
     const auto findPrevious = [this]() {
         const int curTab = tabBar->currentIndex();
         if (curTab == FIND_TAB || curTab == REPLACE_TAB) {
-            // Always default to forward if regex search is checked
-            const bool regex = ui->radioRegexSearch->isChecked();
-            performFind(regex ? SearchDirection::Forwards : SearchDirection::Backwards);
+            performFind(SearchDirection::Backwards);
         }
     };
     new QShortcut(QKeySequence(Qt::SHIFT | Qt::Key_Return), this, this, findPrevious, Qt::WidgetWithChildrenShortcut);
@@ -480,7 +476,7 @@ void FindReplaceDialog::changeTab(int index)
         ui->checkBoxBookmarkLine->hide();
         ui->checkBoxPurgeForEachSearch->hide();
 
-        ui->checkBoxBackwardsDirection->setEnabled(!ui->radioRegexSearch->isChecked());
+        // Backwards regex supported
         ui->checkBoxWrapAround->setEnabled(true);
     }
     else if (index == REPLACE_TAB) {
@@ -504,7 +500,7 @@ void FindReplaceDialog::changeTab(int index)
         ui->checkBoxBookmarkLine->hide();
         ui->checkBoxPurgeForEachSearch->hide();
 
-        ui->checkBoxBackwardsDirection->setEnabled(!ui->radioRegexSearch->isChecked());
+        // Backwards regex supported
         ui->checkBoxWrapAround->setEnabled(true);
     }
     else if (index == MARK_TAB) {
@@ -528,7 +524,7 @@ void FindReplaceDialog::changeTab(int index)
         ui->checkBoxBookmarkLine->show();
         ui->checkBoxPurgeForEachSearch->show();
 
-        ui->checkBoxBackwardsDirection->setEnabled(!ui->radioRegexSearch->isChecked());
+        // Backwards regex supported
         ui->checkBoxWrapAround->setEnabled(true);
     }
 
@@ -708,8 +704,12 @@ FindOptions FindReplaceDialog::findOptions() const
     if (ui->checkBoxMatchCase->isChecked())
         options.flags |= Scintilla::FindOption::MatchCase;
 
-    if (ui->radioRegexSearch->isChecked())
+    if (ui->radioRegexSearch->isChecked()) {
         options.flags |= Scintilla::FindOption::RegExp;
+        if (ui->checkBoxRegexMatchesNewline->isChecked()) {
+            options.flags |= Scintilla::FindOption::Cxx11RegEx;
+        }
+    }
 
     options.wrapAround = ui->checkBoxWrapAround->isChecked();
 

@@ -89,6 +89,7 @@
 #include "ExternalToolManager.h"
 #include "RunDialog.h"
 #include "ManageToolsDialog.h"
+#include "RegexHelperDialog.h"
 
 #include "FindReplaceDialog.h"
 #include "MacroRunDialog.h"
@@ -723,6 +724,11 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
 
         editor->grabFocus();
     });
+
+    QAction *actionRegexHelper = new QAction(tr("Regular Expression &Tester && Reference..."), this);
+    actionRegexHelper->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::SHIFT | Qt::Key_R));
+    connect(actionRegexHelper, &QAction::triggered, this, &MainWindow::onRegexHelperTriggered);
+    ui->menuSearch->addAction(actionRegexHelper);
 
     connect(ui->actionFind, &QAction::triggered, this, [this]() {
         showFindReplaceDialog(FindReplaceDialog::FIND_TAB);
@@ -3329,4 +3335,15 @@ void MainWindow::onManageToolsTriggered()
     if (dlg.exec() == QDialog::Accepted) {
         updateCustomToolsMenu();
     }
+}
+
+
+void MainWindow::onRegexHelperTriggered()
+{
+    QString pattern;
+    if (auto *ed = currentEditor()) {
+        pattern = ExternalToolManager::getSelectedOrCurrentWord(ed);
+    }
+    RegexHelperDialog dlg(this, pattern);
+    dlg.exec();
 }

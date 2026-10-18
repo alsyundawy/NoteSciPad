@@ -50,6 +50,7 @@ class FocusedViewDialog;
 class FunctionListDock;
 class RunDialog;
 class ManageToolsDialog;
+class RegexHelperDialog;
 
 class MainWindow : public QMainWindow
 {
@@ -222,6 +223,7 @@ private:
     void onSearchGitHubTriggered();
     void onSearchStackOverflowTriggered();
     void onManageToolsTriggered();
+    void onRegexHelperTriggered();
 
     QMenu *menuRun = nullptr;
     QMenu *menuSavedTools = nullptr;
