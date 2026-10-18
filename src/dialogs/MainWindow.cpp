@@ -24,6 +24,7 @@
 #include "MarkerAppDecorator.h"
 #include "ScintillaSorter.h"
 #include "URLFinder.h"
+#include "UrlUtils.h"
 #include "SessionManager.h"
 #include "UndoAction.h"
 #include "ui_MainWindow.h"
@@ -414,10 +415,18 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
     });
     connect(ui->actionCopyURL, &QAction::triggered, this, [this]() {
         ScintillaNext *editor = currentEditor();
-        URLFinder *urlFinder = editor->findChild<URLFinder *>(QString(), Qt::FindDirectChildrenOnly);
-        if (urlFinder && urlFinder->isEnabled()) {
-            urlFinder->copyURLToClipboard(contextMenuPos);
-        }
+        if (!editor) return;
+        int pos = (contextMenuPos != -1) ? contextMenuPos : editor->currentPos();
+        contextMenuPos = -1;
+        UrlUtils::copyUrlAtPosition(editor, pos);
+    });
+
+    connect(ui->actionOpenURL, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        if (!editor) return;
+        int pos = (contextMenuPos != -1) ? contextMenuPos : editor->currentPos();
+        contextMenuPos = -1;
+        UrlUtils::openUrlAtPosition(editor, pos);
     });
 
     connect(ui->actionClearRecentFilesList, &QAction::triggered, app->getRecentFilesListManager(), &RecentFilesListManager::clear);
@@ -1062,6 +1071,11 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
     ui->actionWordWrap->setChecked(app->getSettings()->wordWrap());
     connect(app->getSettings(), &ApplicationSettings::wordWrapChanged, ui->actionWordWrap, &QAction::setChecked);
     connect(ui->actionWordWrap, &QAction::toggled, app->getSettings(), &ApplicationSettings::setWordWrap);
+
+    // URL Highlighting
+    ui->actionToggleURLHighlighting->setChecked(app->getSettings()->urlHighlighting());
+    connect(app->getSettings(), &ApplicationSettings::urlHighlightingChanged, ui->actionToggleURLHighlighting, &QAction::setChecked);
+    connect(ui->actionToggleURLHighlighting, &QAction::toggled, app->getSettings(), &ApplicationSettings::setURLHighlighting);
 
     // Zooming controls all editors simulaneously
     connect(ui->actionZoomIn, &QAction::triggered, this, [this]() {
@@ -2588,11 +2602,12 @@ void MainWindow::addEditor(ScintillaNext *editor)
             actionNames = settings->value("Gui/EditorContextMenu").toStringList();
         }
 
-        // If the cursor is at a URL, prepend the action
+        // If the cursor is at a URL, prepend the actions
         URLFinder *urlFinder = editor->findChild<URLFinder *>(QString(), Qt::FindDirectChildrenOnly);
         if (urlFinder && urlFinder->isEnabled() && urlFinder->isURL(contextMenuPos)) {
             actionNames.prepend("");
             actionNames.prepend("CopyURL");
+            actionNames.prepend("OpenURL");
         }
 
         auto menu = buildMenu(actionNames);

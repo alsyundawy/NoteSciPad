@@ -103,6 +103,8 @@
      <addaction name="actionCopyFullPath"/>
      <addaction name="actionCopyFileName"/>
      <addaction name="actionCopyFileDirectory"/>
+     <addaction name="separator"/>
+     <addaction name="actionCopyURL"/>
     </widget>
     <widget class="QMenu" name="menuIndent">
      <property name="title">
@@ -185,6 +187,7 @@
     <addaction name="actionSelectNext"/>
     <addaction name="separator"/>
     <addaction name="menuCopyMore"/>
+    <addaction name="actionOpenURL"/>
     <addaction name="menuCopyAs"/>
     <addaction name="menuIndent"/>
     <addaction name="menuConvertCase"/>
@@ -378,6 +381,7 @@
     <addaction name="menuShowSymbol"/>
     <addaction name="menuZoom"/>
     <addaction name="actionWordWrap"/>
+    <addaction name="actionToggleURLHighlighting"/>
     <addaction name="menuFocusedView"/>
     <addaction name="actionCustomizeStatusBarFields"/>
     <addaction name="separator"/>
@@ -1259,6 +1263,25 @@
   <action name="actionCopyURL">
    <property name="text">
     <string>Copy URL</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Shift+U</string>
+   </property>
+  </action>
+  <action name="actionOpenURL">
+   <property name="text">
+    <string>Open URL</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+U</string>
+   </property>
+  </action>
+  <action name="actionToggleURLHighlighting">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Highlight URLs</string>
    </property>
   </action>
   <action name="actionRemoveEmptyLines">

@@ -118,6 +118,7 @@ public:
     DEFINE_SETTING(AdditionalWordChars, additionalWordChars, QString);
     DEFINE_SETTING(DefaultEOLMode, defaultEOLMode, QString)
     DEFINE_SETTING(URLHighlighting, urlHighlighting, bool)
+    DEFINE_SETTING(UrlThreshold, urlThreshold, int)
     DEFINE_SETTING(ShowLineNumbers, showLineNumbers, bool)
     DEFINE_SETTING(AutoCompletion, autoCompletion, bool)
     DEFINE_SETTING(AutoCloseBrackets, autoCloseBrackets, bool)

@@ -122,6 +122,15 @@ EditorManager::EditorManager(ApplicationSettings *settings, QObject *parent)
         }
     });
 
+    connect(settings, &ApplicationSettings::urlThresholdChanged, this, [=, this](int thresholdMB){
+        for (auto &editor : getEditors()) {
+            URLFinder *decorator = editor->findChild<URLFinder *>(QString(), Qt::FindDirectChildrenOnly);
+            if (decorator) {
+                decorator->setUrlThreshold(thresholdMB);
+            }
+        }
+    });
+
     connect(settings, &ApplicationSettings::showLineNumbersChanged, this, [=, this](bool b){
         for (auto &editor : getEditors()) {
             LineNumbers *decorator = editor->findChild<LineNumbers *>(QString(), Qt::FindDirectChildrenOnly);
@@ -412,6 +421,7 @@ void EditorManager::setupEditor(ScintillaNext *editor)
 
     URLFinder *uf = new URLFinder(editor);
     uf->setEnabled(settings->urlHighlighting());
+    uf->setUrlThreshold(settings->urlThreshold());
 
     BookMarkDecorator *bm = new BookMarkDecorator(editor);
     bm->setEnabled(true);

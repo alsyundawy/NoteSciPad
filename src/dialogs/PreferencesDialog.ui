@@ -202,6 +202,33 @@
         </widget>
        </item>
        <item>
+        <layout class="QHBoxLayout" name="layoutUrlThreshold">
+         <item>
+          <widget class="QLabel" name="labelUrlThreshold">
+           <property name="text">
+            <string>URL Highlighting Size Threshold:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="spinBoxUrlThreshold">
+           <property name="minimum">
+            <number>0</number>
+           </property>
+           <property name="maximum">
+            <number>1024</number>
+           </property>
+           <property name="suffix">
+            <string> MB</string>
+           </property>
+           <property name="toolTip">
+            <string>Maximum document size to scan for URLs (0 = disable scanning)</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
         <widget class="QCheckBox" name="checkBoxShowLineNumbers">
          <property name="text">
           <string>Show Line Numbers</string>

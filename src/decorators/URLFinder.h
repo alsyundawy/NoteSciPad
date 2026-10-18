@@ -1,21 +1,14 @@
 /*
- * This file is part of Notepad Next.
- * Copyright 2022 Justin Dailey
+ * This file is part of NoteSciPad.
  *
- * Notepad Next is free software: you can redistribute it and/or modify
+ * Adapted from Notepad4 (zufuliu/notepad4, UrlThreshold) and Notepad3 URL features.
+ * Sources: zufuliu/notepad4 & rizonesoft/Notepad3
+ *
+ * NoteSciPad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
- * Notepad Next is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 
 #ifndef URLFINDER_H
 #define URLFINDER_H
@@ -30,6 +23,10 @@ public:
     URLFinder(ScintillaNext *editor);
     bool isURL(int position) const;
     void copyURLToClipboard(int position) const;
+    void openURLAt(int position) const;
+
+    void setUrlThreshold(int thresholdMB);
+    int urlThreshold() const { return m_urlThresholdMB; }
 
 private slots:
     void findURLs();
@@ -41,6 +38,7 @@ public slots:
 private:
     QTimer *timer;
     int indicator;
+    int m_urlThresholdMB {5};
 };
 
 #endif // URLFINDER_H

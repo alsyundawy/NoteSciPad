@@ -107,6 +107,8 @@ qt_add_executable(NoteSciPad
 	features/FocusedViewDialog.cpp
 	features/LogAutoTimestamp.h
 	features/LogAutoTimestamp.cpp
+	features/UrlUtils.h
+	features/UrlUtils.cpp
 	utils/Base64Utils.h
 	utils/Base64Utils.cpp
 	utils/NumberConverter.h

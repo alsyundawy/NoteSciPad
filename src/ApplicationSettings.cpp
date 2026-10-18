@@ -70,6 +70,7 @@ CREATE_SETTING(Editor, FontSize, fontSize, int, []() { return qApp->font().point
 CREATE_SETTING(Editor, AdditionalWordChars, additionalWordChars, QString, QStringLiteral(""));
 CREATE_SETTING(Editor, DefaultEOLMode, defaultEOLMode, QString, QStringLiteral(""))
 CREATE_SETTING(Editor, URLHighlighting, urlHighlighting, bool, true)
+CREATE_SETTING(Editor, UrlThreshold, urlThreshold, int, 5)
 CREATE_SETTING(Editor, ShowLineNumbers, showLineNumbers, bool, true)
 CREATE_SETTING(Editor, AutoCompletion, autoCompletion, bool, true)
 CREATE_SETTING(Editor, AutoCloseBrackets, autoCloseBrackets, bool, true)
