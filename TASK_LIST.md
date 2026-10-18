@@ -59,14 +59,14 @@ Use this as the living task board. Check items as they are completed.
 
 ### 3. File Browser Dock (matepath-style)
 
-- [ ] Create `FileBrowserDock` (QDockWidget)
-- [ ] Integrate QFileSystemModel + QTreeView
-- [ ] Double-click / Enter to open file
-- [ ] Context menu (Open, Reveal in Finder / File Manager, Copy Path, etc.)
-- [ ] Remember last directory and expanded state
-- [ ] Toolbar button / menu to toggle
-- [ ] Drag & drop support
-- [ ] Optional filter box
+- [x] Create `FileBrowserDock` (QDockWidget)
+- [x] Integrate QFileSystemModel + QTreeView
+- [x] Double-click / Enter to open file
+- [x] Context menu (Open, Reveal in Finder / File Manager, Copy Path, etc.)
+- [x] Remember last directory and expanded state
+- [x] Toolbar button / menu to toggle
+- [x] Drag & drop support
+- [x] Optional filter box
 
 ### 4. Base64 Encode / Decode
 
