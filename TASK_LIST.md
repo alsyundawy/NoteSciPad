@@ -104,7 +104,7 @@ Use this as the living task board. Check items as they are completed.
 - [x] Compress & Pretty for CSS, JavaScript, JSON, JSON5
 - [x] Copy as RTF (syntax-colored)
 - [x] Evaluate expression (math — start simple, evolve toward TinyExpr++ style)
-- [ ] Focused View (filter to matching lines)
+- [x] Focused View (filter to matching lines)
 - [ ] Customizable status bar fields
 - [ ] .LOG auto-timestamp behavior
 - [ ] URL highlighting with configurable size threshold (UrlThreshold)
