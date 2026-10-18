@@ -86,9 +86,9 @@ Use this as the living task board. Check items as they are completed.
 
 ### 6. Insert GUID + Timestamps
 
-- [ ] Insert new GUID (various formats)
-- [ ] Insert current timestamp (configurable formats)
-- [ ] Menu entries + optional shortcuts
+- [x] Insert new GUID (various formats)
+- [x] Insert current timestamp (configurable formats)
+- [x] Menu entries + optional shortcuts
 
 ### 7. Full-screen Mode
 
