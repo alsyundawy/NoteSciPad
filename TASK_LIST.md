@@ -50,12 +50,12 @@ Use this as the living task board. Check items as they are completed.
 
 ### 2. Enhanced Auto-completion
 
-- [ ] Auto-close parentheses, brackets, braces, quotes
-- [ ] Improve auto-indent rules
-- [ ] Context-based suggestions (where practical)
-- [ ] Configurable fill-up characters
-- [ ] Settings UI for auto-completion behavior
-- [ ] Test across major languages
+- [x] Auto-close parentheses, brackets, braces, quotes
+- [x] Improve auto-indent rules
+- [x] Context-based suggestions (where practical)
+- [x] Configurable fill-up characters
+- [x] Settings UI for auto-completion behavior
+- [x] Test across major languages
 
 ### 3. File Browser Dock (matepath-style)
 
