@@ -189,6 +189,7 @@
     <addaction name="menuIndent"/>
     <addaction name="menuConvertCase"/>
     <addaction name="menuConvertNumber"/>
+    <addaction name="menuInsert"/>
     <addaction name="menuEOLConversion"/>
     <addaction name="menuLine_Operations"/>
     <addaction name="menuCommentUncomment"/>
@@ -203,6 +204,21 @@
      <addaction name="actionConvertToDec"/>
      <addaction name="actionConvertToBin"/>
      <addaction name="actionConvertToOct"/>
+    </widget>
+    <widget class="QMenu" name="menuInsert">
+     <property name="title">
+      <string>Insert</string>
+     </property>
+     <addaction name="actionInsertDateTimeShort"/>
+     <addaction name="actionInsertDateTimeLong"/>
+     <addaction name="actionInsertTimestampIso"/>
+     <addaction name="actionInsertTimestampUnix"/>
+     <addaction name="actionInsertDateOnly"/>
+     <addaction name="actionInsertTimeOnly"/>
+     <addaction name="separator"/>
+     <addaction name="actionInsertGuidHyphens"/>
+     <addaction name="actionInsertGuidBraces"/>
+     <addaction name="actionInsertGuidCompact"/>
     </widget>
    </widget>
    <widget class="QMenu" name="menuSearch">
@@ -1704,6 +1720,114 @@
    </property>
    <property name="statusTip">
     <string>Convert number at cursor or selection to octal</string>
+   </property>
+  </action>
+  <action name="actionInsertDateTimeShort">
+   <property name="text">
+    <string>Current Date &amp; Time (Short)</string>
+   </property>
+   <property name="toolTip">
+    <string>Insert current date and time</string>
+   </property>
+   <property name="statusTip">
+    <string>Insert current date and time</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
+  </action>
+  <action name="actionInsertDateTimeLong">
+   <property name="text">
+    <string>Current Date &amp; Time (Long / Locale)</string>
+   </property>
+   <property name="toolTip">
+    <string>Insert formatted long date and time</string>
+   </property>
+   <property name="statusTip">
+    <string>Insert formatted long date and time</string>
+   </property>
+  </action>
+  <action name="actionInsertTimestampIso">
+   <property name="text">
+    <string>ISO-8601 Timestamp</string>
+   </property>
+   <property name="toolTip">
+    <string>Insert ISO-8601 formatted timestamp</string>
+   </property>
+   <property name="statusTip">
+    <string>Insert ISO-8601 formatted timestamp</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+F5</string>
+   </property>
+  </action>
+  <action name="actionInsertTimestampUnix">
+   <property name="text">
+    <string>Unix Timestamp (Epoch Seconds)</string>
+   </property>
+   <property name="toolTip">
+    <string>Insert current Unix timestamp in seconds</string>
+   </property>
+   <property name="statusTip">
+    <string>Insert current Unix timestamp in seconds</string>
+   </property>
+  </action>
+  <action name="actionInsertDateOnly">
+   <property name="text">
+    <string>Current Date (yyyy-MM-dd)</string>
+   </property>
+   <property name="toolTip">
+    <string>Insert current date</string>
+   </property>
+   <property name="statusTip">
+    <string>Insert current date</string>
+   </property>
+  </action>
+  <action name="actionInsertTimeOnly">
+   <property name="text">
+    <string>Current Time (HH:mm:ss)</string>
+   </property>
+   <property name="toolTip">
+    <string>Insert current time</string>
+   </property>
+   <property name="statusTip">
+    <string>Insert current time</string>
+   </property>
+  </action>
+  <action name="actionInsertGuidHyphens">
+   <property name="text">
+    <string>New GUID / UUID (Hyphenated)</string>
+   </property>
+   <property name="toolTip">
+    <string>Insert new UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)</string>
+   </property>
+   <property name="statusTip">
+    <string>Insert new UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+G</string>
+   </property>
+  </action>
+  <action name="actionInsertGuidBraces">
+   <property name="text">
+    <string>New GUID (with Braces { ... })</string>
+   </property>
+   <property name="toolTip">
+    <string>Insert new GUID ({XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX})</string>
+   </property>
+   <property name="statusTip">
+    <string>Insert new GUID ({XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX})</string>
+   </property>
+  </action>
+  <action name="actionInsertGuidCompact">
+   <property name="text">
+    <string>New GUID (32-digit Hex / Compact)</string>
+   </property>
+   <property name="toolTip">
+    <string>Insert new GUID without hyphens</string>
+   </property>
+   <property name="statusTip">
+    <string>Insert new GUID without hyphens</string>
    </property>
   </action>
 </ui>

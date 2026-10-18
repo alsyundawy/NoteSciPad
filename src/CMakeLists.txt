@@ -103,6 +103,8 @@ qt_add_executable(NoteSciPad
 	utils/Base64Utils.cpp
 	utils/NumberConverter.h
 	utils/NumberConverter.cpp
+	utils/GuidTimestampUtils.h
+	utils/GuidTimestampUtils.cpp
 	decorators/ApplicationDecorator.cpp
 	decorators/ApplicationDecorator.h
 	decorators/AutoCompletion.cpp

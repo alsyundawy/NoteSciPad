@@ -67,6 +67,7 @@
 #include "FileBrowserDock.h"
 #include "Base64Utils.h"
 #include "NumberConverter.h"
+#include "GuidTimestampUtils.h"
 #include "SearchResultsDock.h"
 #include "DebugLogDock.h"
 #include "FileListDock.h"
@@ -189,6 +190,88 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
         auto result = NumberConverter::convert(editor, NumberConverter::ToHex);
         if (result.success) {
             ui->statusBar->showMessage(tr("Converted '%1' → %2").arg(result.original, result.converted), 3000);
+        } else {
+            ui->statusBar->showMessage(result.errorMessage, 4000);
+        }
+    });
+
+    connect(ui->actionInsertDateTimeShort, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::DateTimeShort);
+        if (result.success) {
+            ui->statusBar->showMessage(tr("Inserted timestamp: %1").arg(result.insertedText), 3000);
+        } else {
+            ui->statusBar->showMessage(result.errorMessage, 4000);
+        }
+    });
+    connect(ui->actionInsertDateTimeLong, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::DateTimeLong);
+        if (result.success) {
+            ui->statusBar->showMessage(tr("Inserted timestamp: %1").arg(result.insertedText), 3000);
+        } else {
+            ui->statusBar->showMessage(result.errorMessage, 4000);
+        }
+    });
+    connect(ui->actionInsertTimestampIso, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::Iso8601Local);
+        if (result.success) {
+            ui->statusBar->showMessage(tr("Inserted ISO timestamp: %1").arg(result.insertedText), 3000);
+        } else {
+            ui->statusBar->showMessage(result.errorMessage, 4000);
+        }
+    });
+    connect(ui->actionInsertTimestampUnix, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::UnixTimestampSecs);
+        if (result.success) {
+            ui->statusBar->showMessage(tr("Inserted Unix timestamp: %1").arg(result.insertedText), 3000);
+        } else {
+            ui->statusBar->showMessage(result.errorMessage, 4000);
+        }
+    });
+    connect(ui->actionInsertDateOnly, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::DateOnly);
+        if (result.success) {
+            ui->statusBar->showMessage(tr("Inserted date: %1").arg(result.insertedText), 3000);
+        } else {
+            ui->statusBar->showMessage(result.errorMessage, 4000);
+        }
+    });
+    connect(ui->actionInsertTimeOnly, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        auto result = GuidTimestampUtils::insertTimestamp(editor, GuidTimestampUtils::TimeOnly);
+        if (result.success) {
+            ui->statusBar->showMessage(tr("Inserted time: %1").arg(result.insertedText), 3000);
+        } else {
+            ui->statusBar->showMessage(result.errorMessage, 4000);
+        }
+    });
+    connect(ui->actionInsertGuidHyphens, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        auto result = GuidTimestampUtils::insertGuid(editor, GuidTimestampUtils::GuidHyphenatedLower);
+        if (result.success) {
+            ui->statusBar->showMessage(tr("Inserted GUID: %1").arg(result.insertedText), 3000);
+        } else {
+            ui->statusBar->showMessage(result.errorMessage, 4000);
+        }
+    });
+    connect(ui->actionInsertGuidBraces, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        auto result = GuidTimestampUtils::insertGuid(editor, GuidTimestampUtils::GuidWithBracesUpper);
+        if (result.success) {
+            ui->statusBar->showMessage(tr("Inserted GUID: %1").arg(result.insertedText), 3000);
+        } else {
+            ui->statusBar->showMessage(result.errorMessage, 4000);
+        }
+    });
+    connect(ui->actionInsertGuidCompact, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        auto result = GuidTimestampUtils::insertGuid(editor, GuidTimestampUtils::GuidCompactUpper);
+        if (result.success) {
+            ui->statusBar->showMessage(tr("Inserted GUID: %1").arg(result.insertedText), 3000);
         } else {
             ui->statusBar->showMessage(result.errorMessage, 4000);
         }
@@ -1916,6 +1999,17 @@ void MainWindow::updateContentBasedUi(ScintillaNext *editor)
     ui->actionConvertToDec->setEnabled(editor != nullptr);
     ui->actionConvertToBin->setEnabled(editor != nullptr);
     ui->actionConvertToOct->setEnabled(editor != nullptr);
+
+    const bool canInsert = (editor != nullptr && !editor->readOnly());
+    ui->actionInsertDateTimeShort->setEnabled(canInsert);
+    ui->actionInsertDateTimeLong->setEnabled(canInsert);
+    ui->actionInsertTimestampIso->setEnabled(canInsert);
+    ui->actionInsertTimestampUnix->setEnabled(canInsert);
+    ui->actionInsertDateOnly->setEnabled(canInsert);
+    ui->actionInsertTimeOnly->setEnabled(canInsert);
+    ui->actionInsertGuidHyphens->setEnabled(canInsert);
+    ui->actionInsertGuidBraces->setEnabled(canInsert);
+    ui->actionInsertGuidCompact->setEnabled(canInsert);
     ui->actionURLEncode->setEnabled(hasAnySelections);
     ui->actionURLDecode->setEnabled(hasAnySelections);
 }
