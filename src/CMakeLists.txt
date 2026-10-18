@@ -129,6 +129,8 @@ qt_add_executable(NoteSciPad
 	utils/CaseConverter.cpp
 	utils/FunctionParser.h
 	utils/FunctionParser.cpp
+	utils/ExternalToolManager.h
+	utils/ExternalToolManager.cpp
 	decorators/ApplicationDecorator.cpp
 	decorators/ApplicationDecorator.h
 	decorators/AutoCompletion.cpp
@@ -188,6 +190,12 @@ qt_add_executable(NoteSciPad
 	dialogs/CharacterInfoDialog.cpp
 	dialogs/CharacterInfoDialog.h
 	dialogs/CharacterInfoDialog.ui
+	dialogs/RunDialog.cpp
+	dialogs/RunDialog.h
+	dialogs/RunDialog.ui
+	dialogs/ManageToolsDialog.cpp
+	dialogs/ManageToolsDialog.h
+	dialogs/ManageToolsDialog.ui
 	docks/DebugLogDock.cpp
 	docks/DebugLogDock.h
 	docks/DebugLogDock.ui

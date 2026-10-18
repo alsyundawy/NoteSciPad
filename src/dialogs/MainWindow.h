@@ -48,6 +48,8 @@ class TabsQuickActionsBar;
 class FocusedView;
 class FocusedViewDialog;
 class FunctionListDock;
+class RunDialog;
+class ManageToolsDialog;
 
 class MainWindow : public QMainWindow
 {
@@ -207,6 +209,23 @@ private:
     MarkOccurrences *markOccurrences = nullptr;
     FileBrowserDock *fileBrowserDock = nullptr;
     FunctionListDock *functionListDock = nullptr;
+
+    void setupRunMenu();
+    void updateCustomToolsMenu();
+    void onRunTriggered();
+    void onRunCurrentFileTriggered();
+    void onOpenTerminalHereTriggered();
+    void onRevealInFileManagerTriggered();
+    void onOpenInBrowserTriggered();
+    void onSearchGoogleTriggered();
+    void onSearchWikipediaTriggered();
+    void onSearchGitHubTriggered();
+    void onSearchStackOverflowTriggered();
+    void onManageToolsTriggered();
+
+    QMenu *menuRun = nullptr;
+    QMenu *menuSavedTools = nullptr;
+    QList<QAction *> customToolActions;
     FocusedView *focusedView = nullptr;
     FocusedViewDialog *focusedViewDialog = nullptr;
 

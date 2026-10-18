@@ -85,6 +85,9 @@
 #include "DebugLogDock.h"
 #include "FileListDock.h"
 #include "FunctionListDock.h"
+#include "ExternalToolManager.h"
+#include "RunDialog.h"
+#include "ManageToolsDialog.h"
 
 #include "FindReplaceDialog.h"
 #include "MacroRunDialog.h"
@@ -1400,23 +1403,8 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
         }
     });
 
-#ifdef Q_OS_WIN
-    connect(ui->actionShowInExplorer, &QAction::triggered, this, [this]() {
-        QString filePath = QDir::toNativeSeparators(currentEditor()->getFileInfo().canonicalFilePath());
-        QStringList arguments = {"/select,", filePath};
-        QProcess::startDetached("explorer", arguments);
-    });
-
-    QString terminalName = app->getSettings()->value("App/TerminalName", "Command Prompt").toString();
-    ui->actionOpenTerminalHere->setText(ui->actionOpenTerminalHere->text().arg(terminalName));
-
-    connect(ui->actionOpenTerminalHere, &QAction::triggered, this, [=, this]() {
-        QString command = app->getSettings()->value("App/TerminalCommand", "cmd").toString();
-        QString filePath = QDir::toNativeSeparators(currentEditor()->getFileInfo().dir().canonicalPath());
-        QStringList arguments = {"/c", "start", "/d", filePath, command};
-        QProcess::startDetached("cmd", arguments);
-    });
-#endif
+    connect(ui->actionShowInExplorer, &QAction::triggered, this, &MainWindow::onRevealInFileManagerTriggered);
+    connect(ui->actionOpenTerminalHere, &QAction::triggered, this, &MainWindow::onOpenTerminalHereTriggered);
 
     EditorInspectorDock *editorInspectorDock = new EditorInspectorDock(this);
     editorInspectorDock->hide();
@@ -1483,6 +1471,7 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
     ui->statusBar->setVisible(app->getSettings()->showStatusBar());
 
     setupLanguageMenu();
+    setupRunMenu();
 
     applyStyleSheet();
 
@@ -2873,6 +2862,9 @@ void MainWindow::addEditor(ScintillaNext *editor)
         menu->addMenu(ui->menuConvertCase);
         menu->addMenu(ui->menuMarkAllOccurrences);
         menu->addMenu(ui->menuClearMarks);
+        if (menuRun) {
+            menu->addMenu(menuRun);
+        }
 
         menu->popup(QCursor::pos());
     });
@@ -3100,11 +3092,9 @@ void MainWindow::tabBarRightClicked(ScintillaNext *editor)
         "",
         "Reload",
         "",
-#ifdef Q_OS_WIN
         "ShowInExplorer",
         "OpenTerminalHere",
         "",
-#endif
         "CopyFullPath",
         "CopyFileName",
         "CopyFileDirectory"
@@ -3126,4 +3116,173 @@ void MainWindow::languageMenuTriggered()
     QVariant v = act->data();
 
     setLanguage(editor, v.toString());
+}
+
+
+void MainWindow::setupRunMenu()
+{
+    if (menuRun)
+        return;
+
+    menuRun = new QMenu(tr("&Run"), this);
+    ui->menuBar->insertMenu(ui->menuHelp->menuAction(), menuRun);
+
+    // 1. Run... (Ctrl+Alt+R, F6)
+    QAction *actionRun = new QAction(tr("&Run..."), this);
+    actionRun->setShortcuts({QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_R), QKeySequence(Qt::Key_F6)});
+    connect(actionRun, &QAction::triggered, this, &MainWindow::onRunTriggered);
+    menuRun->addAction(actionRun);
+
+    menuRun->addSeparator();
+
+    // 2. Run Current File in Terminal (Ctrl+Alt+Return)
+    QAction *actionRunCurrentFile = new QAction(tr("Run Current &File in Terminal"), this);
+    actionRunCurrentFile->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_Return));
+    connect(actionRunCurrentFile, &QAction::triggered, this, &MainWindow::onRunCurrentFileTriggered);
+    menuRun->addAction(actionRunCurrentFile);
+
+    // 3. Open Terminal Here (Ctrl+Alt+P)
+    QAction *actionTerminalHere = new QAction(tr("Open &Terminal Here"), this);
+    actionTerminalHere->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_P));
+    connect(actionTerminalHere, &QAction::triggered, this, &MainWindow::onOpenTerminalHereTriggered);
+    menuRun->addAction(actionTerminalHere);
+
+    // 4. Reveal in File Manager
+    QAction *actionReveal = new QAction(tr("Reveal in &File Manager"), this);
+    connect(actionReveal, &QAction::triggered, this, &MainWindow::onRevealInFileManagerTriggered);
+    menuRun->addAction(actionReveal);
+
+    // 5. Open in Default Browser
+    QAction *actionBrowser = new QAction(tr("Open in Default &Web Browser"), this);
+    connect(actionBrowser, &QAction::triggered, this, &MainWindow::onOpenInBrowserTriggered);
+    menuRun->addAction(actionBrowser);
+
+    menuRun->addSeparator();
+
+    // 6. Web Searches
+    QAction *actionGoogle = new QAction(tr("Search on &Google"), this);
+    connect(actionGoogle, &QAction::triggered, this, &MainWindow::onSearchGoogleTriggered);
+    menuRun->addAction(actionGoogle);
+
+    QAction *actionWiki = new QAction(tr("Search on &Wikipedia"), this);
+    actionWiki->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_W));
+    connect(actionWiki, &QAction::triggered, this, &MainWindow::onSearchWikipediaTriggered);
+    menuRun->addAction(actionWiki);
+
+    QAction *actionGitHub = new QAction(tr("Search on &GitHub"), this);
+    connect(actionGitHub, &QAction::triggered, this, &MainWindow::onSearchGitHubTriggered);
+    menuRun->addAction(actionGitHub);
+
+    QAction *actionSO = new QAction(tr("Search on &Stack Overflow"), this);
+    connect(actionSO, &QAction::triggered, this, &MainWindow::onSearchStackOverflowTriggered);
+    menuRun->addAction(actionSO);
+
+    menuRun->addSeparator();
+
+    // 7. Manage Tools
+    QAction *actionManage = new QAction(tr("&Manage External Tools..."), this);
+    connect(actionManage, &QAction::triggered, this, &MainWindow::onManageToolsTriggered);
+    menuRun->addAction(actionManage);
+
+    // 8. Saved Tools Submenu
+    menuSavedTools = menuRun->addMenu(tr("Saved &Tools"));
+    updateCustomToolsMenu();
+}
+
+void MainWindow::updateCustomToolsMenu()
+{
+    if (!menuSavedTools)
+        return;
+
+    menuSavedTools->clear();
+    const auto tools = ExternalToolManager::loadCustomTools();
+    if (tools.isEmpty()) {
+        QAction *emptyAct = menuSavedTools->addAction(tr("(No saved tools)"));
+        emptyAct->setEnabled(false);
+        return;
+    }
+
+    for (const auto &tool : tools) {
+        QAction *act = menuSavedTools->addAction(tool.name);
+        if (!tool.shortcut.isEmpty()) {
+            act->setShortcut(QKeySequence(tool.shortcut));
+        }
+        connect(act, &QAction::triggered, this, [this, tool]() {
+            QString err;
+            if (!ExternalToolManager::executeTool(tool, currentEditor(), &err)) {
+                if (!err.isEmpty()) {
+                    QMessageBox::warning(this, tr("Tool Execution Error"), err);
+                }
+            }
+        });
+    }
+}
+
+void MainWindow::onRunTriggered()
+{
+    RunDialog dlg(this, currentEditor());
+    if (dlg.exec() == QDialog::Accepted) {
+        updateCustomToolsMenu();
+    }
+}
+
+void MainWindow::onRunCurrentFileTriggered()
+{
+    QString err;
+    if (!ExternalToolManager::runCurrentFileWithInterpreter(currentEditor(), &err)) {
+        if (!err.isEmpty()) {
+            QMessageBox::warning(this, tr("Run Current File"), err);
+        }
+    }
+}
+
+void MainWindow::onOpenTerminalHereTriggered()
+{
+    QString dir;
+    if (currentEditor() && currentEditor()->isFile()) {
+        dir = currentEditor()->getFileInfo().dir().absolutePath();
+    }
+    ExternalToolManager::openTerminal(dir);
+}
+
+void MainWindow::onRevealInFileManagerTriggered()
+{
+    if (currentEditor() && currentEditor()->isFile()) {
+        ExternalToolManager::revealInFileManager(currentEditor()->getFileInfo().absoluteFilePath());
+    }
+}
+
+void MainWindow::onOpenInBrowserTriggered()
+{
+    if (currentEditor() && currentEditor()->isFile()) {
+        ExternalToolManager::openInBrowser(currentEditor()->getFileInfo().absoluteFilePath());
+    }
+}
+
+void MainWindow::onSearchGoogleTriggered()
+{
+    ExternalToolManager::webSearch(ExternalToolManager::getSelectedOrCurrentWord(currentEditor()), QStringLiteral("google"));
+}
+
+void MainWindow::onSearchWikipediaTriggered()
+{
+    ExternalToolManager::webSearch(ExternalToolManager::getSelectedOrCurrentWord(currentEditor()), QStringLiteral("wikipedia"));
+}
+
+void MainWindow::onSearchGitHubTriggered()
+{
+    ExternalToolManager::webSearch(ExternalToolManager::getSelectedOrCurrentWord(currentEditor()), QStringLiteral("github"));
+}
+
+void MainWindow::onSearchStackOverflowTriggered()
+{
+    ExternalToolManager::webSearch(ExternalToolManager::getSelectedOrCurrentWord(currentEditor()), QStringLiteral("stackoverflow"));
+}
+
+void MainWindow::onManageToolsTriggered()
+{
+    ManageToolsDialog dlg(this);
+    if (dlg.exec() == QDialog::Accepted) {
+        updateCustomToolsMenu();
+    }
 }
