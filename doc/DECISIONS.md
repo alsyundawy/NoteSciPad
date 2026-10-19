@@ -414,3 +414,19 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
   3. Authored `doc/LOCALIZATION_GUIDE.md`.
 - **Consequences:**
   - Complete, natural Indonesian localization and consistent global English localization.
+
+---
+
+## ADR-021: Dedicated About Dialog, Upstream Credits & Legal Non-Affiliation Architecture
+
+- **Status:** Accepted
+- **Date:** 2026-10-19
+- **Context:**
+  NoteSciPad was using a basic `QMessageBox::about` popup. An independent application requires clear credits acknowledging upstream foundations (NotepadNext, Notepad4, Notepad3, Scintilla, Lexilla) while providing a transparent, non-affiliation legal statement and system environment diagnostics.
+- **Decision:**
+  1. Created dedicated `AboutDialog` class in `src/dialogs/` featuring a 4-tab interface (About, Credits, License, Environment).
+  2. Displayed prominent non-affiliation notice disclaiming affiliation with Notepad++, NotepadNext, Notepad4, or Notepad3.
+  3. Added one-click system environment copying for issue reporting.
+  4. Authored `doc/ABOUT_AND_CREDITS.md`.
+- **Consequences:**
+  - Complete transparency, legal clarity, and professional presentation.

@@ -249,6 +249,8 @@ qt_add_executable(NoteSciPad
 	dialogs/AccessibilityHelpDialog.ui
 	dialogs/DisplayInfoDialog.cpp
 	dialogs/DisplayInfoDialog.h
+	dialogs/AboutDialog.cpp
+	dialogs/AboutDialog.h
 	docks/DebugLogDock.cpp
 	docks/DebugLogDock.h
 	docks/DebugLogDock.ui
