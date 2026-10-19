@@ -155,7 +155,7 @@ Use this as the living task board. Check items as they are completed.
 - [x] Manual test checklist (encoding, large files, CJK, shortcuts)
 - [x] Localization updates (Indonesian priority + English)
 - [x] About dialog credits (NotepadNext, Notepad4, Notepad3, Scintilla, Lexilla) + clear non-affiliation statement
-- [ ] Performance & memory baseline measurements
+- [x] Performance & memory baseline measurements
 - [ ] Security review for any new features that handle external data
 
 ---

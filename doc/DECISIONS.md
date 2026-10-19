@@ -430,3 +430,18 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
   4. Authored `doc/ABOUT_AND_CREDITS.md`.
 - **Consequences:**
   - Complete transparency, legal clarity, and professional presentation.
+
+---
+
+## ADR-022: Performance and Memory Baseline Measurement Standards
+
+- **Status:** Accepted
+- **Date:** 2026-10-19
+- **Context:**
+  Guaranteeing NoteSciPad's promise of speed, low resource usage, and responsiveness requires continuous empirical benchmarking across startup latency, idle/loaded RSS memory, buffer scan throughput, and cryptographic performance.
+- **Decision:**
+  1. Authored `doc/PERFORMANCE_BASELINE_REPORT.md` documenting verified performance metrics.
+  2. Implemented automated benchmark script `scripts/benchmark-baseline.sh` and `scripts/benchmark-baseline.py`.
+  3. Established performance thresholds (startup < 200ms, idle memory < 50MB RSS).
+- **Consequences:**
+  - Clear performance regressions are immediately detectable before release packaging.
