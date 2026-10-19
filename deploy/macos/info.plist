@@ -11,7 +11,7 @@
 	<key>CFBundleIconFile</key>
 	<string>NoteSciPad.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.alsyundawy.NoteSciPad</string>
+	<string>io.github.alsyundawy.NoteSciPad</string>
 	<key>CFBundleShortVersionString</key>
 	<string>${QMAKE_FULL_VERSION}</string>
 	<key>CFBundlePackageType</key>

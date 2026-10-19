@@ -40,6 +40,12 @@ void MacServicesHandler::showEmojiAndSymbolsPalette()
     // Native macOS character palette is handled by Cocoa; Linux uses standard Compose/IBus
 }
 
+void MacServicesHandler::postVoiceOverAnnouncement(const QString &text)
+{
+    Q_UNUSED(text);
+}
+
+
 void MacServicesHandler::handleOpenSelection(const QString &text)
 {
     Q_UNUSED(text);

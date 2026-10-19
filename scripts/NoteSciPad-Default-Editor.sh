@@ -49,7 +49,7 @@ export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${HO
 
 # ====================== CONFIGURATION ======================
 readonly SCRIPT_VERSION="2.0.0"
-readonly BUNDLE_ID="com.alsyundawy.NoteSciPad"
+readonly BUNDLE_ID="io.github.alsyundawy.NoteSciPad"
 readonly LEGACY_BUNDLE_ID="io.github.dail8859.NotepadNext"
 readonly APP_NAME="NoteSciPad.app"
 readonly DESKTOP_FILE="NoteSciPad.desktop"

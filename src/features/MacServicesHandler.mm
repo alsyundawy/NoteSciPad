@@ -128,6 +128,23 @@ void MacServicesHandler::showEmojiAndSymbolsPalette()
     }
 }
 
+void MacServicesHandler::postVoiceOverAnnouncement(const QString &text)
+{
+    @autoreleasepool {
+        NSString *nsMsg = [NSString stringWithUTF8String:text.toUtf8().constData()];
+        NSDictionary *info = @{
+            NSAccessibilityAnnouncementKey: nsMsg,
+            NSAccessibilityPriorityKey: @(NSAccessibilityPriorityHigh)
+        };
+        NSAccessibilityPostNotificationWithUserInfo(
+            NSApp,
+            NSAccessibilityAnnouncementRequestedNotification,
+            info
+        );
+    }
+}
+
+
 void MacServicesHandler::handleOpenSelection(const QString &text)
 {
     emit openSelectionRequested(text);

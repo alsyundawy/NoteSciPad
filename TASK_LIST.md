@@ -138,7 +138,7 @@ Use this as the living task board. Check items as they are completed.
 - [x] Improve default-editor script
 - [x] Codesign + notarization workflow (macOS)
 - [x] Create .deb and .rpm packages
-- [ ] Accessibility review (keyboard, VoiceOver)
+- [x] Accessibility review (keyboard, VoiceOver)
 - [ ] Dark mode visual polish
 - [ ] Multi-monitor & Retina testing
 - [ ] Documentation (user guide + developer)

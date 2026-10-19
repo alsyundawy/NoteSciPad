@@ -1,3 +1,4 @@
+#include "AccessibilityManager.h"
 #include "MacServicesHandler.h"
 #include "MarkOccurrences.h"
 /*
@@ -1576,6 +1577,18 @@ connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
     ui->actionAboutQt->setIcon(QPixmap(QLatin1String(":/qt-project.org/qmessagebox/images/qtlogo-64.png")));
     connect(ui->actionAboutQt, &QAction::triggered, &QApplication::aboutQt);
 
+    // Keyboard Shortcuts & Accessibility Guide
+    actionAccessibilityHelp = new QAction(tr("&Keyboard Shortcuts && Accessibility..."), this);
+#if defined(Q_OS_MACOS)
+    actionAccessibilityHelp->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_F1));
+#else
+    actionAccessibilityHelp->setShortcut(QKeySequence(Qt::Key_F1));
+#endif
+    connect(actionAccessibilityHelp, &QAction::triggered, this, [this]() {
+        AccessibilityManager::instance()->openAccessibilityHelp(this);
+    });
+    ui->menuHelp->insertAction(ui->actionAboutNotepadNext, actionAccessibilityHelp);
+
     ui->actionAboutNotepadNext->setShortcut(QKeySequence::HelpContents);
     connect(ui->actionAboutNotepadNext, &QAction::triggered, this, [this]() {
         QMessageBox::about(this, QString(),
@@ -1713,6 +1726,7 @@ connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
     setupLanguageMenu();
     setupRunMenu();
     setupWindowMenu();
+    AccessibilityManager::instance()->setupAccessibility(this);
 
     applyStyleSheet();
 
@@ -2886,6 +2900,12 @@ void MainWindow::activateEditor(ScintillaNext *editor)
     qInfo(Q_FUNC_INFO);
 
     checkFileForModification(editor);
+    if (editor) {
+        int curIdx = editors().indexOf(editor);
+        int total = editorCount();
+        AccessibilityManager::instance()->announceDocumentState(editor, curIdx, total);
+    }
+
     updateGui(editor);
     updateTailMonitoringUi(editor);
 
@@ -3857,6 +3877,18 @@ void MainWindow::setupWindowMenu()
     // 4. Next / Previous Document
     menuWindow->addAction(ui->actionNextTab);
     menuWindow->addAction(ui->actionPreviousTab);
+    // 5. Focus Editor
+    actionFocusEditor = new QAction(tr("Focus &Editor"), this);
+    actionFocusEditor->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_E));
+    connect(actionFocusEditor, &QAction::triggered, this, [this]() {
+        ScintillaNext *ed = currentEditor();
+        if (ed) {
+            ed->grabFocus();
+            AccessibilityManager::instance()->announce(ed, tr("Editor focused"));
+        }
+    });
+    menuWindow->addAction(actionFocusEditor);
+
 
     menuWindow->addSeparator();
 

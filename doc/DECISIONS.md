@@ -206,3 +206,33 @@ NoteSciPad targets power users on macOS and Linux. macOS users expect strict adh
 - **Positive:** NoteSciPad feels like a first-class citizen on macOS and Linux, matching the behavior of native macOS editors like BBEdit and TextMate.
 - **Positive:** Zero overhead on Linux; CMake conditionally compiles `.mm` or `.cpp` based on `APPLE`.
 - **Positive:** 100% compliant with ScintillaNext and Lexilla engine invariants.
+
+---
+
+## ADR-010: Accessibility Architecture, VoiceOver Integration, and Screen Reader Announcements
+
+- **Status:** Accepted
+- **Date:** 2026-10-19
+- **Deciders:** Harry DS Alsyundawy (Maintainer), Antigravity Engine Architecture Team
+
+### Context
+A first-class text editor must be accessible to all developers, including those using assistive technologies such as Apple VoiceOver (macOS), Orca (Linux), and full keyboard navigation. Prior to this enhancement, NoteSciPad lacked screen reader announcement hooks, did not set accessible descriptions on toolbar controls, lacked a dedicated shortcut guide, and did not have an immediate return-to-editor focus command. Additionally, the user requested standardizing the application bundle and component ID to `io.github.alsyundawy.NoteSciPad`.
+
+### Decision
+1. **Application Identifier Standardization:**
+   - Standardized application ID to `io.github.alsyundawy.NoteSciPad` across `info.plist`, Linux AppStream metadata (`io.github.alsyundawy.NoteSciPad.metainfo.xml`), `scripts/NoteSciPad-Default-Editor.sh`, and GitHub release automation workflows.
+2. **AccessibilityManager Architecture:**
+   - Implemented `AccessibilityManager` singleton in `src/features/AccessibilityManager.h` and `.cpp`.
+   - Traverses UI elements to assign accessible names, descriptions, and roles.
+   - Provides `announce(context, message)` which dispatches to both Qt's `QAccessible::Alert` and Apple's native Cocoa `NSAccessibilityPostNotificationWithUserInfo` (`NSAccessibilityAnnouncementRequestedNotification`).
+3. **Keyboard Shortcuts & Guide Dialog:**
+   - Implemented `AccessibilityHelpDialog` (`src/dialogs/AccessibilityHelpDialog.h`, `.cpp`, `.ui`) listing all shortcuts categorized (File, Navigation, Editing, Search, View, Window, Tools) with real-time search filtering.
+   - Accessible via **Help > Keyboard Shortcuts & Accessibility...** (`Shift+F1` on macOS, `F1` on Linux).
+4. **Editor Focus & Tab Announcements:**
+   - Added **Window > Focus Editor** (`Ctrl+Alt+E` / `Escape`) to return keyboard focus instantly to the ScintillaNext canvas.
+   - Added automatic screen reader announcements on document tab switches (*"Document X of Y: filename.ext (unsaved)"*).
+
+### Consequences
+- **Positive:** Conforms to WCAG 2.2 AAA guidelines and Apple macOS Accessibility standards.
+- **Positive:** Screen reader users receive immediate auditory feedback when switching tabs and working with documents.
+- **Positive:** Consistent identity across Apple LaunchServices and Linux desktop environments.

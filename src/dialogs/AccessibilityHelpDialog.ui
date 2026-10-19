@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AccessibilityHelpDialog</class>
+ <widget class="QDialog" name="AccessibilityHelpDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>700</width>
+    <height>520</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Keyboard Shortcuts &amp; Accessibility Guide</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="searchLayout">
+     <item>
+      <widget class="QLabel" name="lblFilter">
+       <property name="text">
+        <string>&amp;Search Shortcuts:</string>
+       </property>
+       <property name="buddy">
+        <cstring>editFilter</cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="editFilter">
+       <property name="placeholderText">
+        <string>Filter by action, shortcut, or category (e.g. tab, zoom, save, find)...</string>
+       </property>
+       <property name="clearButtonEnabled">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tabShortcuts">
+      <attribute name="title">
+       <string>Keyboard Shortcuts</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="layoutTabShortcuts">
+       <item>
+        <widget class="QTreeWidget" name="treeShortcuts">
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
+         <property name="rootIsDecorated">
+          <bool>false</bool>
+         </property>
+         <property name="sortingEnabled">
+          <bool>true</bool>
+         </property>
+         <column>
+          <property name="text">
+           <string>Action</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Shortcut (macOS / Linux)</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Category</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Description</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabVoiceOver">
+      <attribute name="title">
+       <string>VoiceOver &amp; Screen Readers</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="layoutTabVoiceOver">
+       <item>
+        <widget class="QTextBrowser" name="textVoiceOver">
+         <property name="openExternalLinks">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabFeatures">
+      <attribute name="title">
+       <string>Accessibility Standards</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="layoutTabFeatures">
+       <item>
+        <widget class="QTextBrowser" name="textFeatures">
+         <property name="openExternalLinks">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Close</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>AccessibilityHelpDialog</receiver>
+   <slot>reject()</slot>
+  </connection>
+ </connections>
+</ui>

@@ -106,6 +106,8 @@ qt_add_executable(NoteSciPad
 	features/FocusedViewDialog.h
 	features/FocusedViewDialog.cpp
 	features/LogAutoTimestamp.h
+	features/AccessibilityManager.h
+	features/AccessibilityManager.cpp
 	features/LogAutoTimestamp.cpp
 	features/ClipboardMonitor.h
 	features/ClipboardMonitor.cpp
@@ -234,6 +236,9 @@ qt_add_executable(NoteSciPad
 	dialogs/TransparencyDialog.cpp
 	dialogs/TransparencyDialog.h
 	dialogs/TransparencyDialog.ui
+	dialogs/AccessibilityHelpDialog.cpp
+	dialogs/AccessibilityHelpDialog.h
+	dialogs/AccessibilityHelpDialog.ui
 	docks/DebugLogDock.cpp
 	docks/DebugLogDock.h
 	docks/DebugLogDock.ui

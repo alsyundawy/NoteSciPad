@@ -33,6 +33,7 @@ public:
 
     // Trigger macOS native emoji & symbols palette
     static void showEmojiAndSymbolsPalette();
+    static void postVoiceOverAnnouncement(const QString &text);
 
     // Handling external actions
     void handleOpenSelection(const QString &text);

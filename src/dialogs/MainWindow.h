@@ -268,6 +268,8 @@ private:
     QAction *actionTransparencyOptions = nullptr;
     FocusedView *focusedView = nullptr;
     QMenu *menuWindow = nullptr;
+    QAction *actionAccessibilityHelp = nullptr;
+    QAction *actionFocusEditor = nullptr;
     QList<QAction *> m_windowDocActions;
     FocusedViewDialog *focusedViewDialog = nullptr;
     LanguageInspectorDock *languageInspectorDock = nullptr;
