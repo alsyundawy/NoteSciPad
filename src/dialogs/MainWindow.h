@@ -245,6 +245,7 @@ private:
     void onPreviousDocumentTriggered();
     void populateWindowMenuDocuments();
     void setupWindowMenu();
+    void setupThemeMenu();
 
     QMenu *menuRun = nullptr;
     QMenu *menuSavedTools = nullptr;
@@ -268,6 +269,11 @@ private:
     QAction *actionTransparencyOptions = nullptr;
     FocusedView *focusedView = nullptr;
     QMenu *menuWindow = nullptr;
+    QMenu *menuTheme = nullptr;
+    QAction *actionThemeAuto = nullptr;
+    QAction *actionThemeLight = nullptr;
+    QAction *actionThemeDark = nullptr;
+    QAction *actionToggleTheme = nullptr;
     QAction *actionAccessibilityHelp = nullptr;
     QAction *actionFocusEditor = nullptr;
     QList<QAction *> m_windowDocActions;

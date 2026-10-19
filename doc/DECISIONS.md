@@ -236,3 +236,33 @@ A first-class text editor must be accessible to all developers, including those 
 - **Positive:** Conforms to WCAG 2.2 AAA guidelines and Apple macOS Accessibility standards.
 - **Positive:** Screen reader users receive immediate auditory feedback when switching tabs and working with documents.
 - **Positive:** Consistent identity across Apple LaunchServices and Linux desktop environments.
+
+---
+
+## ADR-011: Theme Engine and Native Dark Mode Visual Polish
+
+- **Status:** Accepted
+- **Date:** 2026-10-19
+- **Deciders:** Harry DS Alsyundawy (Maintainer), Antigravity Engine Architecture Team
+
+### Context
+NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mode is widely preferred by software engineers. The legacy stylesheet hardcoded Windows 95 light gray tones for dock tabs and status bars, and the Scintilla editor initialization hardcoded white backgrounds and black text. A unified theme engine was required to provide seamless dark and light mode switching, automatic OS appearance tracking, and cohesive visual aesthetics.
+
+### Decision
+1. **ThemeManager Architecture:**
+   - Implemented `ThemeManager` in `src/features/ThemeManager.h` and `.cpp`.
+   - Supports `ThemeMode::Auto` (default), `ThemeMode::Light`, and `ThemeMode::Dark`.
+   - Connects to `QStyleHints::colorSchemeChanged` to reactively re-theme the application when the OS switches appearance.
+2. **Dynamic UI Stylesheet:**
+   - Designed refined QSS palettes for `ads--CDockWidgetTab`, `ads--CDockAreaTitleBar`, `QStatusBar`, and `QuickFindWidget` for both dark (`#1e1e1e`/`#25282c`) and light (`#ffffff`/`#f6f8fa`) environments.
+3. **Scintilla Editor Canvas Adaptation:**
+   - Implemented `ThemeManager::applyThemeToEditor(editor)` which dynamically configures default text, line numbers, caret line, selections, fold margins, and brace matches.
+   - Connected `EditorManager::manageEditor` so all newly opened tabs automatically inherit the active theme.
+4. **User Control & Persistence:**
+   - Added **View > Theme** submenu (`Auto`, `Light Mode`, `Dark Mode`) and toggle shortcut `Ctrl+Alt+T`.
+   - Persisted preference under `App/ThemeMode` in `ApplicationSettings`.
+
+### Consequences
+- **Positive:** NoteSciPad looks stunning and native in macOS and Linux dark modes without jarring contrast mismatches.
+- **Positive:** Zero modification or disruption to ScintillaNext and Lexilla engine invariants.
+- **Positive:** Instant real-time theme adaptation without needing application restarts.

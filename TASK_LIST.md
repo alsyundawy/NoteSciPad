@@ -139,7 +139,7 @@ Use this as the living task board. Check items as they are completed.
 - [x] Codesign + notarization workflow (macOS)
 - [x] Create .deb and .rpm packages
 - [x] Accessibility review (keyboard, VoiceOver)
-- [ ] Dark mode visual polish
+- [x] Dark mode visual polish
 - [ ] Multi-monitor & Retina testing
 - [ ] Documentation (user guide + developer)
 - [ ] Public alpha / beta release

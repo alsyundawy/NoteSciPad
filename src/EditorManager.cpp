@@ -1,3 +1,4 @@
+#include "ThemeManager.h"
 /*
  * This file is part of Notepad Next.
  * Copyright 2021 Justin Dailey
@@ -358,6 +359,8 @@ void EditorManager::setupEditor(ScintillaNext *editor)
     editor->styleSetSize(STYLE_DEFAULT, settings->fontSize());
     editor->styleSetFont(STYLE_DEFAULT, settings->fontName().toUtf8().data());
     editor->styleClearAll();
+
+    ThemeManager::instance()->applyThemeToEditor(editor);
 
     editor->styleSetFore(STYLE_LINENUMBER, 0x808080);
     editor->styleSetBack(STYLE_LINENUMBER, 0xE4E4E4);

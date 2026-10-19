@@ -1,3 +1,4 @@
+#include "ThemeManager.h"
 #include "AccessibilityManager.h"
 #include "MacServicesHandler.h"
 #include "MarkOccurrences.h"
@@ -1726,6 +1727,8 @@ connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
     setupLanguageMenu();
     setupRunMenu();
     setupWindowMenu();
+    ThemeManager::instance()->initialize(app->getSettings());
+    setupThemeMenu();
     AccessibilityManager::instance()->setupAccessibility(this);
 
     applyStyleSheet();
@@ -2926,14 +2929,7 @@ void MainWindow::applyStyleSheet()
 {
     qInfo(Q_FUNC_INFO);
 
-    QString sheet;
-    QFile f(":/stylesheets/npp.css");
-    qInfo() << "Loading stylesheet:" << f.fileName();
-
-    if (f.open(QFile::ReadOnly)) {
-        sheet = f.readAll();
-        f.close();
-    }
+    QString sheet = ThemeManager::instance()->getThemeStyleSheet();
 
     // If there is a "custom.css" file where the ini is located, load it as a style sheet addition
     QString directoryPath = QFileInfo(app->getSettings()->fileName()).absolutePath();
@@ -3968,4 +3964,70 @@ void MainWindow::populateWindowMenuDocuments()
         m_windowDocActions.append(act);
         idx++;
     }
+}
+
+
+void MainWindow::setupThemeMenu()
+{
+    if (menuTheme)
+        return;
+
+    menuTheme = new QMenu(tr("&Theme"), this);
+    ui->menuView->addSeparator();
+    ui->menuView->addMenu(menuTheme);
+
+    QActionGroup *themeGroup = new QActionGroup(this);
+    themeGroup->setExclusive(true);
+
+    actionThemeAuto = new QAction(tr("System &Default (Auto)"), this);
+    actionThemeAuto->setCheckable(true);
+    themeGroup->addAction(actionThemeAuto);
+    menuTheme->addAction(actionThemeAuto);
+
+    actionThemeLight = new QAction(tr("&Light Mode"), this);
+    actionThemeLight->setCheckable(true);
+    themeGroup->addAction(actionThemeLight);
+    menuTheme->addAction(actionThemeLight);
+
+    actionThemeDark = new QAction(tr("&Dark Mode"), this);
+    actionThemeDark->setCheckable(true);
+    themeGroup->addAction(actionThemeDark);
+    menuTheme->addAction(actionThemeDark);
+
+    ThemeManager::ThemeMode mode = ThemeManager::instance()->themeMode();
+    if (mode == ThemeManager::ThemeMode::Auto) actionThemeAuto->setChecked(true);
+    else if (mode == ThemeManager::ThemeMode::Light) actionThemeLight->setChecked(true);
+    else if (mode == ThemeManager::ThemeMode::Dark) actionThemeDark->setChecked(true);
+
+    connect(actionThemeAuto, &QAction::triggered, this, [this]() {
+        ThemeManager::instance()->setThemeMode(ThemeManager::ThemeMode::Auto, this);
+        ui->statusBar->showMessage(tr("Theme set to System Default (Auto)"), 3000);
+    });
+
+    connect(actionThemeLight, &QAction::triggered, this, [this]() {
+        ThemeManager::instance()->setThemeMode(ThemeManager::ThemeMode::Light, this);
+        ui->statusBar->showMessage(tr("Theme set to Light Mode"), 3000);
+    });
+
+    connect(actionThemeDark, &QAction::triggered, this, [this]() {
+        ThemeManager::instance()->setThemeMode(ThemeManager::ThemeMode::Dark, this);
+        ui->statusBar->showMessage(tr("Theme set to Dark Mode"), 3000);
+    });
+
+    menuTheme->addSeparator();
+
+    actionToggleTheme = new QAction(tr("&Toggle Dark / Light Mode"), this);
+    actionToggleTheme->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_T));
+    connect(actionToggleTheme, &QAction::triggered, this, [this]() {
+        ThemeManager::instance()->toggleTheme(this);
+        bool dark = ThemeManager::instance()->isDarkActive();
+        if (dark) {
+            actionThemeDark->setChecked(true);
+            ui->statusBar->showMessage(tr("Switched to Dark Mode"), 3000);
+        } else {
+            actionThemeLight->setChecked(true);
+            ui->statusBar->showMessage(tr("Switched to Light Mode"), 3000);
+        }
+    });
+    menuTheme->addAction(actionToggleTheme);
 }
