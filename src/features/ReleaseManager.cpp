@@ -16,6 +16,8 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QMessageBox>
+#include <QPushButton>
+#include <QAbstractButton>
 #include <QDesktopServices>
 #include <QUrl>
 #include <QApplication>

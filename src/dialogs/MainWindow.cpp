@@ -49,6 +49,7 @@
 #include <QStandardPaths>
 #include <QWindow>
 #include <QPushButton>
+#include <QAbstractButton>
 #include <QTimer>
 #include <QInputDialog>
 #include <QPrintPreviewDialog>
