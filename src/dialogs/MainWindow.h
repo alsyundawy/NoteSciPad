@@ -54,6 +54,11 @@ class RegexHelperDialog;
 class LanguageInspectorDock;
 class TailOptionsDialog;
 class PerformanceDiagnosticsDialog;
+class MarkOccurrences;
+class FileBrowserDock;
+
+#include "ClipboardMonitor.h"
+#include "TransparentWindowManager.h"
 
 class MainWindow : public QMainWindow
 {
