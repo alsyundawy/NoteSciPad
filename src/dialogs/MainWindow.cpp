@@ -511,7 +511,7 @@ connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
         if (auto *ed = currentEditor()) {
             EncodingSelectionDialog dlg(ed, this);
             if (dlg.exec() == QDialog::Accepted) {
-                infoStatusBar->updateEncoding(ed);
+                ui->statusBar->updateEncoding(ed);
             }
         }
     });
@@ -519,31 +519,31 @@ connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
     connect(ui->actionConvertToUtf8, &QAction::triggered, this, [this]() {
         if (auto *ed = currentEditor()) {
             ed->convertToEncoding(QStringLiteral("UTF-8"), ScintillaNext::BomType::None);
-            infoStatusBar->updateEncoding(ed);
+            ui->statusBar->updateEncoding(ed);
         }
     });
     connect(ui->actionConvertToUtf8Bom, &QAction::triggered, this, [this]() {
         if (auto *ed = currentEditor()) {
             ed->convertToEncoding(QStringLiteral("UTF-8"), ScintillaNext::BomType::Utf8);
-            infoStatusBar->updateEncoding(ed);
+            ui->statusBar->updateEncoding(ed);
         }
     });
     connect(ui->actionConvertToAnsi, &QAction::triggered, this, [this]() {
         if (auto *ed = currentEditor()) {
             ed->convertToEncoding(QStringLiteral("windows-1252"), ScintillaNext::BomType::None);
-            infoStatusBar->updateEncoding(ed);
+            ui->statusBar->updateEncoding(ed);
         }
     });
     connect(ui->actionConvertToUtf16Le, &QAction::triggered, this, [this]() {
         if (auto *ed = currentEditor()) {
             ed->convertToEncoding(QStringLiteral("UTF-16LE"), ScintillaNext::BomType::Utf16LE);
-            infoStatusBar->updateEncoding(ed);
+            ui->statusBar->updateEncoding(ed);
         }
     });
     connect(ui->actionConvertToUtf16Be, &QAction::triggered, this, [this]() {
         if (auto *ed = currentEditor()) {
             ed->convertToEncoding(QStringLiteral("UTF-16BE"), ScintillaNext::BomType::Utf16BE);
-            infoStatusBar->updateEncoding(ed);
+            ui->statusBar->updateEncoding(ed);
         }
     });
 
@@ -554,7 +554,7 @@ connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
                 return;
             }
             ed->reloadWithEncoding(enc);
-            infoStatusBar->updateEncoding(ed);
+            ui->statusBar->updateEncoding(ed);
         }
     };
 
@@ -573,7 +573,7 @@ connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
         if (auto *ed = currentEditor()) {
             EncodingSelectionDialog dlg(ed, this);
             if (dlg.exec() == QDialog::Accepted) {
-                infoStatusBar->updateEncoding(ed);
+                ui->statusBar->updateEncoding(ed);
             }
         }
     });
@@ -799,7 +799,7 @@ connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
     actionDecryptDoc->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_D));
     connect(actionDecryptDoc, &QAction::triggered, this, &MainWindow::onDecryptDocumentTriggered);
     menuEncryption->addAction(actionDecryptDoc);
-    ui->menuTools->addMenu(menuEncryption);
+    ui->menuFile->addMenu(menuEncryption);
 
     menuClipboardMonitoring = new QMenu(tr("Clipboard &Monitoring"), this);
     actionToggleClipboardMonitoring = new QAction(tr("&Monitor Clipboard (Append to Document)"), this);
@@ -3094,8 +3094,8 @@ MainWindow::UserSaveAction MainWindow::promptForSave(const QVector<ScintillaNext
                        : tr("There are %n files with unsaved changes. Save them?", "", count);
     msgBox.setText(text);
 
-    QAbstractButton *saveBtn = msgBox.addButton(count > 1 ? tr("Save All") : tr("Save"), QMessageBox::AcceptRole);
-    QAbstractButton *discardBtn = msgBox.addButton(count > 1 ? tr("Discard All") : tr("Discard"), QMessageBox::DestructiveRole);
+    QPushButton *saveBtn = msgBox.addButton(count > 1 ? tr("Save All") : tr("Save"), QMessageBox::AcceptRole);
+    QPushButton *discardBtn = msgBox.addButton(count > 1 ? tr("Discard All") : tr("Discard"), QMessageBox::DestructiveRole);
     msgBox.addButton(QMessageBox::Cancel);
 
     msgBox.setDefaultButton(saveBtn);

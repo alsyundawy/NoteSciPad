@@ -62,7 +62,7 @@ void RegexHelperDialog::updateRegexTest()
         return;
     }
 
-    auto options = QRegularExpression::UseUnicodePropertiesOption;
+    QRegularExpression::PatternOptions options = QRegularExpression::UseUnicodePropertiesOption;
     if (!ui->chkCaseSensitive->isChecked()) {
         options |= QRegularExpression::CaseInsensitiveOption;
     }
