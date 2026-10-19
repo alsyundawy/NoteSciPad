@@ -1,0 +1,40 @@
+app-id: io.github.alsyundawy.NoteSciPad
+runtime: org.kde.Platform
+runtime-version: '6.6'
+sdk: org.kde.Sdk
+command: NoteSciPad
+
+finish-args:
+  - --share=ipc
+  - --socket=fallback-x11
+  - --socket=wayland
+  - --filesystem=host
+  - --filesystem=home
+  - --device=dri
+  - --talk-name=org.freedesktop.FileManager1
+
+modules:
+  - name: uchardet
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DBUILD_STATIC=OFF
+    sources:
+      - type: archive
+        url: https://www.freedesktop.org/software/uchardet/releases/uchardet-0.0.8.tar.xz
+        sha256: e97a606422ac969f3fe4854f19574fb145297bd164ba6e68278db76fb837a7b8
+
+  - name: notescipad
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DADS_STATIC=ON
+      - -DQSIMPLEUPDATER_STATIC=ON
+    sources:
+      - type: git
+        url: https://github.com/alsyundawy/NoteSciPad.git
+        branch: main
+    post-install:
+      - install -Dm644 deploy/linux/io.github.alsyundawy.NoteSciPad.desktop /app/share/applications/io.github.alsyundawy.NoteSciPad.desktop
+      - install -Dm644 deploy/linux/io.github.alsyundawy.NoteSciPad.metainfo.xml /app/share/metainfo/io.github.alsyundawy.NoteSciPad.metainfo.xml
+      - install -Dm644 src/icon/NoteSciPad.svg /app/share/icons/hicolor/scalable/apps/io.github.alsyundawy.NoteSciPad.svg

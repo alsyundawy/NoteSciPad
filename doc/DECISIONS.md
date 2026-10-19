@@ -338,3 +338,19 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
 - **Consequences:**
   - One-line command installation for macOS users (`brew install --cask notescipad`).
   - Terminal users can launch NoteSciPad directly from shell via `notescipad [files...]`.
+
+---
+
+## ADR-016: Universal Linux Packaging Architecture (Flatpak and AppImage)
+
+- **Status:** Accepted
+- **Date:** 2026-10-19
+- **Context:**
+  While native \`.deb\` and \`.rpm\` packages serve Debian/Ubuntu and Fedora/RHEL users, modern Linux distributions (such as Arch, Manjaro, openSUSE, and immutable OSes like Fedora Silverblue and SteamOS) benefit significantly from sandboxed Flatpaks and standalone portable AppImages.
+- **Decision:**
+  1. Authored \`deploy/linux/flatpak/io.github.alsyundawy.NoteSciPad.yml\` utilizing \`org.kde.Platform\` 6.6.
+  2. Implemented \`deploy/linux/appimage/AppRun\` and automated AppDir bundling script \`scripts/package-flatpak-appimage.sh\`.
+  3. Authored \`doc/FLATPAK_AND_APPIMAGE_PACKAGING.md\` detailing build commands and security permissions.
+- **Consequences:**
+  - Distribution across any Linux distribution regardless of package manager.
+  - Ready for future Flathub submission.

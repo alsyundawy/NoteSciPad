@@ -144,7 +144,7 @@ Use this as the living task board. Check items as they are completed.
 - [x] Documentation (user guide + developer)
 - [x] Public alpha / beta release
 - [x] Homebrew cask or formula (optional)
-- [ ] Flatpak / AppImage (optional)
+- [x] Flatpak / AppImage (optional)
 
 ---
 
