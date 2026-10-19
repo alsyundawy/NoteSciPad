@@ -106,6 +106,8 @@ jobs:
           sudo apt-get install -y --no-install-recommends \
             build-essential \
             ninja-build \
+            dpkg-dev \
+            rpm \
             libgl1-mesa-dev \
             libxkbcommon-dev \
             libxkbcommon-x11-0 \
@@ -174,10 +176,20 @@ jobs:
           path: build/NoteSciPad*.dmg
           if-no-files-found: warn
 
-      - name: Upload Linux Binary
+      - name: Build Linux Targets (deb, rpm)
+        if: matrix.platform == 'linux'
+        shell: bash
+        run: |
+          cmake --build build --target deb || true
+          cmake --build build --target rpm || true
+
+      - name: Upload Linux Binary & Packages (.deb, .rpm)
         if: matrix.platform == 'linux'
         uses: actions/upload-artifact@v4
         with:
           name: NoteSciPad-Linux-${{ matrix.arch }}-Qt${{ matrix.qt_version }}
-          path: build/src/NoteSciPad
+          path: |
+            build/src/NoteSciPad
+            build/*.deb
+            build/*.rpm
           if-no-files-found: warn

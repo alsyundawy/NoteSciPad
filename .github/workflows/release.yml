@@ -219,6 +219,17 @@ jobs:
             fi
           done
 
+      - name: Upload Linux Packages (.deb, .rpm)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          for pkg in $(find . -name "*.deb" -o -name "*.rpm"); do
+            echo "Uploading Linux package: ${pkg}"
+            gh release upload "${RELEASE_TAG}" "${pkg}" --clobber || true
+          done
+
       - name: Upload Default Editor Script
         shell: bash
         env:
