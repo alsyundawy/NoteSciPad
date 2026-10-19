@@ -62,7 +62,7 @@ QVector<FunctionSymbol> FunctionParser::parseText(const QString &text, const QSt
     int currentClassIndent = -1;
 
     // Precompiled regexes for high performance
-    static const QRegularExpression mdRe(QStringLiteral("^(#{1,6})\s+(.+)$"));
+    static const QRegularExpression mdRe(QStringLiteral("^(#{1,6})\\s+(.+)$"));
 
     static const QRegularExpression pyClassRe(QStringLiteral(R"(^(\s*)class\s+([A-Za-z_][A-Za-z0-9_]*))"));
     static const QRegularExpression pyDefRe(QStringLiteral(R"(^(\s*)(?:async\s+)?def\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(([^)]*)\))"));
@@ -91,7 +91,7 @@ QVector<FunctionSymbol> FunctionParser::parseText(const QString &text, const QSt
     static const QRegularExpression shFunc1Re(QStringLiteral(R"(^\s*(?:function\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*\(\s*\)\s*\{?)"));
     static const QRegularExpression shFunc2Re(QStringLiteral(R"(^\s*function\s+([A-Za-z_][A-Za-z0-9_]+)\s*\{?)"));
 
-    static const QRegularExpression genericFuncRe(QStringLiteral(R"((?:sub|def|func|function|fn|procedure)\s+([A-Za-z_][A-Za-z0-9_]*))", QRegularExpression::CaseInsensitiveOption));
+    static const QRegularExpression genericFuncRe(QStringLiteral(R"((?:sub|def|func|function|fn|procedure)\s+([A-Za-z_][A-Za-z0-9_]*))"), QRegularExpression::CaseInsensitiveOption);
 
     for (int i = 0; i < lines.size(); ++i) {
         const QString &lineStr = lines.at(i);

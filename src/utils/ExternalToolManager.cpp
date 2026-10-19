@@ -314,9 +314,7 @@ bool ExternalToolManager::runCurrentFileWithInterpreter(ScintillaNext *editor, Q
         // Check shebang on line 1
         int lineLen = editor->lineLength(0);
         if (lineLen > 2) {
-            QByteArray firstLineBytes(lineLen + 1, '\0');
-            editor->getLine(0, firstLineBytes.data());
-            firstLineBytes.resize(lineLen);
+            QByteArray firstLineBytes = editor->getLine(0);
             QString firstLine = QString::fromUtf8(firstLineBytes).trimmed();
             if (firstLine.startsWith(QStringLiteral("#!"))) {
                 QString shebang = firstLine.mid(2).trimmed();

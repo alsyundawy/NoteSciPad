@@ -52,6 +52,12 @@ public:
         std::memcpy(text, b.constData(), b.size());
         text[b.size()] = '\0';
     }
+    void getLine(sptr_t line, char *text) {
+        if (!text) return;
+        QByteArray b = ScintillaEdit::getLine(line);
+        std::memcpy(text, b.constData(), b.size());
+        text[b.size()] = '\0';
+    }
 
     static bool isRangeValid(const Sci_CharacterRange &range)
     {
