@@ -156,7 +156,7 @@ Use this as the living task board. Check items as they are completed.
 - [x] Localization updates (Indonesian priority + English)
 - [x] About dialog credits (NotepadNext, Notepad4, Notepad3, Scintilla, Lexilla) + clear non-affiliation statement
 - [x] Performance & memory baseline measurements
-- [ ] Security review for any new features that handle external data
+- [x] Security review for any new features that handle external data
 
 ---
 

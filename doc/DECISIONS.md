@@ -445,3 +445,18 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
   3. Established performance thresholds (startup < 200ms, idle memory < 50MB RSS).
 - **Consequences:**
   - Clear performance regressions are immediately detectable before release packaging.
+
+---
+
+## ADR-023: External Data Security and Threat Mitigation Architecture
+
+- **Status:** Accepted
+- **Date:** 2026-10-19
+- **Context:**
+  NoteSciPad handles sensitive cryptographic workflows, external file streaming, sandboxed JavaScript evaluation, and GitHub update queries. A rigorous security review and STRIDE threat model were necessary to ensure user privacy, data integrity, and vulnerability immunity.
+- **Decision:**
+  1. Formalized threat model in `doc/SECURITY_REVIEW_EXTERNAL_DATA.md`.
+  2. Implemented automated scanner `scripts/run-security-audit.sh`.
+  3. Enforced XSS escaping (`toHtmlEscaped()`), JavaScriptCore sandbox isolation, and 100,000 PBKDF2 rounds.
+- **Consequences:**
+  - Zero arbitrary code execution risk, zero telemetry, and maximum data protection for users.
