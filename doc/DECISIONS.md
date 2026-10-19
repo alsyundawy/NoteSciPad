@@ -302,3 +302,21 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
 - **Consequences:**
   - Both end-users and developers have immediate, offline and online access to authoritative documentation.
   - New contributors have a structured, reproducible development and feature implementation blueprint.
+
+---
+
+## ADR-014: Public Alpha/Beta Release Architecture & Native Update Notification Engine
+
+- **Status:** Accepted
+- **Date:** 2026-10-19
+- **Context:**
+  NoteSciPad was transitioning towards public alpha and beta releases for macOS and Linux. The previous updater architecture was hardcoded to Windows registry keys and an obsolete external URL, while update checks on macOS and Linux were completely disabled. An automated release workflow and cross-platform in-app update notification system were required.
+- **Decision:**
+  1. Implemented `ReleaseManager` in `src/features/` utilizing Qt's native `QNetworkAccessManager` to query the GitHub Releases API.
+  2. Built semantic version comparison parsing major, minor, patch, and alpha/beta prerelease tags.
+  3. Replaced Windows-only updater blocks in `MainWindow.cpp` with a unified `Help > Check for Updates...` action (`Ctrl+Shift+U` / `Cmd+Shift+U`).
+  4. Authored `scripts/prepare-release.sh` to automate asset aggregation, cryptographic checksums (`SHA256SUMS`), and `RELEASE_NOTES.md` drafting.
+  5. Authored `doc/PUBLIC_RELEASE_GUIDE.md` detailing the release lifecycle.
+- **Consequences:**
+  - Full macOS and Linux update check discoverability directly from the UI.
+  - Reproducible release asset building and checksum generation for distribution.

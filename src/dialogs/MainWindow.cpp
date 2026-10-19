@@ -1,3 +1,4 @@
+#include "features/ReleaseManager.h"
 #include "features/DocumentationManager.h"
 #include "features/ScreenDisplayManager.h"
 #include "ThemeManager.h"
@@ -3276,79 +3277,39 @@ void MainWindow::addEditor(ScintillaNext *editor)
 
 void MainWindow::checkForUpdates(bool silent)
 {
-#ifdef Q_OS_WIN
-    qInfo(Q_FUNC_INFO);
-
-    QString url = "https://github.com/alsyundawy/NotepadNext-MacOS/raw/master/updates.json";
-
-#if defined(_M_ARM64) || defined(__aarch64__)
-    // updates.json only points to the x64 installer, so ARM64 builds check
-    // the "windows-arm64" key instead. Until that key is added to the json,
-    // the updater will never report an available update which effectively
-    // disables the auto updater rather than downloading a useless x64 installer.
-    QSimpleUpdater::getInstance()->setPlatformKey(url, "windows-arm64");
-#endif
-    QSimpleUpdater::getInstance()->checkForUpdates(url);
-
-    if (!silent) {
-        connect(QSimpleUpdater::getInstance(), &QSimpleUpdater::checkingFinished, this, &MainWindow::checkForUpdatesFinished, Qt::UniqueConnection);
+    ReleaseManager::instance().checkForUpdates(this, silent);
+    if (app && app->getSettings()) {
+        app->getSettings()->setValue("App/LastUpdateCheck", QDateTime::currentDateTime());
     }
-    else {
-        disconnect(QSimpleUpdater::getInstance(), &QSimpleUpdater::checkingFinished, this, &MainWindow::checkForUpdatesFinished);
-    }
-
-
-    app->getSettings()->setValue("App/LastUpdateCheck", QDateTime::currentDateTime());
-#else
-    Q_UNUSED(silent);
-#endif
 }
 
 void MainWindow::checkForUpdatesFinished(QString url)
 {
-#ifdef Q_OS_WIN
-    if (!QSimpleUpdater::getInstance()->getUpdateAvailable(url)) {
-        QMessageBox::information(this, QString(), tr("No updates are available at this time."));
-    }
-#endif
+    Q_UNUSED(url);
 }
 
 void MainWindow::initUpdateCheck()
 {
-#ifdef Q_OS_WIN
-#ifdef QT_DEBUG
-    if (true) {
-#else
-    QSettings registry(QSettings::NativeFormat, QSettings::UserScope, QApplication::organizationName(), QApplication::applicationName());
-    const bool autoUpdatesEnabled = registry.value("AutoUpdate", 0).toBool();
-    qInfo("AutoUpdates: %d", autoUpdatesEnabled);
+    ui->actionCheckForUpdates->setEnabled(true);
+    ui->actionCheckForUpdates->setVisible(true);
+    ui->actionCheckForUpdates->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_U));
+    connect(ui->actionCheckForUpdates, &QAction::triggered, this, [this]() {
+        checkForUpdates(false);
+    });
 
-    if (autoUpdatesEnabled) {
-#endif
-        connect(ui->actionCheckForUpdates, &QAction::triggered, this, &MainWindow::checkForUpdates);
+    // Check periodically in background
+    QTimer::singleShot(15000, this, [this]() {
+        ApplicationSettings settings;
+        QDateTime dt = settings.value("App/LastUpdateCheck", QDateTime::currentDateTime()).toDateTime();
 
-        // A bit after startup, see if we need to automatically check for an update
-        QTimer::singleShot(15000, this, [this]() {
-            ApplicationSettings settings;
-            QDateTime dt = settings.value("App/LastUpdateCheck", QDateTime::currentDateTime()).toDateTime();
+        if (dt.isValid()) {
+            qInfo("Last checked for updates at: %s", qUtf8Printable(dt.toString()));
 
-            if (dt.isValid()) {
-                qInfo("Last checked for updates at: %s", qUtf8Printable(dt.toString()));
-
-                if (dt.addDays(7) < QDateTime::currentDateTime()) {
-                    checkForUpdates(true);
-                }
+            if (dt.addDays(7) < QDateTime::currentDateTime()) {
+                checkForUpdates(true);
             }
-        });
-    }
-    else {
-        ui->actionCheckForUpdates->setDisabled(true);
-        ui->actionCheckForUpdates->setVisible(false);
-    }
-#else
-    ui->actionCheckForUpdates->setDisabled(true);
-    ui->actionCheckForUpdates->setVisible(false);
-#endif
+        }
+    });
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

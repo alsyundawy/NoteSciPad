@@ -112,6 +112,8 @@ qt_add_executable(NoteSciPad
 	features/ScreenDisplayManager.cpp
 	features/DocumentationManager.h
 	features/DocumentationManager.cpp
+	features/ReleaseManager.h
+	features/ReleaseManager.cpp
 	features/AccessibilityManager.h
 	features/AccessibilityManager.cpp
 	features/LogAutoTimestamp.cpp
