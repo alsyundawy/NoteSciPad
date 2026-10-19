@@ -1,3 +1,4 @@
+#include "features/ScreenDisplayManager.h"
 #include "ThemeManager.h"
 #include "AccessibilityManager.h"
 #include "MacServicesHandler.h"
@@ -1729,6 +1730,7 @@ connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
     setupWindowMenu();
     ThemeManager::instance()->initialize(app->getSettings());
     setupThemeMenu();
+    ScreenDisplayManager::instance().registerMainWindow(this);
     AccessibilityManager::instance()->setupAccessibility(this);
 
     applyStyleSheet();
@@ -3141,6 +3143,7 @@ void MainWindow::restoreWindowState()
 
     restoreGeometry(settings->value("MainWindow/geometry").toByteArray());
     restoreState(settings->value("MainWindow/windowState").toByteArray());
+    ScreenDisplayManager::instance().ensureWindowOnScreen(this);
 
     if (settings->value("MainWindow/isFullScreen", false).toBool()) {
         ui->actionFullScreen->setChecked(true);
@@ -3898,6 +3901,29 @@ void MainWindow::setupWindowMenu()
 
     menuWindow->addSeparator();
 
+    // Multi-Monitor and Retina screen management
+    QAction *actionMoveToNextScreen = new QAction(tr("Move to &Next Screen"), this);
+    actionMoveToNextScreen->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_Right));
+    connect(actionMoveToNextScreen, &QAction::triggered, this, &MainWindow::onMoveToNextScreenTriggered);
+    menuWindow->addAction(actionMoveToNextScreen);
+
+    QAction *actionMoveToPrevScreen = new QAction(tr("Move to &Previous Screen"), this);
+    actionMoveToPrevScreen->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_Left));
+    connect(actionMoveToPrevScreen, &QAction::triggered, this, &MainWindow::onMoveToPreviousScreenTriggered);
+    menuWindow->addAction(actionMoveToPrevScreen);
+
+    QAction *actionCenterScreen = new QAction(tr("&Center Window on Screen"), this);
+    actionCenterScreen->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_C));
+    connect(actionCenterScreen, &QAction::triggered, this, &MainWindow::onCenterOnScreenTriggered);
+    menuWindow->addAction(actionCenterScreen);
+
+    QAction *actionDisplayDiagnostics = new QAction(tr("&Display & Retina Diagnostics..."), this);
+    actionDisplayDiagnostics->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_D));
+    connect(actionDisplayDiagnostics, &QAction::triggered, this, &MainWindow::onDisplayDiagnosticsTriggered);
+    menuWindow->addAction(actionDisplayDiagnostics);
+
+    menuWindow->addSeparator();
+
     connect(menuWindow, &QMenu::aboutToShow, this, &MainWindow::populateWindowMenuDocuments);
 }
 
@@ -4030,4 +4056,25 @@ void MainWindow::setupThemeMenu()
         }
     });
     menuTheme->addAction(actionToggleTheme);
+}
+
+
+void MainWindow::onMoveToNextScreenTriggered()
+{
+    ScreenDisplayManager::instance().moveToNextScreen(this);
+}
+
+void MainWindow::onMoveToPreviousScreenTriggered()
+{
+    ScreenDisplayManager::instance().moveToPreviousScreen(this);
+}
+
+void MainWindow::onCenterOnScreenTriggered()
+{
+    ScreenDisplayManager::instance().centerOnCurrentScreen(this);
+}
+
+void MainWindow::onDisplayDiagnosticsTriggered()
+{
+    ScreenDisplayManager::instance().showDisplayInfoDialog(this);
 }

@@ -108,6 +108,8 @@ qt_add_executable(NoteSciPad
 	features/LogAutoTimestamp.h
 	features/ThemeManager.h
 	features/ThemeManager.cpp
+	features/ScreenDisplayManager.h
+	features/ScreenDisplayManager.cpp
 	features/AccessibilityManager.h
 	features/AccessibilityManager.cpp
 	features/LogAutoTimestamp.cpp
@@ -241,6 +243,8 @@ qt_add_executable(NoteSciPad
 	dialogs/AccessibilityHelpDialog.cpp
 	dialogs/AccessibilityHelpDialog.h
 	dialogs/AccessibilityHelpDialog.ui
+	dialogs/DisplayInfoDialog.cpp
+	dialogs/DisplayInfoDialog.h
 	docks/DebugLogDock.cpp
 	docks/DebugLogDock.h
 	docks/DebugLogDock.ui

@@ -35,6 +35,9 @@ int main(int argc, char *argv[])
     QGuiApplication::setApplicationDisplayName("NoteSciPad");
     QGuiApplication::setApplicationVersion(APP_VERSION);
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+    QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+#endif
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);

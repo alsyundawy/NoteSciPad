@@ -266,3 +266,22 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
 - **Positive:** NoteSciPad looks stunning and native in macOS and Linux dark modes without jarring contrast mismatches.
 - **Positive:** Zero modification or disruption to ScintillaNext and Lexilla engine invariants.
 - **Positive:** Instant real-time theme adaptation without needing application restarts.
+
+---
+
+## ADR-012: Multi-Monitor & Retina High-DPI Adaptation Engine
+
+- **Status:** Accepted
+- **Date:** 2026-10-19
+- **Context:**
+  NoteSciPad runs on diverse desktop systems ranging from Apple Liquid Retina displays (2.0x DPR) to multi-monitor mixed-DPI setups and high-resolution Linux desktop environments. Issues with window positioning across disconnected screens, integer scaling blurring, and Scintilla text rasterization across screen hops required a formalized, central management architecture.
+- **Decision:**
+  1. Implemented `ScreenDisplayManager` as a dedicated singleton feature class in `src/features/`.
+  2. Configured Qt High-DPI scaling policy to `Qt::HighDpiScaleFactorRoundingPolicy::PassThrough` in `src/main.cpp`.
+  3. Added off-screen boundary safety checks in `ensureWindowOnScreen()` connected to window restoration and `QGuiApplication::screenRemoved`.
+  4. Added window screen transition handling to update Scintilla editor canvases upon DPR changes.
+  5. Built `DisplayInfoDialog` in `src/dialogs/` and wired menu actions and shortcuts (`Ctrl+Alt+Right`, `Ctrl+Alt+Left`, `Ctrl+Alt+C`, `Ctrl+Alt+D`).
+- **Consequences:**
+  - Crisp, unblurred subpixel typography and caret tracking on Retina and fractional High-DPI displays.
+  - Windows can never be lost or orphaned off-screen when monitors are unplugged.
+  - Users can easily navigate multi-screen workspaces via keyboard shortcuts.

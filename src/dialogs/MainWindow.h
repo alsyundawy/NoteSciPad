@@ -246,6 +246,10 @@ private:
     void populateWindowMenuDocuments();
     void setupWindowMenu();
     void setupThemeMenu();
+    void onMoveToNextScreenTriggered();
+    void onMoveToPreviousScreenTriggered();
+    void onCenterOnScreenTriggered();
+    void onDisplayDiagnosticsTriggered();
 
     QMenu *menuRun = nullptr;
     QMenu *menuSavedTools = nullptr;
