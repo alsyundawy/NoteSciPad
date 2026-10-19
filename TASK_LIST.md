@@ -141,7 +141,7 @@ Use this as the living task board. Check items as they are completed.
 - [x] Accessibility review (keyboard, VoiceOver)
 - [x] Dark mode visual polish
 - [x] Multi-monitor & Retina testing
-- [ ] Documentation (user guide + developer)
+- [x] Documentation (user guide + developer)
 - [ ] Public alpha / beta release
 - [ ] Homebrew cask or formula (optional)
 - [ ] Flatpak / AppImage (optional)

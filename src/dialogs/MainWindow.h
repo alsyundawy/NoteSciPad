@@ -250,6 +250,8 @@ private:
     void onMoveToPreviousScreenTriggered();
     void onCenterOnScreenTriggered();
     void onDisplayDiagnosticsTriggered();
+    void onUserGuideTriggered();
+    void onDeveloperGuideTriggered();
 
     QMenu *menuRun = nullptr;
     QMenu *menuSavedTools = nullptr;

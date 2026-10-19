@@ -285,3 +285,20 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
   - Crisp, unblurred subpixel typography and caret tracking on Retina and fractional High-DPI displays.
   - Windows can never be lost or orphaned off-screen when monitors are unplugged.
   - Users can easily navigate multi-screen workspaces via keyboard shortcuts.
+
+---
+
+## ADR-013: Documentation Architecture (User Guide and Developer Guide)
+
+- **Status:** Accepted
+- **Date:** 2026-10-19
+- **Context:**
+  NoteSciPad has evolved with a substantial suite of native capabilities (AES-256 encryption, JavaScriptCore evaluator, log tail monitoring, theme engine, Retina multi-monitor manager, VoiceOver accessibility, codesign/notarization, packaging). Users and developers required clear, exhaustive, and easily accessible documentation.
+- **Decision:**
+  1. Authored `doc/USER_GUIDE.md` as the comprehensive user manual covering all tools, workflows, keyboard shortcuts, and FAQs.
+  2. Authored `doc/DEVELOPER_GUIDE.md` as the maintainer and contributor runbook detailing architecture invariants, directory layouts, build instructions, and release pipelines.
+  3. Implemented `DocumentationManager` in `src/features/` with local fallback to online repository links.
+  4. Exposed `Help > User Guide` (`F1` / `Ctrl+F1`) and `Help > Developer Guide` (`Shift+F12`) in the primary menu bar.
+- **Consequences:**
+  - Both end-users and developers have immediate, offline and online access to authoritative documentation.
+  - New contributors have a structured, reproducible development and feature implementation blueprint.

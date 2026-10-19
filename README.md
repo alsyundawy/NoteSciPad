@@ -10,6 +10,8 @@
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-green.svg)](LICENSE)
 [![Engine: Scintilla + Lexilla](https://img.shields.io/badge/Engine-Scintilla%20%2B%20Lexilla%20(Vendored)-orange.svg)](#editor-engine-policy)
 [![Platform: macOS & Linux](https://img.shields.io/badge/Platform-macOS%20%7C%20Linux-purple.svg)](#installation--platforms)
+[![Documentation: User Guide](https://img.shields.io/badge/Docs-User%20Guide-blue.svg)](doc/USER_GUIDE.md)
+[![Documentation: Developer Guide](https://img.shields.io/badge/Docs-Developer%20Guide-yellow.svg)](doc/DEVELOPER_GUIDE.md)
 
 ---
 

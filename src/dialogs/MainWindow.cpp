@@ -1,3 +1,4 @@
+#include "features/DocumentationManager.h"
 #include "features/ScreenDisplayManager.h"
 #include "ThemeManager.h"
 #include "AccessibilityManager.h"
@@ -1590,6 +1591,21 @@ connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
         AccessibilityManager::instance()->openAccessibilityHelp(this);
     });
     ui->menuHelp->insertAction(ui->actionAboutNotepadNext, actionAccessibilityHelp);
+
+    // User & Developer Documentation
+    QAction *actionUserGuide = new QAction(tr("NoteSciPad &User Guide"), this);
+#if defined(Q_OS_MACOS)
+    actionUserGuide->setShortcut(QKeySequence(Qt::Key_F1));
+#else
+    actionUserGuide->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_F1));
+#endif
+    connect(actionUserGuide, &QAction::triggered, this, &MainWindow::onUserGuideTriggered);
+    ui->menuHelp->insertAction(ui->actionAboutNotepadNext, actionUserGuide);
+
+    QAction *actionDeveloperGuide = new QAction(tr("NoteSciPad &Developer Guide"), this);
+    actionDeveloperGuide->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_F12));
+    connect(actionDeveloperGuide, &QAction::triggered, this, &MainWindow::onDeveloperGuideTriggered);
+    ui->menuHelp->insertAction(ui->actionAboutNotepadNext, actionDeveloperGuide);
 
     ui->actionAboutNotepadNext->setShortcut(QKeySequence::HelpContents);
     connect(ui->actionAboutNotepadNext, &QAction::triggered, this, [this]() {
@@ -4077,4 +4093,15 @@ void MainWindow::onCenterOnScreenTriggered()
 void MainWindow::onDisplayDiagnosticsTriggered()
 {
     ScreenDisplayManager::instance().showDisplayInfoDialog(this);
+}
+
+
+void MainWindow::onUserGuideTriggered()
+{
+    DocumentationManager::instance().openUserGuide(this);
+}
+
+void MainWindow::onDeveloperGuideTriggered()
+{
+    DocumentationManager::instance().openDeveloperGuide(this);
 }
