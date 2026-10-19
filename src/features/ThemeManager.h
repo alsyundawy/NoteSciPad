@@ -13,6 +13,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QColor>
 
 class MainWindow;
 class ScintillaNext;
