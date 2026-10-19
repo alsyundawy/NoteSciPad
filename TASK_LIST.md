@@ -162,7 +162,7 @@ Use this as the living task board. Check items as they are completed.
 
 ## Definition of Done (per feature)
 
-- [ ] Code reviewed
+- [x] Code reviewed
   - BUG REVIEW.
   - SYNTAX REVIEW.
   - RUNTIME REVIEW.
@@ -176,13 +176,13 @@ Use this as the living task board. Check items as they are completed.
   - MAINTAINABILITY REVIEW.
   - SCALABILITY REVIEW.
   - READABILITY REVIEW.
-- [ ] Works on both arm64 and x64 (macOS) and Linux
-- [ ] Keyboard shortcut assigned (where applicable)
-- [ ] Menu item added
-- [ ] Basic error handling
-- [ ] No obvious regressions in existing features
-- [ ] Still uses Scintilla + Lexilla
-- [ ] Documented in changelog
+- [x] Works on both arm64 and x64 (macOS) and Linux
+- [x] Keyboard shortcut assigned (where applicable)
+- [x] Menu item added
+- [x] Basic error handling
+- [x] No obvious regressions in existing features
+- [x] Still uses Scintilla + Lexilla
+- [x] Documented in changelog
 
 ---
 
