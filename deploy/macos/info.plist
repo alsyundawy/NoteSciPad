@@ -6,6 +6,8 @@
 	<string>NoteSciPad</string>
 	<key>CFBundleName</key>
 	<string>NoteSciPad</string>
+	<key>CFBundleDisplayName</key>
+	<string>NoteSciPad</string>
 	<key>CFBundleIconFile</key>
 	<string>NoteSciPad.icns</string>
 	<key>CFBundleIdentifier</key>
@@ -28,12 +30,150 @@
 	<array>
 		<dict>
 			<key>CFBundleTypeName</key>
-			<string>Text File</string>
+			<string>Plain Text Document</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
 			<key>LSHandlerRank</key>
 			<string>Alternate</string>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>txt</string>
+				<string>text</string>
+				<string>log</string>
+				<string>ini</string>
+				<string>cfg</string>
+				<string>conf</string>
+				<string>md</string>
+				<string>markdown</string>
+			</array>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>public.text</string>
+				<string>public.plain-text</string>
+				<string>public.utf8-plain-text</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Source Code File</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>c</string>
+				<string>h</string>
+				<string>cpp</string>
+				<string>hpp</string>
+				<string>cc</string>
+				<string>cxx</string>
+				<string>m</string>
+				<string>mm</string>
+				<string>py</string>
+				<string>js</string>
+				<string>ts</string>
+				<string>json</string>
+				<string>xml</string>
+				<string>html</string>
+				<string>htm</string>
+				<string>css</string>
+				<string>sh</string>
+				<string>bash</string>
+				<string>zsh</string>
+				<string>lua</string>
+				<string>rs</string>
+				<string>go</string>
+				<string>php</string>
+				<string>java</string>
+				<string>sql</string>
+				<string>yaml</string>
+				<string>yml</string>
+			</array>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.source-code</string>
+				<string>public.c-source</string>
+				<string>public.c-header</string>
+				<string>public.c-plus-plus-source</string>
+				<string>public.c-plus-plus-header</string>
+				<string>public.python-script</string>
+				<string>public.shell-script</string>
+				<string>com.netscape.javascript-source</string>
+				<string>public.json</string>
+				<string>public.xml</string>
+				<string>public.html</string>
+				<string>public.css</string>
+				<string>public.yaml</string>
+			</array>
+		</dict>
+	</array>
+	<key>NSServices</key>
+	<array>
+		<dict>
+			<key>NSMenuItem</key>
+			<dict>
+				<key>default</key>
+				<string>NoteSciPad: New Document with Selection</string>
+			</dict>
+			<key>NSMessage</key>
+			<string>openSelectionService</string>
+			<key>NSPasteboardOptions</key>
+			<dict>
+				<key>NSSendTypes</key>
+				<array>
+					<string>public.utf8-plain-text</string>
+					<string>NSStringPboardType</string>
+				</array>
+			</dict>
+			<key>NSSendTypes</key>
+			<array>
+				<string>public.utf8-plain-text</string>
+				<string>NSStringPboardType</string>
+			</array>
+		</dict>
+		<dict>
+			<key>NSMenuItem</key>
+			<dict>
+				<key>default</key>
+				<string>NoteSciPad: Append Selection to Current Document</string>
+			</dict>
+			<key>NSMessage</key>
+			<string>appendSelectionService</string>
+			<key>NSPasteboardOptions</key>
+			<dict>
+				<key>NSSendTypes</key>
+				<array>
+					<string>public.utf8-plain-text</string>
+					<string>NSStringPboardType</string>
+				</array>
+			</dict>
+			<key>NSSendTypes</key>
+			<array>
+				<string>public.utf8-plain-text</string>
+				<string>NSStringPboardType</string>
+			</array>
+		</dict>
+		<dict>
+			<key>NSMenuItem</key>
+			<dict>
+				<key>default</key>
+				<string>NoteSciPad: Open File</string>
+			</dict>
+			<key>NSMessage</key>
+			<string>openFileService</string>
+			<key>NSPasteboardOptions</key>
+			<dict>
+				<key>NSSendFileTypes</key>
+				<array>
+					<string>public.plain-text</string>
+					<string>public.source-code</string>
+				</array>
+			</dict>
+			<key>NSSendFileTypes</key>
+			<array>
+				<string>public.plain-text</string>
+				<string>public.source-code</string>
 			</array>
 		</dict>
 	</array>

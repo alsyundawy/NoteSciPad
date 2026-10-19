@@ -1,3 +1,4 @@
+#include "MacServicesHandler.h"
 #include "MarkOccurrences.h"
 /*
  * This file is part of Notepad Next.
@@ -1695,8 +1696,23 @@ connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
     // It seems restoreState() does not affect the status bar so set it manually
     ui->statusBar->setVisible(app->getSettings()->showStatusBar());
 
+    // Register active window with MacServicesHandler
+    MacServicesHandler::instance()->setActiveWindow(this);
+
+    // Native Emoji & Symbols
+    QAction *actionEmoji = new QAction(tr("&Emoji && Symbols"), this);
+#if defined(Q_OS_MACOS)
+    actionEmoji->setShortcut(QKeySequence(Qt::CTRL | Qt::META | Qt::Key_Space));
+#endif
+    connect(actionEmoji, &QAction::triggered, this, []() {
+        MacServicesHandler::showEmojiAndSymbolsPalette();
+    });
+    ui->menuEdit->addSeparator();
+    ui->menuEdit->addAction(actionEmoji);
+
     setupLanguageMenu();
     setupRunMenu();
+    setupWindowMenu();
 
     applyStyleSheet();
 
@@ -2656,6 +2672,7 @@ void MainWindow::updateFileStatusBasedUi(ScintillaNext *editor)
         title += QStringLiteral(" - [%1]").arg(tr("Administrator"));
     }
     setWindowTitle(title);
+    setWindowFilePath(isFile ? editor->getFilePath() : QString());
 
     ui->actionReload->setEnabled(isFile);
     ui->actionMoveToTrash->setEnabled(isFile);
@@ -3799,5 +3816,124 @@ void MainWindow::updateTailMonitoringUi(ScintillaNext *editor)
     actionToggleTailMonitoring->setChecked(isMon);
     if (actionTailAutoScroll) {
         actionTailAutoScroll->setChecked(TailMonitoringManager::instance()->autoScrollToEnd(editor));
+    }
+}
+
+
+void MainWindow::setupWindowMenu()
+{
+    if (menuWindow)
+        return;
+
+    menuWindow = new QMenu(tr("&Window"), this);
+    ui->menuBar->insertMenu(ui->menuHelp->menuAction(), menuWindow);
+
+    // 1. Minimize
+    QAction *actionMinimize = new QAction(tr("&Minimize"), this);
+#if defined(Q_OS_MACOS)
+    actionMinimize->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_M));
+#else
+    actionMinimize->setShortcut(QKeySequence(Qt::ALT | Qt::Key_F9));
+#endif
+    connect(actionMinimize, &QAction::triggered, this, &QWidget::showMinimized);
+    menuWindow->addAction(actionMinimize);
+
+    // 2. Zoom
+    QAction *actionZoom = new QAction(tr("&Zoom"), this);
+    connect(actionZoom, &QAction::triggered, this, [this]() {
+        if (isMaximized()) {
+            showNormal();
+        } else {
+            showMaximized();
+        }
+    });
+    menuWindow->addAction(actionZoom);
+
+    // 3. Toggle Full Screen
+    menuWindow->addAction(ui->actionFullScreen);
+
+    menuWindow->addSeparator();
+
+    // 4. Next / Previous Document
+    menuWindow->addAction(ui->actionNextTab);
+    menuWindow->addAction(ui->actionPreviousTab);
+
+    menuWindow->addSeparator();
+
+    // 5. Bring All to Front
+    QAction *actionBringToFront = new QAction(tr("&Bring All to Front"), this);
+    connect(actionBringToFront, &QAction::triggered, this, [this]() {
+        raise();
+        activateWindow();
+    });
+    menuWindow->addAction(actionBringToFront);
+
+    menuWindow->addSeparator();
+
+    connect(menuWindow, &QMenu::aboutToShow, this, &MainWindow::populateWindowMenuDocuments);
+}
+
+void MainWindow::onNextDocumentTriggered()
+{
+    QVector<ScintillaNext *> allEditors = editors();
+    if (allEditors.size() <= 1)
+        return;
+
+    int curIdx = allEditors.indexOf(currentEditor());
+    int nextIdx = (curIdx + 1) % allEditors.size();
+    dockedEditor->switchToEditor(allEditors[nextIdx]);
+    allEditors[nextIdx]->grabFocus();
+}
+
+void MainWindow::onPreviousDocumentTriggered()
+{
+    QVector<ScintillaNext *> allEditors = editors();
+    if (allEditors.size() <= 1)
+        return;
+
+    int curIdx = allEditors.indexOf(currentEditor());
+    int prevIdx = (curIdx - 1 + allEditors.size()) % allEditors.size();
+    dockedEditor->switchToEditor(allEditors[prevIdx]);
+    allEditors[prevIdx]->grabFocus();
+}
+
+void MainWindow::populateWindowMenuDocuments()
+{
+    for (QAction *act : m_windowDocActions) {
+        menuWindow->removeAction(act);
+        delete act;
+    }
+    m_windowDocActions.clear();
+
+    QVector<ScintillaNext *> allEditors = editors();
+    if (allEditors.isEmpty())
+        return;
+
+    QActionGroup *docGroup = new QActionGroup(this);
+    docGroup->setExclusive(true);
+
+    ScintillaNext *current = currentEditor();
+    int idx = 1;
+    for (ScintillaNext *ed : allEditors) {
+        QString name = ed->getName();
+        if (!ed->isSavedToDisk()) {
+            name.prepend(QStringLiteral("● "));
+        }
+        QString label = (idx <= 9) ? QString("&%1  %2").arg(idx).arg(name) : name;
+        QAction *act = new QAction(label, menuWindow);
+        act->setCheckable(true);
+        act->setChecked(ed == current);
+        if (ed->isFile()) {
+            act->setToolTip(ed->getFilePath());
+            act->setStatusTip(ed->getFilePath());
+        }
+        connect(act, &QAction::triggered, this, [this, ed]() {
+            dockedEditor->switchToEditor(ed);
+            ed->grabFocus();
+        });
+        docGroup->addAction(act);
+        menuWindow->addAction(act);
+        m_windowDocActions.append(act);
+        idx++;
     }
 }

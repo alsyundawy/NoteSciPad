@@ -1,11 +1,12 @@
 [Desktop Entry]
-Categories=Qt;TextEditor;Utility;
-Exec=NoteSciPad %f
+Categories=Qt;TextEditor;Utility;Development;
+Exec=NoteSciPad %F
 Icon=NoteSciPad
-MimeType=text/plain;
+MimeType=text/plain;text/x-c;text/x-c++;text/x-python;text/x-shellscript;application/json;text/markdown;text/html;text/css;application/xml;text/x-lua;text/x-rust;text/x-go;text/x-php;text/x-java;text/x-sql;text/x-yaml;
 StartupNotify=true
 Type=Application
 Terminal=false
+Actions=NewWindow;NewEmptyDocument;
 
 Name=NoteSciPad
 Name[id]=NoteSciPad
@@ -19,5 +20,17 @@ Comment=A lightweight Scintilla-based text editor for macOS and Linux
 Comment[id]=Editor teks ringan berbasis Scintilla untuk macOS dan Linux
 Comment[pt_BR]=Editor de texto leve baseado em Scintilla para macOS e Linux
 
-Keywords=notesci;notesci-pad;notepad;text;editor;scintilla;lexilla;tabs;programming;
-Keywords[id]=notesci;notesci-pad;notepad;teks;editor;scintilla;lexilla;tab;pemrograman;
+Keywords=notesci;notesci-pad;notepad;text;editor;scintilla;lexilla;tabs;programming;source;code;
+Keywords[id]=notesci;notesci-pad;notepad;teks;editor;scintilla;lexilla;tab;pemrograman;sumber;kode;
+
+[DesktopAction NewWindow]
+Name=New Window
+Name[id]=Jendela Baru
+Exec=NoteSciPad
+Icon=NoteSciPad
+
+[DesktopAction NewEmptyDocument]
+Name=New Empty Document
+Name[id]=Dokumen Kosong Baru
+Exec=NoteSciPad
+Icon=NoteSciPad

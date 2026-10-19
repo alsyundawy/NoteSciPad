@@ -168,3 +168,41 @@ NoteSciPad implements a hardware-aware performance engine through `PerformancePr
 - **Transparent Diagnostics**: Developers can inspect real-time memory usage and system capabilities directly inside the editor.
 - **Smooth Large-File Handling**: Prevents UI stuttering when viewing multi-megabyte log files or large source code files.
 - **Reference**: Full details documented in `doc/PERFORMANCE_PROFILING.md`.
+
+---
+
+## ADR-009: Native macOS Menu Bar Polish, Proxy Icon, and NSServices Integration
+
+- **Status:** Accepted
+- **Date:** 2026-10-19
+- **Deciders:** Harry DS Alsyundawy (Maintainer), Antigravity Engine Architecture Team
+
+### Context
+NoteSciPad targets power users on macOS and Linux. macOS users expect strict adherence to Apple Human Interface Guidelines:
+1. A standard **Window** menu containing window management controls (Minimize, Zoom, Full Screen), tab cycling, and a dynamic list of open documents.
+2. A functional window proxy icon in the title bar allowing files to be dragged directly into other applications, as well as `Cmd+Click` parent folder navigation.
+3. Native dirty dot indicator in the close button.
+4. Native Emoji & Symbols palette access via `Ctrl+Cmd+Space`.
+5. Integration with macOS system-wide **Services** (`NSServices`) so text selected in Safari, Mail, or Terminal can be opened or appended into NoteSciPad with one click.
+6. Modern Linux desktop environments require comprehensive MIME type associations and desktop action shortcuts.
+
+### Decision
+1. **MacServicesHandler Architecture:**
+   - Implemented `MacServicesHandler` with an Objective-C++ implementation (`.mm`) on macOS and a clean C++ stub (`.cpp`) on Linux.
+   - On macOS, registers `NoteSciPadServicesProvider` with `[NSApp setServicesProvider:]` and updates system dynamic services (`NSUpdateDynamicServices()`).
+   - Dispatches received service requests onto the main Qt GUI thread using `dispatch_async(dispatch_get_main_queue(), ...)`.
+2. **Native Window Menu:**
+   - Implemented `MainWindow::setupWindowMenu()` inserting `menuWindow` immediately prior to `menuHelp`.
+   - Wired Minimize, Zoom, Full Screen, Next Document, Previous Document, Bring All to Front, and dynamic checked open documents (`&1` through `&9`).
+3. **Proxy Icon & Window State:**
+   - Added `setWindowFilePath(isFile ? editor->getFilePath() : QString())` and `setWindowModified(!editor->isSavedToDisk())` in `MainWindow`.
+4. **Emoji & Symbols:**
+   - Added `Edit > Emoji & Symbols` (`Ctrl+Cmd+Space`) invoking Cocoa `[NSApp orderFrontCharacterPalette:nil]`.
+5. **Metadata & Deployment:**
+   - Updated `deploy/macos/info.plist` with comprehensive `CFBundleDocumentTypes` (Plain Text & Source Code) and `NSServices` (`openSelectionService`, `appendSelectionService`, `openFileService`).
+   - Updated `deploy/linux/NoteSciPad.desktop` with programming MIME types and actions (`NewWindow`, `NewEmptyDocument`).
+
+### Consequences
+- **Positive:** NoteSciPad feels like a first-class citizen on macOS and Linux, matching the behavior of native macOS editors like BBEdit and TextMate.
+- **Positive:** Zero overhead on Linux; CMake conditionally compiles `.mm` or `.cpp` based on `APPLE`.
+- **Positive:** 100% compliant with ScintillaNext and Lexilla engine invariants.

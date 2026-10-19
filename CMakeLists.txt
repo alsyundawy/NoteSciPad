@@ -6,6 +6,10 @@ project(NoteSciPad
     LANGUAGES C CXX
 )
 
+if(APPLE)
+    enable_language(OBJCXX)
+endif()
+
 set(APP_VERSION "0.15-03")
 set(APP_DISTRIBUTION "" CACHE STRING "Distribution type")
 string(TIMESTAMP CURRENT_YEAR "%Y")

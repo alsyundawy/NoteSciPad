@@ -1,3 +1,4 @@
+#include "MacServicesHandler.h"
 /*
  * This file is part of Notepad Next.
  * Copyright 2019 Justin Dailey
@@ -154,6 +155,9 @@ bool NotepadNextApplication::init()
 
     createNewWindow();
     connect(editorManager, &EditorManager::editorCreated, window, &MainWindow::addEditor);
+
+    MacServicesHandler::instance()->initialize(this);
+    MacServicesHandler::instance()->setActiveWindow(window);
 
     // If the application is activated (e.g. user switching to another program and them back) the focus
     // needs to be reset on whatever object previously had focus (e.g. the find dialog)

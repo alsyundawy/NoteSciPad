@@ -344,7 +344,16 @@ target_link_libraries(NoteSciPad
 
 if(APPLE)
     target_link_directories(NoteSciPad PRIVATE "${CMAKE_BINARY_DIR}/dummy_frameworks")
-    target_link_libraries(NoteSciPad PRIVATE "-framework Security" "-framework JavaScriptCore")
+    target_link_libraries(NoteSciPad PRIVATE "-framework Security" "-framework JavaScriptCore" "-framework AppKit")
+    target_sources(NoteSciPad PRIVATE
+        features/MacServicesHandler.h
+        features/MacServicesHandler.mm
+    )
+else()
+    target_sources(NoteSciPad PRIVATE
+        features/MacServicesHandler.h
+        features/MacServicesHandler.cpp
+    )
 endif()
 
 target_compile_definitions(NoteSciPad

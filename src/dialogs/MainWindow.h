@@ -241,6 +241,10 @@ private:
     void onDecreaseOpacityTriggered();
     void onTransparencyOptionsTriggered();
     void onTransparencyChanged(bool enabled, int opacity, TransparentWindowManager::TransparencyMode mode);
+    void onNextDocumentTriggered();
+    void onPreviousDocumentTriggered();
+    void populateWindowMenuDocuments();
+    void setupWindowMenu();
 
     QMenu *menuRun = nullptr;
     QMenu *menuSavedTools = nullptr;
@@ -263,6 +267,8 @@ private:
     QAction *actionDecreaseOpacity = nullptr;
     QAction *actionTransparencyOptions = nullptr;
     FocusedView *focusedView = nullptr;
+    QMenu *menuWindow = nullptr;
+    QList<QAction *> m_windowDocActions;
     FocusedViewDialog *focusedViewDialog = nullptr;
     LanguageInspectorDock *languageInspectorDock = nullptr;
 

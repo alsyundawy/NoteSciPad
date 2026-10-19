@@ -134,7 +134,7 @@ Use this as the living task board. Check items as they are completed.
 
 ## Phase 4 — macOS & Linux Excellence & Release
 
-- [ ] Native menu bar polish & Services integration
+- [x] Native menu bar polish & Services integration
 - [ ] Improve default-editor script
 - [ ] Codesign + notarization workflow (macOS)
 - [ ] Create .deb and .rpm packages

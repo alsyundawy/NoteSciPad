@@ -1,0 +1,56 @@
+/*
+ * This file is part of NoteSciPad.
+ * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
+ *
+ * NoteSciPad is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ */
+
+#include "MacServicesHandler.h"
+
+MacServicesHandler *MacServicesHandler::instance()
+{
+    static MacServicesHandler s_instance;
+    return &s_instance;
+}
+
+MacServicesHandler::MacServicesHandler(QObject *parent)
+    : QObject(parent)
+{
+}
+
+MacServicesHandler::~MacServicesHandler()
+{
+}
+
+void MacServicesHandler::initialize(NotepadNextApplication *app)
+{
+    m_app = app;
+}
+
+void MacServicesHandler::setActiveWindow(MainWindow *window)
+{
+    m_activeWindow = window;
+}
+
+void MacServicesHandler::showEmojiAndSymbolsPalette()
+{
+    // Native macOS character palette is handled by Cocoa; Linux uses standard Compose/IBus
+}
+
+void MacServicesHandler::handleOpenSelection(const QString &text)
+{
+    Q_UNUSED(text);
+}
+
+void MacServicesHandler::handleAppendSelection(const QString &text)
+{
+    Q_UNUSED(text);
+}
+
+void MacServicesHandler::handleOpenFiles(const QStringList &filePaths)
+{
+    Q_UNUSED(filePaths);
+}
