@@ -41,13 +41,20 @@ void ThemeManager::initialize(ApplicationSettings *settings)
 {
     m_settings = settings;
     if (m_settings) {
-        QString savedMode = m_settings->value("App/ThemeMode", QStringLiteral("Light")).toString().toLower();
+        QString savedMode = m_settings->value(QStringLiteral("App/ThemeMode"), QStringLiteral("Light")).toString().toLower();
         if (savedMode == QStringLiteral("dark")) {
             m_themeMode = ThemeMode::Dark;
         } else if (savedMode == QStringLiteral("auto")) {
             m_themeMode = ThemeMode::Auto;
         } else {
             m_themeMode = ThemeMode::Light;
+        }
+
+        QString savedPalette = m_settings->value(QStringLiteral("App/ThemePalette"), QString()).toString();
+        if (!savedPalette.isEmpty() && findThemePaletteById(savedPalette)) {
+            m_currentPaletteId = savedPalette;
+        } else {
+            m_currentPaletteId = (m_themeMode == ThemeMode::Dark) ? QStringLiteral("catppuccinMocha") : QStringLiteral("defaultLight");
         }
     }
 }
@@ -66,6 +73,17 @@ bool ThemeManager::isDarkActive() const
     return QGuiApplication::palette().color(QPalette::Window).lightness() < 128;
 }
 
+const ThemePalette *ThemeManager::currentPalette() const
+{
+    if (!m_currentPaletteId.isEmpty() && m_currentPaletteId != QStringLiteral("defaultLight")) {
+        const ThemePalette *p = findThemePaletteById(m_currentPaletteId);
+        if (p)
+            return p;
+    }
+    return isDarkActive() ? findThemePaletteById(QStringLiteral("catppuccinMocha"))
+                          : findThemePaletteById(QStringLiteral("catppuccinLatte"));
+}
+
 void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window)
 {
     m_themeMode = mode;
@@ -77,7 +95,7 @@ void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window)
         QString modeStr = QStringLiteral("Auto");
         if (mode == ThemeMode::Dark) modeStr = QStringLiteral("Dark");
         else if (mode == ThemeMode::Light) modeStr = QStringLiteral("Light");
-        m_settings->setValue("App/ThemeMode", modeStr);
+        m_settings->setValue(QStringLiteral("App/ThemeMode"), modeStr);
     }
 
     if (m_activeWindow) {
@@ -85,6 +103,36 @@ void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window)
     }
 
     emit themeChanged(isDarkActive());
+}
+
+void ThemeManager::setPalette(const QString &paletteId, MainWindow *window)
+{
+    const ThemePalette *p = findThemePaletteById(paletteId);
+    if (!p)
+        return;
+
+    m_currentPaletteId = paletteId;
+    if (p->isDark) {
+        m_themeMode = ThemeMode::Dark;
+    } else {
+        m_themeMode = ThemeMode::Light;
+    }
+
+    if (window) {
+        m_activeWindow = window;
+    }
+
+    if (m_settings) {
+        m_settings->setValue(QStringLiteral("App/ThemePalette"), m_currentPaletteId);
+        m_settings->setValue(QStringLiteral("App/ThemeMode"), p->isDark ? QStringLiteral("Dark") : QStringLiteral("Light"));
+    }
+
+    if (m_activeWindow) {
+        applyTheme(m_activeWindow);
+    }
+
+    emit themeChanged(isDarkActive());
+    emit paletteChanged(m_currentPaletteId);
 }
 
 void ThemeManager::toggleTheme(MainWindow *window)
@@ -119,201 +167,239 @@ void ThemeManager::applyThemeToEditor(ScintillaNext *editor)
     if (!editor)
         return;
 
-    bool dark = isDarkActive();
+    const ThemePalette *pal = currentPalette();
+    if (!pal)
+        return;
 
-    if (dark) {
-        // Dark theme: #1e1e1e canvas, #d4d4d4 text (WCAG 2.1 AAA ratio: 9.61:1)
-        editor->styleSetFore(STYLE_DEFAULT, scColor(212, 212, 212));
-        editor->styleSetBack(STYLE_DEFAULT, scColor(30, 30, 30));
-        editor->styleClearAll();
+    QColor card(pal->card);
+    QColor border(pal->border);
+    QColor txtPri(pal->txtPri);
+    QColor txtSec(pal->txtSec);
+    QColor cyan(pal->cyan);
+    QColor blue(pal->blue);
+    QColor net(pal->net);
+    QColor sub(pal->sub);
+    QColor host(pal->host);
+    QColor sep(pal->sep);
 
-        // Line numbers: #858585 on #252526 (WCAG 2.1 AA ratio: 4.52:1)
-        editor->styleSetFore(STYLE_LINENUMBER, scColor(133, 133, 133));
-        editor->styleSetBack(STYLE_LINENUMBER, scColor(37, 37, 38));
+    // Canvas background and primary text
+    editor->styleSetFore(STYLE_DEFAULT, scFromRgb(txtPri.rgb()));
+    editor->styleSetBack(STYLE_DEFAULT, scFromRgb(card.rgb()));
+    editor->styleClearAll();
 
-        editor->setCaretFore(scColor(255, 255, 255));
-        editor->setElementColour(SC_ELEMENT_CARET_LINE_BACK, 0xFF2A2D2E);
-        editor->setElementColour(SC_ELEMENT_SELECTION_BACK, 0xFF3E4451);
-        editor->setElementColour(SC_ELEMENT_SELECTION_INACTIVE_BACK, 0xFF2D3139);
+    // Line number margin
+    editor->styleSetFore(STYLE_LINENUMBER, scFromRgb(txtSec.rgb()));
+    editor->styleSetBack(STYLE_LINENUMBER, scFromRgb(border.rgb()));
 
-        editor->setFoldMarginColour(true, scColor(30, 30, 30));
-        editor->setFoldMarginHiColour(true, scColor(37, 37, 38));
-        editor->setElementColour(SC_ELEMENT_FOLD_LINE, 0xFF505050);
+    // Caret color
+    editor->setCaretFore(scFromRgb(txtPri.rgb()));
 
-        // Matching braces: #58a6ff (GitHub blue) and mismatch #f85149 (Primer red)
-        editor->styleSetFore(STYLE_BRACELIGHT, scColor(88, 166, 255));
-        editor->styleSetBack(STYLE_BRACELIGHT, scColor(58, 61, 65));
-        editor->styleSetFore(STYLE_BRACEBAD, scColor(248, 81, 73));
-        editor->styleSetBack(STYLE_BRACEBAD, scColor(58, 61, 65));
+    // Caret line highlight (slight blend)
+    quint32 caretLineColor = 0xFF000000 | (pal->isDark ? scColor(qMin(card.red() + 18, 255), qMin(card.green() + 18, 255), qMin(card.blue() + 22, 255))
+                                                       : scColor(qMax(card.red() - 12, 0), qMax(card.green() - 12, 0), qMax(card.blue() - 6, 0)));
+    editor->setElementColour(SC_ELEMENT_CARET_LINE_BACK, caretLineColor);
 
-        editor->styleSetFore(STYLE_INDENTGUIDE, scColor(64, 64, 64));
-        editor->styleSetBack(STYLE_INDENTGUIDE, scColor(30, 30, 30));
-        editor->setElementColour(SC_ELEMENT_WHITE_SPACE, 0xFF505050);
-    } else {
-        // Light theme: #ffffff canvas, #24292f text (WCAG 2.1 AAA ratio: 14.8:1)
-        editor->styleSetFore(STYLE_DEFAULT, scColor(36, 41, 47));
-        editor->styleSetBack(STYLE_DEFAULT, scColor(255, 255, 255));
-        editor->styleClearAll();
+    // Selection highlight
+    quint32 selColor = 0xFF000000 | scFromRgb(border.rgb());
+    editor->setElementColour(SC_ELEMENT_SELECTION_BACK, selColor);
+    editor->setElementColour(SC_ELEMENT_SELECTION_INACTIVE_BACK, selColor);
 
-        // Line numbers: #6e7781 on #f6f8fa (WCAG 2.1 AA ratio: 4.56:1)
-        editor->styleSetFore(STYLE_LINENUMBER, scColor(110, 119, 129));
-        editor->styleSetBack(STYLE_LINENUMBER, scColor(246, 248, 250));
+    // Fold margin colors
+    editor->setFoldMarginColour(true, scFromRgb(card.rgb()));
+    editor->setFoldMarginHiColour(true, scFromRgb(border.rgb()));
+    editor->setElementColour(SC_ELEMENT_FOLD_LINE, 0xFF000000 | scFromRgb(border.rgb()));
 
-        editor->setCaretFore(scColor(36, 41, 47));
-        editor->setElementColour(SC_ELEMENT_CARET_LINE_BACK, 0xFFFFE8E8);
-        editor->setElementColour(SC_ELEMENT_SELECTION_BACK, 0xFFC0D0FF);
-        editor->setElementColour(SC_ELEMENT_SELECTION_INACTIVE_BACK, 0xFFE0E0E0);
+    // Matching and mismatching braces
+    editor->styleSetFore(STYLE_BRACELIGHT, scFromRgb(cyan.rgb()));
+    editor->styleSetBack(STYLE_BRACELIGHT, scFromRgb(border.rgb()));
+    editor->styleSetFore(STYLE_BRACEBAD, scColor(207, 34, 46));
+    editor->styleSetBack(STYLE_BRACEBAD, scFromRgb(border.rgb()));
 
-        editor->setFoldMarginColour(true, scColor(255, 255, 255));
-        editor->setFoldMarginHiColour(true, scColor(246, 248, 250));
-        editor->setElementColour(SC_ELEMENT_FOLD_LINE, 0xFFA0A0A0);
+    // Indentation guides and white space
+    editor->styleSetFore(STYLE_INDENTGUIDE, scFromRgb(border.rgb()));
+    editor->styleSetBack(STYLE_INDENTGUIDE, scFromRgb(card.rgb()));
+    editor->setElementColour(SC_ELEMENT_WHITE_SPACE, 0xFF000000 | scFromRgb(border.rgb()));
 
-        // Matching braces: #0969da (Primer blue) and mismatch #cf222e (Primer red)
-        editor->styleSetFore(STYLE_BRACELIGHT, scColor(9, 105, 218));
-        editor->styleSetBack(STYLE_BRACELIGHT, scColor(255, 255, 255));
-        editor->styleSetFore(STYLE_BRACEBAD, scColor(207, 34, 46));
-        editor->styleSetBack(STYLE_BRACEBAD, scColor(255, 255, 255));
+    // Common Lexilla tokens styling (styles 1 through 15 across Lexilla standard lexers)
+    // 1: Comment, 2: Comment line, 3: Comment doc
+    editor->styleSetFore(1, scFromRgb(txtSec.rgb()));
+    editor->styleSetItalic(1, true);
+    editor->styleSetFore(2, scFromRgb(txtSec.rgb()));
+    editor->styleSetItalic(2, true);
+    editor->styleSetFore(3, scFromRgb(txtSec.rgb()));
+    editor->styleSetItalic(3, true);
 
-        editor->styleSetFore(STYLE_INDENTGUIDE, scColor(208, 215, 222));
-        editor->styleSetBack(STYLE_INDENTGUIDE, scColor(255, 255, 255));
-        editor->setElementColour(SC_ELEMENT_WHITE_SPACE, 0xFFD0D0D0);
-    }
+    // 4: Number
+    editor->styleSetFore(4, scFromRgb(sub.rgb()));
+
+    // 5: Keyword / Word
+    editor->styleSetFore(5, scFromRgb(cyan.rgb()));
+    editor->styleSetBold(5, true);
+
+    // 6: String, 7: Character
+    editor->styleSetFore(6, scFromRgb(host.rgb()));
+    editor->styleSetFore(7, scFromRgb(host.rgb()));
+
+    // 9: Preprocessor
+    editor->styleSetFore(9, scFromRgb(net.rgb()));
+
+    // 10: Operator
+    editor->styleSetFore(10, scFromRgb(sep.rgb()));
+
+    // 11: Identifier / Function
+    editor->styleSetFore(11, scFromRgb(blue.rgb()));
 }
 
 QString ThemeManager::getThemeStyleSheet() const
 {
-    if (isDarkActive()) {
-        return QStringLiteral(
-"QStatusBar {\n"
-"    background-color: #1e1e1e;\n"
-"    color: #cccccc;\n"
-"    border-top: 1px solid #33373e;\n"
-"}\n"
-"QStatusBar::item {\n"
-"    border: none;\n"
-"}\n"
-"ads--CDockWidgetTab ads--CElidingLabel {\n"
-"    color: #9aa0a6;\n"
-"}\n"
-"ads--CDockWidgetTab {\n"
-"    background: #25282c;\n"
-"    margin-top: 2px;\n"
-"    border-left: 1px solid #1e1e1e;\n"
-"    border-top: 2px solid #33373e;\n"
-"    border-right: 1px solid #1e1e1e;\n"
-"    padding: 3px 6px 1px 6px;\n"
-"    border-top-left-radius: 4px;\n"
-"    border-top-right-radius: 4px;\n"
-"}\n"
-"ads--CDockWidgetTab:hover[activeTab=\"false\"] {\n"
-"    background: #2f333a;\n"
-"    color: #e0e0e0;\n"
-"}\n"
-"ads--CDockWidgetTab[activeTab=\"true\"] {\n"
-"    background: #181a1f;\n"
-"    border-top: 3px solid #388bfd;\n"
-"    padding-bottom: 3px;\n"
-"    margin-top: 0px;\n"
-"}\n"
-"ads--CDockWidgetTab[activeTab=\"true\"] ads--CElidingLabel {\n"
-"    color: #ffffff;\n"
-"    font-weight: bold;\n"
-"}\n"
-"ads--CDockWidgetTab[focused=\"true\"] {\n"
-"    background: #181a1f;\n"
-"    border-top: 3px solid #58a6ff;\n"
-"}\n"
-"ads--CDockAreaTitleBar {\n"
-"    background: #212429;\n"
-"    border-bottom: 1px solid #33373e;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"#tabCloseButton {\n"
-"    background: transparent;\n"
-"    margin-bottom: 1px;\n"
-"    margin-left: 4px;\n"
-"    border: none;\n"
-"    padding: 0px 0px;\n"
-"    border-radius: 3px;\n"
-"}\n"
-"#tabCloseButton:hover {\n"
-"    background-color: rgba(235, 87, 87, 0.4);\n"
-"    color: #ffffff;\n"
-"}\n"
-"#tabCloseButton:pressed {\n"
-"    background-color: #eb5757;\n"
-"}\n"
-"#QuickFindWidget {\n"
-"    border-left: 1px solid #33373e;\n"
-"    border-right: 1px solid #33373e;\n"
-"    border-bottom: 3px solid #388bfd;\n"
-"    background: #212429;\n"
-"    color: #e0e0e0;\n"
-"}\n"
-        );
-    } else {
-        return QStringLiteral(
-"QStatusBar {\n"
-"    border-top: 1px solid #d0d7de;\n"
-"    background: #f6f8fa;\n"
-"    color: #24292f;\n"
-"}\n"
-"ads--CDockWidgetTab ads--CElidingLabel {\n"
-"    color: #57606a;\n"
-"}\n"
-"ads--CDockWidgetTab {\n"
-"    background: #e1e4e8;\n"
-"    margin-top: 2px;\n"
-"    border-left: 1px solid #d0d7de;\n"
-"    border-top: 2px solid #d0d7de;\n"
-"    border-right: 1px solid #d0d7de;\n"
-"    padding: 3px 6px 1px 6px;\n"
-"    border-top-left-radius: 4px;\n"
-"    border-top-right-radius: 4px;\n"
-"}\n"
-"ads--CDockWidgetTab[activeTab=\"true\"] {\n"
-"    background: #ffffff;\n"
-"    border-top: 3px solid #0969da;\n"
-"    padding-bottom: 3px;\n"
-"    margin-top: 0px;\n"
-"}\n"
-"ads--CDockWidgetTab[activeTab=\"true\"] ads--CElidingLabel {\n"
-"    color: #24292f;\n"
-"    font-weight: bold;\n"
-"}\n"
-"ads--CDockWidgetTab[focused=\"true\"] {\n"
-"    background: #ffffff;\n"
-"    border-top: 3px solid #218bff;\n"
-"}\n"
-"ads--CDockWidgetTab:hover[activeTab=\"false\"] {\n"
-"    background: #eaeef2;\n"
-"}\n"
-"ads--CDockAreaTitleBar {\n"
-"    background: #f6f8fa;\n"
-"    border-bottom: 1px solid #d0d7de;\n"
-"    padding-bottom: 0px;\n"
-"}\n"
-"#tabCloseButton {\n"
-"    background: transparent;\n"
-"    margin-bottom: 1px;\n"
-"    margin-left: 4px;\n"
-"    border: none;\n"
-"    padding: 0px 0px;\n"
-"    border-radius: 3px;\n"
-"}\n"
-"#tabCloseButton:hover {\n"
-"    background-color: rgba(207, 34, 46, 0.2);\n"
-"    color: #cf222e;\n"
-"}\n"
-"#tabCloseButton:pressed {\n"
-"    background: #cf222e;\n"
-"}\n"
-"#QuickFindWidget {\n"
-"    border-left: 1px solid #d0d7de;\n"
-"    border-right: 1px solid #d0d7de;\n"
-"    border-bottom: 3px solid #0969da;\n"
-"    background: #ffffff;\n"
-"}\n"
-        );
+    const ThemePalette *pal = currentPalette();
+    if (!pal) {
+        pal = isDarkActive() ? findThemePaletteById(QStringLiteral("catppuccinMocha"))
+                             : findThemePaletteById(QStringLiteral("catppuccinLatte"));
     }
+
+    QString win = pal ? QString::fromLatin1(pal->win) : (isDarkActive() ? QStringLiteral("#1e1e1e") : QStringLiteral("#f6f8fa"));
+    QString card = pal ? QString::fromLatin1(pal->card) : (isDarkActive() ? QStringLiteral("#25282c") : QStringLiteral("#ffffff"));
+    QString border = pal ? QString::fromLatin1(pal->border) : (isDarkActive() ? QStringLiteral("#33373e") : QStringLiteral("#d0d7de"));
+    QString txtPri = pal ? QString::fromLatin1(pal->txtPri) : (isDarkActive() ? QStringLiteral("#e0e0e0") : QStringLiteral("#24292f"));
+    QString txtSec = pal ? QString::fromLatin1(pal->txtSec) : (isDarkActive() ? QStringLiteral("#9aa0a6") : QStringLiteral("#57606a"));
+    QString accent = pal ? QString::fromLatin1(pal->blue) : (isDarkActive() ? QStringLiteral("#58a6ff") : QStringLiteral("#0969da"));
+    QString cyan = pal ? QString::fromLatin1(pal->cyan) : accent;
+
+    return QString(
+        "QStatusBar {
+"
+        "    background-color: %1;
+"
+        "    color: %2;
+"
+        "    border-top: 1px solid %3;
+"
+        "}
+"
+        "QStatusBar::item {
+"
+        "    border: none;
+"
+        "}
+"
+        "ads--CDockWidgetTab ads--CElidingLabel {
+"
+        "    color: %4;
+"
+        "}
+"
+        "ads--CDockWidgetTab {
+"
+        "    background: %1;
+"
+        "    margin-top: 2px;
+"
+        "    border-left: 1px solid %3;
+"
+        "    border-top: 2px solid %3;
+"
+        "    border-right: 1px solid %3;
+"
+        "    padding: 3px 6px 1px 6px;
+"
+        "    border-top-left-radius: 4px;
+"
+        "    border-top-right-radius: 4px;
+"
+        "}
+"
+        "ads--CDockWidgetTab:hover[activeTab="false"] {
+"
+        "    background: %3;
+"
+        "    color: %2;
+"
+        "}
+"
+        "ads--CDockWidgetTab[activeTab="true"] {
+"
+        "    background: %5;
+"
+        "    border-top: 3px solid %6;
+"
+        "    padding-bottom: 3px;
+"
+        "    margin-top: 0px;
+"
+        "}
+"
+        "ads--CDockWidgetTab[activeTab="true"] ads--CElidingLabel {
+"
+        "    color: %2;
+"
+        "    font-weight: bold;
+"
+        "}
+"
+        "ads--CDockWidgetTab[focused="true"] {
+"
+        "    background: %5;
+"
+        "    border-top: 3px solid %6;
+"
+        "}
+"
+        "ads--CDockAreaTitleBar {
+"
+        "    background: %1;
+"
+        "    border-bottom: 1px solid %3;
+"
+        "    padding-bottom: 0px;
+"
+        "}
+"
+        "#tabCloseButton {
+"
+        "    background: transparent;
+"
+        "    margin-bottom: 1px;
+"
+        "    margin-left: 4px;
+"
+        "    border: none;
+"
+        "    padding: 0px 0px;
+"
+        "    border-radius: 3px;
+"
+        "}
+"
+        "#tabCloseButton:hover {
+"
+        "    background-color: rgba(235, 87, 87, 0.35);
+"
+        "    color: #eb5757;
+"
+        "}
+"
+        "#tabCloseButton:pressed {
+"
+        "    background-color: #eb5757;
+"
+        "    color: #ffffff;
+"
+        "}
+"
+        "#QuickFindWidget {
+"
+        "    border-left: 1px solid %3;
+"
+        "    border-right: 1px solid %3;
+"
+        "    border-bottom: 3px solid %6;
+"
+        "    background: %1;
+"
+        "    color: %2;
+"
+        "}
+"
+    ).arg(win, txtPri, border, txtSec, card, accent);
 }

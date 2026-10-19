@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/alsyundawy/NoteSciPad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.0.0-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.0.0"></a>
+  <a href="https://github.com/alsyundawy/NoteSciPad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.1.0-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.1.0"></a>
   <a href="https://apple.com/macos"><img src="https://img.shields.io/badge/Platform-macOS%20Sequoia%20%7C%20Sonoma%20%7C%20Linux-000000?style=for-the-badge&logo=apple&logoColor=white" alt="Supported Platforms"></a>
   <a href="https://isocpp.org"><img src="https://img.shields.io/badge/Standard-ISO%20C%2B%2B20-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="C++20 Standard"></a>
   <a href="https://qt.io"><img src="https://img.shields.io/badge/Framework-Qt%206.5%20%7C%206.8%20%7C%206.10-41CD52?style=for-the-badge&logo=qt&logoColor=white" alt="Qt Framework"></a>
@@ -22,12 +22,12 @@
 </p>
 
 <p align="center">
-  A production-grade, ultra-low-footprint native text and code editor built for engineers, system administrators, and developers who refuse to compromise on speed and memory efficiency. NoteSciPad delivers instantaneous line rendering, native multi-caret editing, AES-256 document encryption, live disk tail monitoring (<code>tail -f</code>), 25 curated developer theme families (WCAG 2.1 AA/AAA compliant), sandboxed JavaScript evaluation, live regex testing, and comprehensive packaging across macOS (Universal 2, Apple Silicon ARM64, and Intel) and Linux (DEB, RPM, Flatpak, and AppImage) — running natively with zero web-view overhead and an active memory footprint of under 35 MB.
+  A production-grade, ultra-low-footprint native text and code editor built for engineers, system administrators, and developers who refuse to compromise on speed and memory efficiency. NoteSciPad delivers instantaneous line rendering, native multi-caret editing, AES-256 document encryption, live disk tail monitoring (<code>tail -f</code>), 75 curated developer themes across 25 families with dedicated Themes menu and interactive Theme Switcher (Ctrl+Shift+T) (WCAG 2.1 AA/AAA compliant), sandboxed JavaScript evaluation, live regex testing, and comprehensive packaging across macOS (Universal 2, Apple Silicon ARM64, and Intel) and Linux (DEB, RPM, Flatpak, and AppImage) — running natively with zero web-view overhead and an active memory footprint of under 35 MB.
 </p>
 
 <p align="center">
   <a href="#downloads--artifact-catalogs">
-    <img src="https://img.shields.io/badge/🚀_Download_Artifacts-v1.0.0-238636?style=for-the-badge&logo=cloudsmith&logoColor=white" alt="Download Artifacts">
+    <img src="https://img.shields.io/badge/🚀_Download_Artifacts-v1.1.0-238636?style=for-the-badge&logo=cloudsmith&logoColor=white" alt="Download Artifacts">
   </a>
   <a href="https://github.com/alsyundawy/NoteSciPad/releases/latest">
     <img src="https://img.shields.io/badge/🪞_Releases_&_Changelog-GitHub-0284c7?style=for-the-badge&logo=github&logoColor=white" alt="Releases & Changelog">
@@ -47,7 +47,7 @@
 > Lead Developer & Maintainer:<br>
 > **[`HARRY DERTIN SUTISNA ALSYUNDAWY (@alsyundawy)`](https://github.com/alsyundawy)** — [`ALSYUNDAWY IT SOLUTION`](https://alsyundawy.com)<br>
 >
-> 🍏 **[`Latest Releases (v1.0.0)`](https://github.com/alsyundawy/NoteSciPad/releases/latest)** &nbsp;|&nbsp;
+> 🍏 **[`Latest Releases (v1.1.0)`](https://github.com/alsyundawy/NoteSciPad/releases/latest)** &nbsp;|&nbsp;
 > 📖 **[`Release DocNotes (DOCNOTE.md)`](DOCNOTE.md)** &nbsp;|&nbsp;
 > 📜 **[`Changelog (CHANGELOG.md)`](CHANGELOG.md)** &nbsp;|&nbsp;
 > 🐛 **[`Issue Tracker`](https://github.com/alsyundawy/NoteSciPad/issues)** &nbsp;|&nbsp;
@@ -167,15 +167,15 @@ Andromeda    Nightfox     Cobalt2       Alabaster    Tomorrow
 
 ## Downloads & Artifact Catalogs
 
-Pre-compiled, production-ready binaries for NoteSciPad v1.0.0 are available directly from the [GitHub Releases](https://github.com/alsyundawy/NoteSciPad/releases/latest) page:
+Pre-compiled, production-ready binaries for NoteSciPad v1.1.0 are available directly from the [GitHub Releases](https://github.com/alsyundawy/NoteSciPad/releases/latest) page:
 
 | Platform      | Target Architecture         | Package Format | Download Link                                                                                                                                        |
 | :------------ | :-------------------------- | :------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **macOS 15+** | Apple Silicon (M1/M2/M3/M4) |     `.dmg`     | [NoteSciPad-1.0.0-macOS-arm64.dmg](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.0.0/NoteSciPad-1.0.0-macOS-arm64.dmg)               |
-| **macOS 15+** | Intel (x86_64)              |     `.dmg`     | [NoteSciPad-1.0.0-macOS-x86_64.dmg](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.0.0/NoteSciPad-1.0.0-macOS-x86_64.dmg)             |
-| **Linux**     | x86_64 (Ubuntu / Debian)    |     `.deb`     | [NoteSciPad-1.0.0-Linux-x86_64.deb](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.0.0/NoteSciPad-1.0.0-Linux-x86_64.deb)             |
-| **Linux**     | x86_64 (Fedora / RHEL)      |     `.rpm`     | [NoteSciPad-1.0.0-Linux-x86_64.rpm](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.0.0/NoteSciPad-1.0.0-Linux-x86_64.rpm)             |
-| **Linux**     | Universal Sandboxed         |    Flatpak     | [io.github.alsyundawy.NoteSciPad.flatpak](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.0.0/io.github.alsyundawy.NoteSciPad.flatpak) |
+| **macOS 15+** | Apple Silicon (M1/M2/M3/M4) |     `.dmg`     | [NoteSciPad-1.1.0-macOS-arm64.dmg](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.1.0/NoteSciPad-1.1.0-macOS-arm64.dmg)               |
+| **macOS 15+** | Intel (x86_64)              |     `.dmg`     | [NoteSciPad-1.1.0-macOS-x86_64.dmg](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.1.0/NoteSciPad-1.1.0-macOS-x86_64.dmg)             |
+| **Linux**     | x86_64 (Ubuntu / Debian)    |     `.deb`     | [NoteSciPad-1.1.0-Linux-x86_64.deb](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.1.0/NoteSciPad-1.1.0-Linux-x86_64.deb)             |
+| **Linux**     | x86_64 (Fedora / RHEL)      |     `.rpm`     | [NoteSciPad-1.1.0-Linux-x86_64.rpm](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.1.0/NoteSciPad-1.1.0-Linux-x86_64.rpm)             |
+| **Linux**     | Universal Sandboxed         |    Flatpak     | [io.github.alsyundawy.NoteSciPad.flatpak](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.1.0/io.github.alsyundawy.NoteSciPad.flatpak) |
 
 ---
 
@@ -225,7 +225,7 @@ trunk check -n -j 2
 
 For the complete chronological release history, see [CHANGELOG.md](CHANGELOG.md).
 
-### [v1.0.0] — Initial Production Release (2026-10-19)
+### [v1.1.0] — Initial Production Release (2026-10-19)
 
 - **Core Engine**: Deeply vendored Scintilla 5.5.4 and Lexilla 5.4.3 engines.
 - **Security**: AES-256-CBC document encryption with HMAC-SHA256 authenticated integrity.

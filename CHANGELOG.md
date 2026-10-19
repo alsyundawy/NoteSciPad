@@ -7,6 +7,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.0] - 2026-10-19
+
+### 🎨 Themes & UI Modernization, Math Evaluation, and Trending Lexers
+
+NoteSciPad v1.1.0 introduces the complete 75-theme collection adapted from SubnetCalc-MacOS across 25 families, a dedicated top-level MenuBar `Themes` menu, an interactive Theme Switcher with instant live preview, inline mathematical expression evaluation, 7 trending language lexers, and a redesigned 5-tab modern About dialog.
+
+---
+
+### ✨ Added
+
+#### Visual & Theme Engine (75 Themes across 25 Families)
+
+- **75 Theme Palettes**: Extracted and adapted from SubnetCalc-MacOS `ThemeManager.swift` into `ThemePaletteData.h`, providing curated color themes across 25 families (Catppuccin, Dracula, Tokyo Night, Nord, One Dark, Gruvbox, Solarized, GitHub, Monokai, Rosé Pine, Ayu, Kanagawa, Everforest, Night Owl, Material, SynthWave '84, Cyberpunk, Shades of Purple, Poimandres, Horizon, Andromeda, Nightfox, Cobalt2, Alabaster, and Tomorrow).
+- **Dedicated Top-Level `Themes` Menu**: Inserted directly into the main menu bar between View and Document/Language, providing quick filters (Light Themes Only, Dark Themes Only), 25 family submenus, and one-click reset to default Light Mode.
+- **Theme Switcher Dialog (`Ctrl+Shift+T` / `Cmd+Shift+T`)**: Interactive modal dialog featuring fuzzy search, type filtering (All/Light/Dark), 6-swatch color palette preview badges, and instant real-time canvas preview.
+
+#### Redesigned 5-Tab About Dialog
+
+- **Modern 5-Tab Interface (`AboutDialog`)**:
+  - *About NoteSciPad*: High-resolution application icon, architecture overview, and legal non-affiliation statement.
+  - *Maintainer Information*: Complete contact information for Harry DS Alsyundawy (ALSYUNDAWY IT SOLUTION) including Email, Website, GitHub, Telegram, PayPal, Buy Me a Coffee, and QRIS barcode link (*strictly omitting phone number and WhatsApp*).
+  - *Credits & Attribution*: Formal upstream attribution to Scintilla, Lexilla, NotepadNext, Notepad4, Notepad3, and SubnetCalc-MacOS.
+  - *System & Diagnostics*: Real-time operating system, kernel version, CPU build architecture, Qt build/runtime version, display scale ratio, and one-click "Copy Diagnostics to Clipboard".
+  - *License*: Complete GNU General Public License v3.0 text and FSF links.
+
+#### EditorBase Feature Synthesis & Math Evaluation
+
+- **Inline Mathematical Expression Evaluation (`Ctrl+Shift+E` / `Cmd+Shift+E`)**: Powered by `MathEvaluator` and `InlineMathEvaluator`, allowing instant calculation of selected expressions or current line (arithmetic, trigonometry, logarithms, powers, roots, constants pi, e, tau, phi).
+- **Replace or Append Results**: Support appending result (`2 * pi * 5 = 31.4159265`) or replacing expression directly with formatted numerical result.
+
+#### Trending Language Lexers
+
+- **Mojo (`mojo.lua`)**: Modular Mojo systems programming language syntax (`.mojo`, `.🔥`).
+- **Solidity (`solidity.lua`)**: Ethereum smart contract language syntax (`.sol`).
+- **Julia (`julia.lua`)**: High-performance scientific computing language syntax (`.jl`).
+- **Dockerfile (`dockerfile.lua`)**: Multi-stage container definitions (`Dockerfile`, `Containerfile`).
+- **Terraform (`terraform.lua`)**: HashiCorp HCL & OpenTofu infrastructure as code (`.tf`, `.tfvars`, `.tofu`).
+- **Protobuf (`protobuf.lua`)**: Google Protocol Buffers 3 & gRPC definitions (`.proto`).
+- **Mermaid (`mermaid.lua`)**: Flowcharts, sequence diagrams, and architecture diagrams (`.mermaid`, `.mmd`).
+
+---
+
 ## [1.0.0] - 2026-10-19
 
 ### 🚀 Initial Production Release — "Dawn of NoteSciPad"

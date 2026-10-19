@@ -1,3 +1,5 @@
+#include "ThemeSwitcherDialog.h"
+#include "features/ThemePaletteData.h"
 #include "AboutDialog.h"
 #include "features/ReleaseManager.h"
 #include "features/DocumentationManager.h"
@@ -377,6 +379,9 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
     connect(ui->actionMinifyCss, &QAction::triggered, this, [=]() { handleFormat(CodeCompressPretty::Css, true); });
     connect(ui->actionFormatJs, &QAction::triggered, this, [=]() { handleFormat(CodeCompressPretty::JavaScript, false); });
     connect(ui->actionMinifyJs, &QAction::triggered, this, [=]() { handleFormat(CodeCompressPretty::JavaScript, true); });
+
+    ui->actionEvaluateMathAppend->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_E));
+    ui->actionEvaluateMathReplace->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_E));
 
     connect(ui->actionEvaluateMathAppend, &QAction::triggered, this, [this]() {
         ScintillaNext *editor = currentEditor();
@@ -3971,62 +3976,92 @@ void MainWindow::setupThemeMenu()
     if (menuTheme)
         return;
 
-    menuTheme = new QMenu(tr("&Theme"), this);
-    ui->menuView->addSeparator();
-    ui->menuView->addMenu(menuTheme);
+    // Create dedicated top-level Themes menu in menuBar between View and Document/Language
+    menuTheme = new QMenu(tr("&Themes"), this);
+    if (ui->menuLanguage) {
+        ui->menuBar->insertMenu(ui->menuLanguage->menuAction(), menuTheme);
+    } else {
+        ui->menuBar->addMenu(menuTheme);
+    }
 
-    QActionGroup *themeGroup = new QActionGroup(this);
-    themeGroup->setExclusive(true);
-
-    actionThemeAuto = new QAction(tr("System &Default (Auto)"), this);
-    actionThemeAuto->setCheckable(true);
-    themeGroup->addAction(actionThemeAuto);
-    menuTheme->addAction(actionThemeAuto);
-
-    actionThemeLight = new QAction(tr("&Light Mode"), this);
-    actionThemeLight->setCheckable(true);
-    themeGroup->addAction(actionThemeLight);
-    menuTheme->addAction(actionThemeLight);
-
-    actionThemeDark = new QAction(tr("&Dark Mode"), this);
-    actionThemeDark->setCheckable(true);
-    themeGroup->addAction(actionThemeDark);
-    menuTheme->addAction(actionThemeDark);
-
-    ThemeManager::ThemeMode mode = ThemeManager::instance()->themeMode();
-    if (mode == ThemeManager::ThemeMode::Auto) actionThemeAuto->setChecked(true);
-    else if (mode == ThemeManager::ThemeMode::Light) actionThemeLight->setChecked(true);
-    else if (mode == ThemeManager::ThemeMode::Dark) actionThemeDark->setChecked(true);
-
-    connect(actionThemeAuto, &QAction::triggered, this, [this]() {
-        ThemeManager::instance()->setThemeMode(ThemeManager::ThemeMode::Auto, this);
-        ui->statusBar->showMessage(tr("Theme set to System Default (Auto)"), 3000);
+    // 1. Open Theme Switcher... (Ctrl+Shift+T)
+    actionThemeSwitcher = new QAction(tr("🎨 Open Theme Switcher..."), this);
+    actionThemeSwitcher->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T));
+    connect(actionThemeSwitcher, &QAction::triggered, this, [this]() {
+        ThemeSwitcherDialog dlg(this);
+        dlg.exec();
     });
-
-    connect(actionThemeLight, &QAction::triggered, this, [this]() {
-        ThemeManager::instance()->setThemeMode(ThemeManager::ThemeMode::Light, this);
-        ui->statusBar->showMessage(tr("Theme set to Light Mode"), 3000);
-    });
-
-    connect(actionThemeDark, &QAction::triggered, this, [this]() {
-        ThemeManager::instance()->setThemeMode(ThemeManager::ThemeMode::Dark, this);
-        ui->statusBar->showMessage(tr("Theme set to Dark Mode"), 3000);
-    });
+    menuTheme->addAction(actionThemeSwitcher);
 
     menuTheme->addSeparator();
 
-    actionToggleTheme = new QAction(tr("&Toggle Dark / Light Mode"), this);
+    // 2. Light Themes Only (Submenu)
+    QMenu *menuLightOnly = menuTheme->addMenu(tr("☀️ Light Themes Only"));
+    QList<const ThemePalette*> lightPalettes = getThemesByDarkMode(false);
+    for (const ThemePalette *pal : lightPalettes) {
+        QAction *act = menuLightOnly->addAction(QString::fromUtf8(pal->displayName));
+        connect(act, &QAction::triggered, this, [this, pal]() {
+            ThemeManager::instance()->setPalette(QString::fromLatin1(pal->id), this);
+            ui->statusBar->showMessage(tr("Theme applied: %1").arg(QString::fromUtf8(pal->displayName)), 3000);
+        });
+    }
+
+    // 3. Dark Themes Only (Submenu)
+    QMenu *menuDarkOnly = menuTheme->addMenu(tr("🌙 Dark Themes Only"));
+    QList<const ThemePalette*> darkPalettes = getThemesByDarkMode(true);
+    for (const ThemePalette *pal : darkPalettes) {
+        QAction *act = menuDarkOnly->addAction(QString::fromUtf8(pal->displayName));
+        connect(act, &QAction::triggered, this, [this, pal]() {
+            ThemeManager::instance()->setPalette(QString::fromLatin1(pal->id), this);
+            ui->statusBar->showMessage(tr("Theme applied: %1").arg(QString::fromUtf8(pal->displayName)), 3000);
+        });
+    }
+
+    menuTheme->addSeparator();
+
+    // 4. All 25 Families Submenus
+    QStringList families = getThemeFamiliesList();
+    for (const QString &family : families) {
+        QMenu *famMenu = menuTheme->addMenu(family);
+        QList<const ThemePalette*> palettes = getThemePalettesByFamily(family);
+        for (const ThemePalette *pal : palettes) {
+            QString itemLabel = QString::fromUtf8(pal->displayName);
+            if (pal->isDark) {
+                itemLabel += QStringLiteral(" (Dark)");
+            } else {
+                itemLabel += QStringLiteral(" (Light)");
+            }
+            QAction *act = famMenu->addAction(itemLabel);
+            connect(act, &QAction::triggered, this, [this, pal]() {
+                ThemeManager::instance()->setPalette(QString::fromLatin1(pal->id), this);
+                ui->statusBar->showMessage(tr("Theme applied: %1").arg(QString::fromUtf8(pal->displayName)), 3000);
+            });
+        }
+    }
+
+    menuTheme->addSeparator();
+
+    // 5. Reset and Mode Toggles
+    actionThemeLight = new QAction(tr("☀️ Reset to Default (Light Mode)"), this);
+    connect(actionThemeLight, &QAction::triggered, this, [this]() {
+        ThemeManager::instance()->setPalette(QStringLiteral("defaultLight"), this);
+        ui->statusBar->showMessage(tr("Theme reset to default Light Mode"), 3000);
+    });
+    menuTheme->addAction(actionThemeLight);
+
+    actionThemeDark = new QAction(tr("🌙 Default Dark Mode"), this);
+    connect(actionThemeDark, &QAction::triggered, this, [this]() {
+        ThemeManager::instance()->setPalette(QStringLiteral("catppuccinMocha"), this);
+        ui->statusBar->showMessage(tr("Theme set to Dark Mode (Catppuccin Mocha)"), 3000);
+    });
+    menuTheme->addAction(actionThemeDark);
+
+    actionToggleTheme = new QAction(tr("🔄 Toggle Dark / Light Mode"), this);
     actionToggleTheme->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_T));
     connect(actionToggleTheme, &QAction::triggered, this, [this]() {
         ThemeManager::instance()->toggleTheme(this);
         bool dark = ThemeManager::instance()->isDarkActive();
-        if (dark) {
-            actionThemeDark->setChecked(true);
-            ui->statusBar->showMessage(tr("Switched to Dark Mode"), 3000);
-        } else {
-            actionThemeLight->setChecked(true);
-            ui->statusBar->showMessage(tr("Switched to Light Mode"), 3000);
-        }
+        ui->statusBar->showMessage(dark ? tr("Switched to Dark Mode") : tr("Switched to Light Mode"), 3000);
     });
     menuTheme->addAction(actionToggleTheme);
 }

@@ -1,4 +1,37 @@
-# NoteSciPad Release DocNote — v1.0.0
+# NoteSciPad Release DocNote — v1.1.0
+
+```text
+================================================================================
+Release Version     : 1.1.0 (Feature Release: Themes, Math, & Trending Lexers)
+Release Date        : 2026-10-19
+Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
+Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
+Repository          : https://github.com/alsyundawy/NoteSciPad
+Core Editing Engine : Scintilla 5.6.x (Vendored) & Lexilla 5.5.x (Vendored)
+GUI Framework       : Qt 6.5 / 6.8 LTS / 6.10 / 6.11 (C++20 ISO Standard)
+Target Platforms    : macOS 11.0+ (Apple Silicon & Intel) & Linux (x86_64 / arm64)
+License             : GNU General Public License v3.0 (GPL-3.0-or-later)
+CI/CD Status        : 100% Passing across all 8 matrix targets, MegaLinter & CodeQL
+================================================================================
+```
+
+---
+
+## 1. Executive Summary: Release v1.1.0
+
+NoteSciPad **v1.1.0** represents a major enhancement to NoteSciPad's visual styling capabilities, scientific toolset, and syntax support.
+
+Key milestones achieved in this release:
+
+1. **75 Curated Developer Themes across 25 Families**: Completely extracted and adapted from `SubnetCalc-MacOS` into native C++20 `ThemePaletteData.h`, with seamless WCAG 2.1 AA/AAA contrast mapping across Scintilla text, numbers, keywords, operators, and fold margins.
+2. **Dedicated Top-Level MenuBar `Themes` Menu & Switcher**: Positioned prominently on the main menu bar, featuring instant filters (Light Themes Only, Dark Themes Only), 25 family submenus, and the interactive `ThemeSwitcherDialog` (`Ctrl+Shift+T` / `Cmd+Shift+T`) with live search and real-time canvas preview.
+3. **Redesigned 5-Tab Modern About Dialog**: Providing a tabbed experience (About, Maintainer Card with complete contact information strictly omitting phone and WhatsApp, Credits & Attribution, Real-Time System Diagnostics with one-click clipboard copy, and Full GPL-3.0 License).
+4. **Inline Mathematical Expression Evaluation (`Ctrl+Shift+E` / `Cmd+Shift+E`)**: Instant calculation of mathematical formulas in selection or current line with append or replace options, supporting trigonometric, logarithmic, root, and power functions.
+5. **7 Trending Language Lexers**: First-class syntax highlighting definitions for Mojo (`.mojo`), Solidity (`.sol`), Julia (`.jl`), Dockerfile (`Dockerfile`), Terraform (`.tf`), Protobuf (`.proto`), and Mermaid (`.mermaid`).
+
+---
+
+## NoteSciPad Release DocNote — v1.0.0
 
 ```text
 ================================================================================
@@ -143,19 +176,19 @@ Detailed metrics recorded in [`doc/COLOR_STANDARDS_AND_ACCESSIBILITY.md`](file:/
 To independently reproduce the verification results:
 
 ```bash
-# 1. Verify engine invariants
+## 1. Verify engine invariants
 bash scripts/verify-engine-invariants.sh
 
-# 2. Run unit tests
+## 2. Run unit tests
 bash scripts/run-unit-tests.sh
 
-# 3. Run security audit
+## 3. Run security audit
 bash scripts/run-security-audit.sh
 
-# 4. Run performance benchmark
+## 4. Run performance benchmark
 bash scripts/benchmark-baseline.sh
 
-# 5. Run Trunk linter safely
+## 5. Run Trunk linter safely
 trunk check -n -j 2
 ```
 
