@@ -63,7 +63,7 @@ private:
     explicit ThemeManager(QObject *parent = nullptr);
     ~ThemeManager() override;
 
-    ThemeMode m_themeMode = ThemeMode::Auto;
+    ThemeMode m_themeMode = ThemeMode::Light;
     ApplicationSettings *m_settings = nullptr;
     MainWindow *m_activeWindow = nullptr;
 };

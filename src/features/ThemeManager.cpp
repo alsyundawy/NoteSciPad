@@ -41,13 +41,13 @@ void ThemeManager::initialize(ApplicationSettings *settings)
 {
     m_settings = settings;
     if (m_settings) {
-        QString savedMode = m_settings->value("App/ThemeMode", QStringLiteral("Auto")).toString().toLower();
+        QString savedMode = m_settings->value("App/ThemeMode", QStringLiteral("Light")).toString().toLower();
         if (savedMode == QStringLiteral("dark")) {
             m_themeMode = ThemeMode::Dark;
-        } else if (savedMode == QStringLiteral("light")) {
-            m_themeMode = ThemeMode::Light;
-        } else {
+        } else if (savedMode == QStringLiteral("auto")) {
             m_themeMode = ThemeMode::Auto;
+        } else {
+            m_themeMode = ThemeMode::Light;
         }
     }
 }
