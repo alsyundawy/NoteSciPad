@@ -399,3 +399,18 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
   2. Implemented \`scripts/generate-manual-test-fixtures.sh\` to generate UTF-8 BOM, CJK multilingual, and 10MB test files automatically.
 - **Consequences:**
   - Standardized release qualification before signing and tagging production versions.
+
+---
+
+## ADR-020: Dual Indonesian-First and English Localization Architecture
+
+- **Status:** Accepted
+- **Date:** 2026-10-19
+- **Context:**
+  NoteSciPad was created to provide a first-class editor experience for Indonesian developers and the global open-source community. Synchronizing new features with both Indonesian and English translations prevents untranslated UI leaks.
+- **Decision:**
+  1. Updated `i18n/NotepadNext_id.ts` with Indonesian translations across all newly added modules (`DisplayInfoDialog`, `ReleaseManager`, `DocumentationManager`, `ThemeManager`, `AccessibilityManager`).
+  2. Maintained `i18n/NotepadNext_en.ts` as the canonical English reference.
+  3. Authored `doc/LOCALIZATION_GUIDE.md`.
+- **Consequences:**
+  - Complete, natural Indonesian localization and consistent global English localization.

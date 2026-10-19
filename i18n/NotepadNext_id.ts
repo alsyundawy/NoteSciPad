@@ -2176,4 +2176,94 @@
       <translation>Tutup berkas saat ini</translation>
     </message>
   </context>
+  <context>
+    <name>DisplayInfoDialog</name>
+    <message>
+      <source>Display &amp; Retina Diagnostics — NoteSciPad</source>
+      <translation>Diagnostik Layar &amp; Retina — NoteSciPad</translation>
+    </message>
+    <message>
+      <source>Display Name</source>
+      <translation>Nama Layar</translation>
+    </message>
+    <message>
+      <source>Resolution</source>
+      <translation>Resolusi</translation>
+    </message>
+    <message>
+      <source>DPR / Retina</source>
+      <translation>DPR / Retina</translation>
+    </message>
+    <message>
+      <source>Refresh Rate</source>
+      <translation>Kecepatan Refresh</translation>
+    </message>
+    <message>
+      <source>Logical / Phys DPI</source>
+      <translation>DPI Logis / Fisik</translation>
+    </message>
+    <message>
+      <source>Role / Status</source>
+      <translation>Peran / Status</translation>
+    </message>
+    <message>
+      <source>Move to &amp;Next Screen</source>
+      <translation>Pindah ke Layar &amp;Berikutnya</translation>
+    </message>
+    <message>
+      <source>Move to &amp;Previous Screen</source>
+      <translation>Pindah ke Layar &amp;Sebelumnya</translation>
+    </message>
+    <message>
+      <source>&amp;Center Window</source>
+      <translation>&amp;Tengahkan Jendela</translation>
+    </message>
+    <message>
+      <source>&amp;Move to Primary</source>
+      <translation>&amp;Pindah ke Layar Utama</translation>
+    </message>
+    <message>
+      <source>&amp;Refresh</source>
+      <translation>&amp;Segarkan</translation>
+    </message>
+  </context>
+  <context>
+    <name>ReleaseManager</name>
+    <message>
+      <source>Update Check Failed</source>
+      <translation>Pemeriksaan Pembaruan Gagal</translation>
+    </message>
+    <message>
+      <source>NoteSciPad Update Available</source>
+      <translation>Pembaruan NoteSciPad Tersedia</translation>
+    </message>
+    <message>
+      <source>&amp;Download Update</source>
+      <translation>&amp;Unduh Pembaruan</translation>
+    </message>
+    <message>
+      <source>&amp;Remind Me Later</source>
+      <translation>&amp;Ingatkan Nanti</translation>
+    </message>
+    <message>
+      <source>NoteSciPad Up to Date</source>
+      <translation>NoteSciPad Sudah Versi Terbaru</translation>
+    </message>
+  </context>
+  <context>
+    <name>DocumentationManager</name>
+    <message>
+      <source>Documentation Error</source>
+      <translation>Kesalahan Dokumentasi</translation>
+    </message>
+    <message>
+      <source>NoteSciPad &amp;User Guide</source>
+      <translation>Panduan &amp;Pengguna NoteSciPad</translation>
+    </message>
+    <message>
+      <source>NoteSciPad &amp;Developer Guide</source>
+      <translation>Panduan &amp;Pengembang NoteSciPad</translation>
+    </message>
+  </context>
 </TS>
+

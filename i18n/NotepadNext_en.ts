@@ -2181,4 +2181,94 @@
         <translation type="unfinished"></translation>
     </message>
 </context>
+  <context>
+    <name>DisplayInfoDialog</name>
+    <message>
+      <source>Display &amp; Retina Diagnostics — NoteSciPad</source>
+      <translation>Display &amp; Retina Diagnostics — NoteSciPad</translation>
+    </message>
+    <message>
+      <source>Display Name</source>
+      <translation>Display Name</translation>
+    </message>
+    <message>
+      <source>Resolution</source>
+      <translation>Resolution</translation>
+    </message>
+    <message>
+      <source>DPR / Retina</source>
+      <translation>DPR / Retina</translation>
+    </message>
+    <message>
+      <source>Refresh Rate</source>
+      <translation>Refresh Rate</translation>
+    </message>
+    <message>
+      <source>Logical / Phys DPI</source>
+      <translation>Logical / Phys DPI</translation>
+    </message>
+    <message>
+      <source>Role / Status</source>
+      <translation>Role / Status</translation>
+    </message>
+    <message>
+      <source>Move to &amp;Next Screen</source>
+      <translation>Move to &amp;Next Screen</translation>
+    </message>
+    <message>
+      <source>Move to &amp;Previous Screen</source>
+      <translation>Move to &amp;Previous Screen</translation>
+    </message>
+    <message>
+      <source>&amp;Center Window</source>
+      <translation>&amp;Center Window</translation>
+    </message>
+    <message>
+      <source>&amp;Move to Primary</source>
+      <translation>&amp;Move to Primary</translation>
+    </message>
+    <message>
+      <source>&amp;Refresh</source>
+      <translation>&amp;Refresh</translation>
+    </message>
+  </context>
+  <context>
+    <name>ReleaseManager</name>
+    <message>
+      <source>Update Check Failed</source>
+      <translation>Update Check Failed</translation>
+    </message>
+    <message>
+      <source>NoteSciPad Update Available</source>
+      <translation>NoteSciPad Update Available</translation>
+    </message>
+    <message>
+      <source>&amp;Download Update</source>
+      <translation>&amp;Download Update</translation>
+    </message>
+    <message>
+      <source>&amp;Remind Me Later</source>
+      <translation>&amp;Remind Me Later</translation>
+    </message>
+    <message>
+      <source>NoteSciPad Up to Date</source>
+      <translation>NoteSciPad Up to Date</translation>
+    </message>
+  </context>
+  <context>
+    <name>DocumentationManager</name>
+    <message>
+      <source>Documentation Error</source>
+      <translation>Documentation Error</translation>
+    </message>
+    <message>
+      <source>NoteSciPad &amp;User Guide</source>
+      <translation>NoteSciPad &amp;User Guide</translation>
+    </message>
+    <message>
+      <source>NoteSciPad &amp;Developer Guide</source>
+      <translation>NoteSciPad &amp;Developer Guide</translation>
+    </message>
+  </context>
 </TS>
+
