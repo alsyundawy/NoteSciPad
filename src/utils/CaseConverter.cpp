@@ -66,7 +66,7 @@ QString CaseConverter::toTitleCase(const QString &text)
             }
         } else {
             // Check for apostrophe inside a word (e.g. don't, it's, O'Connor)
-            if (ch == ''' && inWord && (i + 1 < text.size()) && text.at(i + 1).isLetter()) {
+            if (ch == '\'' && inWord && (i + 1 < text.size()) && text.at(i + 1).isLetter()) {
                 result.append(ch);
                 // inWord remains true
             } else {
