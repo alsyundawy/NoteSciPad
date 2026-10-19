@@ -67,7 +67,7 @@ Base64Utils::Result Base64Utils::decode(ScintillaNext *editor)
         }
 
         editor->beginUndoAction();
-        editor->setText(result->constData());
+        editor->setText(result.decoded.constData());
         editor->endUndoAction();
 
         return {true, true, QString()};
@@ -80,7 +80,7 @@ Base64Utils::Result Base64Utils::decode(ScintillaNext *editor)
     }
 
     editor->beginUndoAction();
-    editor->replaceSel(result->constData());
+    editor->replaceSel(result.decoded.constData());
     editor->endUndoAction();
 
     return {true, false, QString()};

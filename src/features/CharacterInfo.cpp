@@ -605,11 +605,10 @@ CharacterInfo::Details CharacterInfo::getDetailsAt(ScintillaNext *editor, int po
     const QString str = QString::fromUtf8(rawBytes);
     if (str.isEmpty()) return Details();
 
-    char32_t ucs4[2] = {0, 0};
-    int ucsLen = str.toUcs4(ucs4);
-    if (ucsLen < 1) return Details();
+    const auto ucs4 = str.toUcs4();
+    if (ucs4.isEmpty()) return Details();
 
-    return getDetailsForCodePoint(static_cast<uint32_t>(ucs4[0]));
+    return getDetailsForCodePoint(static_cast<uint32_t>(ucs4.first()));
 }
 
 QString CharacterInfo::formatSummary(const Details &d)
