@@ -42,6 +42,7 @@ public:
     explicit EditorInfoStatusBar(QMainWindow *window);
 
     void refresh(ScintillaNext *editor);
+    void updateEncoding(ScintillaNext *editor);
 
     void setFieldVisible(Field field, bool visible);
     bool isFieldVisible(Field field) const;
@@ -68,7 +69,6 @@ private slots:
     void updateUnicodeChar(ScintillaNext *editor);
     void updateLanguage(ScintillaNext *editor);
     void updateEol(ScintillaNext *editor);
-    void updateEncoding(ScintillaNext *editor);
     void updateOverType(ScintillaNext *editor);
 
 private:

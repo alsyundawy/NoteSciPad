@@ -511,7 +511,7 @@ connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
         if (auto *ed = currentEditor()) {
             EncodingSelectionDialog dlg(ed, this);
             if (dlg.exec() == QDialog::Accepted) {
-                ui->statusBar->updateEncoding(ed);
+                ui->statusBar->refresh(ed);
             }
         }
     });
@@ -519,31 +519,31 @@ connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
     connect(ui->actionConvertToUtf8, &QAction::triggered, this, [this]() {
         if (auto *ed = currentEditor()) {
             ed->convertToEncoding(QStringLiteral("UTF-8"), ScintillaNext::BomType::None);
-            ui->statusBar->updateEncoding(ed);
+            ui->statusBar->refresh(ed);
         }
     });
     connect(ui->actionConvertToUtf8Bom, &QAction::triggered, this, [this]() {
         if (auto *ed = currentEditor()) {
             ed->convertToEncoding(QStringLiteral("UTF-8"), ScintillaNext::BomType::Utf8);
-            ui->statusBar->updateEncoding(ed);
+            ui->statusBar->refresh(ed);
         }
     });
     connect(ui->actionConvertToAnsi, &QAction::triggered, this, [this]() {
         if (auto *ed = currentEditor()) {
             ed->convertToEncoding(QStringLiteral("windows-1252"), ScintillaNext::BomType::None);
-            ui->statusBar->updateEncoding(ed);
+            ui->statusBar->refresh(ed);
         }
     });
     connect(ui->actionConvertToUtf16Le, &QAction::triggered, this, [this]() {
         if (auto *ed = currentEditor()) {
             ed->convertToEncoding(QStringLiteral("UTF-16LE"), ScintillaNext::BomType::Utf16LE);
-            ui->statusBar->updateEncoding(ed);
+            ui->statusBar->refresh(ed);
         }
     });
     connect(ui->actionConvertToUtf16Be, &QAction::triggered, this, [this]() {
         if (auto *ed = currentEditor()) {
             ed->convertToEncoding(QStringLiteral("UTF-16BE"), ScintillaNext::BomType::Utf16BE);
-            ui->statusBar->updateEncoding(ed);
+            ui->statusBar->refresh(ed);
         }
     });
 
@@ -554,7 +554,7 @@ connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
                 return;
             }
             ed->reloadWithEncoding(enc);
-            ui->statusBar->updateEncoding(ed);
+            ui->statusBar->refresh(ed);
         }
     };
 
@@ -573,7 +573,7 @@ connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
         if (auto *ed = currentEditor()) {
             EncodingSelectionDialog dlg(ed, this);
             if (dlg.exec() == QDialog::Accepted) {
-                ui->statusBar->updateEncoding(ed);
+                ui->statusBar->refresh(ed);
             }
         }
     });
