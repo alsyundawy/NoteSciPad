@@ -41,8 +41,8 @@ EditorInfoStatusBar::EditorInfoStatusBar(QMainWindow *window) :
     unicodeChar = new StatusLabel(90);
     addPermanentWidget(unicodeChar, 0);
     unicodeChar->setToolTip(tr("Character Unicode Code Point at Cursor (Click for full details)"));
-    connect(unicodeChar, &ClickableLabel::clicked, this, [this]() {
-        if (MainWindow *mw = qobject_cast<MainWindow *>(window)) {
+    connect(qobject_cast<StatusLabel*>(unicodeChar), &StatusLabel::clicked, this, [this]() {
+        if (MainWindow *mw = qobject_cast<MainWindow *>(this->window())) {
             if (QAction *act = mw->findChild<QAction *>("actionShowCharacterInfo")) {
                 act->trigger();
             }
@@ -65,8 +65,8 @@ EditorInfoStatusBar::EditorInfoStatusBar(QMainWindow *window) :
     unicodeType = new StatusLabel(110);
     addPermanentWidget(unicodeType, 0);
     unicodeType->setToolTip(tr("Encoding / BOM (Click to view or convert)"));
-    connect(unicodeType, &ClickableLabel::clicked, this, [this]() {
-        if (MainWindow *mw = qobject_cast<MainWindow *>(window)) {
+    connect(qobject_cast<StatusLabel*>(unicodeType), &StatusLabel::clicked, this, [this]() {
+        if (MainWindow *mw = qobject_cast<MainWindow *>(this->window())) {
             if (QAction *act = mw->findChild<QAction *>("actionShowEncodingInfo")) {
                 act->trigger();
             }
