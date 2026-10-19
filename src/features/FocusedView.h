@@ -15,6 +15,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QMap>
 #include <QSet>
 
 class ScintillaNext;
@@ -74,7 +75,7 @@ signals:
 private:
     void ensureHiddenLineStyle(ScintillaNext *editor);
 
-    QSet<ScintillaNext*> m_focusedEditors;
+    QMap<ScintillaNext*, FilterOptions> m_editorOptions;
     FilterOptions m_lastOptions;
 };
 

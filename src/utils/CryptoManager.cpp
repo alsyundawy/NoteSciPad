@@ -313,8 +313,8 @@ QByteArray CryptoManager::aes256CbcEncrypt(const QByteArray &plaintext, const ui
         ciphertext.resize(static_cast<int>(bytesMoved));
         return ciphertext;
     }
-#endif
-
+    return QByteArray();
+#else
     // Fallback or portable AES-256-CBC
     uint8_t roundKeys[240];
     PortableAes::keyExpansion256(key, roundKeys);
@@ -338,6 +338,7 @@ QByteArray CryptoManager::aes256CbcEncrypt(const QByteArray &plaintext, const ui
     }
 
     return ciphertext;
+#endif
 }
 
 QByteArray CryptoManager::aes256CbcDecrypt(const QByteArray &ciphertext, const uint8_t *key, const uint8_t *iv, bool *ok)

@@ -46,7 +46,7 @@ bool LogAutoTimestamp::checkAndApplyLogTimestamp(ScintillaNext *editor, bool for
     if (!editor) return false;
     if (editor->readOnly()) return false;
 
-    if (!force && editor->property("LogTimestampApplied").toBool()) {
+    if (!force && editor->QObject::property("LogTimestampApplied").toBool()) {
         return false;
     }
 
@@ -54,7 +54,7 @@ bool LogAutoTimestamp::checkAndApplyLogTimestamp(ScintillaNext *editor, bool for
         return false;
     }
 
-    editor->setProperty("LogTimestampApplied", true);
+    editor->QObject::setProperty("LogTimestampApplied", true);
 
     const int docLen = editor->length();
     const QString eol = (editor->eOLMode() == SC_EOL_CRLF) ? QStringLiteral("\r\n") : QStringLiteral("\n");

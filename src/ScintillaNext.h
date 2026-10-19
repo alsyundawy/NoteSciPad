@@ -35,6 +35,11 @@ class ScintillaNext : public ScintillaEdit
     Q_OBJECT
 
 public:
+    using QObject::setProperty;
+    using ScintillaEdit::setProperty;
+    QVariant qtProperty(const char *name) const { return QObject::property(name); }
+    bool setQtProperty(const char *name, const QVariant &value) { return QObject::setProperty(name, value); }
+
     static bool isRangeValid(const Sci_CharacterRange &range)
     {
         return range.cpMin != INVALID_POSITION && range.cpMax != INVALID_POSITION;

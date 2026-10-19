@@ -75,6 +75,8 @@ public:
     int editorCount() const;
     QVector<ScintillaNext *> editors() const;
     DockedEditor *getDockedEditor() const { return dockedEditor; }
+    void applyStyleSheet();
+    friend class ThemeManager;
 
 public slots:
     void newFile();
@@ -194,7 +196,6 @@ private:
             }
         });
     }
-    void applyStyleSheet();
     void applyCustomShortcuts();
     void initUpdateCheck();
     ScintillaNext *getInitialEditor();

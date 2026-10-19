@@ -30,7 +30,7 @@ FocusedView::FocusedView(QObject *parent)
 bool FocusedView::isFocused(ScintillaNext *editor) const
 {
     if (!editor) return false;
-    return m_focusedEditors.contains(editor) && editor->property("FocusedViewActive").toBool();
+    return m_editorOptions.contains(editor);
 }
 
 void FocusedView::ensureHiddenLineStyle(ScintillaNext *editor)
@@ -45,16 +45,7 @@ FocusedView::FilterOptions FocusedView::currentOptions(ScintillaNext *editor) co
     if (!editor || !isFocused(editor)) {
         return m_lastOptions;
     }
-
-    FilterOptions opts;
-    opts.query = editor->property("FocusedViewQuery").toString();
-    opts.matchCase = editor->property("FocusedViewMatchCase").toBool();
-    opts.wholeWord = editor->property("FocusedViewWholeWord").toBool();
-    opts.useRegex = editor->property("FocusedViewUseRegex").toBool();
-    opts.invert = editor->property("FocusedViewInvert").toBool();
-    opts.bookmarksOnly = editor->property("FocusedViewBookmarksOnly").toBool();
-    opts.contextLines = editor->property("FocusedViewContextLines").toInt();
-    return opts;
+    return m_editorOptions.value(editor, m_lastOptions);
 }
 
 FocusedView::FilterResult FocusedView::toggleFocusedView(ScintillaNext *editor, bool *dialogNeeded)
@@ -246,15 +237,9 @@ FocusedView::FilterResult FocusedView::applyFilter(ScintillaNext *editor, const 
         }
     }
 
-    m_focusedEditors.insert(editor);
-    editor->setProperty("FocusedViewActive", true);
-    editor->setProperty("FocusedViewQuery", options.query);
-    editor->setProperty("FocusedViewMatchCase", options.matchCase);
-    editor->setProperty("FocusedViewWholeWord", options.wholeWord);
-    editor->setProperty("FocusedViewUseRegex", options.useRegex);
-    editor->setProperty("FocusedViewInvert", options.invert);
-    editor->setProperty("FocusedViewBookmarksOnly", options.bookmarksOnly);
-    editor->setProperty("FocusedViewContextLines", options.contextLines);
+    m_editorOptions[editor] = options;
+    m_lastOptions = options;
+    editor->QObject::setProperty("FocusedViewActive", true);
 
     FilterResult res;
     res.active = true;
@@ -279,9 +264,8 @@ FocusedView::FilterResult FocusedView::clearFilter(ScintillaNext *editor)
         editor->showLines(0, lineCount - 1);
     }
 
-    m_focusedEditors.remove(editor);
-    editor->setProperty("FocusedViewActive", false);
-    editor->setProperty("FocusedViewQuery", QString());
+    m_editorOptions.remove(editor);
+    editor->QObject::setProperty("FocusedViewActive", false);
 
     FilterResult res;
     res.active = false;

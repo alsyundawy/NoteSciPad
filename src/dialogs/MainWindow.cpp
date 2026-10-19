@@ -1974,8 +1974,8 @@ void MainWindow::openFileList(const QStringList &fileNames)
                             editor->appendText(decRes.data.size(), decRes.data.constData());
                             editor->setUndoCollection(true);
                             editor->setSavePoint();
-                            editor->setProperty("IsEncrypted", true);
-                            editor->setProperty("EncryptionPassword", pass);
+                            editor->QObject::setProperty("IsEncrypted", true);
+                            editor->QObject::setProperty("EncryptionPassword", pass);
                             ui->statusBar->showMessage(tr("Unlocked encrypted file \"%1\" (AES-256)").arg(fileInfo.fileName()), 4000);
                             decryptedSuccess = true;
                         }
@@ -2079,7 +2079,7 @@ void MainWindow::reloadFile()
     auto reply = QMessageBox::question(this, tr("Reload File"), tr("Are you sure you want to reload <b>%1</b>? Any unsaved changes will be lost.").arg(filePath));
 
     if (reply == QMessageBox::Yes) {
-        editor->setProperty("LogTimestampApplied", false);
+        editor->QObject::setProperty("LogTimestampApplied", false);
         editor->reload();
         if (LogAutoTimestamp::isAutoLogEnabled() && LogAutoTimestamp::checkAndApplyLogTimestamp(editor)) {
             ui->statusBar->showMessage(tr(".LOG auto-timestamp appended to log file"), 3000);
@@ -2195,15 +2195,15 @@ bool MainWindow::saveFile(ScintillaNext *editor)
         return saveCurrentFileAsDialog();
     }
     else {
-        if (editor->property("IsEncrypted").toBool()) {
-            QString pass = editor->property("EncryptionPassword").toString();
+        if (editor->QObject::property("IsEncrypted").toBool()) {
+            QString pass = editor->QObject::property("EncryptionPassword").toString();
             if (pass.isEmpty()) {
                 EncryptDialog dlg(this);
                 if (dlg.exec() != QDialog::Accepted) {
                     return false;
                 }
                 pass = dlg.passphrase();
-                editor->setProperty("EncryptionPassword", pass);
+                editor->QObject::setProperty("EncryptionPassword", pass);
             }
 
             const QByteArray rawText = editor->getText();
@@ -2411,15 +2411,15 @@ bool MainWindow::saveFileAs(ScintillaNext *editor, const QString &fileName)
 {
     qInfo("saveFileAs(%s)", qUtf8Printable(fileName));
 
-    if (editor->property("IsEncrypted").toBool()) {
-        QString pass = editor->property("EncryptionPassword").toString();
+    if (editor->QObject::property("IsEncrypted").toBool()) {
+        QString pass = editor->QObject::property("EncryptionPassword").toString();
         if (pass.isEmpty()) {
             EncryptDialog dlg(this);
             if (dlg.exec() != QDialog::Accepted) {
                 return false;
             }
             pass = dlg.passphrase();
-            editor->setProperty("EncryptionPassword", pass);
+            editor->QObject::setProperty("EncryptionPassword", pass);
         }
 
         const QByteArray rawText = editor->getText();
@@ -2930,7 +2930,7 @@ void MainWindow::activateEditor(ScintillaNext *editor)
         ClipboardMonitor::instance()->setTargetEditor(editor);
     }
 
-    if (editor && LogAutoTimestamp::isAutoLogEnabled() && !editor->property("LogTimestampApplied").toBool()) {
+    if (editor && LogAutoTimestamp::isAutoLogEnabled() && !editor->QObject::property("LogTimestampApplied").toBool()) {
         if (LogAutoTimestamp::checkAndApplyLogTimestamp(editor)) {
             ui->statusBar->showMessage(tr(".LOG auto-timestamp appended to log file"), 3000);
         }
@@ -3665,8 +3665,8 @@ void MainWindow::onEncryptDocumentTriggered()
 
     EncryptDialog dlg(this);
     if (dlg.exec() == QDialog::Accepted) {
-        editor->setProperty("IsEncrypted", true);
-        editor->setProperty("EncryptionPassword", dlg.passphrase());
+        editor->QObject::setProperty("IsEncrypted", true);
+        editor->QObject::setProperty("EncryptionPassword", dlg.passphrase());
         editor->insertText(editor->currentPos(), "");
         ui->statusBar->showMessage(tr("🔒 Document configured for AES-256 encryption. Save to write to disk."), 5000);
         QMessageBox::information(this, tr("Encryption Configured"),
@@ -3683,7 +3683,7 @@ void MainWindow::onDecryptDocumentTriggered()
         return;
     }
 
-    if (!editor->property("IsEncrypted").toBool()) {
+    if (!editor->QObject::property("IsEncrypted").toBool()) {
         ui->statusBar->showMessage(tr("Document is not encrypted"), 3000);
         return;
     }
@@ -3692,8 +3692,8 @@ void MainWindow::onDecryptDocumentTriggered()
         tr("Are you sure you want to remove encryption from <b>%1</b>?<br>The next save will store it as plain unencrypted text.").arg(editor->getName()));
 
     if (reply == QMessageBox::Yes) {
-        editor->setProperty("IsEncrypted", false);
-        editor->setProperty("EncryptionPassword", QString());
+        editor->QObject::setProperty("IsEncrypted", false);
+        editor->QObject::setProperty("EncryptionPassword", QString());
         editor->insertText(editor->currentPos(), "");
         ui->statusBar->showMessage(tr("🔓 Encryption removed. Save to write as plain text."), 4000);
     }

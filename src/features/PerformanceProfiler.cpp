@@ -134,16 +134,16 @@ void PerformanceProfiler::setHighPerformanceMode(ScintillaNext *editor, bool ena
         // 2. Enable double buffered drawing
         editor->setBufferedDraw(true);
         // 3. Mark property
-        editor->setProperty("HighPerformanceMode", true);
+        editor->QObject::setProperty("HighPerformanceMode", true);
     } else {
-        editor->setProperty("HighPerformanceMode", false);
+        editor->QObject::setProperty("HighPerformanceMode", false);
     }
 }
 
 bool PerformanceProfiler::isHighPerformanceMode(ScintillaNext *editor)
 {
     if (!editor) return false;
-    return editor->property("HighPerformanceMode").toBool();
+    return editor->QObject::property("HighPerformanceMode").toBool();
 }
 
 PerformanceProfiler::BenchmarkResult PerformanceProfiler::runScintillaInsertBenchmark(int lineCount)
