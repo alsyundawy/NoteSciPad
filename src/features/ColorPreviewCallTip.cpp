@@ -334,7 +334,8 @@ bool ColorPreviewCallTip::showPreviewAt(int pos)
     editor->callTipShow(match.startPos, tipText.toUtf8().constData());
 
     // Display rich tooltip with visual color block
-    const QPoint pt = editor->pointFromPosition(match.startPos);
+    const QPoint pt(static_cast<int>(editor->pointXFromPosition(match.startPos)),
+                    static_cast<int>(editor->pointYFromPosition(match.startPos)));
     QPoint globalPt = editor->mapToGlobal(pt);
     globalPt.setY(globalPt.y() + 22);
 

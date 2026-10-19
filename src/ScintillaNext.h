@@ -26,6 +26,7 @@
 #include <QDateTime>
 #include <QFile>
 #include <QFileInfo>
+#include <QPoint>
 
 
 
@@ -39,6 +40,18 @@ public:
     using ScintillaEdit::setProperty;
     QVariant qtProperty(const char *name) const { return QObject::property(name); }
     bool setQtProperty(const char *name, const QVariant &value) { return QObject::setProperty(name, value); }
+    QPoint pointFromPosition(Sci_Position pos) {
+        return QPoint(static_cast<int>(pointXFromPosition(pos)), static_cast<int>(pointYFromPosition(pos)));
+    }
+    QString filePath() const { return getFilePath(); }
+    QString getFileName() const { return getName(); }
+    void goToPos(sptr_t pos) { gotoPos(pos); }
+    void getRange(int start, int end, char *text) const {
+        if (!text) return;
+        QByteArray b = get_text_range(start, end);
+        std::memcpy(text, b.constData(), b.size());
+        text[b.size()] = '\0';
+    }
 
     static bool isRangeValid(const Sci_CharacterRange &range)
     {
