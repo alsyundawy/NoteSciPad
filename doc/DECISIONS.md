@@ -320,3 +320,21 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
 - **Consequences:**
   - Full macOS and Linux update check discoverability directly from the UI.
   - Reproducible release asset building and checksum generation for distribution.
+
+---
+
+## ADR-015: Homebrew Cask and Formula Distribution Architecture
+
+- **Status:** Accepted
+- **Date:** 2026-10-19
+- **Context:**
+  macOS developers and sysadmins predominantly manage GUI applications through Homebrew Casks. Distributing NoteSciPad via an official Homebrew tap (`alsyundawy/homebrew-notescipad`) simplifies installation, updates, and CLI terminal launching.
+- **Decision:**
+  1. Created `deploy/homebrew/Casks/notescipad.rb` supporting dual Apple Silicon (`arm64`) and Intel (`x86_64`) architecture downloads.
+  2. Defined CLI binary alias symlinking `NoteSciPad.app/Contents/MacOS/NoteSciPad` as `notescipad`.
+  3. Added `zap trash` definitions ensuring clean uninstallation.
+  4. Created `scripts/update-homebrew-cask.sh` for automated SHA256 and version tagging.
+  5. Updated `.github/workflows/post_release.yml` to trigger tap updates upon release publication.
+- **Consequences:**
+  - One-line command installation for macOS users (`brew install --cask notescipad`).
+  - Terminal users can launch NoteSciPad directly from shell via `notescipad [files...]`.

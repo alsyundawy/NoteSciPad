@@ -143,7 +143,7 @@ Use this as the living task board. Check items as they are completed.
 - [x] Multi-monitor & Retina testing
 - [x] Documentation (user guide + developer)
 - [x] Public alpha / beta release
-- [ ] Homebrew cask or formula (optional)
+- [x] Homebrew cask or formula (optional)
 - [ ] Flatpak / AppImage (optional)
 
 ---
