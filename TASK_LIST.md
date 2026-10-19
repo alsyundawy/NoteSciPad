@@ -232,7 +232,7 @@ Use this as the living task board. Check items as they are completed.
 - [x] Run `scripts/run-security-audit.sh` (100% pass)
 - [x] Run `scripts/benchmark-baseline.sh` (100% pass)
 - [x] Run `trunk check` (100% pass)
-- [ ] Commit, push to `origin/main`, and confirm GitHub Actions success
+- [x] Commit, push to `origin/main`, and confirm GitHub Actions success
 
 ---
 
