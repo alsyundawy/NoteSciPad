@@ -105,10 +105,9 @@ const char *QRegexSearch::SubstituteByPosition(Document *doc, const char *text, 
     }
 
     // Full PCRE2 & Notepad++ replacement syntax:
-    // ..\9 or $1..$9 for captured groups
+    // \1..\9 or $1..$9 for captured groups
     // \0, $0, & for full match
-    // 	 (tab), 
- (newline),  (CR), \ (literal backslash), \$ (literal dollar)
+    // \t (tab), \n (newline), \r (CR), \\ (literal backslash), \$ (literal dollar)
     QString result;
     const int inLen = static_cast<int>(*length);
     int i = 0;
