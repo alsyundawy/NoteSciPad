@@ -151,7 +151,7 @@ Use this as the living task board. Check items as they are completed.
 ## Cross-Cutting Tasks
 
 - [x] Never replace or remove vendored Scintilla and Lexilla without explicit decision
-- [ ] Unit / integration tests for new utilities (Base64, number conversion, etc.)
+- [x] Unit / integration tests for new utilities (Base64, number conversion, etc.)
 - [ ] Manual test checklist (encoding, large files, CJK, shortcuts)
 - [ ] Localization updates (Indonesian priority + English)
 - [ ] About dialog credits (NotepadNext, Notepad4, Notepad3, Scintilla, Lexilla) + clear non-affiliation statement

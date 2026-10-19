@@ -369,3 +369,19 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
   3. Integrated verification into pre-commit and CI/CD validation protocols.
 - **Consequences:**
   - Guaranteed stability, privacy, low memory footprint, and high responsiveness on all platforms.
+
+---
+
+## ADR-018: Native Unit & Integration Testing Architecture
+
+- **Status:** Accepted
+- **Date:** 2026-10-19
+- **Context:**
+  NoteSciPad includes essential text, data, and security utility engines (Base64, NumberConverter, MathEvaluator, CaseConverter, GuidTimestampUtils, CryptoManager, CodeCompressPretty). Establishing an automated unit test suite ensures zero algorithmic regression and guarantees cross-platform reliability.
+- **Decision:**
+  1. Created modular test suite under \`tests/\` linking to \`Qt6::Test\`.
+  2. Implemented automated runner \`scripts/run-unit-tests.sh\` and empirical verifier \`scripts/test_utilities_standalone.py\`.
+  3. Integrated \`BUILD_TESTS\` option in root \`CMakeLists.txt\` enabled by default.
+  4. Authored \`doc/UNIT_TESTING_FRAMEWORK.md\`.
+- **Consequences:**
+  - Automated regression detection for all utility transformations and cryptographic workflows.
