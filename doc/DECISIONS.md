@@ -385,3 +385,17 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
   4. Authored \`doc/UNIT_TESTING_FRAMEWORK.md\`.
 - **Consequences:**
   - Automated regression detection for all utility transformations and cryptographic workflows.
+
+---
+
+## ADR-019: Manual Verification Protocol & QA Test Fixture Suite
+
+- **Status:** Accepted
+- **Date:** 2026-10-19
+- **Context:**
+  While unit tests validate pure utility algorithms, GUI behavior, multi-language input (IME composition, CJK fonts, double-width cursors), huge file handling (10MB-50MB logs), and macOS native system integration (VoiceOver, Services, proxy icon) require a formalized, reproducible manual QA checklist and automated test fixture generation.
+- **Decision:**
+  1. Authored \`doc/MANUAL_TEST_CHECKLIST.md\` specifying concrete test cases across 6 functional axes.
+  2. Implemented \`scripts/generate-manual-test-fixtures.sh\` to generate UTF-8 BOM, CJK multilingual, and 10MB test files automatically.
+- **Consequences:**
+  - Standardized release qualification before signing and tagging production versions.
