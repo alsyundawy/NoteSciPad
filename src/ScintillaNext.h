@@ -38,6 +38,7 @@ class ScintillaNext : public ScintillaEdit
 public:
     using QObject::setProperty;
     using ScintillaEdit::setProperty;
+    using ScintillaEdit::getLine;
     QVariant qtProperty(const char *name) const { return QObject::property(name); }
     bool setQtProperty(const char *name, const QVariant &value) { return QObject::setProperty(name, value); }
     QPoint pointFromPosition(Sci_Position pos) {
