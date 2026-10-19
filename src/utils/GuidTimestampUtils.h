@@ -15,7 +15,9 @@
 
 #include <QString>
 
+#if !defined(UNIT_TESTING)
 class ScintillaNext;
+#endif
 
 class GuidTimestampUtils
 {
@@ -49,9 +51,11 @@ public:
     static QString generateGuid(GuidFormat format = GuidHyphenatedLower);
     static QString generateTimestamp(TimestampFormat format = DateTimeShort);
 
+#if !defined(UNIT_TESTING)
     static Result insertGuid(ScintillaNext *editor, GuidFormat format = GuidHyphenatedLower);
     static Result insertTimestamp(ScintillaNext *editor, TimestampFormat format = DateTimeShort);
     static Result insertText(ScintillaNext *editor, const QString &text);
+#endif
 };
 
 #endif // GUIDTIMESTAMPUTILS_H

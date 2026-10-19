@@ -25,6 +25,8 @@ set(TEST_SOURCES
 
 add_executable(NoteSciPadTests ${TEST_SOURCES} ${TEST_HEADERS})
 
+target_compile_definitions(NoteSciPadTests PRIVATE UNIT_TESTING=1)
+
 target_include_directories(NoteSciPadTests PRIVATE
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/src/utils

@@ -11,7 +11,9 @@
  */
 
 #include "NumberConverter.h"
+#if !defined(UNIT_TESTING)
 #include "ScintillaNext.h"
+#endif
 
 #include <QByteArray>
 
@@ -84,6 +86,7 @@ NumberConverter::Result NumberConverter::convertString(const QString &input, Tar
     return {true, text, formatted, QString()};
 }
 
+#if !defined(UNIT_TESTING)
 NumberConverter::Result NumberConverter::convert(ScintillaNext *editor, TargetBase targetBase, bool uppercaseHex, bool addPrefix)
 {
     if (!editor) {
@@ -140,3 +143,5 @@ NumberConverter::Result NumberConverter::convert(ScintillaNext *editor, TargetBa
 
     return result;
 }
+
+#endif

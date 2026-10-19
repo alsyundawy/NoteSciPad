@@ -16,7 +16,9 @@
 #include <QString>
 #include <QByteArray>
 
+#if !defined(UNIT_TESTING)
 class ScintillaNext;
+#endif
 
 class Base64Utils
 {
@@ -28,10 +30,10 @@ public:
     };
 
     // Encodes selection if present, otherwise encodes the entire document.
+#if !defined(UNIT_TESTING)
     static Result encode(ScintillaNext *editor);
-
-    // Decodes selection if present, otherwise decodes the entire document.
     static Result decode(ScintillaNext *editor);
+#endif
 
     // Pure string encoding and decoding helpers
     static QString encode(const QString &plainText);

@@ -15,7 +15,9 @@
 
 #include <QString>
 
+#if !defined(UNIT_TESTING)
 class ScintillaNext;
+#endif
 
 class NumberConverter
 {
@@ -35,7 +37,9 @@ public:
     };
 
     // Converts number at selection or cursor in active editor to the target base.
+#if !defined(UNIT_TESTING)
     static Result convert(ScintillaNext *editor, TargetBase targetBase, bool uppercaseHex = true, bool addPrefix = true);
+#endif
 
     // Pure parsing helper: detects input base from string (handles 0x, 0b, 0o, etc.)
     static Result convertString(const QString &input, TargetBase targetBase, bool uppercaseHex = true, bool addPrefix = true);

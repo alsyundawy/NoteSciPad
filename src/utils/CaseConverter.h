@@ -16,7 +16,9 @@
 
 #include <QString>
 
+#if !defined(UNIT_TESTING)
 class ScintillaNext;
+#endif
 
 class CaseConverter
 {
@@ -46,14 +48,14 @@ public:
 
     static QString convertText(const QString &text, CaseType caseType);
 
-    // High-level ScintillaNext editor operations with multi-selection and word-under-cursor fallback
+#if !defined(UNIT_TESTING)
     static ConvertResult convertEditor(ScintillaNext *editor, CaseType caseType);
-
     static ConvertResult upperCase(ScintillaNext *editor);
     static ConvertResult lowerCase(ScintillaNext *editor);
     static ConvertResult invertCase(ScintillaNext *editor);
     static ConvertResult titleCase(ScintillaNext *editor);
     static ConvertResult sentenceCase(ScintillaNext *editor);
+#endif
 };
 
 #endif // CASECONVERTER_H

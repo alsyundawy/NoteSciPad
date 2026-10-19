@@ -11,8 +11,11 @@
  */
 
 #include "Base64Utils.h"
+#if !defined(UNIT_TESTING)
 #include "ScintillaNext.h"
+#endif
 
+#if !defined(UNIT_TESTING)
 Base64Utils::Result Base64Utils::encode(ScintillaNext *editor)
 {
     if (!editor) {
@@ -82,6 +85,8 @@ Base64Utils::Result Base64Utils::decode(ScintillaNext *editor)
 
     return {true, false, QString()};
 }
+
+#endif
 
 QString Base64Utils::encode(const QString &plainText)
 {

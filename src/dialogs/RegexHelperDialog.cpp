@@ -197,7 +197,7 @@ void RegexHelperDialog::populateReferenceTree()
         groupItem->setExpanded(true);
 
         for (const auto &item : g.items) {
-            if (!item.token || item.token[0] == ' ')
+            if (!item.token || item.token[0] == '\0')
                 continue;
             QTreeWidgetItem *child = new QTreeWidgetItem(groupItem);
             child->setText(0, QString::fromLatin1(item.token));

@@ -11,7 +11,9 @@
  */
 
 #include "MathEvaluator.h"
+#if !defined(UNIT_TESTING)
 #include "ScintillaNext.h"
+#endif
 
 #include <cmath>
 #include <QList>
@@ -300,6 +302,7 @@ MathEvaluator::Result MathEvaluator::evaluateString(const QString &expr)
     }
 }
 
+#if !defined(UNIT_TESTING)
 MathEvaluator::Result MathEvaluator::evaluateInEditor(ScintillaNext *editor, Action action)
 {
     if (!editor) {
@@ -367,3 +370,5 @@ MathEvaluator::Result MathEvaluator::evaluateInEditor(ScintillaNext *editor, Act
 
     return result;
 }
+
+#endif

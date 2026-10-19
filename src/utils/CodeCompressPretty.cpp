@@ -11,7 +11,9 @@
  */
 
 #include "CodeCompressPretty.h"
+#if !defined(UNIT_TESTING)
 #include "ScintillaNext.h"
+#endif
 
 #include <QFileInfo>
 #include <QJsonDocument>
@@ -324,7 +326,11 @@ CodeCompressPretty::Result CodeCompressPretty::prettifyJs(const QString &text)
 CodeCompressPretty::Result CodeCompressPretty::prettifyString(const QString &text, Language lang)
 {
     if (lang == Auto) {
+        #if !defined(UNIT_TESTING)
         lang = detectLanguage(nullptr, text);
+#else
+        lang = detectLanguage(text);
+#endif
     }
 
     switch (lang) {
@@ -344,7 +350,11 @@ CodeCompressPretty::Result CodeCompressPretty::prettifyString(const QString &tex
 CodeCompressPretty::Result CodeCompressPretty::compressString(const QString &text, Language lang)
 {
     if (lang == Auto) {
+        #if !defined(UNIT_TESTING)
         lang = detectLanguage(nullptr, text);
+#else
+        lang = detectLanguage(text);
+#endif
     }
 
     switch (lang) {
@@ -361,6 +371,7 @@ CodeCompressPretty::Result CodeCompressPretty::compressString(const QString &tex
     }
 }
 
+#if !defined(UNIT_TESTING)
 CodeCompressPretty::Result CodeCompressPretty::prettify(ScintillaNext *editor, Language lang)
 {
     if (!editor) {
@@ -444,3 +455,5 @@ CodeCompressPretty::Result CodeCompressPretty::compress(ScintillaNext *editor, L
 
     return result;
 }
+
+#endif

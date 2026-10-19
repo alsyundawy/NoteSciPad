@@ -15,7 +15,9 @@
 
 #include <QString>
 
+#if !defined(UNIT_TESTING)
 class ScintillaNext;
+#endif
 
 class MathEvaluator
 {
@@ -33,8 +35,9 @@ public:
         QString errorMessage;
     };
 
-    // Evaluates math expression from active editor (selection or line at caret)
+#if !defined(UNIT_TESTING)
     static Result evaluateInEditor(ScintillaNext *editor, Action action = AppendResult);
+#endif
 
     // Direct string evaluation
     static Result evaluateString(const QString &expr);

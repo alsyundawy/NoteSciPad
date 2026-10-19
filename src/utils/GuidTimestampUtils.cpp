@@ -11,7 +11,9 @@
  */
 
 #include "GuidTimestampUtils.h"
+#if !defined(UNIT_TESTING)
 #include "ScintillaNext.h"
+#endif
 
 #include <QUuid>
 #include <QDateTime>
@@ -71,6 +73,7 @@ QString GuidTimestampUtils::generateTimestamp(TimestampFormat format)
     return now.toString(QStringLiteral("yyyy-MM-dd HH:mm:ss"));
 }
 
+#if !defined(UNIT_TESTING)
 GuidTimestampUtils::Result GuidTimestampUtils::insertText(ScintillaNext *editor, const QString &text)
 {
     if (!editor) {
@@ -112,3 +115,5 @@ GuidTimestampUtils::Result GuidTimestampUtils::insertTimestamp(ScintillaNext *ed
     const QString ts = generateTimestamp(format);
     return insertText(editor, ts);
 }
+
+#endif
