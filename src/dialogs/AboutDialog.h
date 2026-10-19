@@ -29,6 +29,7 @@ private slots:
 private:
     void setupUi();
     QWidget *createAboutTab();
+    QWidget *createMaintainerTab();
     QWidget *createCreditsTab();
     QWidget *createLicenseTab();
     QWidget *createEnvironmentTab();
