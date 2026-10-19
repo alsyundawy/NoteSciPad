@@ -145,8 +145,8 @@ void ReleaseManager::onReplyFinished(QNetworkReply *reply)
             msgBox.setWindowTitle(tr("NoteSciPad Update Available"));
             msgBox.setText(msg);
             msgBox.setIcon(QMessageBox::Information);
-            QPushButton *btnDownload = msgBox.addButton(tr("&Download Update"), QMessageBox::ActionRole);
-            QPushButton *btnLater = msgBox.addButton(tr("&Remind Me Later"), QMessageBox::RejectRole);
+            QAbstractButton *btnDownload = msgBox.addButton(tr("&Download Update"), QMessageBox::ActionRole);
+            QAbstractButton *btnLater = msgBox.addButton(tr("&Remind Me Later"), QMessageBox::RejectRole);
             Q_UNUSED(btnLater);
 
             msgBox.exec();

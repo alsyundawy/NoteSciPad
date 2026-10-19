@@ -3093,8 +3093,8 @@ MainWindow::UserSaveAction MainWindow::promptForSave(const QVector<ScintillaNext
                        : tr("There are %n files with unsaved changes. Save them?", "", count);
     msgBox.setText(text);
 
-    auto *saveBtn = msgBox.addButton(count > 1 ? tr("Save All") : tr("Save"), QMessageBox::AcceptRole);
-    auto *discardBtn = msgBox.addButton(count > 1 ? tr("Discard All") : tr("Discard"), QMessageBox::DestructiveRole);
+    QAbstractButton *saveBtn = msgBox.addButton(count > 1 ? tr("Save All") : tr("Save"), QMessageBox::AcceptRole);
+    QAbstractButton *discardBtn = msgBox.addButton(count > 1 ? tr("Discard All") : tr("Discard"), QMessageBox::DestructiveRole);
     msgBox.addButton(QMessageBox::Cancel);
 
     msgBox.setDefaultButton(saveBtn);
