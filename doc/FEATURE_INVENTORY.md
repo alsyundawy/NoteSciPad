@@ -1,7 +1,7 @@
 # NoteSciPad — Base Feature Inventory & Gap Analysis
 
 **Date:** 2026-10-19  
-**Base Snapshot:** alsyundawy/NotepadNext-MacOS v0.15-03  
+**Release Version:** NoteSciPad v1.0.0  
 **Editor Engine:** Scintilla 5.x + Lexilla 5.x (vendored in `thirdparty/`)  
 
 ---

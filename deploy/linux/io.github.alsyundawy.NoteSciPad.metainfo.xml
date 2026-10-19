@@ -16,4 +16,11 @@
   <provides>
     <binary>NoteSciPad</binary>
   </provides>
+  <releases>
+    <release version="1.0.0" date="2026-10-19">
+      <description>
+        <p>First official production release of NoteSciPad with Scintilla 5.5.4, Lexilla 5.4.3, AES-256 encryption, live tail monitoring, 25 developer theme families, and complete macOS/Linux CI/CD pipelines.</p>
+      </description>
+    </release>
+  </releases>
 </component>

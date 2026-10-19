@@ -68,10 +68,10 @@ void JsEvaluationDialog::setupPresets()
     ui->comboPresets->addItem(tr("Math: Trigonometry & Powers"), QStringLiteral("Math.hypot(3, 4) + Math.pow(2, 8)"));
     ui->comboPresets->addItem(tr("Math: Normal Distribution / Pi"), QStringLiteral("const x = 0.5; Math.exp(-0.5 * x * x) / Math.sqrt(2 * Math.PI)"));
     ui->comboPresets->addItem(tr("Array: Map, Filter, Reduce"), QStringLiteral("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n  .filter(n => n % 2 === 0)\n  .map(n => n * n)\n  .reduce((acc, curr) => acc + curr, 0)"));
-    ui->comboPresets->addItem(tr("JSON: Format & Pretty-print"), QStringLiteral("JSON.stringify({\n  appName: 'NoteSciPad',\n  version: '0.15',\n  engine: 'Scintilla + Lexilla',\n  tags: ['macOS', 'Linux', 'C++20', 'Qt6']\n}, null, 2)"));
+    ui->comboPresets->addItem(tr("JSON: Format & Pretty-print"), QStringLiteral("JSON.stringify({\n  appName: 'NoteSciPad',\n  version: '1.0.0',\n  engine: 'Scintilla + Lexilla',\n  tags: ['macOS', 'Linux', 'C++20', 'Qt6']\n}, null, 2)"));
     ui->comboPresets->addItem(tr("Date: Current UTC & Unix Timestamp"), QStringLiteral("({\n  iso: new Date().toISOString(),\n  unix: Math.floor(Date.now() / 1000),\n  locale: new Date().toLocaleString()\n})"));
     ui->comboPresets->addItem(tr("String: Reverse & Case Transform"), QStringLiteral("'The quick brown fox jumps over the lazy dog'\n  .split(' ')\n  .map(w => w.toUpperCase())\n  .reverse()\n  .join(' ')"));
-    ui->comboPresets->addItem(tr("Regex: Extract Matching Groups"), QStringLiteral("const text = '2026-10-19 NoteSciPad Release v0.15';\nconst match = text.match(/(\\d{4}-\\d{2}-\\d{2})\\s+(.+)/);\nmatch ? { date: match[1], title: match[2] } : null"));
+    ui->comboPresets->addItem(tr("Regex: Extract Matching Groups"), QStringLiteral("const text = '2026-10-19 NoteSciPad Release v1.0.0';\nconst match = text.match(/(\\d{4}-\\d{2}-\\d{2})\\s+(.+)/);\nmatch ? { date: match[1], title: match[2] } : null"));
     ui->comboPresets->addItem(tr("Crypto: Hex Encoding"), QStringLiteral("Array.from(new TextEncoder().encode('NoteSciPad'))\n  .map(b => b.toString(16).padStart(2, '0'))\n  .join(' ')"));
 }
 
