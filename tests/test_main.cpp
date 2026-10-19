@@ -7,16 +7,47 @@
 #include <QCoreApplication>
 #include <iostream>
 
-// Declarations of individual test classes
-class TestBase64;
-class TestNumberConverter;
-class TestGuidTimestamp;
-class TestCaseConverter;
-class TestMathEvaluator;
-class TestCryptoManager;
-class TestCodeCompressPretty;
+#include "test_base64.h"
+#include "test_number_converter.h"
+#include "test_guid_timestamp.h"
+#include "test_case_converter.h"
+#include "test_math_evaluator.h"
+#include "test_crypto_manager.h"
+#include "test_code_compress_pretty.h"
 
-int runAllTests(int argc, char *argv[]);
+int runAllTests(int argc, char *argv[])
+{
+    int status = 0;
+    {
+        TestBase64 t;
+        status |= QTest::qExec(&t, argc, argv);
+    }
+    {
+        TestNumberConverter t;
+        status |= QTest::qExec(&t, argc, argv);
+    }
+    {
+        TestGuidTimestamp t;
+        status |= QTest::qExec(&t, argc, argv);
+    }
+    {
+        TestCaseConverter t;
+        status |= QTest::qExec(&t, argc, argv);
+    }
+    {
+        TestMathEvaluator t;
+        status |= QTest::qExec(&t, argc, argv);
+    }
+    {
+        TestCryptoManager t;
+        status |= QTest::qExec(&t, argc, argv);
+    }
+    {
+        TestCodeCompressPretty t;
+        status |= QTest::qExec(&t, argc, argv);
+    }
+    return status;
+}
 
 int main(int argc, char *argv[])
 {

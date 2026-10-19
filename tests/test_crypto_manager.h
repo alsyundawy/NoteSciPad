@@ -1,3 +1,4 @@
+#pragma once
 #include <QObject>
 #include <QTest>
 #include "utils/CryptoManager.h"

@@ -1,3 +1,4 @@
+#pragma once
 #include <QObject>
 #include <QTest>
 #include "utils/CodeCompressPretty.h"
@@ -27,38 +28,3 @@ private slots:
         QVERIFY(mini.contains("body{color:red;margin:0px;}"));
     }
 };
-
-// Implement runAllTests in this translation unit
-int runAllTests(int argc, char *argv[])
-{
-    int status = 0;
-    {
-        TestBase64 t;
-        status |= QTest::qExec(&t, argc, argv);
-    }
-    {
-        TestNumberConverter t;
-        status |= QTest::qExec(&t, argc, argv);
-    }
-    {
-        TestGuidTimestamp t;
-        status |= QTest::qExec(&t, argc, argv);
-    }
-    {
-        TestCaseConverter t;
-        status |= QTest::qExec(&t, argc, argv);
-    }
-    {
-        TestMathEvaluator t;
-        status |= QTest::qExec(&t, argc, argv);
-    }
-    {
-        TestCryptoManager t;
-        status |= QTest::qExec(&t, argc, argv);
-    }
-    {
-        TestCodeCompressPretty t;
-        status |= QTest::qExec(&t, argc, argv);
-    }
-    return status;
-}

@@ -2,15 +2,18 @@ cmake_minimum_required(VERSION 3.16)
 
 find_package(Qt6 REQUIRED COMPONENTS Core Test Widgets)
 
+set(TEST_HEADERS
+    test_base64.h
+    test_number_converter.h
+    test_guid_timestamp.h
+    test_case_converter.h
+    test_math_evaluator.h
+    test_crypto_manager.h
+    test_code_compress_pretty.h
+)
+
 set(TEST_SOURCES
     test_main.cpp
-    test_base64.cpp
-    test_number_converter.cpp
-    test_guid_timestamp.cpp
-    test_case_converter.cpp
-    test_math_evaluator.cpp
-    test_crypto_manager.cpp
-    test_code_compress_pretty.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/Base64Utils.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/NumberConverter.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/GuidTimestampUtils.cpp
@@ -20,7 +23,7 @@ set(TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/src/utils/CodeCompressPretty.cpp
 )
 
-add_executable(NoteSciPadTests ${TEST_SOURCES})
+add_executable(NoteSciPadTests ${TEST_SOURCES} ${TEST_HEADERS})
 
 target_include_directories(NoteSciPadTests PRIVATE
     ${CMAKE_SOURCE_DIR}/src
