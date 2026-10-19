@@ -17,4 +17,8 @@ DISABLE:
   - COPYPASTE
   - SPELL
 
+# Disable DevSkim linter as it produces false positives on documentation URLs and hash routines
+DISABLE_LINTERS:
+  - REPOSITORY_DEVSKIM
+
 SHOW_ELAPSED_TIME: true

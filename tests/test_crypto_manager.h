@@ -10,19 +10,21 @@ class TestCryptoManager : public QObject
 private slots:
     void testAesRoundtrip()
     {
-        QString plain = "Confidential NoteSciPad Source Code 2026!";
+        QByteArray plain = "Confidential NoteSciPad Source Code 2026!";
         QString pass = "UltraSecurePassword#123";
 
-        QString enc = CryptoManager::encrypt(plain, pass);
-        QVERIFY(!enc.isEmpty());
-        QVERIFY(enc != plain);
-        QVERIFY(enc.contains("BEGIN NOTESCIPAD ENCRYPTED FILE"));
+        CryptoManager::CryptoResult enc = CryptoManager::encrypt(plain, pass);
+        QVERIFY(enc.success);
+        QVERIFY(!enc.data.isEmpty());
+        QVERIFY(enc.data != plain);
+        QVERIFY(CryptoManager::isEncryptedData(enc.data));
 
-        QString dec = CryptoManager::decrypt(enc, pass);
-        QCOMPARE(dec, plain);
+        CryptoManager::CryptoResult dec = CryptoManager::decrypt(enc.data, pass);
+        QVERIFY(dec.success);
+        QCOMPARE(dec.data, plain);
 
         // Wrong password test
-        QString wrongDec = CryptoManager::decrypt(enc, "WrongPassword");
-        QVERIFY(wrongDec.isEmpty() || wrongDec != plain);
+        CryptoManager::CryptoResult wrongDec = CryptoManager::decrypt(enc.data, "WrongPassword");
+        QVERIFY(!wrongDec.success);
     }
 };

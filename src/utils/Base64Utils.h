@@ -32,6 +32,12 @@ public:
 
     // Decodes selection if present, otherwise decodes the entire document.
     static Result decode(ScintillaNext *editor);
+
+    // Pure string encoding and decoding helpers
+    static QString encode(const QString &plainText);
+    static QString decode(const QString &base64Text, bool *ok = nullptr);
+    static QString encodeUrlSafe(const QString &plainText);
+    static QString decodeUrlSafe(const QString &base64Text, bool *ok = nullptr);
 };
 
 #endif // BASE64UTILS_H

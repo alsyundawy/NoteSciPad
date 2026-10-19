@@ -11,20 +11,23 @@ private slots:
     void testJsonMinifyPrettify()
     {
         QString messy = "{   \"key\":   \"value\" ,  \"number\": 42 }";
-        QString mini = CodeCompressPretty::minifyJson(messy);
-        QVERIFY(!mini.contains("  "));
-        QVERIFY(mini.contains("\"key\":\"value\""));
+        auto mini = CodeCompressPretty::compressJson(messy);
+        QVERIFY(mini.success);
+        QVERIFY(!mini.formatted.contains("  "));
+        QVERIFY(mini.formatted.contains("\"key\":\"value\""));
 
-        QString pretty = CodeCompressPretty::prettifyJson(mini);
-        QVERIFY(pretty.contains("\n"));
-        QVERIFY(pretty.contains("    \"key\""));
+        auto pretty = CodeCompressPretty::prettifyJson(mini.formatted);
+        QVERIFY(pretty.success);
+        QVERIFY(pretty.formatted.contains("\n"));
+        QVERIFY(pretty.formatted.contains("    \"key\""));
     }
 
     void testCssMinify()
     {
         QString css = "/* comment */ body { color: red; margin: 0px; }";
-        QString mini = CodeCompressPretty::minifyCss(css);
-        QVERIFY(!mini.contains("comment"));
-        QVERIFY(mini.contains("body{color:red;margin:0px;}"));
+        auto mini = CodeCompressPretty::compressCss(css);
+        QVERIFY(mini.success);
+        QVERIFY(!mini.formatted.contains("comment"));
+        QVERIFY(mini.formatted.contains("body{color:red;margin:0px;}"));
     }
 };

@@ -1937,6 +1937,467 @@
     <string notr="true">Ctrl+Shift+F3</string>
    </property>
   </action>
+  <action name="actionMarkAllOccurrences">
+     <property name="text">
+      <string>Mark All Occurrences</string>
+     </property>
+     <property name="toolTip">
+      <string>Mark all occurrences of selected text or word under cursor and display matched count</string>
+     </property>
+     <property name="statusTip">
+      <string>Mark all occurrences of selected text or word under cursor and display matched count</string>
+     </property>
+     <property name="shortcut">
+      <string>Ctrl+Shift+M</string>
+     </property>
+    </action>
+    <action name="actionClearAllOccurrencesMarks">
+     <property name="text">
+      <string>Clear Marked Occurrences</string>
+     </property>
+     <property name="toolTip">
+      <string>Clear all marked occurrence highlights</string>
+     </property>
+     <property name="statusTip">
+      <string>Clear all marked occurrence highlights</string>
+     </property>
+     <property name="shortcut">
+      <string>Alt+Shift+M</string>
+     </property>
+    </action>
+    <action name="actionConvertToHex">
+     <property name="text">
+      <string>To Hexadecimal (0x...)</string>
+     </property>
+     <property name="toolTip">
+      <string>Convert number at cursor or selection to hexadecimal</string>
+     </property>
+     <property name="statusTip">
+      <string>Convert number at cursor or selection to hexadecimal</string>
+     </property>
+     <property name="shortcut">
+      <string>Ctrl+Alt+H</string>
+     </property>
+    </action>
+    <action name="actionConvertToDec">
+     <property name="text">
+      <string>To Decimal</string>
+     </property>
+     <property name="toolTip">
+      <string>Convert number at cursor or selection to decimal</string>
+     </property>
+     <property name="statusTip">
+      <string>Convert number at cursor or selection to decimal</string>
+     </property>
+     <property name="shortcut">
+      <string>Ctrl+Alt+I</string>
+     </property>
+    </action>
+    <action name="actionConvertToBin">
+     <property name="text">
+      <string>To Binary (0b...)</string>
+     </property>
+     <property name="toolTip">
+      <string>Convert number at cursor or selection to binary</string>
+     </property>
+     <property name="statusTip">
+      <string>Convert number at cursor or selection to binary</string>
+     </property>
+    </action>
+    <action name="actionConvertToOct">
+     <property name="text">
+      <string>To Octal (0o...)</string>
+     </property>
+     <property name="toolTip">
+      <string>Convert number at cursor or selection to octal</string>
+     </property>
+     <property name="statusTip">
+      <string>Convert number at cursor or selection to octal</string>
+     </property>
+    </action>
+    <action name="actionInsertDateTimeShort">
+     <property name="text">
+      <string>Current Date &amp; Time (Short)</string>
+     </property>
+     <property name="toolTip">
+      <string>Insert current date and time</string>
+     </property>
+     <property name="statusTip">
+      <string>Insert current date and time</string>
+     </property>
+     <property name="shortcut">
+      <string>F5</string>
+     </property>
+    </action>
+    <action name="actionInsertDateTimeLong">
+     <property name="text">
+      <string>Current Date &amp; Time (Long / Locale)</string>
+     </property>
+     <property name="toolTip">
+      <string>Insert formatted long date and time</string>
+     </property>
+     <property name="statusTip">
+      <string>Insert formatted long date and time</string>
+     </property>
+    </action>
+    <action name="actionInsertTimestampIso">
+     <property name="text">
+      <string>ISO-8601 Timestamp</string>
+     </property>
+     <property name="toolTip">
+      <string>Insert ISO-8601 formatted timestamp</string>
+     </property>
+     <property name="statusTip">
+      <string>Insert ISO-8601 formatted timestamp</string>
+     </property>
+     <property name="shortcut">
+      <string>Shift+F5</string>
+     </property>
+    </action>
+    <action name="actionInsertTimestampUnix">
+     <property name="text">
+      <string>Unix Timestamp (Epoch Seconds)</string>
+     </property>
+     <property name="toolTip">
+      <string>Insert current Unix timestamp in seconds</string>
+     </property>
+     <property name="statusTip">
+      <string>Insert current Unix timestamp in seconds</string>
+     </property>
+    </action>
+    <action name="actionInsertDateOnly">
+     <property name="text">
+      <string>Current Date (yyyy-MM-dd)</string>
+     </property>
+     <property name="toolTip">
+      <string>Insert current date</string>
+     </property>
+     <property name="statusTip">
+      <string>Insert current date</string>
+     </property>
+    </action>
+    <action name="actionInsertTimeOnly">
+     <property name="text">
+      <string>Current Time (HH:mm:ss)</string>
+     </property>
+     <property name="toolTip">
+      <string>Insert current time</string>
+     </property>
+     <property name="statusTip">
+      <string>Insert current time</string>
+     </property>
+    </action>
+    <action name="actionInsertGuidHyphens">
+     <property name="text">
+      <string>New GUID / UUID (Hyphenated)</string>
+     </property>
+     <property name="toolTip">
+      <string>Insert new UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)</string>
+     </property>
+     <property name="statusTip">
+      <string>Insert new UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)</string>
+     </property>
+     <property name="shortcut">
+      <string>Ctrl+Alt+G</string>
+     </property>
+    </action>
+    <action name="actionInsertGuidBraces">
+     <property name="text">
+      <string>New GUID (with Braces { ... })</string>
+     </property>
+     <property name="toolTip">
+      <string>Insert new GUID ({XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX})</string>
+     </property>
+     <property name="statusTip">
+      <string>Insert new GUID ({XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX})</string>
+     </property>
+    </action>
+    <action name="actionInsertGuidCompact">
+     <property name="text">
+      <string>New GUID (32-digit Hex / Compact)</string>
+     </property>
+     <property name="toolTip">
+      <string>Insert new GUID without hyphens</string>
+     </property>
+     <property name="statusTip">
+      <string>Insert new GUID without hyphens</string>
+     </property>
+    </action>
+    <action name="actionColorPreview">
+     <property name="text">
+      <string>Color Preview / Pick Color...</string>
+     </property>
+     <property name="toolTip">
+      <string>Preview color under cursor or open color picker</string>
+     </property>
+     <property name="statusTip">
+      <string>Preview color under cursor or open color picker</string>
+     </property>
+     <property name="shortcut">
+      <string>Alt+C</string>
+     </property>
+    </action>
+    <action name="actionFormatAuto">
+     <property name="text">
+      <string>Format / Prettify (Auto)</string>
+     </property>
+     <property name="toolTip">
+      <string>Format and indent current selection or entire document</string>
+     </property>
+     <property name="statusTip">
+      <string>Format and indent current selection or entire document</string>
+     </property>
+     <property name="shortcut">
+      <string>Alt+Shift+F</string>
+     </property>
+    </action>
+    <action name="actionMinifyAuto">
+     <property name="text">
+      <string>Minify / Compress (Auto)</string>
+     </property>
+     <property name="toolTip">
+      <string>Minify and compact current selection or entire document</string>
+     </property>
+     <property name="statusTip">
+      <string>Minify and compact current selection or entire document</string>
+     </property>
+     <property name="shortcut">
+      <string>Ctrl+Alt+M</string>
+     </property>
+    </action>
+    <action name="actionFormatJson">
+     <property name="text">
+      <string>JSON Prettify</string>
+     </property>
+    </action>
+    <action name="actionMinifyJson">
+     <property name="text">
+      <string>JSON Minify</string>
+     </property>
+    </action>
+    <action name="actionFormatJson5">
+     <property name="text">
+      <string>JSON5 Prettify</string>
+     </property>
+    </action>
+    <action name="actionMinifyJson5">
+     <property name="text">
+      <string>JSON5 Minify</string>
+     </property>
+    </action>
+    <action name="actionFormatCss">
+     <property name="text">
+      <string>CSS Prettify</string>
+     </property>
+    </action>
+    <action name="actionMinifyCss">
+     <property name="text">
+      <string>CSS Minify</string>
+     </property>
+    </action>
+    <action name="actionFormatJs">
+     <property name="text">
+      <string>JavaScript Prettify</string>
+     </property>
+    </action>
+    <action name="actionMinifyJs">
+     <property name="text">
+      <string>JavaScript Minify</string>
+     </property>
+    </action>
+    <action name="actionEvaluateJsReplace">
+     <property name="text">
+      <string>Evaluate JS Expression (Replace)</string>
+     </property>
+     <property name="toolTip">
+      <string>Evaluate selected JavaScript expression and replace with result</string>
+     </property>
+     <property name="statusTip">
+      <string>Evaluate selected JavaScript expression and replace with result</string>
+     </property>
+     <property name="shortcut">
+      <string>Ctrl+Shift+J</string>
+     </property>
+    </action>
+    <action name="actionEvaluateJsAppend">
+     <property name="text">
+      <string>Evaluate JS Expression (Append // -&gt; ...)</string>
+     </property>
+     <property name="toolTip">
+      <string>Evaluate selected JavaScript expression and append result as comment</string>
+     </property>
+     <property name="statusTip">
+      <string>Evaluate selected JavaScript expression and append result as comment</string>
+     </property>
+    </action>
+    <action name="actionEvaluateJsDialog">
+     <property name="text">
+      <string>Interactive JS Evaluation Dialog...</string>
+     </property>
+     <property name="toolTip">
+      <string>Open interactive JavaScript expression evaluator dialog</string>
+     </property>
+     <property name="statusTip">
+      <string>Open interactive JavaScript expression evaluator dialog</string>
+     </property>
+     <property name="shortcut">
+      <string>Ctrl+Alt+J</string>
+     </property>
+    </action>
+    <action name="actionEvaluateMathAppend">
+     <property name="text">
+      <string>Calculate &amp; Append Result (= ...)</string>
+     </property>
+     <property name="toolTip">
+      <string>Calculate mathematical expression and append result</string>
+     </property>
+     <property name="statusTip">
+      <string>Calculate mathematical expression and append result</string>
+     </property>
+     <property name="shortcut">
+      <string>Ctrl+Shift+E</string>
+     </property>
+    </action>
+    <action name="actionEvaluateMathReplace">
+     <property name="text">
+      <string>Calculate &amp; Replace with Result</string>
+     </property>
+     <property name="toolTip">
+      <string>Calculate mathematical expression and replace with result</string>
+     </property>
+     <property name="statusTip">
+      <string>Calculate mathematical expression and replace with result</string>
+     </property>
+     <property name="shortcut">
+      <string>Ctrl+Alt+E</string>
+     </property>
+    </action>
+    <action name="actionToggleFocusedView">
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string>Toggle &amp;Focused View</string>
+     </property>
+     <property name="toolTip">
+      <string>Toggle line filtering based on current word or selection</string>
+     </property>
+     <property name="statusTip">
+      <string>Toggle line filtering based on current word or selection</string>
+     </property>
+     <property name="shortcut">
+      <string>Ctrl+Alt+V</string>
+     </property>
+    </action>
+    <action name="actionFocusedViewFilterDialog">
+     <property name="text">
+      <string>&amp;Filter Lines...</string>
+     </property>
+     <property name="toolTip">
+      <string>Open Focused View line filter dialog</string>
+     </property>
+     <property name="statusTip">
+      <string>Open Focused View line filter dialog</string>
+     </property>
+     <property name="shortcut">
+      <string>Ctrl+Shift+F10</string>
+     </property>
+    </action>
+    <action name="actionFocusedViewBookmarks">
+     <property name="text">
+      <string>Filter to &amp;Bookmarked Lines</string>
+     </property>
+     <property name="toolTip">
+      <string>Show only lines with bookmarks</string>
+     </property>
+     <property name="statusTip">
+      <string>Show only lines with bookmarks</string>
+     </property>
+    </action>
+    <action name="actionFocusedViewClear">
+     <property name="text">
+      <string>&amp;Show All Hidden Lines (Reset)</string>
+     </property>
+     <property name="toolTip">
+      <string>Restore visibility of all lines in document</string>
+     </property>
+     <property name="statusTip">
+      <string>Restore visibility of all lines in document</string>
+     </property>
+     <property name="shortcut">
+      <string>Alt+Shift+V</string>
+     </property>
+    </action>
+    <action name="actionCustomizeStatusBarFields">
+     <property name="text">
+      <string>&amp;Status Bar Fields...</string>
+     </property>
+     <property name="toolTip">
+      <string>Customize fields displayed on the status bar</string>
+     </property>
+     <property name="statusTip">
+      <string>Customize fields displayed on the status bar</string>
+     </property>
+     <property name="shortcut">
+      <string>Alt+Shift+B</string>
+     </property>
+    </action>
+    <action name="actionInsertLogHeader">
+     <property name="text">
+      <string>Insert .LOG Header</string>
+     </property>
+     <property name="toolTip">
+      <string>Insert .LOG header at beginning of document</string>
+     </property>
+     <property name="statusTip">
+      <string>Insert .LOG header at beginning of document</string>
+     </property>
+     <property name="shortcut">
+      <string>Ctrl+Alt+L</string>
+     </property>
+    </action>
+    <action name="actionAppendLogTimestamp">
+     <property name="text">
+      <string>Append .LOG Timestamp</string>
+     </property>
+     <property name="toolTip">
+      <string>Append current timestamp at end of document</string>
+     </property>
+     <property name="statusTip">
+      <string>Append current timestamp at end of document</string>
+     </property>
+     <property name="shortcut">
+      <string>Ctrl+F5</string>
+     </property>
+    </action>
+    <action name="actionToggleAutoLogTimestamp">
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string>Auto .LOG Timestamp on Open</string>
+     </property>
+     <property name="toolTip">
+      <string>Automatically append timestamp when opening files with .LOG header</string>
+     </property>
+     <property name="statusTip">
+      <string>Automatically append timestamp when opening files with .LOG header</string>
+     </property>
+    </action>
+    <action name="actionShowCharacterInfo">
+     <property name="text">
+      <string>Show Character &amp;Info</string>
+     </property>
+     <property name="toolTip">
+      <string>Show Unicode code point, name, category, and encoding bytes for character under caret</string>
+     </property>
+     <property name="statusTip">
+      <string>Show Unicode code point, name, category, and encoding bytes for character under caret</string>
+     </property>
+     <property name="shortcut">
+      <string>Alt+Shift+I</string>
+     </property>
+    </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -1950,465 +2411,4 @@
   <include location="../resources.qrc"/>
  </resources>
  <connections/>
-  <action name="actionMarkAllOccurrences">
-   <property name="text">
-    <string>Mark All Occurrences</string>
-   </property>
-   <property name="toolTip">
-    <string>Mark all occurrences of selected text or word under cursor and display matched count</string>
-   </property>
-   <property name="statusTip">
-    <string>Mark all occurrences of selected text or word under cursor and display matched count</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Shift+M</string>
-   </property>
-  </action>
-  <action name="actionClearAllOccurrencesMarks">
-   <property name="text">
-    <string>Clear Marked Occurrences</string>
-   </property>
-   <property name="toolTip">
-    <string>Clear all marked occurrence highlights</string>
-   </property>
-   <property name="statusTip">
-    <string>Clear all marked occurrence highlights</string>
-   </property>
-   <property name="shortcut">
-    <string>Alt+Shift+M</string>
-   </property>
-  </action>
-  <action name="actionConvertToHex">
-   <property name="text">
-    <string>To Hexadecimal (0x...)</string>
-   </property>
-   <property name="toolTip">
-    <string>Convert number at cursor or selection to hexadecimal</string>
-   </property>
-   <property name="statusTip">
-    <string>Convert number at cursor or selection to hexadecimal</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Alt+H</string>
-   </property>
-  </action>
-  <action name="actionConvertToDec">
-   <property name="text">
-    <string>To Decimal</string>
-   </property>
-   <property name="toolTip">
-    <string>Convert number at cursor or selection to decimal</string>
-   </property>
-   <property name="statusTip">
-    <string>Convert number at cursor or selection to decimal</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Alt+I</string>
-   </property>
-  </action>
-  <action name="actionConvertToBin">
-   <property name="text">
-    <string>To Binary (0b...)</string>
-   </property>
-   <property name="toolTip">
-    <string>Convert number at cursor or selection to binary</string>
-   </property>
-   <property name="statusTip">
-    <string>Convert number at cursor or selection to binary</string>
-   </property>
-  </action>
-  <action name="actionConvertToOct">
-   <property name="text">
-    <string>To Octal (0o...)</string>
-   </property>
-   <property name="toolTip">
-    <string>Convert number at cursor or selection to octal</string>
-   </property>
-   <property name="statusTip">
-    <string>Convert number at cursor or selection to octal</string>
-   </property>
-  </action>
-  <action name="actionInsertDateTimeShort">
-   <property name="text">
-    <string>Current Date &amp; Time (Short)</string>
-   </property>
-   <property name="toolTip">
-    <string>Insert current date and time</string>
-   </property>
-   <property name="statusTip">
-    <string>Insert current date and time</string>
-   </property>
-   <property name="shortcut">
-    <string>F5</string>
-   </property>
-  </action>
-  <action name="actionInsertDateTimeLong">
-   <property name="text">
-    <string>Current Date &amp; Time (Long / Locale)</string>
-   </property>
-   <property name="toolTip">
-    <string>Insert formatted long date and time</string>
-   </property>
-   <property name="statusTip">
-    <string>Insert formatted long date and time</string>
-   </property>
-  </action>
-  <action name="actionInsertTimestampIso">
-   <property name="text">
-    <string>ISO-8601 Timestamp</string>
-   </property>
-   <property name="toolTip">
-    <string>Insert ISO-8601 formatted timestamp</string>
-   </property>
-   <property name="statusTip">
-    <string>Insert ISO-8601 formatted timestamp</string>
-   </property>
-   <property name="shortcut">
-    <string>Shift+F5</string>
-   </property>
-  </action>
-  <action name="actionInsertTimestampUnix">
-   <property name="text">
-    <string>Unix Timestamp (Epoch Seconds)</string>
-   </property>
-   <property name="toolTip">
-    <string>Insert current Unix timestamp in seconds</string>
-   </property>
-   <property name="statusTip">
-    <string>Insert current Unix timestamp in seconds</string>
-   </property>
-  </action>
-  <action name="actionInsertDateOnly">
-   <property name="text">
-    <string>Current Date (yyyy-MM-dd)</string>
-   </property>
-   <property name="toolTip">
-    <string>Insert current date</string>
-   </property>
-   <property name="statusTip">
-    <string>Insert current date</string>
-   </property>
-  </action>
-  <action name="actionInsertTimeOnly">
-   <property name="text">
-    <string>Current Time (HH:mm:ss)</string>
-   </property>
-   <property name="toolTip">
-    <string>Insert current time</string>
-   </property>
-   <property name="statusTip">
-    <string>Insert current time</string>
-   </property>
-  </action>
-  <action name="actionInsertGuidHyphens">
-   <property name="text">
-    <string>New GUID / UUID (Hyphenated)</string>
-   </property>
-   <property name="toolTip">
-    <string>Insert new UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)</string>
-   </property>
-   <property name="statusTip">
-    <string>Insert new UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Alt+G</string>
-   </property>
-  </action>
-  <action name="actionInsertGuidBraces">
-   <property name="text">
-    <string>New GUID (with Braces { ... })</string>
-   </property>
-   <property name="toolTip">
-    <string>Insert new GUID ({XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX})</string>
-   </property>
-   <property name="statusTip">
-    <string>Insert new GUID ({XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX})</string>
-   </property>
-  </action>
-  <action name="actionInsertGuidCompact">
-   <property name="text">
-    <string>New GUID (32-digit Hex / Compact)</string>
-   </property>
-   <property name="toolTip">
-    <string>Insert new GUID without hyphens</string>
-   </property>
-   <property name="statusTip">
-    <string>Insert new GUID without hyphens</string>
-   </property>
-  </action>
-  <action name="actionColorPreview">
-   <property name="text">
-    <string>Color Preview / Pick Color...</string>
-   </property>
-   <property name="toolTip">
-    <string>Preview color under cursor or open color picker</string>
-   </property>
-   <property name="statusTip">
-    <string>Preview color under cursor or open color picker</string>
-   </property>
-   <property name="shortcut">
-    <string>Alt+C</string>
-   </property>
-  </action>
-  <action name="actionFormatAuto">
-   <property name="text">
-    <string>Format / Prettify (Auto)</string>
-   </property>
-   <property name="toolTip">
-    <string>Format and indent current selection or entire document</string>
-   </property>
-   <property name="statusTip">
-    <string>Format and indent current selection or entire document</string>
-   </property>
-   <property name="shortcut">
-    <string>Alt+Shift+F</string>
-   </property>
-  </action>
-  <action name="actionMinifyAuto">
-   <property name="text">
-    <string>Minify / Compress (Auto)</string>
-   </property>
-   <property name="toolTip">
-    <string>Minify and compact current selection or entire document</string>
-   </property>
-   <property name="statusTip">
-    <string>Minify and compact current selection or entire document</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Alt+M</string>
-   </property>
-  </action>
-  <action name="actionFormatJson">
-   <property name="text">
-    <string>JSON Prettify</string>
-   </property>
-  </action>
-  <action name="actionMinifyJson">
-   <property name="text">
-    <string>JSON Minify</string>
-   </property>
-  </action>
-  <action name="actionFormatJson5">
-   <property name="text">
-    <string>JSON5 Prettify</string>
-   </property>
-  </action>
-  <action name="actionMinifyJson5">
-   <property name="text">
-    <string>JSON5 Minify</string>
-   </property>
-  </action>
-  <action name="actionFormatCss">
-   <property name="text">
-    <string>CSS Prettify</string>
-   </property>
-  </action>
-  <action name="actionMinifyCss">
-   <property name="text">
-    <string>CSS Minify</string>
-   </property>
-  </action>
-  <action name="actionFormatJs">
-   <property name="text">
-    <string>JavaScript Prettify</string>
-   </property>
-  </action>
-  <action name="actionMinifyJs">
-   <property name="text">
-    <string>JavaScript Minify</string>
-   </property>
-  </action>
-  <action name="actionEvaluateJsReplace">
-   <property name="text">
-    <string>Evaluate JS Expression (Replace)</string>
-   </property>
-   <property name="toolTip">
-    <string>Evaluate selected JavaScript expression and replace with result</string>
-   </property>
-   <property name="statusTip">
-    <string>Evaluate selected JavaScript expression and replace with result</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Shift+J</string>
-   </property>
-  </action>
-  <action name="actionEvaluateJsAppend">
-   <property name="text">
-    <string>Evaluate JS Expression (Append // -&gt; ...)</string>
-   </property>
-   <property name="toolTip">
-    <string>Evaluate selected JavaScript expression and append result as comment</string>
-   </property>
-   <property name="statusTip">
-    <string>Evaluate selected JavaScript expression and append result as comment</string>
-   </property>
-  </action>
-  <action name="actionEvaluateJsDialog">
-   <property name="text">
-    <string>Interactive JS Evaluation Dialog...</string>
-   </property>
-   <property name="toolTip">
-    <string>Open interactive JavaScript expression evaluator dialog</string>
-   </property>
-   <property name="statusTip">
-    <string>Open interactive JavaScript expression evaluator dialog</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Alt+J</string>
-   </property>
-  </action>
-  <action name="actionEvaluateMathAppend">
-   <property name="text">
-    <string>Calculate &amp; Append Result (= ...)</string>
-   </property>
-   <property name="toolTip">
-    <string>Calculate mathematical expression and append result</string>
-   </property>
-   <property name="statusTip">
-    <string>Calculate mathematical expression and append result</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Shift+E</string>
-   </property>
-  </action>
-  <action name="actionEvaluateMathReplace">
-   <property name="text">
-    <string>Calculate &amp; Replace with Result</string>
-   </property>
-   <property name="toolTip">
-    <string>Calculate mathematical expression and replace with result</string>
-   </property>
-   <property name="statusTip">
-    <string>Calculate mathematical expression and replace with result</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Alt+E</string>
-   </property>
-  </action>
-  <action name="actionToggleFocusedView">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Toggle &amp;Focused View</string>
-   </property>
-   <property name="toolTip">
-    <string>Toggle line filtering based on current word or selection</string>
-   </property>
-   <property name="statusTip">
-    <string>Toggle line filtering based on current word or selection</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Alt+V</string>
-   </property>
-  </action>
-  <action name="actionFocusedViewFilterDialog">
-   <property name="text">
-    <string>&amp;Filter Lines...</string>
-   </property>
-   <property name="toolTip">
-    <string>Open Focused View line filter dialog</string>
-   </property>
-   <property name="statusTip">
-    <string>Open Focused View line filter dialog</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Shift+F10</string>
-   </property>
-  </action>
-  <action name="actionFocusedViewBookmarks">
-   <property name="text">
-    <string>Filter to &amp;Bookmarked Lines</string>
-   </property>
-   <property name="toolTip">
-    <string>Show only lines with bookmarks</string>
-   </property>
-   <property name="statusTip">
-    <string>Show only lines with bookmarks</string>
-   </property>
-  </action>
-  <action name="actionFocusedViewClear">
-   <property name="text">
-    <string>&amp;Show All Hidden Lines (Reset)</string>
-   </property>
-   <property name="toolTip">
-    <string>Restore visibility of all lines in document</string>
-   </property>
-   <property name="statusTip">
-    <string>Restore visibility of all lines in document</string>
-   </property>
-   <property name="shortcut">
-    <string>Alt+Shift+V</string>
-   </property>
-  </action>
-  <action name="actionCustomizeStatusBarFields">
-   <property name="text">
-    <string>&amp;Status Bar Fields...</string>
-   </property>
-   <property name="toolTip">
-    <string>Customize fields displayed on the status bar</string>
-   </property>
-   <property name="statusTip">
-    <string>Customize fields displayed on the status bar</string>
-   </property>
-   <property name="shortcut">
-    <string>Alt+Shift+B</string>
-   </property>
-  </action>
-  <action name="actionInsertLogHeader">
-   <property name="text">
-    <string>Insert .LOG Header</string>
-   </property>
-   <property name="toolTip">
-    <string>Insert .LOG header at beginning of document</string>
-   </property>
-   <property name="statusTip">
-    <string>Insert .LOG header at beginning of document</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Alt+L</string>
-   </property>
-  </action>
-  <action name="actionAppendLogTimestamp">
-   <property name="text">
-    <string>Append .LOG Timestamp</string>
-   </property>
-   <property name="toolTip">
-    <string>Append current timestamp at end of document</string>
-   </property>
-   <property name="statusTip">
-    <string>Append current timestamp at end of document</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+F5</string>
-   </property>
-  </action>
-  <action name="actionToggleAutoLogTimestamp">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Auto .LOG Timestamp on Open</string>
-   </property>
-   <property name="toolTip">
-    <string>Automatically append timestamp when opening files with .LOG header</string>
-   </property>
-   <property name="statusTip">
-    <string>Automatically append timestamp when opening files with .LOG header</string>
-   </property>
-  </action>
-  <action name="actionShowCharacterInfo">
-   <property name="text">
-    <string>Show Character &amp;Info</string>
-   </property>
-   <property name="toolTip">
-    <string>Show Unicode code point, name, category, and encoding bytes for character under caret</string>
-   </property>
-   <property name="statusTip">
-    <string>Show Unicode code point, name, category, and encoding bytes for character under caret</string>
-   </property>
-   <property name="shortcut">
-    <string>Alt+Shift+I</string>
-   </property>
-  </action>
 </ui>

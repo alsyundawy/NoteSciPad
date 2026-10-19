@@ -10,11 +10,10 @@ class TestCaseConverter : public QObject
 private slots:
     void testConversions()
     {
-        QCOMPARE(CaseConverter::toUpperCase("NoteSciPad"), QString("NOTESCIPAD"));
-        QCOMPARE(CaseConverter::toLowerCase("NoteSciPad"), QString("notescipad"));
+        QCOMPARE(CaseConverter::toUpper("NoteSciPad"), QString("NOTESCIPAD"));
+        QCOMPARE(CaseConverter::toLower("NoteSciPad"), QString("notescipad"));
         QCOMPARE(CaseConverter::toTitleCase("hello world"), QString("Hello World"));
-        QCOMPARE(CaseConverter::toCamelCase("hello_world_text"), QString("helloWorldText"));
-        QCOMPARE(CaseConverter::toSnakeCase("helloWorldText"), QString("hello_world_text"));
-        QCOMPARE(CaseConverter::toKebabCase("helloWorldText"), QString("hello-world-text"));
+        QCOMPARE(CaseConverter::toInvertCase("Hello World"), QString("hELLO wORLD"));
+        QCOMPARE(CaseConverter::toSentenceCase("hello world. good morning."), QString("Hello world. Good morning."));
     }
 };

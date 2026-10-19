@@ -10,17 +10,16 @@ class TestMathEvaluator : public QObject
 private slots:
     void testEvaluation()
     {
-        bool ok = false;
-        double r1 = MathEvaluator::evaluate("1 + 2 * 3", &ok);
-        QVERIFY(ok);
-        QCOMPARE(r1, 7.0);
+        auto r1 = MathEvaluator::evaluateString("1 + 2 * 3");
+        QVERIFY(r1.success);
+        QCOMPARE(r1.value, 7.0);
 
-        double r2 = MathEvaluator::evaluate("(10 - 2) / 4", &ok);
-        QVERIFY(ok);
-        QCOMPARE(r2, 2.0);
+        auto r2 = MathEvaluator::evaluateString("(10 - 2) / 4");
+        QVERIFY(r2.success);
+        QCOMPARE(r2.value, 2.0);
 
-        double r3 = MathEvaluator::evaluate("sqrt(144)", &ok);
-        QVERIFY(ok);
-        QCOMPARE(r3, 12.0);
+        auto r3 = MathEvaluator::evaluateString("sqrt(144)");
+        QVERIFY(r3.success);
+        QCOMPARE(r3.value, 12.0);
     }
 };

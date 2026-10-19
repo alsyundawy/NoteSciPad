@@ -18,7 +18,7 @@ private slots:
 
     void testIsoTimestamp()
     {
-        QString iso = GuidTimestampUtils::currentIsoTimestamp();
+        QString iso = GuidTimestampUtils::generateTimestamp(GuidTimestampUtils::Iso8601Local);
         QVERIFY(!iso.isEmpty());
         QVERIFY(iso.contains('T') || iso.contains('-'));
     }
