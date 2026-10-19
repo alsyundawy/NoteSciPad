@@ -57,6 +57,7 @@ build/
 /build
 /build*
 /icon/*.png
+!/icon/NoteSciPad.png
 /icon/ImageMagick
 
 # JetBrains IDE prefs

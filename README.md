@@ -1,5 +1,7 @@
 <p align="center">
-  <img src="icon/NoteSciPad.png" width="128" height="128" alt="NoteSciPad Icon" />
+  <a href="https://github.com/alsyundawy/NoteSciPad">
+    <img src="logo.png" width="128" height="128" alt="NoteSciPad Native macOS & Linux Application Icon" />
+  </a>
 </p>
 
 <h1 align="center">NoteSciPad</h1>
@@ -36,6 +38,10 @@
   <a href="https://github.com/alsyundawy/NoteSciPad/issues">
     <img src="https://img.shields.io/badge/🐛_Report_Issue-GitHub_Issues-red?style=for-the-badge&logo=github&logoColor=white" alt="Report Issue">
   </a>
+</p>
+
+<p align="center">
+  <img src="doc/screenshot.png" width="85%" alt="NoteSciPad Application Preview Screenshot" />
 </p>
 
 > Lead Developer & Maintainer:<br>
