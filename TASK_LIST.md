@@ -136,7 +136,7 @@ Use this as the living task board. Check items as they are completed.
 
 - [x] Native menu bar polish & Services integration
 - [x] Improve default-editor script
-- [ ] Codesign + notarization workflow (macOS)
+- [x] Codesign + notarization workflow (macOS)
 - [ ] Create .deb and .rpm packages
 - [ ] Accessibility review (keyboard, VoiceOver)
 - [ ] Dark mode visual polish

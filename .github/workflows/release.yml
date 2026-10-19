@@ -133,6 +133,22 @@ jobs:
         shell: bash
         run: cmake --build build --target dmg --parallel
 
+      # ─── Codesign & Notarization (Automatic if Secrets are Configured) ─
+      - name: Codesign and Notarize (macOS)
+        if: matrix.platform == 'mac' && env.APPLE_CERTIFICATE_BASE64 != ''
+        shell: bash
+        env:
+          APPLE_CERTIFICATE_BASE64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          ./scripts/codesign-and-notarize-macos.sh \
+            --app "build/install/NoteSciPad.app" \
+            --dmg "build/NoteSciPad-v*.dmg" \
+            --entitlements "deploy/macos/NoteSciPad.entitlements" 
+
       # ─── Upload Artifacts ──────────────────────────────────────────────
       - name: Upload MacOS dmg
         if: matrix.platform == 'mac'
