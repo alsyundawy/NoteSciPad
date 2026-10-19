@@ -150,7 +150,7 @@ Use this as the living task board. Check items as they are completed.
 
 ## Cross-Cutting Tasks
 
-- [ ] Never replace or remove vendored Scintilla and Lexilla without explicit decision
+- [x] Never replace or remove vendored Scintilla and Lexilla without explicit decision
 - [ ] Unit / integration tests for new utilities (Base64, number conversion, etc.)
 - [ ] Manual test checklist (encoding, large files, CJK, shortcuts)
 - [ ] Localization updates (Indonesian priority + English)

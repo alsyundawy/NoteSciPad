@@ -354,3 +354,18 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
 - **Consequences:**
   - Distribution across any Linux distribution regardless of package manager.
   - Ready for future Flathub submission.
+
+---
+
+## ADR-017: Permanent Enforcement of Vendored Scintilla and Lexilla Engine Invariant
+
+- **Status:** Accepted (Immutable Policy)
+- **Date:** 2026-10-19
+- **Context:**
+  A non-negotiable requirement of NoteSciPad is maintaining high-performance, rock-solid, and battle-tested text editing via vendored Scintilla and Lexilla engines. Replacing or externalizing the engine would destroy performance, break language lexers, and void architectural guarantees.
+- **Decision:**
+  1. Formalized immutable engine invariant in `doc/ENGINE_INVARIANT_POLICY.md`.
+  2. Implemented automated guard script `scripts/verify-engine-invariants.sh`.
+  3. Integrated verification into pre-commit and CI/CD validation protocols.
+- **Consequences:**
+  - Guaranteed stability, privacy, low memory footprint, and high responsiveness on all platforms.
