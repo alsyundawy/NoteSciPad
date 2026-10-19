@@ -1,246 +1,168 @@
-# NoteSciPad — Task List
+# NoteSciPad v1.1.0 — Master Task List
 
-**Project:** NoteSciPad — Alternative Notepad for Mac & Linux  
-**Base:** Fresh source from alsyundawy/NotepadNext-MacOS (latest tag)  
-**Engine:** Always Scintilla + Lexilla (vendored)  
-**Local Path:** `/Users/alsyundawy/Downloads/GitHub/NoteSciPad`  
-**Last updated:** 2026-10-19 (after deep research of Notepad4 / Notepad3 / Notepad++ 2020–2026)
-
-Use this as the living task board. Check items as they are completed.
+**Project:** NoteSciPad — Advanced Cross-Platform Code & Text Editor  
+**Version:** 1.1.0 Next Major Release  
+**Lead Maintainer:** Harry Dertin Sutisna Alsyundawy (@alsyundawy) — ALSYUNDAWY IT SOLUTION  
+**Local Workspaces:** `/Users/alsyundawy/Downloads/GitHub/NoteSciPad` & `/Users/alsyundawy/Downloads/NOTEPAD-MAC`  
+**Engine Base:** Scintilla 5.6.x + Lexilla 5.5.x (Vendored) • Qt 6.5 / 6.8 LTS / 6.10 / 6.11
 
 ---
 
-## Phase 0 — Foundation
+## 📌 Status Summary
 
-### Source Acquisition (Mandatory)
-
-- [x] Download latest source zip/tar.gz from <https://github.com/alsyundawy/NotepadNext-MacOS/releases> (prefer tag `0.15-02` or newer)
-- [x] Extract into `/Users/alsyundawy/Downloads/GitHub/NoteSciPad`
-- [x] Verify `thirdparty/scintilla/` and `thirdparty/lexilla/` exist and are complete
-- [x] Verify `src/ScintillaNext.*` and CMake integration are intact
-- [x] `git init` + initial commit (new history, no clone)
-- [x] Create new remote repository `NoteSciPad` (or `notesci-pad`) and push
-
-### Project Setup
-
-- [x] Update branding: application name **NoteSciPad**, About dialog, window title, Info.plist
-- [x] Replace icons with NoteSciPad specific icons (.icns + high-res)
-- [x] Update README (Indonesian + English) — mention Scintilla + Lexilla, source origin, and that it is **not** affiliated with Notepad++
-- [x] Establish coding standards document (see WORKGROUND.md)
-- [x] Verify clean build on arm64 and x64 (Qt 6.5 / 6.8 / 6.10)
-- [x] Confirm Scintilla and Lexilla are statically linked and functional
-- [x] Set up basic CI (GitHub Actions macOS + Linux runners)
-- [x] Document current feature inventory of base NotepadNext
-- [x] Create feature branch strategy (`main` / `develop` / `feature/*`)
-- [x] Decide binary/package name: `notesci` or `notesci-pad`
+- **Current Production Release:** v1.0.0 (Verified & Published)
+- **Target Release:** v1.1.0
+- **Mode:** Analysis & Implementation Planning Complete
 
 ---
 
-## Phase 1 — Core Identity (Tier 1)
+## Phase 1 — Visual & UI Modernization
 
-### 1. Mark All Occurrences + Matched Count
+### 1.1 Redesigned Elegant About Dialog (SubnetCalc-MacOS Format)
 
-- [x] Design indicator/marker strategy (using Scintilla indicators)
-- [x] Implement mark-all action (selection or word under caret)
-- [x] Add matched count display (status bar or dedicated label)
-- [x] Options: case sensitive, whole word, regex (optional)
-- [x] Keyboard shortcut + menu entry
-- [x] Clear marks action
-- [x] Test with large files and CJK text
+- [ ] Create modern 5-tab dialog in `src/dialogs/AboutDialog.cpp` & `AboutDialog.h`
+- [ ] Tab 1: Application Overview, version badges, Scintilla 5.6.x engine details, and legal non-affiliation statement
+- [ ] Tab 2: Maintainer card (Harry Dertin Sutisna Alsyundawy, ALSYUNDAWY IT SOLUTION, Website, Email, GitHub, Telegram, PayPal, Buy Me a Coffee, QRIS Barcode) — _Strictly exclude phone & WhatsApp_
+- [ ] Tab 3: Upstream Heritage (Scintilla, Lexilla, NotepadNext, Notepad4, Notepad3, Notepad++, Qt)
+- [ ] Tab 4: System Diagnostics with one-click "Copy Diagnostics to Clipboard"
+- [ ] Tab 5: GNU General Public License v3.0 full text & links
 
-### 2. Enhanced Auto-completion
+### 1.2 254 Theme Palettes from SubnetCalc-MacOS
 
-- [x] Auto-close parentheses, brackets, braces, quotes
-- [x] Improve auto-indent rules
-- [x] Context-based suggestions (where practical)
-- [x] Configurable fill-up characters
-- [x] Settings UI for auto-completion behavior
-- [x] Test across major languages
+- [ ] Extract all 254 theme palettes from `SubnetCalc-MacOS/ThemeManager.swift`
+- [ ] Implement `ThemePalette` C++ data models in `src/features/ThemeManager.h` & `ThemeManager.cpp`
+- [ ] Map all 24 cohesive families:
+  - [ ] 1. Catppuccin Family (Mocha, Macchiato, Frappé, Latte)
+  - [ ] 2. Dracula Family (Dracula, Soft, Alucard, Light)
+  - [ ] 3. Tokyo Night Family (Night, Storm, Light)
+  - [ ] 4. Nord Family (Dark, Polar, Light)
+  - [ ] 5. One Dark Family (Pro, Vivid, Light)
+  - [ ] 6. Gruvbox Family (Dark, Dark Medium, Light)
+  - [ ] 7. Solarized Family (Dark, Light)
+  - [ ] 8. GitHub Family (Dark, Dark Dimmed, Light, Light High Contrast)
+  - [ ] 9. Monokai Family (Classic, Pro, Charcoal, Light)
+  - [ ] 10. Rosé Pine Family (Main, Moon, Dawn)
+  - [ ] 11. Ayu Family (Dark, Mirage, Light)
+  - [ ] 12. Kanagawa Family (Wave, Dragon, Lotus)
+  - [ ] 13. Everforest Family (Dark Hard, Dark Medium, Light)
+  - [ ] 14. Night Owl Family (Dark, Light Owl)
+  - [ ] 15. Material Family (Palenight, Deep Ocean, Lighter)
+  - [ ] 16. SynthWave '84 Family (Glow, Classic)
+  - [ ] 17. Cyberpunk Family (2077, Scarlet)
+  - [ ] 18. Shades of Purple Family (Super Dark, Classic, Light)
+  - [ ] 19. Poimandres Family (Dark, Storm, Light)
+  - [ ] 20. Horizon Family (Dark, Bright)
+  - [ ] 21. Andromeda Family (Dark, Bordered, Light)
+  - [ ] 22. Nightfox Family (Dark, Duskfox, Dawnfox)
+  - [ ] 23. Cobalt2 Family (Classic, Bright, Light)
+  - [ ] 24. Alabaster Family (Dark, Light)
+- [ ] Connect theme styles to Scintilla editor tokens (default text, background, caret, selection, fold margin, comments, strings, keywords, numbers)
 
-### 3. File Browser Dock (matepath-style)
+### 1.3 Dedicated Top-Level MenuBar `Themes` Menu & Switcher
 
-- [x] Create `FileBrowserDock` (QDockWidget)
-- [x] Integrate QFileSystemModel + QTreeView
-- [x] Double-click / Enter to open file
-- [x] Context menu (Open, Reveal in Finder / File Manager, Copy Path, etc.)
-- [x] Remember last directory and expanded state
-- [x] Toolbar button / menu to toggle
-- [x] Drag & drop support
-- [x] Optional filter box
-
-### 4. Base64 Encode / Decode
-
-- [x] Action: Encode selection (or whole document)
-- [x] Action: Decode selection
-- [x] Encoding awareness (UTF-8 default)
-- [x] Error handling for invalid Base64
-- [x] Menu placement (Tools or Edit)
-
-### 5. Number Conversion
-
-- [x] Decimal ↔ Hexadecimal
-- [x] Decimal ↔ Octal
-- [x] Decimal ↔ Binary
-- [x] Handle selection or number under caret
-- [x] Prefix options (0x, 0b, etc.)
-
-### 6. Insert GUID + Timestamps
-
-- [x] Insert new GUID (various formats)
-- [x] Insert current timestamp (configurable formats)
-- [x] Menu entries + optional shortcuts
-
-### 7. Full-screen Mode
-
-- [x] Toggle full-screen (native macOS + Qt)
-- [x] Menu entry + shortcut (F11 or Cmd+Ctrl+F)
-- [x] Persist preference if desired
+- [ ] Add dedicated top-level `Themes` menu between `View` and `Tools` in `src/dialogs/MainWindow.cpp`
+- [ ] Construct dynamic hierarchical submenus for each of the 24 families
+- [ ] Add quick filters: `Dark Themes` vs `Light Themes`
+- [ ] Implement `ThemeSwitcherDialog` (`Ctrl+Shift+T` / `Cmd+Shift+T`) with live search, instant preview, and favorite starring
 
 ---
 
-## Phase 2 — High-Value Enhancements (Tier 2)
+## Phase 2 — EditorBase Multi-Engine Feature Synthesis
 
-- [x] Color preview via CallTip (hex/RGB detection + swatch)
-- [x] Compress & Pretty for CSS, JavaScript, JSON, JSON5
-- [x] Copy as RTF (syntax-colored)
-- [x] Evaluate expression (math — start simple, evolve toward TinyExpr++ style)
-- [x] Focused View (filter to matching lines)
-- [x] Customizable status bar fields
-- [x] .LOG auto-timestamp behavior
-- [x] URL highlighting with configurable size threshold (UrlThreshold)
-- [x] Improved encoding detection (study & port useful parts from Notepad4/Notepad3)
-- [x] **Show Character Info** (code point, name, category, UTF-8/UTF-16)
-- [x] **Update File Time** (touch file without changing content)
-- [x] **Save with Original Time** (preserve original mtime on save)
-- [x] Improved case conversion (invert / title / sentence) + context menu entries + multi-selection support
+### 2.1 TinyExpr++ Inline Math Evaluator (Inspired by Notepad3)
 
----
+- [ ] Vendor lightweight `tinyexpr-plusplus` header in `thirdparty/tinyexpr-plusplus/`
+- [ ] Implement `src/features/InlineMathEvaluator.h` and `.cpp`
+- [ ] Support evaluating expressions in selected text (e.g. `2 * pi * 5 = 31.4159`)
+- [ ] Add Menu action `Tools → Evaluate Math Expression` (`Ctrl+Shift+E` / `Cmd+Shift+E`)
+- [ ] Support scientific functions (`sin`, `cos`, `tan`, `sqrt`, `ln`, `log10`, `pow`, `abs`)
 
-## Phase 3 — Polish & Advanced (Tier 3)
+### 2.2 PCRE2 & Boost.Regex Engine Options (Inspired by Notepad3 & Notepad4)
 
-- [x] Function List dock
-- [x] Run / External tools menu
-- [x] Change History margin (optional)
-- [x] Stronger regex option exploration (PCRE2 / Boost)
-- [x] AES-256 encryption (evaluate security & UX carefully)
-- [x] Clipboard monitoring mode (optional)
-- [x] Transparent window mode
-- [x] Lexer / API data updates from Notepad4 (selective, keep Lexilla)
-- [x] Optional: Evaluate JS Expression
-- [x] Optional: Monitoring / tail mode improvements
-- [x] Performance profiling & optimization (Apple Silicon + Linux)
+- [ ] Add PCRE2 10.45+ engine support in `src/QRegexSearch.cpp`
+- [ ] Add regex engine toggle in Find/Replace dialog:
+  - `Standard (QRegularExpression)`
+  - `PCRE2 (Perl Compatible, Advanced Lookbehind & Atomic Groups)`
+  - `Boost.Regex (High-Speed POSIX / ECMAScript)`
+- [ ] Add multithreaded regex search execution to prevent UI freezing on huge files
+
+### 2.3 Universal Charset Detection (uchardet) & State Persistence
+
+- [ ] Expand `uchardet` integration for seamless auto-detection on file open
+- [ ] Implement persistent workspace session auto-save on exit (open tab list, caret positions, fold states)
+- [ ] Add Document Map / Minimap margin toggle in `View → Document Map`
 
 ---
 
-## Phase 4 — macOS & Linux Excellence & Release
+## Phase 3 — Syntax & Third-Party Library Modernization
 
-- [x] Native menu bar polish & Services integration
-- [x] Improve default-editor script
-- [x] Codesign + notarization workflow (macOS)
-- [x] Create .deb and .rpm packages
-- [x] Accessibility review (keyboard, VoiceOver)
-- [x] Dark mode visual polish
-- [x] Multi-monitor & Retina testing
-- [x] Documentation (user guide + developer)
-- [x] Public alpha / beta release
-- [x] Homebrew cask or formula (optional)
-- [x] Flatpak / AppImage (optional)
+### 3.1 Scintilla & Lexilla Modernization
 
----
+- [ ] Prepare vendor update to **Scintilla 5.6.7** in `thirdparty/scintilla/`
+- [ ] Prepare vendor update to **Lexilla 5.5.4** in `thirdparty/lexilla/`
+- [ ] Verify `ScintillaNext` wrapper maintains strict ABI invariants
+- [ ] Verify fractional scaling on macOS Retina and high-DPI displays
 
-## Cross-Cutting Tasks
+### 3.2 Scripting Engine Upgrades (Lua 5.5.1 & Python 3.13+)
 
-- [x] Never replace or remove vendored Scintilla and Lexilla without explicit decision
-- [x] Unit / integration tests for new utilities (Base64, number conversion, etc.)
-- [x] Manual test checklist (encoding, large files, CJK, shortcuts)
-- [x] Localization updates (Indonesian priority + English)
-- [x] About dialog credits (NotepadNext, Notepad4, Notepad3, Scintilla, Lexilla) + clear non-affiliation statement
-- [x] Performance & memory baseline measurements
-- [x] Security review for any new features that handle external data
+- [ ] Upgrade embedded Lua to **5.5.1** in `thirdparty/lua/`
+- [ ] Add Python 3.13 / 3.14 scripting integration bridge in `src/features/PythonScriptEngine.cpp`
+- [ ] Provide sample automation scripts in `scripts/` (formatters, data validators, code generators)
 
----
+### 3.3 Trending Language Lexer Expansion
 
-## Definition of Done (per feature)
+- [ ] Add `zig.lua` (Zig 0.14+ syntax)
+- [ ] Add `rust.lua` (Rust 2024 edition)
+- [ ] Add `mojo.lua` (Modular Mojo AI systems language)
+- [ ] Add `swift.lua` (Swift 6 strict concurrency)
+- [ ] Add `kotlin.lua` (Kotlin 2.x coroutines)
+- [ ] Add `typescript.lua` (TypeScript 5.8+)
+- [ ] Add `wat.lua` (WebAssembly Text)
+- [ ] Add `solidity.lua` (Ethereum smart contracts)
+- [ ] Add `graphql.lua` (GraphQL schemas)
+- [ ] Add `dockerfile.lua` (Containerfile multi-stage)
+- [ ] Add `terraform.lua` (HCL / OpenTofu)
+- [ ] Add `bicep.lua` (Azure Bicep)
+- [ ] Add `protobuf.lua` (Proto3 & gRPC)
+- [ ] Add `julia.lua` (Scientific Julia)
+- [ ] Add `toml.lua` (TOML 1.0)
+- [ ] Add `mermaid.lua` (Mermaid diagrams)
 
-- [x] Code reviewed
-  - BUG REVIEW.
-  - SYNTAX REVIEW.
-  - RUNTIME REVIEW.
-  - LOGIC REVIEW.
-  - MEMORY REVIEW.
-  - DEAD CODE REVIEW.
-  - DUPLICATE CODE REVIEW.
-  - CIRCULAR DEPENDENCY REVIEW.
-  - PERFORMANCE BOTTLENECK REVIEW.
-  - SECURITY VULNERABILITY REVIEW.
-  - MAINTAINABILITY REVIEW.
-  - SCALABILITY REVIEW.
-  - READABILITY REVIEW.
-- [x] Works on both arm64 and x64 (macOS) and Linux
-- [x] Keyboard shortcut assigned (where applicable)
-- [x] Menu item added
-- [x] Basic error handling
-- [x] No obvious regressions in existing features
-- [x] Still uses Scintilla + Lexilla
-- [x] Documented in changelog
+### 3.4 Modern Qt & Crypto Upgrades
+
+- [ ] Ensure build compatibility with Qt 6.5 LTS, 6.8 LTS, 6.10, and Qt 6.11
+- [ ] OpenSSL 3.5 LTS / 3.6 FIPS-ready crypto integration
+- [ ] Implement `mkcert` helper dialog (`Tools → Generate Local Development Certificate`)
 
 ---
 
-## Phase 5 — CI/CD Perfection, 13-Pillar Audit & Trunk Quality Engineering
+## Phase 4 — Quality Gates, 13-Pillar Audit & Release Packaging
 
-### Task 20: Fix GitHub Actions Workflow Failures & Modernize Actions
+### 4.1 13-Pillar Verification
 
-- [x] Unignore & track `src/languages/makefile.lua` in git (fixes missing file Ninja failure)
-- [x] Create `.mega-linter.yml` with exclusions for `thirdparty/`, `build/`, `installer/`
-- [x] Fix `build.yml` Linux Qt 6.8+ architecture (`linux_gcc_64` vs `gcc_64`) and optimize runners
-- [x] Fix `release.yml` non-existent runner `macos-26` (replace with `macos-15`)
-- [x] Fix `lupdate.yml`, `codespell.yml`, `codeql.yml`, and `jekyll-gh-pages.yml` branch (`main`) and repo URLs
-- [x] Modernize all workflow action versions (`checkout@v4`, `upload-artifact@v4`)
+- [ ] Bug Review: Verify zero crash bugs, validate selection bounds, wrap EOL signal storm
+- [ ] Syntax Review: Verify ISO C++20 compliance with `-Wall -Wextra -Wpedantic`
+- [ ] Runtime Review: Verify on macOS (11.0–15.x) and modern Linux distributions
+- [ ] Logic Review: Verify fail-closed cryptography and atomic file writes
+- [ ] Memory Review: Zero memory leaks verified with AddressSanitizer / Valgrind
+- [ ] Dead Code Review: Prune legacy upstream NotepadNext comments and dead stubs
+- [ ] Duplicate Code Review: Deduplicate multi-selection loops via `EditorSelectionIterator`
+- [ ] Circular Dependency Review: Verify decoupled Qt signals/slots
+- [ ] Performance Review: Profile regex and large file scrolling benchmarks
+- [ ] Security Review: CodeQL SAST clean, zero OWASP Top 10 2025 violations
+- [ ] Maintainability Review: Single-responsibility classes in `src/features/`
+- [ ] Scalability Review: Smooth handling of 2GB+ files
+- [ ] Readability Review: Adhere strictly to `CODING_STANDARDS.md`
 
-### Task 21: Trunk Linter Optimization & Zero-Spike Configuration
+### 4.2 Documentation & Release Materials
 
-- [x] Add `thirdparty/**`, `build/**`, `installer/**`, `deploy/windows/**` to `.trunk/trunk.yaml` ignore list
-- [x] Run `trunk check` safely with CPU/RAM conservation and verify 100% clean exit
+- [ ] Update `DOCNOTE.md` with complete v1.1.0 architectural notes
+- [ ] Update `CHANGELOG.md` following Keep a Changelog standard
+- [ ] Update `README.md` with new features, themes catalog, and screenshot previews
+- [ ] Update `updates.json` with v1.1.0 metadata
 
-### Task 22: World Standard Color Palette & WCAG 2.1 AA/AAA Compliance Verification
+### 4.3 Multi-Arch CI/CD Matrix & Official Publication
 
-- [x] Audit editor canvas and chrome colors for WCAG 2.1 AA/AAA contrast ratios
-- [x] Implement explicit `scColor(r, g, b)` / `scFromRgb(QRgb)` helper for Scintilla BGR conversion
-- [x] Author `doc/COLOR_STANDARDS_AND_ACCESSIBILITY.md` and record ADR-024
-
-### Task 23: Exhaustive 13-Pillars Code Quality & Security Audit
-
-- [x] Bug Review (null checks, boundary conditions, off-by-one errors)
-- [x] Syntax Review (C++20 standards, CMake, shell scripts)
-- [x] Runtime Review (cross-platform path separators, locale safety)
-- [x] Logic Review (state machine transitions, crypto/hash roundtrips)
-- [x] Memory Review (RAII, Qt parent-child hierarchy, file handles)
-- [x] Dead Code Review (clean stubs, obsolete declarations)
-- [x] Duplicate Code Review (clean deduplication without premature abstraction)
-- [x] Circular Dependency Review (clean include hierarchy, forward declarations)
-- [x] Performance Bottleneck Review (hot path allocations, ReDoS safety)
-- [x] Security Vulnerability Review (OWASP Top 10 2025, CWE Top 25 2025)
-- [x] Maintainability Review (single responsibility, clean interfaces)
-- [x] Scalability Review (large file buffers, margin widths)
-- [x] Readability Review (idiomatic C++20 / Qt 6 conventions)
-- [x] Author `doc/13_PILLARS_CODE_REVIEW_REPORT.md` and record ADR-025
-
-### Task 24: Empirical Verification & CI Confirmation
-
-- [x] Run `scripts/verify-engine-invariants.sh` (100% pass)
-- [x] Run `scripts/run-unit-tests.sh` (100% pass)
-- [x] Run `scripts/run-security-audit.sh` (100% pass)
-- [x] Run `scripts/benchmark-baseline.sh` (100% pass)
-- [x] Run `trunk check` (100% pass)
-- [x] Commit, push to `origin/main`, and confirm GitHub Actions success
-
----
-
-### Notes
-
-- Prefer small, reviewable PRs / commits.
-- Mark tasks `[x]` when fully done.
-- Move blocked items to a “Blocked” section with reason.
-- Update this file regularly.
-- Feature list reflects research of Notepad4, Notepad3, and Notepad++ up to October 2026.
-- Local repository: `/Users/alsyundawy/Downloads/GitHub/NoteSciPad`
+- [ ] Validate 8-job GitHub Actions matrix (`build.yml`)
+- [ ] Tag `v1.1.0` and trigger official production release workflow
+- [ ] Publish release with attached DMG (ARM64 & x64), DEB, RPM, and `SHA256SUMS.txt`
