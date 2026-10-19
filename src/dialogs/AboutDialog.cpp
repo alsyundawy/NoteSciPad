@@ -84,7 +84,7 @@ QWidget *AboutDialog::createAboutTab()
     metaLabel->setOpenExternalLinks(true);
     metaLabel->setText(
         QString("<p><b>Author & Maintainer:</b> Harry DS Alsyundawy<br/>"
-                "<b>Website / Repository:</b> <a href="https://github.com/alsyundawy/NoteSciPad">https://github.com/alsyundawy/NoteSciPad</a><br/>"
+                "<b>Website / Repository:</b> <a href='https://github.com/alsyundawy/NoteSciPad'>https://github.com/alsyundawy/NoteSciPad</a><br/>"
                 "<b>Distribution:</b> %1<br/>"
                 "<b>License:</b> GNU General Public License v3 (GPL-3.0-or-later)</p>")
         .arg(APP_DISTRIBUTION)
@@ -106,12 +106,12 @@ QWidget *AboutDialog::createCreditsTab()
         tr("<h3>Credits & Upstream Attribution</h3>"
            "<p>NoteSciPad stands on the shoulders of giants. We express our deepest gratitude to the following projects and authors:</p>"
            "<ul>"
-           "<li><b>Scintilla:</b> Created by Neil Hodgson and contributors. The legendary core editing component providing high-performance text rendering, multi-caret editing, and fold margins. (<a href="https://www.scintilla.org">scintilla.org</a>)</li>"
+           "<li><b>Scintilla:</b> Created by Neil Hodgson and contributors. The legendary core editing component providing high-performance text rendering, multi-caret editing, and fold margins. (<a href='https://www.scintilla.org'>scintilla.org</a>)</li>"
            "<li><b>Lexilla:</b> Created by Neil Hodgson and contributors. Provides syntax highlighting and styling lexers for over 100 programming languages.</li>"
-           "<li><b>NotepadNext:</b> Created by Justin Dailey (dail8859). Provided the cross-platform Qt scaffolding and docking framework foundation. (<a href="https://github.com/dail8859/NotepadNext">github.com/dail8859/NotepadNext</a>)</li>"
-           "<li><b>Notepad4:</b> Created by Zufu Liu (zufuliu). Provided invaluable architectural ideas, lexer updates, and utility concepts. (<a href="https://github.com/zufuliu/notepad4">github.com/zufuliu/notepad4</a>)</li>"
-           "<li><b>Notepad3:</b> Created by Rizonesoft and contributors. Inspired Scintilla power-user text transformation patterns and UI polish. (<a href="https://www.rizonesoft.com">rizonesoft.com</a>)</li>"
-           "<li><b>Qt Project:</b> Developed by The Qt Company and the Qt Open Source Community. Powers NoteSciPad's modern UI. (<a href="https://www.qt.io">qt.io</a>)</li>"
+           "<li><b>NotepadNext:</b> Created by Justin Dailey (dail8859). Provided the cross-platform Qt scaffolding and docking framework foundation. (<a href='https://github.com/dail8859/NotepadNext'>github.com/dail8859/NotepadNext</a>)</li>"
+           "<li><b>Notepad4:</b> Created by Zufu Liu (zufuliu). Provided invaluable architectural ideas, lexer updates, and utility concepts. (<a href='https://github.com/zufuliu/notepad4'>github.com/zufuliu/notepad4</a>)</li>"
+           "<li><b>Notepad3:</b> Created by Rizonesoft and contributors. Inspired Scintilla power-user text transformation patterns and UI polish. (<a href='https://www.rizonesoft.com'>rizonesoft.com</a>)</li>"
+           "<li><b>Qt Project:</b> Developed by The Qt Company and the Qt Open Source Community. Powers NoteSciPad's modern UI. (<a href='https://www.qt.io'>qt.io</a>)</li>"
            "<li><b>uchardet:</b> Maintained by Freedesktop. Enables fast universal character encoding detection.</li>"
            "<li><b>Qt Advanced Docking System (ADS):</b> Advanced dock widget management.</li>"
            "</ul>")
@@ -136,7 +136,7 @@ QWidget *AboutDialog::createLicenseTab()
            "but WITHOUT ANY WARRANTY; without even the implied warranty of "
            "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the "
            "GNU General Public License for more details.</p>"
-           "<p>For complete license details, visit: <a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a></p>")
+           "<p>For complete license details, visit: <a href='https://www.gnu.org/licenses/'>https://www.gnu.org/licenses/</a></p>")
     );
     layout->addWidget(browser);
     return tab;
