@@ -16,9 +16,7 @@
 #include <QString>
 
 #if !defined(UNIT_TESTING)
-#if !defined(UNIT_TESTING)
 class ScintillaNext;
-#endif
 #endif
 
 class CodeCompressPretty
@@ -42,7 +40,10 @@ public:
     };
 
 #if !defined(UNIT_TESTING)
+    // Formats (Prettifies) selection or whole document in editor
     static Result prettify(ScintillaNext *editor, Language lang = Auto);
+
+    // Minifies (Compresses) selection or whole document in editor
     static Result compress(ScintillaNext *editor, Language lang = Auto);
 #endif
 
@@ -60,13 +61,10 @@ public:
     static Result prettifyJs(const QString &text);
     static Result compressJs(const QString &text);
 
-    // Detect language from editor context or text content
-#if !defined(UNIT_TESTING)
+    // Detect language from text sample or editor context
+    static Language detectLanguage(const QString &sample = QString());
 #if !defined(UNIT_TESTING)
     static Language detectLanguage(ScintillaNext *editor, const QString &sample = QString());
-#else
-    static Language detectLanguage(const QString &sample = QString());
-#endif
 #endif
     static QString languageName(Language lang);
 };

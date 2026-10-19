@@ -11,13 +11,15 @@
  */
 
 #include "CodeCompressPretty.h"
+
 #if !defined(UNIT_TESTING)
 #include "ScintillaNext.h"
 #endif
 
 #include <QFileInfo>
 #include <QJsonDocument>
-#include <QJsonParseError>
+#include <QJsonObject>
+#include <QJsonArray>
 #include <QRegularExpression>
 
 QString CodeCompressPretty::languageName(Language lang)
@@ -31,6 +33,7 @@ QString CodeCompressPretty::languageName(Language lang)
     }
 }
 
+#if !defined(UNIT_TESTING)
 CodeCompressPretty::Language CodeCompressPretty::detectLanguage(ScintillaNext *editor, const QString &sample)
 {
     if (editor && editor->isFile()) {
@@ -41,6 +44,12 @@ CodeCompressPretty::Language CodeCompressPretty::detectLanguage(ScintillaNext *e
         if (ext == QLatin1String("js") || ext == QLatin1String("mjs") || ext == QLatin1String("cjs") || ext == QLatin1String("ts") || ext == QLatin1String("jsx")) return JavaScript;
     }
 
+    return detectLanguage(sample);
+}
+#endif
+
+CodeCompressPretty::Language CodeCompressPretty::detectLanguage(const QString &sample)
+{
     const QString text = sample.trimmed();
     if ((text.startsWith('{') || text.startsWith('[')) && (text.endsWith('}') || text.endsWith(']'))) {
         if (text.contains(QLatin1String("//")) || text.contains(QLatin1String("/*")) || text.contains('\'')) {
@@ -72,41 +81,28 @@ static QString cleanJson5(const QString &input)
     text.remove(singleLineComments);
 
     // 2. Remove multi-line comments /* ... */
-    static const QRegularExpression multiLineComments(QStringLiteral("/\*[\s\S]*?\*/"));
+    static const QRegularExpression multiLineComments(QStringLiteral("/\\*[\\s\\S]*?\\*/"));
     text.remove(multiLineComments);
 
     // 3. Remove trailing commas before } or ]
-    static const QRegularExpression trailingCommas(QStringLiteral(",\s*([\}\]])"));
+    static const QRegularExpression trailingCommas(QStringLiteral(",\\s*([\\]\\}])"));
     text.replace(trailingCommas, QStringLiteral("\\1"));
 
     // 4. Quote unquoted object keys: { key: ... } or , key: ...
-    static const QRegularExpression unquotedKeys(QStringLiteral("([{,]\s*)([a-zA-Z_$][a-zA-Z0-9_$]*)\s*:"));
+    static const QRegularExpression unquotedKeys(QStringLiteral("([{,]\\s*)([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*:"));
     text.replace(unquotedKeys, QStringLiteral("\\1\"\\2\":"));
 
-    // 5. Convert single-quoted strings: 'value' -> "value"
-    static const QRegularExpression singleQuotes(QStringLiteral("'([^'\\\]*(?:\\.[^'\\\]*)*)'"));
-    text.replace(singleQuotes, QStringLiteral("\"\\1\""));
-
-    return text.trimmed();
+    return text;
 }
 
 CodeCompressPretty::Result CodeCompressPretty::prettifyJson(const QString &text, bool isJson5)
 {
+    const QString parseTarget = isJson5 ? cleanJson5(text) : text;
     QJsonParseError err;
-    QByteArray utf8 = text.toUtf8();
-    QJsonDocument doc = QJsonDocument::fromJson(utf8, &err);
+    const QJsonDocument doc = QJsonDocument::fromJson(parseTarget.toUtf8(), &err);
 
-    if (doc.isNull() || isJson5) {
-        const QString cleaned = cleanJson5(text);
-        doc = QJsonDocument::fromJson(cleaned.toUtf8(), &err);
-    }
-
-    if (doc.isNull()) {
-        return {false, false, Json, text, QString(),
-                QStringLiteral("JSON Parse Error at line %1, offset %2: %3")
-                    .arg(text.left(err.offset).count('\n') + 1)
-                    .arg(err.offset)
-                    .arg(err.errorString())};
+    if (err.error != QJsonParseError::NoError) {
+        return {false, false, isJson5 ? Json5 : Json, text, QString(), err.errorString()};
     }
 
     const QString formatted = QString::fromUtf8(doc.toJson(QJsonDocument::Indented));
@@ -115,21 +111,12 @@ CodeCompressPretty::Result CodeCompressPretty::prettifyJson(const QString &text,
 
 CodeCompressPretty::Result CodeCompressPretty::compressJson(const QString &text, bool isJson5)
 {
+    const QString parseTarget = isJson5 ? cleanJson5(text) : text;
     QJsonParseError err;
-    QByteArray utf8 = text.toUtf8();
-    QJsonDocument doc = QJsonDocument::fromJson(utf8, &err);
+    const QJsonDocument doc = QJsonDocument::fromJson(parseTarget.toUtf8(), &err);
 
-    if (doc.isNull() || isJson5) {
-        const QString cleaned = cleanJson5(text);
-        doc = QJsonDocument::fromJson(cleaned.toUtf8(), &err);
-    }
-
-    if (doc.isNull()) {
-        return {false, false, Json, text, QString(),
-                QStringLiteral("JSON Parse Error at line %1, offset %2: %3")
-                    .arg(text.left(err.offset).count('\n') + 1)
-                    .arg(err.offset)
-                    .arg(err.errorString())};
+    if (err.error != QJsonParseError::NoError) {
+        return {false, false, isJson5 ? Json5 : Json, text, QString(), err.errorString()};
     }
 
     const QString formatted = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
@@ -140,36 +127,36 @@ CodeCompressPretty::Result CodeCompressPretty::compressCss(const QString &text)
 {
     QString res = text;
 
-    // 1. Strip comments
-    static const QRegularExpression comments(QStringLiteral("/\*[\s\S]*?\*/"));
+    // 1. Remove comments /* ... */
+    static const QRegularExpression comments(QStringLiteral("/\\*[\\s\\S]*?\\*/"));
     res.remove(comments);
 
-    // 2. Collapse whitespace
-    static const QRegularExpression whitespaces(QStringLiteral("\s+"));
-    res.replace(whitespaces, QStringLiteral(" "));
+    // 2. Normalize whitespace around separators
+    static const QRegularExpression spaces(QStringLiteral("\\s*([{};:,])\\s*"));
+    res.replace(spaces, QStringLiteral("\\1"));
 
-    // 3. Remove space around delimiters
-    static const QRegularExpression spaceAround(QStringLiteral("\s*([\{\}:;,>+~])\s*"));
-    res.replace(spaceAround, QStringLiteral("\\1"));
-
-    // 4. Remove trailing semicolon before }
-    static const QRegularExpression trailingSemi(QStringLiteral(";\}"));
-    res.replace(trailingSemi, QStringLiteral("}"));
+    // 3. Collapse multiple whitespace into single space
+    static const QRegularExpression multispaces(QStringLiteral("\\s+"));
+    res.replace(multispaces, QStringLiteral(" "));
 
     return {true, false, Css, text, res.trimmed(), QString()};
 }
 
 CodeCompressPretty::Result CodeCompressPretty::prettifyCss(const QString &text)
 {
-    auto comp = compressCss(text);
-    const QString minified = comp.formatted;
+    // First normalize to compressed base
+    const auto compressed = compressCss(text);
+    if (!compressed.success) {
+        return compressed;
+    }
 
+    const QString src = compressed.formatted;
     QString res;
-    res.reserve(minified.length() * 2);
-    int indent = 0;
+    res.reserve(src.length() * 2);
 
-    for (int i = 0; i < minified.length(); ++i) {
-        const QChar ch = minified[i];
+    int indent = 0;
+    for (int i = 0; i < src.length(); ++i) {
+        const QChar ch = src[i];
         if (ch == '{') {
             res += QStringLiteral(" {\n");
             indent++;
@@ -178,7 +165,7 @@ CodeCompressPretty::Result CodeCompressPretty::prettifyCss(const QString &text)
             res += QStringLiteral("\n");
             indent = qMax(0, indent - 1);
             res += QString(indent * 4, ' ');
-            res += QStringLiteral("}\n\n");
+            res += QStringLiteral("}\n");
         } else if (ch == ';') {
             res += QStringLiteral(";\n");
             res += QString(indent * 4, ' ');
@@ -251,7 +238,7 @@ CodeCompressPretty::Result CodeCompressPretty::compressJs(const QString &text)
     }
 
     // Collapse multiple whitespace outside strings
-    static const QRegularExpression multiline(QStringLiteral("\s*\n\s*"));
+    static const QRegularExpression multiline(QStringLiteral("\\s*\\n\\s*"));
     res.replace(multiline, QStringLiteral(" "));
     static const QRegularExpression extraSpaces(QStringLiteral(" {2,}"));
     res.replace(extraSpaces, QStringLiteral(" "));
@@ -269,7 +256,6 @@ CodeCompressPretty::Result CodeCompressPretty::prettifyJs(const QString &text)
     bool inSingle = false;
     bool inDouble = false;
     bool inBacktick = false;
-    bool inForParen = false;
     int parenDepth = 0;
     const int n = text.length();
 
@@ -326,11 +312,7 @@ CodeCompressPretty::Result CodeCompressPretty::prettifyJs(const QString &text)
 CodeCompressPretty::Result CodeCompressPretty::prettifyString(const QString &text, Language lang)
 {
     if (lang == Auto) {
-        #if !defined(UNIT_TESTING)
-        lang = detectLanguage(nullptr, text);
-#else
         lang = detectLanguage(text);
-#endif
     }
 
     switch (lang) {
@@ -350,11 +332,7 @@ CodeCompressPretty::Result CodeCompressPretty::prettifyString(const QString &tex
 CodeCompressPretty::Result CodeCompressPretty::compressString(const QString &text, Language lang)
 {
     if (lang == Auto) {
-        #if !defined(UNIT_TESTING)
-        lang = detectLanguage(nullptr, text);
-#else
         lang = detectLanguage(text);
-#endif
     }
 
     switch (lang) {
@@ -455,5 +433,4 @@ CodeCompressPretty::Result CodeCompressPretty::compress(ScintillaNext *editor, L
 
     return result;
 }
-
 #endif

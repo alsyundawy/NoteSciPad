@@ -95,9 +95,7 @@ QString CaseConverter::toSentenceCase(const QString &text)
             }
         } else {
             result.append(ch);
-            if (ch == '.' || ch == '!' || ch == '?' || ch == '
-' || ch == '
-') {
+            if (ch == '.' || ch == '!' || ch == '?' || ch == '\r' || ch == '\n') {
                 startOfSentence = true;
             }
         }
