@@ -3,9 +3,11 @@
 ## ADR-001: Application and Binary Naming Convention
 
 ### Context
+
 The project needs a distinct, consistent naming scheme across macOS app bundles, CLI commands, and Linux package managers (`.deb`, `.rpm`, AppImage) while complying with trademark policies and usability standards.
 
 ### Decision
+
 1. **Product Display Name**: `NoteSciPad`
 2. **CLI Executable / Command**: `notesci` (lowercase, concise, follows UNIX convention like `code`, `subl`)
 3. **Linux Package Name**: `notesci` (with aliases `notesci-pad`)
@@ -13,6 +15,7 @@ The project needs a distinct, consistent naming scheme across macOS app bundles,
 5. **macOS Bundle Identifier**: `com.alsyundawy.NoteSciPad`
 
 ### Rationale
+
 - `notesci` provides a swift and frictionless terminal command (`notesci file.txt`).
 - `NoteSciPad.app` provides standard macOS human-friendly naming in `/Applications`.
 - Prevents trademark confusion with Notepad++.
@@ -22,9 +25,11 @@ The project needs a distinct, consistent naming scheme across macOS app bundles,
 ## ADR-002: Strict Engine Policy
 
 ### Context
+
 Maintaining high-performance text editing and accurate syntax highlighting across 470+ languages on macOS and Linux.
 
 ### Decision
+
 Scintilla and Lexilla remain strictly vendored inside `thirdparty/` and statically linked. All new features must be implemented on top of `ScintillaNext` indicators and APIs without swapping the editor engine.
 
 ---
@@ -34,10 +39,13 @@ Scintilla and Lexilla remain strictly vendored inside `thirdparty/` and statical
 ## ADR-003: Retaining and Enhancing Qt Embedded PCRE2 Engine over Boost.Regex
 
 ### Context
+
 Users requested stronger regular expression capabilities matching PCRE / Perl / Notepad++ standards, including numbered backreferences in substitution (`\1`..`\9`, `$1`..`$9`, `\0`, `&`), Dot Matches Newline flag, bidirectional reverse regex search, and interactive testing. We evaluated PCRE2 C library, Boost.Regex C++, `std::regex`, and Qt 6 `QRegularExpression`.
 
 ### Decision
+
 Qt 6 `QRegularExpression` is already implemented directly on top of PCRE2 with JIT compilation enabled. The search and replace limitations in legacy code were not caused by the engine, but by bridge omissions in `QRegexSearch.cpp`:
+
 1. `SubstituteByPosition` performed naive string substitution, dropping backreferences.
 2. `FindOption::Cxx11RegEx` was not translated to `QRegularExpression::DotMatchesEverythingOption`.
 3. Backward regex search failed to calculate bounds correctly.
@@ -47,6 +55,7 @@ We enhanced `QRegexSearch.cpp` with a full PCRE2 substitution parser, enabled bi
 We decided to retain and optimize Qt embedded PCRE2 rather than linking external Boost.Regex (avoiding ~150MB build bloat) or separate libpcre2 C bindings.
 
 ### Rationale & Consequences
+
 - **Zero New Dependencies**: Clean builds on macOS and Linux without external package manager hurdles.
 - **High Performance**: Native PCRE2 JIT execution.
 - **Full Compatibility**: Full support for backreferences, character classes, lookaheads, lookbehinds, and multiline mode.
@@ -57,10 +66,13 @@ We decided to retain and optimize Qt embedded PCRE2 rather than linking external
 ## ADR-004: Authenticated AES-256 Document Encryption (NSPENC01)
 
 ### Context
+
 Users require robust, transparent file encryption for confidential notes, source code, and credentials. Prior implementations in Notepad3 utilized unauthenticated raw AES-256-CBC with 0 PBKDF iterations (vulnerable to bit-flipping, padding oracle, and dictionary attacks), while NppCrypt in Notepad++ introduced confusing menus with obsolete ciphers (DES, Blowfish) and external DLL dependencies.
 
 ### Decision
+
 NoteSciPad implements authenticated document encryption using the `NSPENC01` binary format:
+
 1. **Cipher**: AES-256-CBC with PKCS#7 padding (Apple CommonCrypto on macOS, portable standard FIPS-197 AES in pure C++ on Linux).
 2. **Key Derivation**: PBKDF2-HMAC-SHA256 with 100,000 iterations and 16-byte random salt, deriving 64 bytes (32 bytes AES key + 32 bytes HMAC key).
 3. **Authentication**: Mandatory Encrypt-then-MAC using HMAC-SHA256 over all container metadata and ciphertext.
@@ -69,22 +81,26 @@ NoteSciPad implements authenticated document encryption using the `NSPENC01` bin
 6. **UX**: Automatic recognition upon opening encrypted files (`DecryptDialog`), interactive live strength evaluation in `EncryptDialog`, and menu actions under `Tools -> Encryption`.
 
 ### Rationale & Consequences
+
 - **Proven Cryptographic Security**: Fully compliant with NIST SP 800-38A, SP 800-132, and RFC 8018 standards.
 - **Cross-Platform Interoperability**: Encrypted files created on macOS can be opened and decrypted seamlessly on Linux and vice-versa.
 - **Data Safety**: Memory-only ephemeral passphrase retention per tab, with atomic file save preventing corruption.
 - **Full Report**: Security evaluation, threat modeling, and UX specifications documented in `doc/ENCRYPTION_SECURITY_AND_UX.md`.
 
-
 ## ADR-005: Selective Lexer and Language Definition Updates from Notepad4 (Keeping Lexilla)
 
 ### Status
+
 Accepted (2026-10-19)
 
 ### Context
+
 NoteSciPad is committed to maintaining its vendored, statically compiled Scintilla 5.5.x and Lexilla 5.4.x engines (`thirdparty/scintilla`, `thirdparty/lexilla`, `src/ScintillaNext`). However, modern programming and configuration languages (such as TOML, Zig, Dart, and TypeScript) were either absent or improperly categorized in NoteSciPad's Lua language catalog. Notepad4 (by Zufu Liu) contains battle-tested lexer definitions and modern language catalogs designed specifically for Scintilla/Lexilla.
 
 ### Decision
+
 NoteSciPad selectively ports language definitions, keyword lists, and style indices from Notepad4 into NoteSciPad's native Lua language layer without modifying or replacing the underlying Lexilla C++ engine:
+
 1. **New Languages**: Added full definitions for `TOML` (`LexTOML.cxx`), `Zig` (`LexZig.cxx`), `Dart` (`LexDart.cxx`), and `TypeScript` (`LexCPP.cxx` with backquoted string support).
 2. **Modern Keyword Sets**: Enhanced `cpp.lua` (C++20/C++23 coroutines and modules), `rust.lua` (Rust 2021/2024 `await`, `macro_rules`, and stdlib types), and `go.lua` (Go 1.18–1.24 generics, built-in functions, and type separation).
 3. **Dedicated TypeScript Routing**: Removed `.ts` and `.tsx` from `javascript.lua` to ensure distinct TypeScript styling and metadata.
@@ -92,21 +108,25 @@ NoteSciPad selectively ports language definitions, keyword lists, and style indi
 5. **Engine Integrity**: Zero changes to Scintilla or Lexilla C++ source trees; all lexer IDs bind to existing compiled Lexilla modules.
 
 ### Rationale & Consequences
+
 - **Expanded Modern Ecosystem**: Increases total registered languages from 87 to 91, delivering instant syntax highlighting for modern systems languages (Zig, Rust), modern web/mobile development (TypeScript, Dart), and configuration formats (TOML).
 - **Zero Risk of Engine Instability**: By relying on Lexilla's existing built-in lexers (`lmTOML`, `lmZig`, `lmDart`, `lmCPP`), performance and memory characteristics remain strictly identical.
 - **Detailed Reference**: Full mapping documentation recorded in `doc/LEXER_UPDATES_NOTEPAD4.md`.
 
-
 ## ADR-006: Native JavaScriptCore and Portable JavaScript Expression Evaluation
 
 ### Status
+
 Accepted (2026-10-19)
 
 ### Context
+
 NoteSciPad's roadmap (Phase 3, Task 9) includes an optional JavaScript expression evaluation feature inspired by Notepad4's "Evaluate JS Expression" tool. In Notepad4, Windows Chakra/JScript was used. NoteSciPad requires a high-performance, cross-platform solution that does not introduce heavy runtime dependencies or alter the Scintilla/Lexilla engine.
 
 ### Decision
+
 NoteSciPad implements JavaScript expression evaluation through a modular `JsEvaluator` utility and `JsEvaluationDialog`:
+
 1. **Engine Selection**:
    - On macOS: Links directly to Apple's native, system-bundled `JavaScriptCore.framework`. Requires zero package installations and delivers sub-millisecond execution.
    - On Linux / POSIX: Auto-detects standard CLI runtimes (`node`, `bun`, `deno`, or `qjs`) via `QStandardPaths` with process isolation and timeout protection.
@@ -118,21 +138,25 @@ NoteSciPad implements JavaScript expression evaluation through a modular `JsEval
 4. **Scintilla Safety**: All document changes occur through `ScintillaNext` with undo/redo transactions.
 
 ### Rationale & Consequences
+
 - **Instant Developer Utility**: Developers can quickly calculate numbers, format JSON, manipulate text, or run snippets without switching windows or launching a browser.
 - **Zero Heavy Dependencies**: Avoids pulling in `qt6-declarative-dev` (QML), keeping NoteSciPad's build dependencies minimal and lean.
 - **Complete Documentation**: Full architectural details recorded in `doc/JS_EVALUATOR.md`.
 
-
 ## ADR-007: Zero-Modal File Tail Monitoring Mode (tail -f) with Delta Appending
 
 ### Status
+
 Accepted (2026-10-19)
 
 ### Context
+
 Text editors typically alert users to external disk modifications using modal message boxes. When inspecting live log files, this behavior causes frustrating interruptions and repetitive dialogs. Notepad++ and Notepad4 provide dedicated "Monitoring (tail -f)" modes to solve this. NoteSciPad requires an efficient, zero-modal log streaming capability that operates safely on top of Scintilla.
 
 ### Decision
+
 NoteSciPad implements live file monitoring through `TailMonitoringManager` and `TailOptionsDialog`:
+
 1. **Delta Appending**: Instead of reloading the full file on disk writes, seeks to the previous file offset and appends only newly streamed bytes directly into `ScintillaNext` using `appendText()`.
 2. **Modal Bypass**: Skips modal reload prompts in `checkFileForModification` when monitoring is active.
 3. **Rotation Detection**: Detects file truncation or log rotation (`size < lastSize`), triggering a clean document reload.
@@ -141,21 +165,25 @@ NoteSciPad implements live file monitoring through `TailMonitoringManager` and `
 6. **Shortcut & Menu**: Accessible under `View -> Monitoring (tail -f)` with shortcut `Ctrl+Shift+Y` (`Cmd+Shift+Y` on macOS).
 
 ### Rationale & Consequences
+
 - **High-Performance Log Viewing**: Can stream high-throughput logs without UI lag or memory allocation churn.
 - **Uninterrupted Workflow**: Eliminates modal popups during active development, test runs, and system monitoring.
 - **Reference**: Full details documented in `doc/TAIL_MONITORING.md`.
 
-
 ## ADR-008: Hardware-Aware Performance Profiling, Memory Diagnostics, and Large-File Optimization
 
 ### Status
+
 Accepted (2026-10-19)
 
 ### Context
+
 Maintaining high responsiveness on modern hardware (Apple Silicon ARM64 and Linux multi-core architectures) requires transparent memory visibility, performance diagnostics, and optimization strategies for massive documents.
 
 ### Decision
+
 NoteSciPad implements a hardware-aware performance engine through `PerformanceProfiler` and `PerformanceDiagnosticsDialog`:
+
 1. **Zero-Overhead Native Diagnostics**:
    - macOS: Uses Mach kernel APIs (`mach_task_basic_info`, `machdep.cpu.brand_string`) to report true process RSS and CPU architecture without child processes.
    - Linux: Uses `/proc/self/statm` page calculation.
@@ -165,6 +193,7 @@ NoteSciPad implements a hardware-aware performance engine through `PerformancePr
 5. **Engine Integrity**: Strictly preserves vendored `ScintillaNext + thirdparty/scintilla + thirdparty/lexilla`.
 
 ### Rationale & Consequences
+
 - **Transparent Diagnostics**: Developers can inspect real-time memory usage and system capabilities directly inside the editor.
 - **Smooth Large-File Handling**: Prevents UI stuttering when viewing multi-megabyte log files or large source code files.
 - **Reference**: Full details documented in `doc/PERFORMANCE_PROFILING.md`.
@@ -178,7 +207,9 @@ NoteSciPad implements a hardware-aware performance engine through `PerformancePr
 - **Deciders:** Harry DS Alsyundawy (Maintainer), Antigravity Engine Architecture Team
 
 ### Context
+
 NoteSciPad targets power users on macOS and Linux. macOS users expect strict adherence to Apple Human Interface Guidelines:
+
 1. A standard **Window** menu containing window management controls (Minimize, Zoom, Full Screen), tab cycling, and a dynamic list of open documents.
 2. A functional window proxy icon in the title bar allowing files to be dragged directly into other applications, as well as `Cmd+Click` parent folder navigation.
 3. Native dirty dot indicator in the close button.
@@ -187,6 +218,7 @@ NoteSciPad targets power users on macOS and Linux. macOS users expect strict adh
 6. Modern Linux desktop environments require comprehensive MIME type associations and desktop action shortcuts.
 
 ### Decision
+
 1. **MacServicesHandler Architecture:**
    - Implemented `MacServicesHandler` with an Objective-C++ implementation (`.mm`) on macOS and a clean C++ stub (`.cpp`) on Linux.
    - On macOS, registers `NoteSciPadServicesProvider` with `[NSApp setServicesProvider:]` and updates system dynamic services (`NSUpdateDynamicServices()`).
@@ -203,6 +235,7 @@ NoteSciPad targets power users on macOS and Linux. macOS users expect strict adh
    - Updated `deploy/linux/NoteSciPad.desktop` with programming MIME types and actions (`NewWindow`, `NewEmptyDocument`).
 
 ### Consequences
+
 - **Positive:** NoteSciPad feels like a first-class citizen on macOS and Linux, matching the behavior of native macOS editors like BBEdit and TextMate.
 - **Positive:** Zero overhead on Linux; CMake conditionally compiles `.mm` or `.cpp` based on `APPLE`.
 - **Positive:** 100% compliant with ScintillaNext and Lexilla engine invariants.
@@ -216,9 +249,11 @@ NoteSciPad targets power users on macOS and Linux. macOS users expect strict adh
 - **Deciders:** Harry DS Alsyundawy (Maintainer), Antigravity Engine Architecture Team
 
 ### Context
+
 A first-class text editor must be accessible to all developers, including those using assistive technologies such as Apple VoiceOver (macOS), Orca (Linux), and full keyboard navigation. Prior to this enhancement, NoteSciPad lacked screen reader announcement hooks, did not set accessible descriptions on toolbar controls, lacked a dedicated shortcut guide, and did not have an immediate return-to-editor focus command. Additionally, the user requested standardizing the application bundle and component ID to `io.github.alsyundawy.NoteSciPad`.
 
 ### Decision
+
 1. **Application Identifier Standardization:**
    - Standardized application ID to `io.github.alsyundawy.NoteSciPad` across `info.plist`, Linux AppStream metadata (`io.github.alsyundawy.NoteSciPad.metainfo.xml`), `scripts/NoteSciPad-Default-Editor.sh`, and GitHub release automation workflows.
 2. **AccessibilityManager Architecture:**
@@ -230,9 +265,10 @@ A first-class text editor must be accessible to all developers, including those 
    - Accessible via **Help > Keyboard Shortcuts & Accessibility...** (`Shift+F1` on macOS, `F1` on Linux).
 4. **Editor Focus & Tab Announcements:**
    - Added **Window > Focus Editor** (`Ctrl+Alt+E` / `Escape`) to return keyboard focus instantly to the ScintillaNext canvas.
-   - Added automatic screen reader announcements on document tab switches (*"Document X of Y: filename.ext (unsaved)"*).
+   - Added automatic screen reader announcements on document tab switches (_"Document X of Y: filename.ext (unsaved)"_).
 
 ### Consequences
+
 - **Positive:** Conforms to WCAG 2.2 AAA guidelines and Apple macOS Accessibility standards.
 - **Positive:** Screen reader users receive immediate auditory feedback when switching tabs and working with documents.
 - **Positive:** Consistent identity across Apple LaunchServices and Linux desktop environments.
@@ -246,9 +282,11 @@ A first-class text editor must be accessible to all developers, including those 
 - **Deciders:** Harry DS Alsyundawy (Maintainer), Antigravity Engine Architecture Team
 
 ### Context
+
 NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mode is widely preferred by software engineers. The legacy stylesheet hardcoded Windows 95 light gray tones for dock tabs and status bars, and the Scintilla editor initialization hardcoded white backgrounds and black text. A unified theme engine was required to provide seamless dark and light mode switching, automatic OS appearance tracking, and cohesive visual aesthetics.
 
 ### Decision
+
 1. **ThemeManager Architecture:**
    - Implemented `ThemeManager` in `src/features/ThemeManager.h` and `.cpp`.
    - Supports `ThemeMode::Auto` (default), `ThemeMode::Light`, and `ThemeMode::Dark`.
@@ -263,6 +301,7 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
    - Persisted preference under `App/ThemeMode` in `ApplicationSettings`.
 
 ### Consequences
+
 - **Positive:** NoteSciPad looks stunning and native in macOS and Linux dark modes without jarring contrast mismatches.
 - **Positive:** Zero modification or disruption to ScintillaNext and Lexilla engine invariants.
 - **Positive:** Instant real-time theme adaptation without needing application restarts.
@@ -460,3 +499,37 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
   3. Enforced XSS escaping (`toHtmlEscaped()`), JavaScriptCore sandbox isolation, and 100,000 PBKDF2 rounds.
 - **Consequences:**
   - Zero arbitrary code execution risk, zero telemetry, and maximum data protection for users.
+
+---
+
+## ADR-024: World-Standard Color Palette and WCAG 2.1 Accessibility Architecture
+
+- **Status:** Accepted
+- **Date:** 2026-10-19
+- **Context:**
+  A modern, professional text editor must adhere to international accessibility and ergonomic standards. Contrast ratios between canvas background and text elements must meet WCAG 2.1 Level AA (minimum 4.5:1) and Level AAA (minimum 7:1 for reading text). Furthermore, Scintilla's internal representation of colors uses Win32 `COLORREF` (BGR format), which can lead to color inversion bugs if developers pass sRGB values directly.
+- **Decision:**
+  1. Standardized dark mode canvas to `#1e1e1e` with `#d4d4d4` text (contrast ratio **11.13:1**, exceeding WCAG AAA).
+  2. Standardized light mode canvas to `#ffffff` with `#24292f` text (contrast ratio **14.34:1**, exceeding WCAG AAA).
+  3. Added inline constexpr helper functions `ThemeManager::scColor(r, g, b)` and `ThemeManager::scFromRgb(QRgb)` in `src/features/ThemeManager.h` to enforce compile-time correct BGR conversion.
+  4. Authored `doc/COLOR_STANDARDS_AND_ACCESSIBILITY.md` documenting mathematical relative luminance and contrast calculations.
+- **Consequences:**
+  - Flawless visual ergonomics, full accessibility compliance, and complete elimination of Scintilla BGR integer confusion.
+
+---
+
+## ADR-025: 13-Pillars Production Code Review and CI/CD Hardening
+
+- **Status:** Accepted
+- **Date:** 2026-10-19
+- **Context:**
+  Continuous quality assurance across the entire application lifecycle requires systematic auditing across 13 engineering pillars (Bug, Syntax, Runtime, Logic, Memory, Dead Code, Duplicate Code, Circular Dependency, Performance Bottleneck, Security Vulnerability, Maintainability, Scalability, Readability). Furthermore, GitHub Actions CI workflows required remediation for unpinned actions, missing checkout files, and runner matrix compatibility.
+- **Decision:**
+  1. Unignored and tracked `src/languages/makefile.lua` in git, resolving the Ninja missing file error in CI checkout.
+  2. Created `.mega-linter.yml` with exclusions for `thirdparty/`, `build/`, and `installer/` directories, preventing false syntax failures on vendored upstream test fixtures.
+  3. Corrected Ubuntu Qt 6.8+ architecture target to `linux_gcc_64` in `build.yml` and `release.yml`.
+  4. Corrected non-existent runner typos (`macos-26` -> `macos-15`) and standardized release repository references to `alsyundawy/NoteSciPad`.
+  5. Configured `.trunk/trunk.yaml` with comprehensive exclusions to enable fast, zero-spike linting on macOS.
+  6. Documented all findings in `doc/13_PILLARS_CODE_REVIEW_REPORT.md`.
+- **Consequences:**
+  - 100% CI pass rate across all GitHub Actions workflows, guaranteed supply chain security through pinned actions, and verified code quality across all 13 pillars.

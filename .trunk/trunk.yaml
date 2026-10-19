@@ -21,6 +21,12 @@ lint:
     - linters: [ALL]
       paths:
         - i18n/**
+        - thirdparty/**
+        - build/**
+        - build-test-fixtures/**
+        - installer/**
+        - deploy/windows/**
+        - .trunk/**
     - linters: [checkov]
       paths:
         - .github/workflows/create_release.yml

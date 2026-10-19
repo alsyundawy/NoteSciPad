@@ -1,0 +1,20 @@
+# MegaLinter configuration for NoteSciPad
+# Reference: https://megalinter.io/configuration/
+
+# Exclude vendored thirdparty libraries (Scintilla, Lexilla) and build artifacts
+ADDITIONAL_EXCLUDED_DIRECTORIES:
+  - thirdparty
+  - build
+  - build-test-fixtures
+  - installer
+  - deploy/windows
+  - .trunk
+
+FILTER_REGEX_EXCLUDE: (^thirdparty/|^build/|^build-test-fixtures/|^installer/|libcrypto.*\.dll|libssl.*\.dll)
+
+# Disable excessive or irrelevant checks
+DISABLE:
+  - COPYPASTE
+  - SPELL
+
+SHOW_ELAPSED_TIME: true

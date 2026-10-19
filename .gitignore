@@ -28,6 +28,7 @@ moc_*.h
 qrc_*.cpp
 ui_*.h
 Makefile*
+!src/languages/makefile.lua
 *build-*
 
 

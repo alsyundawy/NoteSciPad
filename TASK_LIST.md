@@ -4,7 +4,7 @@
 **Base:** Fresh source from alsyundawy/NotepadNext-MacOS (latest tag)  
 **Engine:** Always Scintilla + Lexilla (vendored)  
 **Local Path:** `/Users/alsyundawy/Downloads/GitHub/NoteSciPad`  
-**Last updated:** 2026-10-19 (after deep research of Notepad4 / Notepad3 / Notepad++ 2020–2026)  
+**Last updated:** 2026-10-19 (after deep research of Notepad4 / Notepad3 / Notepad++ 2020–2026)
 
 Use this as the living task board. Check items as they are completed.
 
@@ -183,6 +183,56 @@ Use this as the living task board. Check items as they are completed.
 - [x] No obvious regressions in existing features
 - [x] Still uses Scintilla + Lexilla
 - [x] Documented in changelog
+
+---
+
+## Phase 5 — CI/CD Perfection, 13-Pillar Audit & Trunk Quality Engineering
+
+### Task 20: Fix GitHub Actions Workflow Failures & Modernize Actions
+
+- [x] Unignore & track `src/languages/makefile.lua` in git (fixes missing file Ninja failure)
+- [x] Create `.mega-linter.yml` with exclusions for `thirdparty/`, `build/`, `installer/`
+- [x] Fix `build.yml` Linux Qt 6.8+ architecture (`linux_gcc_64` vs `gcc_64`) and optimize runners
+- [x] Fix `release.yml` non-existent runner `macos-26` (replace with `macos-15`)
+- [x] Fix `lupdate.yml`, `codespell.yml`, `codeql.yml`, and `jekyll-gh-pages.yml` branch (`main`) and repo URLs
+- [x] Modernize all workflow action versions (`checkout@v4`, `upload-artifact@v4`)
+
+### Task 21: Trunk Linter Optimization & Zero-Spike Configuration
+
+- [x] Add `thirdparty/**`, `build/**`, `installer/**`, `deploy/windows/**` to `.trunk/trunk.yaml` ignore list
+- [x] Run `trunk check` safely with CPU/RAM conservation and verify 100% clean exit
+
+### Task 22: World Standard Color Palette & WCAG 2.1 AA/AAA Compliance Verification
+
+- [x] Audit editor canvas and chrome colors for WCAG 2.1 AA/AAA contrast ratios
+- [x] Implement explicit `scColor(r, g, b)` / `scFromRgb(QRgb)` helper for Scintilla BGR conversion
+- [x] Author `doc/COLOR_STANDARDS_AND_ACCESSIBILITY.md` and record ADR-024
+
+### Task 23: Exhaustive 13-Pillars Code Quality & Security Audit
+
+- [x] Bug Review (null checks, boundary conditions, off-by-one errors)
+- [x] Syntax Review (C++20 standards, CMake, shell scripts)
+- [x] Runtime Review (cross-platform path separators, locale safety)
+- [x] Logic Review (state machine transitions, crypto/hash roundtrips)
+- [x] Memory Review (RAII, Qt parent-child hierarchy, file handles)
+- [x] Dead Code Review (clean stubs, obsolete declarations)
+- [x] Duplicate Code Review (clean deduplication without premature abstraction)
+- [x] Circular Dependency Review (clean include hierarchy, forward declarations)
+- [x] Performance Bottleneck Review (hot path allocations, ReDoS safety)
+- [x] Security Vulnerability Review (OWASP Top 10 2025, CWE Top 25 2025)
+- [x] Maintainability Review (single responsibility, clean interfaces)
+- [x] Scalability Review (large file buffers, margin widths)
+- [x] Readability Review (idiomatic C++20 / Qt 6 conventions)
+- [x] Author `doc/13_PILLARS_CODE_REVIEW_REPORT.md` and record ADR-025
+
+### Task 24: Empirical Verification & CI Confirmation
+
+- [x] Run `scripts/verify-engine-invariants.sh` (100% pass)
+- [x] Run `scripts/run-unit-tests.sh` (100% pass)
+- [x] Run `scripts/run-security-audit.sh` (100% pass)
+- [x] Run `scripts/benchmark-baseline.sh` (100% pass)
+- [x] Run `trunk check` (100% pass)
+- [ ] Commit, push to `origin/main`, and confirm GitHub Actions success
 
 ---
 

@@ -30,6 +30,14 @@ public:
     };
     Q_ENUM(ThemeMode)
 
+    // Helper to construct Scintilla BGR colour from RGB components
+    static constexpr quint32 scColor(int red, int green, int blue) {
+        return static_cast<quint32>((red & 0xFF) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 16));
+    }
+    static inline quint32 scFromRgb(QRgb rgb) {
+        return scColor(qRed(rgb), qGreen(rgb), qBlue(rgb));
+    }
+
     static ThemeManager *instance();
 
     void initialize(ApplicationSettings *settings);
