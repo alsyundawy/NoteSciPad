@@ -54,6 +54,33 @@ SparkNotePad **v1.3.0** marks the definitive brand evolution from NoteSciPad int
    - Standardized README opening paragraph: "SparkNotePad adalah editor teks dan kode sumber native yang ringan dan cepat, dibangun dengan Qt 6 dan engine Scintilla/Lexilla. Proyek ini menjadi alternatif native keluarga Notepad untuk pengguna Linux dan macOS, dengan fokus pada performa, efisiensi memori, dan fitur power-user."
    - Refined `i18n/SparkNotePad_id.ts` for natural technical precision.
 
+6. **Multi-Instance Window Execution (`File -> New Window`)**:
+   - Implemented CLI argument recognition for `--multi-instance`, `--new-window`, and `-m` in `src/main.cpp` and `src/SparkNotePadApplication.cpp`.
+   - Assigned dynamic unique process application names (`SparkNotePad_<timestamp>`) for child instances to bypass `SingleApplication` modal interception.
+   - Implemented native macOS bundle process detachment using `/usr/bin/open -n <Bundle.app> --args --multi-instance`.
+
+7. **Themes Architecture & Submenu Organization**:
+   - Grouped all 75 editor color themes across 25 families into a dedicated, clean parent menu: `📁 Themes by Family`.
+   - Prevented main menu clutter and enhanced usability across compact and multi-monitor setups.
+
+8. **Preferences Dialog Modernization & Harmonization**:
+   - Redesigned `PreferencesDialog` to match the modern card aesthetic, typography, and palette of `AboutDialog`.
+   - Added Theme & Feature control panel: Live 75-theme combobox selection, Dark/Light instant toggle, window opacity slider (20%-100%), debounced tail monitoring reload interval (100 ms-5000 ms), and multi-monitor boundary safety guard.
+
+9. **Accessibility & Typography Overhaul**:
+   - Upgraded `AboutDialog` default light mode palette to Radix/Tailwind Slate (`#0f172a` primary text, `#ffffff` card, `#f8fafc` background) achieving >19:1 contrast ratio (WCAG 2.1 AAA).
+   - Enforced native system font stacks (`-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif`) with explicit font weights and antialiasing, eliminating blurry text rendering.
+   - Redesigned GitHub repository section featuring official `🏷️ v1.3.0 Official Release` tag badge, issue tracker, release download links, and system runtime diagnostics.
+
+10. **Complete Purge of Residual `NotepadNext` Artifacts**:
+    - Renamed UI actions (`actionAboutNotepadNext` -> `actionAboutSparkNotePad`).
+    - Cleaned NSIS Windows installer scripts (`installer.nsi`, `utils.nsh`) with `SparkNotePad.exe`, `SparkNotePad.ico`, and `SparkNotePadMutex`.
+    - Cleaned icon batch script (`icon/svg_to_ico.bat`), environment templates (`.env.example`), and localization automation (`.github/workflows/lupdate.yml`).
+
+11. **Hardened GitHub Release Pipeline & Direct Package Uploads**:
+    - Upgraded `.github/workflows/release.yml` with resilient execution condition (`always() && !cancelled()`), ensuring release assets publish reliably even if macOS runners experience queue delays.
+    - Uploaded official `.deb` and `.rpm` packages for Qt 6.5, Qt 6.8 (LTS), and Qt 6.11 directly to GitHub Release `v1.3.0`.
+
 ---
 
 ## 2. NoteSciPad Release DocNote — v1.2.0

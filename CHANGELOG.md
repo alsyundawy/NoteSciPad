@@ -42,12 +42,32 @@ SparkNotePad v1.3.0 represents a landmark release featuring the official transfo
 - **Standard Technical Phrasing**: Polished `i18n/SparkNotePad_id.ts` and documentation for natural, idiomatic Indonesian developer terminology.
 - **README Standardization**: Integrated official standardized tagline ("SparkNotePad — editor teks dan kode sumber ringan berbasis Scintilla & Qt untuk Linux dan macOS") and architectural overview.
 
+#### Multi-Instance Window Support (`File -> New Window`)
+
+- **CLI Flag Recognition**: Added `--multi-instance`, `--new-window`, and `-m` argument detection in `main.cpp` and `SparkNotePadApplication.cpp`.
+- **Unique Process Scoping**: Dynamically overrides `QApplication::applicationName` for spawned child instances, bypassing `SingleApplication` interception and allowing multiple concurrent primary windows.
+- **Native macOS Detachment**: Launches isolated application bundle processes using `/usr/bin/open -n <Bundle.app> --args --multi-instance`.
+
+#### Theme Submenu Hierarchy & Preferences Dialog Harmonization
+
+- **Organized Theme Menu Structure**: Grouped all 75 editor color themes across 25 families under a unified parent submenu (`📁 Themes by Family`) in `MainWindow.cpp`, eliminating menu overflow.
+- **Card-Styled Preferences GUI**: Redesigned `PreferencesDialog` to match the modern card aesthetic, typography, and palette of `AboutDialog`.
+- **Integrated Theme & Window Controls**: Added live 75-theme selection dropdown, instant Dark/Light mode toggle, window transparency slider (20%-100%), debounced tail monitoring interval, and multi-monitor safety guards.
+
+#### Accessibility & Typography Overhaul
+
+- **WCAG 2.1 AAA Contrast Compliance**: Upgraded `AboutDialog` default light mode palette to Radix/Tailwind Slate (`#0f172a` primary text, `#ffffff` card, `#f8fafc` background) achieving >19:1 contrast ratio.
+- **Sharp Native Font Rendering**: Enforced system font stacks (`-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif`) with explicit font weights and antialiasing, eliminating blurry text rendering.
+- **Enhanced About Dialog Repository Card**: Redesigned GitHub repository section featuring official `🏷️ v1.3.0 Official Release` tag badge, issue tracker, release download links, and system runtime diagnostics.
+
 ---
 
 ### 🔄 Changed
 
 - **Target & Binary Renaming**: Renamed CMake executable target to `SparkNotePad`, unit tests to `SparkNotePadTests` / `SparkNotePadUnitTests`.
 - **Application Class Structure**: Introduced `SparkNotePadApplication` with forward-compatibility type aliases (`using NoteSciPadApplication = SparkNotePadApplication;` and `using NotepadNextApplication = SparkNotePadApplication;`).
+- **Complete Purge of Residual `NotepadNext` Artifacts**: Purged legacy action identifiers (`actionAboutNotepadNext` -> `actionAboutSparkNotePad`), modernized NSIS Windows installer scripts (`installer.nsi`, `utils.nsh`), updated icon batch scripts (`icon/svg_to_ico.bat`), environment templates (`.env.example`), and localization automation (`.github/workflows/lupdate.yml`).
+- **Resilient Release CI/CD Pipeline**: Upgraded `.github/workflows/release.yml` with resilient execution condition (`always() && !cancelled()`), ensuring release assets (DMGs, DEBs, RPMs) publish reliably even if macOS runners experience queue delays.
 - **Packaging & Desktop Integration**: Updated Flatpak manifest (`io.github.alsyundawy.SparkNotePad.yml`), AppStream metainfo, desktop entry, Homebrew Cask and Formula (`sparknotepad.rb`), and macOS Info.plist bundle identifier (`io.github.alsyundawy.SparkNotePad`).
 - **CI/CD Automation**: Updated GitHub Actions build matrices, release workflows, and lupdate routines to reference `SparkNotePad`.
 
