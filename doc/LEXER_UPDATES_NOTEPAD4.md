@@ -11,6 +11,7 @@ As part of Phase 3, Task 8 of NoteSciPad's roadmap, this document details the se
 NoteSciPad is a lightweight, high-performance C++20 / Qt 6 editor designed for macOS and Linux. While NoteSciPad bundles Lexilla 5.4.x (which already contains advanced lexers such as `LexTOML.cxx`, `LexZig.cxx`, `LexDart.cxx`, and `LexCPP.cxx`), its Lua-based language definition layer lacked mappings for several modern programming and configuration languages.
 
 Specifically:
+
 - **TOML**: Despite `LexTOML.cxx` existing in Lexilla (originally ported directly from Zufu Liu's Notepad4 TOML lexer by Jiri Techet), NoteSciPad had no `toml.lua` definition.
 - **Zig**: Lexilla provides `LexZig.cxx` (`SCLEX_ZIG`), but NoteSciPad lacked a `zig.lua` style and keyword map.
 - **Dart**: Lexilla provides `LexDart.cxx` (`SCLEX_DART`), but NoteSciPad had no `dart.lua`.
@@ -24,6 +25,7 @@ Specifically:
 ## 2. Integrated Changes & Modernizations
 
 ### 2.1 TOML Support (`src/languages/toml.lua`)
+
 - **Lexer**: `toml` (`SCLEX_TOML`).
 - **Extensions**: `.toml`.
 - **Keywords**: `true`, `false`, `inf`, `nan`, `+inf`, `-inf`, `+nan`, `-nan`.
@@ -31,6 +33,7 @@ Specifically:
   - `DEFAULT` (0), `COMMENT` (1), `IDENTIFIER` (2), `KEYWORD` (3), `NUMBER` (4), `TABLE` (5), `KEY` (6), `ERROR` (7), `OPERATOR` (8), `STRING_SQ` (9), `STRING_DQ` (10), `TRIPLE_STRING_SQ` (11), `TRIPLE_STRING_DQ` (12), `ESCAPECHAR` (13), `DATETIME` (14), `STRINGEOL` (15).
 
 ### 2.2 Zig Support (`src/languages/zig.lua`)
+
 - **Lexer**: `zig` (`SCLEX_ZIG`).
 - **Extensions**: `.zig`, `.zon`.
 - **Keywords**:
@@ -40,6 +43,7 @@ Specifically:
 - **Styles**: `SCE_ZIG_*` mapping for comments, documentation comments (`///` and `//!`), keywords, operators, multiline strings, and built-in functions.
 
 ### 2.3 Dart Support (`src/languages/dart.lua`)
+
 - **Lexer**: `dart` (`SCLEX_DART`).
 - **Extensions**: `.dart`.
 - **Keywords**:
@@ -48,6 +52,7 @@ Specifically:
 - **Styles**: Complete `SCE_DART_*` mapping for raw strings, multiline strings, metadata annotations (`@override`, etc.), and doc comments.
 
 ### 2.4 Dedicated TypeScript Support (`src/languages/typescript.lua`)
+
 - **Lexer**: `cpp` with `lexer.cpp.backquoted.strings = 1`.
 - **Extensions**: `.ts`, `.tsx`, `.mts`, `.cts`.
 - **Separation**: Cleanly extracted from `javascript.lua` so `.ts`/`.tsx` files map directly to TypeScript.
@@ -58,15 +63,18 @@ Specifically:
   - `[3]` Environment: `globalThis`, `process`, `console`, etc.
 
 ### 2.5 C++20 / C++23 Modernization (`src/languages/cpp.lua`)
+
 - Added C++20 coroutine keywords: `co_await`, `co_yield`, `co_return`.
 - Added C++20 module keywords: `import`, `module`.
 - Added C++20 UTF-8 type: `char8_t`.
 
 ### 2.6 Rust 2021 / 2024 Modernization (`src/languages/rust.lua`)
+
 - Added missing edition keywords: `await`, `macro_rules`.
 - Added standard library types: `Option`, `Result`, `Some`, `None`, `Ok`, `Err`, `String`, `Vec`, `Box`, `Rc`, `Arc`, `Pin`, `Poll`, `Cell`, `RefCell`, `Mutex`, `RwLock`, `NonZeroU8`..`NonZeroUsize`.
 
 ### 2.7 Go 1.18 - 1.24 Modernization (`src/languages/go.lua`)
+
 - Separated instruction keywords (`break`, `func`, `go`, `select`, etc.) into slot `[0]` for primary keyword styling.
 - Placed types and built-in functions (`any`, `comparable`, `min`, `max`, `clear`, `make`, `new`, `append`, `iota`, `panic`, etc.) into slot `[1]` for secondary/type highlighting.
 

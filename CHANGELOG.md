@@ -80,6 +80,7 @@ NoteSciPad v1.0.0 marks the premier official release of an independent, ultra-li
 - **Codespell Spelling Audit (`codespell.yml`)**: Lexicon and spelling validation across 100% of repository files.
 - **Trunk Linter Integration (`.trunk/trunk.yaml`)**: Fast, lightweight native static check (`trunk check -n -j 2`) executing in 0.3s without CPU/RAM spikes.
 - **13-Pillar Production Code Review**: Systematic audit covering Bug, Syntax, Runtime, Logic, Memory, Dead Code, Duplicate Code, Circular Dependency, Performance, Security, Maintainability, Scalability, and Readability documented in `doc/13_PILLARS_CODE_REVIEW_REPORT.md` (ADR-025).
+- **Strict Markdownlint Compliance**: Remediated all markdown formatting issues across documentation files (`doc/*.md`, `CHANGELOG.md`, `USER_GUIDE.md`, `MANUAL_TEST_CHECKLIST.md`), normalizing code fence language specifiers (`MD040`), list blank line paddings (`MD032`), heading blank lines (`MD022`), and table cell formatting.
 
 ---
 

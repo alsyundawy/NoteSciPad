@@ -5,6 +5,7 @@ Welcome to **NoteSciPad** — an independent, fast, lightweight text and source 
 ---
 
 ## Table of Contents
+
 1. [Overview & Philosophy](#1-overview--philosophy)
 2. [Installation & Setup](#2-installation--setup)
 3. [Setting NoteSciPad as Default Editor](#3-setting-notescipad-as-default-editor)
@@ -27,6 +28,7 @@ Welcome to **NoteSciPad** — an independent, fast, lightweight text and source 
 ## 1. Overview & Philosophy
 
 NoteSciPad is designed for developers, sysadmins, writers, and power users who value:
+
 - **Instant startup & low memory footprint**: Boots in milliseconds without heavy web runtimes or background daemon bloat.
 - **Battle-tested Scintilla engine**: The gold standard in code editing, syntax styling, fold margins, and multi-cursor selection.
 - **Strict User Privacy & Security**: Zero telemetry, zero analytics, zero external network phoning home. Built-in AES-256-CBC encryption.
@@ -37,6 +39,7 @@ NoteSciPad is designed for developers, sysadmins, writers, and power users who v
 ## 2. Installation & Setup
 
 ### 2.1 macOS
+
 - **System Requirements:** macOS 12.0 (Monterey), 13.0 (Ventura), 14.0 (Sonoma), 15.0+ (Sequoia) on Apple Silicon (M1/M2/M3/M4) or Intel x86_64.
 - **Installation:**
   1. Download `NoteSciPad-<version>-macOS-arm64.dmg` (or `x86_64.dmg`).
@@ -44,13 +47,17 @@ NoteSciPad is designed for developers, sysadmins, writers, and power users who v
   3. The application is codesigned with Apple Hardened Runtime.
 
 ### 2.2 Linux (Debian / Ubuntu / Linux Mint)
+
 - Install the `.deb` package:
+
   ```bash
   sudo apt install ./NoteSciPad_<version>_amd64.deb
   ```
 
 ### 2.3 Linux (Fedora / RHEL / openSUSE)
+
 - Install the `.rpm` package:
+
   ```bash
   sudo rpm -ivh NoteSciPad-<version>-1.x86_64.rpm
   # or using dnf:
@@ -83,7 +90,7 @@ On macOS, this configures LaunchServices using `duti` (or native LS fallback) ac
 
 ## 4. User Interface Overview
 
-```
+```text
 ┌────────────────────────────────────────────────────────────────────────┐
 │ NoteSciPad — [Window Title: filename.cpp] (Proxy Icon Drag & Dirty Dot)│
 ├────────────────────────────────────────────────────────────────────────┤
@@ -129,6 +136,7 @@ On macOS, this configures LaunchServices using `duti` (or native LS fallback) ac
 ## 6. Syntax Highlighting & Language Support
 
 NoteSciPad supports over 100 programming languages, configuration formats, and markup types out of the box via vendored Lexilla:
+
 - **Web & Scripting:** JavaScript, TypeScript, Python, Ruby, PHP, Lua, Perl, HTML5, CSS3, SCSS, JSON, YAML, TOML, XML.
 - **Compiled Languages:** C, C++, Rust, Go, Swift, Java, C#, Kotlin, D, Zig, Fortran, Pascal.
 - **Shell & Systems:** Bash, Zsh, PowerShell, Batch, CMake, Makefile, Dockerfile, NSIS.
@@ -171,13 +179,17 @@ Transform NoteSciPad into an interactive scratchpad:
 
 - **Launch:** Press `Ctrl+Alt+J` or select `Tools > Evaluate JavaScript / Math...`.
 - **Expression Evaluation:** Calculate inline mathematical expressions:
+
   ```js
   Math.sqrt(144) * Math.PI + Math.pow(2, 10); // = 1061.699...
   ```
+
 - **Text & JSON Transformation:** Format, parse, or clean up data:
+
   ```js
   JSON.stringify(JSON.parse(editorText), null, 4);
   ```
+
 - **Security Sandboxing:** Executed inside an isolated `JSGlobalContextRef` engine (JavaScriptCore on macOS) with zero filesystem or network privileges.
 
 ---
@@ -185,6 +197,7 @@ Transform NoteSciPad into an interactive scratchpad:
 ## 10. Developer & Text Utilities
 
 Located under the `Tools` and `Edit` menus:
+
 - **Base64 Encoding & Decoding:** Encode or decode selected text (`Ctrl+Alt+B`).
 - **Number Radix Conversion:** Convert integers seamlessly between Binary (`0b`), Octal (`0o`), Decimal, and Hexadecimal (`0x`).
 - **UUID / GUID Generation:** Generate RFC-4122 v4 GUIDs directly into your document (`Ctrl+Alt+G`).
@@ -199,6 +212,7 @@ Located under the `Tools` and `Edit` menus:
 ## 11. Dynamic Theme Engine (Dark & Light Modes)
 
 NoteSciPad features a customized, native theme engine:
+
 - **System Default (Auto):** Synchronizes with the OS appearance (`QStyleHints::colorSchemeChanged`) in real-time.
 - **Forced Dark Mode:** Deep, contrast-rich palettes (`#1e1e1e` canvas, `#25282c` tabs) reducing eye strain during night coding.
 - **Forced Light Mode:** Crisp, clean styling with high-contrast text and line borders.
@@ -209,6 +223,7 @@ NoteSciPad features a customized, native theme engine:
 ## 12. Multi-Monitor & Retina High-DPI Adaptation
 
 Optimized for mixed-display setups (Retina display + external standard/4K monitors):
+
 - **PassThrough High-DPI Policy:** Prevents fuzzy text or glyph distortion during fractional scaling (125%, 150%, 175%).
 - **Move to Next Screen (`Ctrl+Alt+Right` / `Cmd+Alt+Right`):** Moves the active window smoothly to the next connected display.
 - **Move to Previous Screen (`Ctrl+Alt+Left` / `Cmd+Alt+Left`):** Returns window to previous display.
@@ -235,6 +250,7 @@ Optimized for mixed-display setups (Retina display + external standard/4K monito
 ## 14. Accessibility & VoiceOver Support
 
 NoteSciPad is built with universal accessibility compliance (WCAG 2.1 AA):
+
 - **VoiceOver Spoken Alerts:** Native speech notifications announce document tab switches, line counts, find results, and editor focus.
 - **Focus Editor Shortcut:** Press `Ctrl+Alt+E` (or `Escape` in dialogs) to instantly return keyboard focus to the code canvas.
 - **Searchable Shortcuts & Accessibility Guide:** Press `Shift+F1` to open the interactive keyboard reference dialog.
@@ -267,7 +283,7 @@ NoteSciPad is built with universal accessibility compliance (WCAG 2.1 AA):
 | **Evaluate JS / Math** | `Cmd+Alt+J` | `Ctrl+Alt+J` |
 | **Log Tail Monitoring** | `Cmd+Alt+M` | `Ctrl+Alt+M` |
 | **Clipboard History** | `Cmd+Alt+V` | `Ctrl+Alt+V` |
-| **Accessibility & Shortcuts**| `Shift+F1` | `Shift+F1` / `F1` |
+| **Accessibility & Shortcuts** | `Shift+F1` | `Shift+F1` / `F1` |
 | **User Guide** | `F1` | `Ctrl+F1` |
 
 ---
@@ -281,5 +297,6 @@ A: NoteSciPad is codesigned with Apple Hardened Runtime. If installing an unnota
 A: By default, opening files or running NoteSciPad communicates with the primary instance via single-application IPC. To launch an independent window, pass the `--multi-instance` flag from the command line.
 
 **Q: Where are my settings and custom configurations stored?**  
+
 - **macOS:** `~/Library/Preferences/NoteSciPad/NoteSciPad.ini`
 - **Linux:** `~/.config/NoteSciPad/NoteSciPad.ini`

@@ -8,9 +8,10 @@ As part of Phase 3, Task 9 of NoteSciPad's roadmap, this document details the im
 
 ## 1. Context & Architecture
 
-In Notepad4 on Windows, JavaScript evaluation is implemented using the Windows Chakra / JScript COM interface (`IActiveScript`). 
+In Notepad4 on Windows, JavaScript evaluation is implemented using the Windows Chakra / JScript COM interface (`IActiveScript`).
 
 For NoteSciPad on macOS and Linux:
+
 1. **macOS Native Engine**: Uses Apple's native, pre-installed **JavaScriptCore.framework** (`<JavaScriptCore/JavaScript.h>`). JavaScriptCore is the high-performance ECMAScript engine powering WebKit and Safari. It requires zero third-party downloads, zero npm packages, and executes expressions in under 1 millisecond directly inside the NoteSciPad process.
 2. **Linux & POSIX Fallback**: Automatically discovers system JS runtimes (`node`, `bun`, `deno`, or `qjs`) via `QStandardPaths::findExecutable` and safely executes scripts with standard input/output streaming and a 3-second timeout guard.
 3. **Engine Integrity**: All text operations go through NoteSciPad's existing `ScintillaNext` wrapper with atomic undo/redo transaction grouping (`beginUndoAction` / `endUndoAction`). The core vendored `thirdparty/scintilla` and `thirdparty/lexilla` engines remain completely untouched.
@@ -22,6 +23,7 @@ For NoteSciPad on macOS and Linux:
 The feature is implemented across two dedicated classes:
 
 ### 2.1 `JsEvaluator` (`src/utils/JsEvaluator.h`, `src/utils/JsEvaluator.cpp`)
+
 - **`evaluate(const QString &script)`**:
   - Compiles and evaluates JavaScript expressions and multi-line scripts.
   - Automatically formats primitive values (`null`, `undefined`, booleans, numbers, strings).
@@ -30,9 +32,10 @@ The feature is implemented across two dedicated classes:
 - **`evaluateInEditor(ScintillaNext *editor, Action action)`**:
   - Automatically detects whether the user selected a code range or placed the caret on an expression line.
   - Supports `ReplaceSelection` (replaces expression directly with result).
-  - Supports `AppendComment` (appends ` // -> <result>` after the expression).
+  - Supports `AppendComment` (appends `// -> <result>` after the expression).
 
 ### 2.2 `JsEvaluationDialog` (`src/dialogs/JsEvaluationDialog.h`, `src/dialogs/JsEvaluationDialog.cpp`, `src/dialogs/JsEvaluationDialog.ui`)
+
 - Interactive, multi-line JavaScript scratchpad dialog.
 - Monospace editor for code entry and read-only result viewer.
 - Real-time execution latency badge (e.g., `✓ Evaluated successfully in 0.18 ms`).

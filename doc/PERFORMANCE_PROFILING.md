@@ -9,6 +9,7 @@ As part of Phase 3, Task 11 of NoteSciPad's roadmap, this document details the i
 ## 1. Context & Architectural Rationale
 
 NoteSciPad is engineered as a lightweight, low-latency text and code editor. To ensure high responsiveness across varying workloads (from quick notes to multi-hundred-megabyte log files):
+
 1. **Apple Silicon Hardware Awareness**: On macOS, NoteSciPad probes native kernel metrics (`mach_task_basic_info`, `machdep.cpu.brand_string`) to report true Resident Set Size (RSS) memory, CPU core counts, and ARM64 architecture status without external utility dependencies.
 2. **Linux & POSIX Footprint Diagnostics**: On Linux, NoteSciPad queries `/proc/self/statm` and `/proc/cpuinfo`, translating kernel page allocations into precise resident megabytes.
 3. **Large File Bottleneck Mitigation**: Long documents in Scintilla often suffer performance degradation due to word wrapping calculations ($O(N)$ line layout reflow). NoteSciPad provides an automated and user-toggleable High-Performance Mode that disables word wrapping and enables double-buffered rendering.
@@ -21,6 +22,7 @@ NoteSciPad is engineered as a lightweight, low-latency text and code editor. To 
 The feature consists of two modular components:
 
 ### 2.1 `PerformanceProfiler` (`src/features/PerformanceProfiler.h`, `src/features/PerformanceProfiler.cpp`)
+
 - **System Diagnostics**: Identifies OS, CPU model, architecture, and logical core count.
 - **Memory Diagnostics**:
   - `rssMegabytes`: Measures physical RAM currently consumed by the NoteSciPad process.
@@ -37,6 +39,7 @@ The feature consists of two modular components:
 - **Diagnostic Report Generator**: Produces a standardized, shareable performance baseline report.
 
 ### 2.2 `PerformanceDiagnosticsDialog` (`src/dialogs/PerformanceDiagnosticsDialog.h`, `.cpp`, `.ui`)
+
 - **Hardware & Architecture Card**: Displays OS name, CPU model, logical core count, and Apple Silicon native badge.
 - **Live Memory & Document Card**: 1-second auto-refreshing monitor showing live RSS and VMS footprint.
 - **Large-File Optimization Toggle**: Checkbox to instantly switch the active document into High-Performance Mode.
