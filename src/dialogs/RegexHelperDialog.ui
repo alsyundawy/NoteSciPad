@@ -58,6 +58,9 @@
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayoutFlags">
+         <property name="spacing">
+          <number>12</number>
+         </property>
          <item>
           <widget class="QCheckBox" name="chkCaseSensitive">
            <property name="text">

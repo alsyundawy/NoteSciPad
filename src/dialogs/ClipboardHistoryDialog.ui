@@ -47,6 +47,9 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="layoutOptions">
+     <property name="spacing">
+      <number>14</number>
+     </property>
      <item>
       <widget class="QCheckBox" name="checkAutoAppend">
        <property name="text">

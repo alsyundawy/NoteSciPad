@@ -215,7 +215,7 @@ void PreferencesDialog::MapSettingToGroupBox(QGroupBox *groupBox, Func1 getter, 
 }
 
 void PreferencesDialog::populateTranslationComboBox() {
-    SparkNotePadApplication *app = qobject_cast<SparkNotePadApplication *>(qApp);
+    const SparkNotePadApplication *app = qobject_cast<SparkNotePadApplication *>(qApp);
 
     // Add the system default at the top
     ui->comboBoxTranslation->addItem(tr("<System Default>"), QStringLiteral(""));
@@ -235,8 +235,7 @@ void PreferencesDialog::populateTranslationComboBox() {
 }
 
 void PreferencesDialog::setupThemeAndFeatureSettings() {
-    QGroupBox *gbxThemes =
-        new QGroupBox(tr("Themes, Visual Styling & Modern Features"), ui->scrollAreaWidgetContents);
+    QGroupBox *gbxThemes = new QGroupBox(tr("Themes, Visual Styling & Modern Features"), ui->scrollAreaWidgetContents);
     QFormLayout *themeLayout = new QFormLayout(gbxThemes);
     themeLayout->setSpacing(10);
     themeLayout->setContentsMargins(14, 16, 14, 14);

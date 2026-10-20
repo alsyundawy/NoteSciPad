@@ -785,6 +785,15 @@ void FindReplaceDialog::copyMarkedText() {
 }
 
 void FindReplaceDialog::showMessage(const QString &message, const QString &color) {
-    statusBar->setStyleSheet(QStringLiteral("color: %1").arg(color));
+    QString resolvedColor = color;
+    const bool dark = ThemeManager::instance()->isDarkActive();
+    if (color == QLatin1String("green")) {
+        resolvedColor = dark ? QStringLiteral("#3fb950") : QStringLiteral("#1a7f37");
+    } else if (color == QLatin1String("red")) {
+        resolvedColor = dark ? QStringLiteral("#f85149") : QStringLiteral("#cf222e");
+    } else if (color == QLatin1String("blue")) {
+        resolvedColor = dark ? QStringLiteral("#58a6ff") : QStringLiteral("#0969da");
+    }
+    statusBar->setStyleSheet(QStringLiteral("color: %1; font-weight: 500;").arg(resolvedColor));
     statusBar->showMessage(message);
 }

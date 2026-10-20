@@ -3543,7 +3543,7 @@ void MainWindow::changeEvent(QEvent *event) {
     QMainWindow::changeEvent(event);
 }
 
-QMenu *MainWindow::buildMenu(QStringList actionNames) {
+QMenu *MainWindow::buildMenu(const QStringList &actionNames) {
     QMenu *menu = new QMenu(this);
     menu->setAttribute(Qt::WA_DeleteOnClose);
 

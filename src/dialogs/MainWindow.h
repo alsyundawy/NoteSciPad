@@ -171,7 +171,7 @@ protected:
 private slots:
     void tabBarRightClicked(ScintillaNext *editor);
     void languageMenuTriggered();
-    void checkForUpdatesFinished(const QString &url);
+    static void checkForUpdatesFinished(const QString &url);
     void activateEditor(ScintillaNext *editor);
 
 private:
@@ -305,7 +305,7 @@ private:
     ShiftWheelToHorizontalScrollFilter *shiftWheelToHorizontalScrollFilter;
     int zoomLevel = 0;
     int contextMenuPos = 0;
-    QMenu *buildMenu(QStringList actionNames);
+    QMenu *buildMenu(const QStringList &actionNames);
 };
 
 #endif  // MAINWINDOW_H

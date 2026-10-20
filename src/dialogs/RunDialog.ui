@@ -63,6 +63,9 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayoutOptions">
+     <property name="spacing">
+      <number>14</number>
+     </property>
      <item>
       <widget class="QCheckBox" name="chkRunInTerminal">
        <property name="text">

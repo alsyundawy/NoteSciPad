@@ -91,6 +91,22 @@ SparkNotePad **v1.3.0** marks the definitive brand evolution from NoteSciPad int
     - Added `border-bottom: 1px solid %3;` and refined padding to `QToolBar` in `src/features/ThemeManager.cpp`, restoring the classic horizontal separator line between the toolbar and document tabs.
     - Stripped out unrequested blue top border (`%6` / blue accent) from `ads--CDockWidgetTab[activeTab="true"]`, `ads--CDockWidgetTab[focused="true"]`, and `QTabBar::tab:selected`, restoring the signature soft peach (`rgb(255, 202, 176)`) active tab top border and orange focus top border matching the original NoteSciPad/NotepadNext standard in `npp.css`.
 
+14. **Universal Dialog Dark/Light Theme Refinement & Checklist Column Layout Optimization**:
+    - Refined status notification styling in `FindReplaceDialog::showMessage` to dynamically evaluate active theme mode (dark vs light) and apply high-contrast palette tokens (`#3fb950` / `#f85149` / `#58a6ff` on dark; `#1a7f37` / `#cf222e` / `#0969da` on light) with medium font-weight, ensuring crisp readability and eliminating contrast degradation.
+    - Refined `ThemeSwitcherDialog` subtitle and shortcut tip typography to use dynamic opacity (`opacity: 0.8`) instead of washed-out hardcoded gray, achieving uniform contrast across all 75 visual themes.
+    - Fixed checklist column element crowding and row overlaps across dialogs by configuring explicit spacing properties:
+      - `FindReplaceDialog.ui`: Increased `verticalLayout_6` checkbox column spacing from `0` to `6px`.
+      - `PreferencesDialog.ui`: Added spacing (`8px` to `verticalLayout_4`, `6px` to `verticalLayout_2`, `verticalLayout_3`, and `verticalLayout_5`).
+      - `TailOptionsDialog.ui`: Added `8px` spacing to `verticalLayout_2` for behavior and protection checkboxes.
+      - `ClipboardHistoryDialog.ui`: Added `14px` spacing to `layoutOptions` horizontal checkbox row.
+      - `RegexHelperDialog.ui`: Added `12px` spacing to `horizontalLayoutFlags` regex options checklist.
+      - `RunDialog.ui`: Added `14px` spacing to `horizontalLayoutOptions` execution flags row.
+    - 13-Pillar C++ hardening:
+      - Passed `actionNames` by `const QStringList &` in `MainWindow::buildMenu(const QStringList &actionNames)`, avoiding temporary copy constructions.
+      - Marked `MainWindow::checkForUpdatesFinished` as `static`.
+      - Enforced `const` correctness on `SparkNotePadApplication *app` in `PreferencesDialog::populateTranslationComboBox`.
+      - Initialized `m_initialPaletteId` in `ThemeSwitcherDialog` constructor initialization list.
+
 ---
 
 ## 2. NoteSciPad Release DocNote — v1.2.0

@@ -72,6 +72,18 @@ SparkNotePad v1.3.0 represents a landmark release featuring the official transfo
 - **Emoji Purge in Theme Manager**: Removed all emojis from Theme Manager actions, `Themes` menu hierarchy, `PreferencesDialog`, `ThemeSwitcherDialog`, and `AboutDialog` badges, providing clean, professional desktop typography.
 - **Native Flat Toolbar Button Styling**: Removed accidental global `QToolButton` card styling in `src/features/ThemeManager.cpp` and explicitly established flat, borderless, transparent styling for `QToolBar QToolButton`. Restores original clean editor iconography without button outline boxes.
 - **Strict Markdownlint Compliance**: Remediated all markdown formatting issues across repository documentation, including adding explicit language tags (`text`) on ASCII architecture and layout diagrams (`MD040`), eliminating hard tabs (`MD010`), and normalizing code fence blank line spacing (`MD031`).
+- **Universal Dialog Dark and Light Mode Color Refinement**: Refined status notification styling in `FindReplaceDialog::showMessage` to dynamically evaluate active theme mode (dark vs light) and apply high-contrast palette tokens (`#3fb950` / `#f85149` / `#58a6ff` on dark; `#1a7f37` / `#cf222e` / `#0969da` on light) with medium font-weight, ensuring crisp readability and eliminating contrast degradation. Refined `ThemeSwitcherDialog` subtitle and shortcut tip typography to use dynamic opacity (`opacity: 0.8`) instead of washed-out hardcoded gray, achieving uniform contrast across all 75 visual themes.
+- **Dialog Checklist & Option Column Layout Optimization**: Resolved checklist row crowding and element overlaps across dialogs by configuring explicit layout spacing:
+  - `FindReplaceDialog.ui`: Increased `verticalLayout_6` checkbox column spacing from `0` to `6px`, preventing checklist item squishing.
+  - `PreferencesDialog.ui`: Added spacing (`8px` to `verticalLayout_4`, `6px` to `verticalLayout_2`, `verticalLayout_3`, and `verticalLayout_5`).
+  - `TailOptionsDialog.ui`: Added `8px` spacing to `verticalLayout_2` for behavior and protection checkboxes.
+  - `ClipboardHistoryDialog.ui`: Added `14px` spacing to `layoutOptions` horizontal checkbox row.
+  - `RegexHelperDialog.ui`: Added `12px` spacing to `horizontalLayoutFlags` regex options checklist.
+  - `RunDialog.ui`: Added `14px` spacing to `horizontalLayoutOptions` execution flags row.
+- **13-Pillar C++ & Qt Hardening**:
+  - `MainWindow.h` & `MainWindow.cpp`: Passed `actionNames` by `const QStringList &` in `buildMenu(const QStringList &actionNames)` rather than by-value copy, eliminating temporary heap allocations on popup menu construction; declared `checkForUpdatesFinished` as `static`.
+  - `PreferencesDialog.cpp`: Enforced `const` correctness on `SparkNotePadApplication *app` in `populateTranslationComboBox`.
+  - `ThemeSwitcherDialog.cpp`: Initialized `m_initialPaletteId` in the constructor member initializer list, eliminating redundant default construction and assignment.
 - **Release & Build Runner Branch Dispatch**: Updated `.github/workflows/build.yml` and `.github/workflows/release.yml` with empty `workflow_dispatch` triggers and branch support across `1.*`, `develop`, and `main`, adhering to Checkov `CKV_GHA_7` security standards while permitting manual branch selection.
 
 ---
