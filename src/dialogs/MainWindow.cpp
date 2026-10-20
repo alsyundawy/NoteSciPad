@@ -3152,12 +3152,12 @@ void MainWindow::exportPdf()
     painter.setPen(Qt::black);
 
     int startY = pageRect.top() + 45;
-    int currentY = startY;
+    int yPos = startY;
     int pageNum = 1;
 
     int totalLines = editor->linesOnScreen() > 0 ? editor->lineCount() : 1;
     for (int i = 0; i < totalLines; ++i) {
-        if (currentY + lineHeight > pageRect.bottom() - 30) {
+        if (yPos + lineHeight > pageRect.bottom() - 30) {
             painter.setPen(QColor(128, 128, 128));
             painter.drawText(pageRect.right() - 80, pageRect.bottom() - 10, tr("Page %1").arg(pageNum));
 
@@ -3171,7 +3171,7 @@ void MainWindow::exportPdf()
 
             painter.setFont(docFont);
             painter.setPen(Qt::black);
-            currentY = startY;
+            yPos = startY;
         }
 
         QString lineText = editor->getLineText(i);
@@ -3180,13 +3180,13 @@ void MainWindow::exportPdf()
 
         QString lineNumStr = QString::number(i + 1).rightJustified(4, ' ') + "  ";
         painter.setPen(QColor(160, 160, 160));
-        painter.drawText(pageRect.left(), currentY, lineNumStr);
+        painter.drawText(pageRect.left(), yPos, lineNumStr);
 
         int lineNumWidth = fm.horizontalAdvance(lineNumStr);
         painter.setPen(Qt::black);
-        painter.drawText(pageRect.left() + lineNumWidth, currentY, lineText);
+        painter.drawText(pageRect.left() + lineNumWidth, yPos, lineText);
 
-        currentY += lineHeight;
+        yPos += lineHeight;
     }
 
     painter.setPen(QColor(128, 128, 128));
