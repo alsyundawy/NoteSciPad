@@ -1,3 +1,11 @@
+<!-- markdownlint-disable-file MD013 MD022 MD026 MD032 MD033 MD041 -->
+
+<p align="center">
+  <a href="https://github.com/alsyundawy/SparkNotePad">
+    <img src="assets/sparknotepad-desktop-banner.jpg" width="100%" alt="SparkNotePad Desktop Suite — Native Scintilla & Qt Text and Source Code Editor for Linux & macOS" />
+  </a>
+</p>
+
 <p align="center">
   <a href="https://github.com/alsyundawy/SparkNotePad">
     <img src="logo.png" width="128" height="128" alt="SparkNotePad Native macOS & Linux Application Icon" />
@@ -26,7 +34,7 @@
 </p>
 
 <p align="center">
-  SparkNotePad adalah editor teks dan kode sumber ringan berbasis Scintilla dan Qt, dirancang sebagai alternatif native keluarga Notepad untuk Linux dan macOS. Aplikasi ini menghadirkan perenderan baris instan, pengeditan multi-kursor, enkripsi dokumen AES-256, pemantauan log langsung (<code>tail -f</code>), 75 tema pengembang dalam 25 rumpun berstandar WCAG 2.1 AA/AAA, evaluasi JavaScript mandiri, pengujian ekspresi reguler interaktif, serta paket distribusi lengkap untuk macOS (Universal 2, Apple Silicon ARM64, Intel) dan Linux (DEB, RPM, Flatpak, AppImage) — berjalan native tanpa beban webview dengan konsumsi memori kurang dari 35 MB.
+  Dirancang sebagai editor native berperforma tinggi, aplikasi ini menghadirkan perenderan baris instan, pengeditan multi-kursor, enkripsi dokumen AES-256 (PBKDF2 100k + HMAC-SHA256), pemantauan log langsung (<code>tail -f</code>), 75 tema pengembang dalam 25 rumpun berstandar WCAG 2.1 AA/AAA, bridge scripting Python 3.13+, evaluasi JavaScript terisolasi, pengujian ekspresi reguler interaktif, serta paket distribusi lengkap untuk macOS (Universal 2, Apple Silicon ARM64, Intel) dan Linux (DEB, RPM, Flatpak, AppImage) — berjalan native tanpa beban webview dengan konsumsi memori kurang dari 35 MB.
 </p>
 
 <p align="center">

@@ -9,10 +9,10 @@ The project needs a distinct, consistent naming scheme across macOS app bundles,
 ### Decision
 
 1. **Product Display Name**: `SparkNotePad`
-2. **CLI Executable / Command**: `notesci` (lowercase, concise, follows UNIX convention like `code`, `subl`)
-3. **Linux Package Name**: `notesci` (with aliases `notesci-pad`)
+2. **CLI Executable / Command**: `sparknotepad` (lowercase, concise, follows UNIX convention like `code`, `subl`)
+3. **Linux Package Name**: `sparknotepad`
 4. **macOS App Bundle**: `SparkNotePad.app`
-5. **macOS Bundle Identifier**: `com.alsyundawy.SparkNotePad`
+5. **macOS Bundle Identifier**: `io.github.alsyundawy.SparkNotePad`
 
 ### Rationale
 

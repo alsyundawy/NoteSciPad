@@ -40,7 +40,7 @@
 ### 1.4 Platform Polish (macOS & Linux)
 
 - **macOS Bundle**: Native `.app` bundle, `Info.plist`, Dark Mode styling, Retina display assets.
-- **Gatekeeper Integration**: `NotepadNext-Default-Editor.sh` for registering as default text editor via `duti`.
+- **Gatekeeper Integration**: `SparkNotePad-Default-Editor.sh` for registering as default text editor via `duti`.
 - **Packaging**: macOS DMG builder (`macdeployqt`) and Linux AppImage packaging scripts.
 
 ---

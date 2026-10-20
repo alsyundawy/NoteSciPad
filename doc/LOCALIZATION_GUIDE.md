@@ -6,8 +6,8 @@ SparkNotePad prioritizes first-class **Bahasa Indonesia** and **English** interf
 
 Supported languages:
 
-- **Indonesian (`id_ID`):** `i18n/NotepadNext_id.ts` (Primary priority)
-- **English (`en_US`):** `i18n/NotepadNext_en.ts` (Source reference)
+- **Indonesian (`id_ID`):** `i18n/SparkNotePad_id.ts` (Primary priority)
+- **English (`en_US`):** `i18n/SparkNotePad_en.ts` (Source reference)
 - Additional community languages: Arabic, German, Spanish, French, Italian, Japanese, Korean, Dutch, Polish, Portuguese, Russian, Swedish, Turkish, Ukrainian, Vietnamese, Chinese (Simplified/Traditional).
 
 ---
@@ -19,6 +19,6 @@ Whenever a new UI dialog, menu entry, or user notification is added:
 1. **Mark User-Facing Strings:**
    Wrap all strings in `tr("...")` or `QCoreApplication::translate("Context", "...")`.
 2. **Update Translation Files:**
-   Add matching `<message>` entries in `i18n/NotepadNext_id.ts` and `i18n/NotepadNext_en.ts`.
+   Add matching `<message>` entries in `i18n/SparkNotePad_id.ts` and `i18n/SparkNotePad_en.ts`.
 3. **Compile Translations:**
    CMake automatically compiles `.ts` files into `.qm` resources via `qt_add_translations`.
