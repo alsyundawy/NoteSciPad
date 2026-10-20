@@ -726,7 +726,7 @@ QTabBar::tab:hover:!selected {
 }
 
 /* Buttons */
-QPushButton, QToolButton {
+QPushButton {
     background-color: %5;
     color: %2;
     border: 1px solid %3;
@@ -734,11 +734,11 @@ QPushButton, QToolButton {
     padding: 6px 16px;
     font-weight: 500;
 }
-QPushButton:hover, QToolButton:hover {
+QPushButton:hover {
     border-color: %6;
     color: %6;
 }
-QPushButton:pressed, QToolButton:pressed {
+QPushButton:pressed {
     background-color: %6;
     color: #ffffff;
 }
@@ -747,10 +747,41 @@ QPushButton:default {
     color: #ffffff;
     border: 1px solid %6;
 }
-QPushButton:disabled, QToolButton:disabled {
+QPushButton:disabled {
     background-color: %1;
     color: %4;
     border-color: %3;
+}
+
+/* ToolBar & Action Buttons - Flat, Borderless & Native Scintilla/Qt Style */
+QToolBar {
+    background: transparent;
+    border: none;
+    spacing: 1px;
+}
+QToolBar::separator {
+    background: %3;
+    width: 1px;
+    margin: 4px 6px;
+}
+QToolBar QToolButton {
+    background: transparent;
+    border: none;
+    border-radius: 3px;
+    padding: 3px;
+    margin: 1px;
+}
+QToolBar QToolButton:hover {
+    background-color: %3;
+    border: none;
+}
+QToolBar QToolButton:pressed {
+    background-color: %6;
+    border: none;
+}
+QToolBar QToolButton:checked {
+    background-color: %3;
+    border: none;
 }
 
 /* Text Browser */

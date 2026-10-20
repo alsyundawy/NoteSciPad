@@ -63,6 +63,7 @@ SparkNotePad v1.3.0 represents a landmark release featuring the official transfo
 ### 🛠️ Fixed
 
 - **Linux GCC Incomplete Type Resolution**: Added `#include <QAbstractItemView>` in `src/dialogs/PreferencesDialog.cpp`, resolving compiler failure on Linux (`ubuntu-24.04`) where `comboBoxTheme->view()->setVerticalScrollBarPolicy(...)` required the complete definition of `QAbstractItemView`.
+- **Native Flat Toolbar Button Styling**: Removed accidental global `QToolButton` card styling in `src/features/ThemeManager.cpp` and explicitly established flat, borderless, transparent styling for `QToolBar QToolButton`. Restores original clean editor iconography without button outline boxes.
 - **Strict Markdownlint Compliance**: Remediated all markdown formatting issues across repository documentation, including adding explicit language tags (`text`) on ASCII architecture and layout diagrams (`MD040`), eliminating hard tabs (`MD010`), and normalizing code fence blank line spacing (`MD031`).
 - **Release & Build Runner Branch Dispatch**: Updated `.github/workflows/build.yml` and `.github/workflows/release.yml` with empty `workflow_dispatch` triggers and branch support across `1.*`, `develop`, and `main`, adhering to Checkov `CKV_GHA_7` security standards while permitting manual branch selection.
 
