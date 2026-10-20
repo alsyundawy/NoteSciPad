@@ -46,7 +46,7 @@ while [[ $# -gt 0 ]]; do
 		exit 0
 		;;
 	*)
-		if [[ -d "$1" ]] || [[ "$1" == "build"* ]]; then
+		if [[ -d $1 ]] || [[ $1 == "build"* ]]; then
 			BUILD_DIR="$1"
 			shift
 		else
@@ -57,7 +57,7 @@ while [[ $# -gt 0 ]]; do
 	esac
 done
 
-if [[ ! -d "${BUILD_DIR}" ]]; then
+if [[ ! -d ${BUILD_DIR} ]]; then
 	echo "[ERR] Build directory '${BUILD_DIR}' does not exist. Please configure and build NoteSciPad first." >&2
 	exit 1
 fi

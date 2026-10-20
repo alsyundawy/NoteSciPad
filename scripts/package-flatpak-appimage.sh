@@ -13,7 +13,7 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 BUILD_FLATPAK=false
 BUILD_APPIMAGE=false
 
-if [[ $# -eq 0 || "$*" == *"--all"* ]]; then
+if [[ $# -eq 0 || $* == *"--all"* ]]; then
 	BUILD_FLATPAK=true
 	BUILD_APPIMAGE=true
 else
@@ -30,7 +30,7 @@ echo "⚡ NoteSciPad Universal Linux Packaging (Flatpak & AppImage)"
 echo "======================================================================"
 
 # 1. Flatpak Build
-if [[ "${BUILD_FLATPAK}" == "true" ]]; then
+if [[ ${BUILD_FLATPAK} == "true" ]]; then
 	echo "[1/2] Processing Flatpak packaging..."
 	FLATPAK_MANIFEST="${REPO_ROOT}/deploy/linux/flatpak/io.github.alsyundawy.NoteSciPad.yml"
 	if command -v flatpak-builder >/dev/null 2>&1; then
@@ -44,7 +44,7 @@ if [[ "${BUILD_FLATPAK}" == "true" ]]; then
 fi
 
 # 2. AppImage Build
-if [[ "${BUILD_APPIMAGE}" == "true" ]]; then
+if [[ ${BUILD_APPIMAGE} == "true" ]]; then
 	echo "[2/2] Processing AppImage packaging..."
 	APPDIR="${REPO_ROOT}/build/AppDir"
 	mkdir -p "${APPDIR}/usr/bin" "${APPDIR}/usr/share/applications" "${APPDIR}/usr/share/icons/hicolor/scalable/apps"

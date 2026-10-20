@@ -72,7 +72,7 @@ TMP_BATCH_CONFIG=""
 PLATFORM="unknown"
 
 # Colors
-if [[ -t 1 ]] && [[ -z "${NO_COLOR:-}" ]]; then
+if [[ -t 1 ]] && [[ -z ${NO_COLOR:-} ]]; then
 	RED='\033[0;31m'
 	GREEN='\033[0;32m'
 	YELLOW='\033[1;33m'
@@ -108,7 +108,7 @@ detect_platform() {
 }
 
 cleanup() {
-	if [[ -n "${TMP_BATCH_CONFIG}" ]] && [[ -f "${TMP_BATCH_CONFIG}" ]]; then
+	if [[ -n ${TMP_BATCH_CONFIG} ]] && [[ -f ${TMP_BATCH_CONFIG} ]]; then
 		rm -f "${TMP_BATCH_CONFIG}"
 	fi
 }
@@ -226,8 +226,8 @@ readonly LINUX_MIME_TYPES=(
 
 # Resolve application bundle path on macOS
 resolve_app() {
-	if [[ -n "${APP_RESOLVED_PATH}" ]]; then
-		if [[ -d "${APP_RESOLVED_PATH}" ]]; then
+	if [[ -n ${APP_RESOLVED_PATH} ]]; then
+		if [[ -d ${APP_RESOLVED_PATH} ]]; then
 			info "Using user-specified application path: ${APP_RESOLVED_PATH}"
 			return 0
 		else
@@ -237,9 +237,9 @@ resolve_app() {
 	fi
 
 	for p in "${CANDIDATE_APP_PATHS[@]}"; do
-		if [[ -d "${p}" ]]; then
+		if [[ -d ${p} ]]; then
 			APP_RESOLVED_PATH="${p}"
-			if [[ "${p}" == *"NotepadNext.app"* ]]; then
+			if [[ ${p} == *"NotepadNext.app"* ]]; then
 				warn "NoteSciPad.app not found; falling back to detected: ${p}"
 				ACTIVE_BUNDLE_ID="${LEGACY_BUNDLE_ID}"
 			else
@@ -278,7 +278,7 @@ get_lsregister_path() {
 		"/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister"
 	)
 	for p in "${candidates[@]}"; do
-		if [[ -x "${p}" ]]; then
+		if [[ -x ${p} ]]; then
 			echo "${p}"
 			return 0
 		fi
@@ -485,12 +485,12 @@ apply_linux() {
 	if command -v update-alternatives &>/dev/null; then
 		local binary_path=""
 		for bin in "/usr/local/bin/NoteSciPad" "/usr/bin/NoteSciPad" "/usr/local/bin/notesci" "/usr/bin/notesci"; do
-			if [[ -x "${bin}" ]]; then
+			if [[ -x ${bin} ]]; then
 				binary_path="${bin}"
 				break
 			fi
 		done
-		if [[ -n "${binary_path}" ]] && [[ $(id -u) -eq 0 ]]; then
+		if [[ -n ${binary_path} ]] && [[ $(id -u) -eq 0 ]]; then
 			step "Registering /usr/bin/editor alternative with: ${binary_path}..."
 			update-alternatives --install /usr/bin/editor editor "${binary_path}" 50 2>/dev/null || true
 			update-alternatives --set editor "${binary_path}" 2>/dev/null || true
@@ -586,7 +586,7 @@ main() {
 		esac
 	done
 
-	if [[ "${PLATFORM}" == "macos" ]]; then
+	if [[ ${PLATFORM} == "macos" ]]; then
 		if [[ ${audit_only} -eq 1 ]]; then
 			audit_status_macos
 			exit 0
@@ -645,7 +645,7 @@ main() {
 		audit_status_macos
 		ok "NoteSciPad default editor configuration complete."
 
-	elif [[ "${PLATFORM}" == "linux" ]]; then
+	elif [[ ${PLATFORM} == "linux" ]]; then
 		apply_linux "${dry_run}" "${auto_confirm}"
 	else
 		err "Unsupported platform: $(uname -s). This script supports macOS and Linux."

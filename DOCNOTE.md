@@ -91,6 +91,15 @@ NoteSciPad **v1.2.0** delivers high-polish user interface enhancements, strict A
     - Zero background daemons, zero CPU spikes, and non-blocking static tooling preventing system freezes.
     - Automated invariants test (`scripts/verify-engine-invariants.sh`) passing 100%.
 
+13. **Complete Elimination of Legacy NotepadNext Remnants & Brand Alignment**:
+    - Purged all residual `NotepadNext` files from repository root, `deploy/linux/`, `icon/`, `scripts/`, and `src/icons/`.
+    - Renamed translation definitions to `NoteSciPad_en.ts` and `NoteSciPad_id.ts`, enabling proper locale detection in `TranslationManager`.
+    - Modernized Windows packaging metadata (`version.rc.in`) and core application classes to `NoteSciPadApplication`.
+
+14. **CI/CD Reliability & Upstream Action Hardening**:
+    - Replaced broken `jdpurcell/install-qt-action` commit with official `jurplel/install-qt-action@v4.4.1`, resolving template errors on Ubuntu runners.
+    - Tuned Trunk linter configuration to execute in sub-second time (<0.9s) with zero CPU throttling.
+
 ---
 
 ## 2. NoteSciPad Release DocNote — v1.1.0

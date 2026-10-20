@@ -17,7 +17,7 @@ ERRORS=0
 
 # 1. Check thirdparty/scintilla
 SCINTILLA_DIR="${REPO_ROOT}/thirdparty/scintilla"
-if [[ -d "${SCINTILLA_DIR}" && -f "${SCINTILLA_DIR}/include/Scintilla.h" && -f "${SCINTILLA_DIR}/include/Sci_Position.h" ]]; then
+if [[ -d ${SCINTILLA_DIR} && -f "${SCINTILLA_DIR}/include/Scintilla.h" && -f "${SCINTILLA_DIR}/include/Sci_Position.h" ]]; then
 	echo "[OK] Vendored Scintilla present: ${SCINTILLA_DIR}"
 else
 	echo "[ERR] Missing vendored Scintilla core files in ${SCINTILLA_DIR}" >&2
@@ -26,7 +26,7 @@ fi
 
 # 2. Check thirdparty/lexilla
 LEXILLA_DIR="${REPO_ROOT}/thirdparty/lexilla"
-if [[ -d "${LEXILLA_DIR}" && -f "${LEXILLA_DIR}/include/Lexilla.h" && -f "${LEXILLA_DIR}/include/SciLexer.h" ]]; then
+if [[ -d ${LEXILLA_DIR} && -f "${LEXILLA_DIR}/include/Lexilla.h" && -f "${LEXILLA_DIR}/include/SciLexer.h" ]]; then
 	echo "[OK] Vendored Lexilla present: ${LEXILLA_DIR}"
 else
 	echo "[ERR] Missing vendored Lexilla core files in ${LEXILLA_DIR}" >&2
@@ -44,7 +44,7 @@ fi
 
 # 4. Check ScintillaNext class
 SCINTILLANEXT_H="${REPO_ROOT}/src/ScintillaNext.h"
-if [[ -f "${SCINTILLANEXT_H}" ]]; then
+if [[ -f ${SCINTILLANEXT_H} ]]; then
 	echo "[OK] ScintillaNext editor wrapper class present: ${SCINTILLANEXT_H}"
 else
 	echo "[ERR] Missing ScintillaNext.h!" >&2
@@ -53,7 +53,7 @@ fi
 
 # 5. Check Lua 5.5+ runtime in thirdparty/lua
 LUA_H="${REPO_ROOT}/thirdparty/lua/src/lua.h"
-if [[ -f "${LUA_H}" ]] && (grep -q 'LUA_VERSION_MAJOR_N.*5' "${LUA_H}" || grep -q 'LUA_VERSION_MAJOR.*"5"' "${LUA_H}") && (grep -q 'LUA_VERSION_MINOR_N.*5' "${LUA_H}" || grep -q 'LUA_VERSION_MINOR.*"5"' "${LUA_H}"); then
+if [[ -f ${LUA_H} ]] && (grep -q 'LUA_VERSION_MAJOR_N.*5' "${LUA_H}" || grep -q 'LUA_VERSION_MAJOR.*"5"' "${LUA_H}") && (grep -q 'LUA_VERSION_MINOR_N.*5' "${LUA_H}" || grep -q 'LUA_VERSION_MINOR.*"5"' "${LUA_H}"); then
 	echo "[OK] Embedded Lua 5.5+ engine verified: ${LUA_H}"
 else
 	echo "[ERR] Missing or outdated Lua in ${REPO_ROOT}/thirdparty/lua" >&2
@@ -63,7 +63,7 @@ fi
 # 6. Check PythonScriptEngine (Python 3.13+ integration)
 PYTHON_ENGINE_H="${REPO_ROOT}/src/features/PythonScriptEngine.h"
 PYTHON_ENGINE_CPP="${REPO_ROOT}/src/features/PythonScriptEngine.cpp"
-if [[ -f "${PYTHON_ENGINE_H}" && -f "${PYTHON_ENGINE_CPP}" ]]; then
+if [[ -f ${PYTHON_ENGINE_H} && -f ${PYTHON_ENGINE_CPP} ]]; then
 	echo "[OK] Python 3.13+ Scripting Engine verified: ${PYTHON_ENGINE_H}"
 else
 	echo "[ERR] Missing PythonScriptEngine in src/features/" >&2

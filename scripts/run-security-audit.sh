@@ -18,7 +18,7 @@ VULNS=0
 # 1. Scan for dangerous process/shell execution in features/utils (excluding QLocale::system and QRandomGenerator::system)
 echo "[1/4] Checking for dangerous process spawning (system, popen, execvp)..."
 DANGEROUS_CALLS=$(grep -rnE "(\bstd::system\(|\bpopen\(|\bexecl\(|\bexecvp\()" "${REPO_ROOT}/src/features" "${REPO_ROOT}/src/utils" 2>/dev/null || true)
-if [[ -n "${DANGEROUS_CALLS}" ]]; then
+if [[ -n ${DANGEROUS_CALLS} ]]; then
 	echo "[WARN] Found raw process execution calls:"
 	echo "${DANGEROUS_CALLS}"
 	VULNS=$((VULNS + 1))

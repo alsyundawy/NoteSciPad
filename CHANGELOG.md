@@ -32,9 +32,9 @@ NoteSciPad v1.2.0 brings major visual and architectural refinements: full compli
 #### Universal Cross-Platform Typography
 
 - **Operating-System Adaptive Font Stacks**:
-  - *macOS*: `-apple-system`, `SF Pro Text`, `Helvetica Neue`, `Arial`.
-  - *Linux*: `Inter`, `Ubuntu`, `Roboto`, `DejaVu Sans`, `sans-serif`.
-  - *Monospace Editor Stack*: `JetBrains Mono`, `SF Mono`, `Menlo`, `DejaVu Sans Mono`, `Liberation Mono`.
+  - _macOS_: `-apple-system`, `SF Pro Text`, `Helvetica Neue`, `Arial`.
+  - _Linux_: `Inter`, `Ubuntu`, `Roboto`, `DejaVu Sans`, `sans-serif`.
+  - _Monospace Editor Stack_: `JetBrains Mono`, `SF Mono`, `Menlo`, `DejaVu Sans Mono`, `Liberation Mono`.
 
 #### File Menu Expansions
 
@@ -55,6 +55,7 @@ NoteSciPad v1.2.0 brings major visual and architectural refinements: full compli
   - `Run Python File...` (with native `QFileDialog` selection)
 - **Scintilla 5.6.7 & Lexilla 5.5.4**: Updated third-party engine metadata to latest official releases in `thirdparty/scintilla/` and `thirdparty/lexilla/`.
 - **Embedded Lua 5.5.1**: Upgraded embedded Lua core in `thirdparty/lua/` to the latest official 5.5.1 release (`LUA_VERSION_NUM 505`).
+
 #### Local Development SSL Certificate Generator (`MkcertDialog`)
 
 - **Interactive Certificate Generator**: Added `Run → Generate Development SSL Certificate (mkcert/OpenSSL)...` (`Ctrl+Alt+C`) with automatic environment detection.
@@ -74,6 +75,9 @@ NoteSciPad v1.2.0 brings major visual and architectural refinements: full compli
 - **Donation Options**: Completely removed all references to "Buy Me A Coffee" across the entire codebase and documentation (maintaining only PayPal and QRIS).
 - **Localization Streamlining**: Pruned 21 incomplete translation files (`.ts`), preserving 100% verified English (`en`) and Indonesian (`id`) translations.
 - **Privacy & Safety Invariants**: Strictly omitted personal phone and WhatsApp contact numbers from all maintainer documentation.
+- **Obsolete Brand Cleanup**: Completely eradicated all legacy `NotepadNext` leftover files (`NotepadNext-Default-Editor.sh`, `deploy/linux/NotepadNext.desktop`, `icon/NotepadNext.{icns,ico,svg}`, `src/icons/NotepadNext.png`).
+- **Translation File Harmonization**: Renamed translation files from `NotepadNext_*.ts` to `NoteSciPad_en.ts` and `NoteSciPad_id.ts`, resolving `TranslationManager` runtime locale discovery.
+- **Core Application Renaming**: Migrated application core to `NoteSciPadApplication.h` and `NoteSciPadApplication.cpp` with seamless alias compatibility.
 
 ### 🛠️ Infrastructure & CI/CD
 
@@ -88,6 +92,8 @@ NoteSciPad v1.2.0 brings major visual and architectural refinements: full compli
   - Configured `VALIDATE_ALL_CODEBASE: true` in `.github/workflows/mega-linter.yml` to ensure continuous repository-wide lint coverage.
   - Added custom root `.yamllint.yml` with relaxed line lengths and boolean values tailored for GitHub Actions workflows.
 - **POSIX & ShellCheck Hardening**: Resolved all ShellCheck warnings across all repository shell scripts (`SC2046`, `SC2035`, `SC2027`) and workflow embedded scripts (`SC2044`). Formatted all scripts with `shfmt`.
+- **Official Qt Action Upstream Migration**: Switched from broken custom `jdpurcell/install-qt-action` commit to official `jurplel/install-qt-action@v4.4.1` (`a9c63c7c123f3069cff414e7e482d95dfa9d8125`), eliminating runner template syntax errors across Ubuntu Linux matrices.
+- **Trunk Fast Linter Tuning & Anti-Freeze**: Tuned `.trunk/trunk.yaml` to exclude redundant git-history scanners (`trufflehog`) and vendored language files, achieving sub-second (<0.9s) local execution without CPU spikes or memory exhaustion.
 - **Multi-Qt Support**: Validated building and packaging with Qt 6.5, Qt 6.8, and Qt 6.10 across macOS Intel (`macos-15-intel`), macOS Apple Silicon (`macos-15`), and Linux Ubuntu (`ubuntu-24.04`).
 - **Release DMG Packaging Fix**: Resolved artifact search globbing in `.github/workflows/release.yml` to accurately detect and publish `NoteSciPad*.dmg`.
 
@@ -116,11 +122,11 @@ NoteSciPad v1.1.0 introduces the complete 75-theme collection adapted from Subne
 #### Redesigned 5-Tab About Dialog
 
 - **Modern 5-Tab Interface (`AboutDialog`)**:
-  - *About NoteSciPad*: High-resolution application icon, architecture overview, and legal non-affiliation statement.
-  - *Maintainer Information*: Complete contact information for Harry DS Alsyundawy (ALSYUNDAWY IT SOLUTION) including Email, Website, GitHub, Telegram, PayPal, and QRIS barcode link (*strictly omitting phone number and WhatsApp*).
-  - *Credits & Attribution*: Formal upstream attribution to Scintilla, Lexilla, NotepadNext, Notepad4, Notepad3, and SubnetCalc-MacOS.
-  - *System & Diagnostics*: Real-time operating system, kernel version, CPU build architecture, Qt build/runtime version, display scale ratio, and one-click "Copy Diagnostics to Clipboard".
-  - *License*: Complete GNU General Public License v3.0 text and FSF links.
+  - _About NoteSciPad_: High-resolution application icon, architecture overview, and legal non-affiliation statement.
+  - _Maintainer Information_: Complete contact information for Harry DS Alsyundawy (ALSYUNDAWY IT SOLUTION) including Email, Website, GitHub, Telegram, PayPal, and QRIS barcode link (_strictly omitting phone number and WhatsApp_).
+  - _Credits & Attribution_: Formal upstream attribution to Scintilla, Lexilla, NotepadNext, Notepad4, Notepad3, and SubnetCalc-MacOS.
+  - _System & Diagnostics_: Real-time operating system, kernel version, CPU build architecture, Qt build/runtime version, display scale ratio, and one-click "Copy Diagnostics to Clipboard".
+  - _License_: Complete GNU General Public License v3.0 text and FSF links.
 
 #### EditorBase Feature Synthesis & Math Evaluation
 

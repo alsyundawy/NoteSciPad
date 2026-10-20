@@ -22,7 +22,7 @@ DO_NOTARIZE=1
 KEYCHAIN_NAME="notescipad_signing.keychain"
 KEYCHAIN_PASSWORD="temporary_keychain_password_123"
 
-if [[ -t 1 ]] && [[ -z "${NO_COLOR:-}" ]]; then
+if [[ -t 1 ]] && [[ -z ${NO_COLOR:-} ]]; then
 	GREEN='\033[0;32m'
 	BLUE='\033[0;34m'
 	YELLOW='\033[1;33m'
@@ -115,14 +115,14 @@ while [[ $# -gt 0 ]]; do
 	esac
 done
 
-if [[ -n "${DMG_PATH}" ]] && [[ "${DMG_PATH}" == *"*"* ]]; then
+if [[ -n ${DMG_PATH} ]] && [[ ${DMG_PATH} == *"*"* ]]; then
 	expanded=$(find "$(dirname "${DMG_PATH}")" -maxdepth 1 -name "$(basename "${DMG_PATH}")" | head -n 1 || true)
-	if [[ -n "${expanded}" ]] && [[ -f "${expanded}" ]]; then
+	if [[ -n ${expanded} ]] && [[ -f ${expanded} ]]; then
 		DMG_PATH="${expanded}"
 	fi
 fi
 
-if [[ -n "${APPLE_CERTIFICATE_BASE64:-}" ]] && [[ -n "${APPLE_CERTIFICATE_PASSWORD:-}" ]]; then
+if [[ -n ${APPLE_CERTIFICATE_BASE64:-} ]] && [[ -n ${APPLE_CERTIFICATE_PASSWORD:-} ]]; then
 	step "Importing Developer ID Certificate into temporary keychain..."
 	security create-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
 	security set-keychain-settings -lut 21600 "${KEYCHAIN_NAME}"
@@ -142,15 +142,15 @@ if [[ -n "${APPLE_CERTIFICATE_BASE64:-}" ]] && [[ -n "${APPLE_CERTIFICATE_PASSWO
 		-S apple-tool:,apple:,codesign: \
 		-s -k "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}" &>/dev/null || true
 
-	if [[ -z "${SIGNING_IDENTITY}" ]]; then
+	if [[ -z ${SIGNING_IDENTITY} ]]; then
 		SIGNING_IDENTITY=$(security find-identity -v -p codesigning "${KEYCHAIN_NAME}" | grep -o 'Developer ID Application: [^"]*' | head -n 1 || true)
-		if [[ -n "${SIGNING_IDENTITY}" ]]; then
+		if [[ -n ${SIGNING_IDENTITY} ]]; then
 			ok "Found signing identity: ${SIGNING_IDENTITY}"
 		fi
 	fi
 fi
 
-if [[ ${AD_HOC} -eq 1 ]] || [[ -z "${SIGNING_IDENTITY}" ]]; then
+if [[ ${AD_HOC} -eq 1 ]] || [[ -z ${SIGNING_IDENTITY} ]]; then
 	if [[ ${AD_HOC} -eq 0 ]]; then
 		warn "No Developer ID signing identity provided or found. Falling back to ad-hoc signing (-)."
 	fi
@@ -158,7 +158,7 @@ if [[ ${AD_HOC} -eq 1 ]] || [[ -z "${SIGNING_IDENTITY}" ]]; then
 	DO_NOTARIZE=0
 fi
 
-if [[ -n "${APP_BUNDLE}" ]] && [[ -d "${APP_BUNDLE}" ]]; then
+if [[ -n ${APP_BUNDLE} ]] && [[ -d ${APP_BUNDLE} ]]; then
 	step "Deep-signing application bundle: ${APP_BUNDLE}..."
 
 	find "${APP_BUNDLE}/Contents" \( -name "*.dylib" -o -name "*.so" -o -type f -perm +111 \) -print0 | while IFS= read -r -d '' binary; do
@@ -182,7 +182,7 @@ if [[ -n "${APP_BUNDLE}" ]] && [[ -d "${APP_BUNDLE}" ]]; then
 	fi
 
 	ENT_ARGS=()
-	if [[ -f "${ENTITLEMENTS_PATH}" ]]; then
+	if [[ -f ${ENTITLEMENTS_PATH} ]]; then
 		ENT_ARGS=(--entitlements "${ENTITLEMENTS_PATH}")
 	fi
 
@@ -197,7 +197,7 @@ if [[ -n "${APP_BUNDLE}" ]] && [[ -d "${APP_BUNDLE}" ]]; then
 	codesign --verify --deep --strict --verbose=2 "${APP_BUNDLE}"
 fi
 
-if [[ -n "${DMG_PATH}" ]] && [[ -f "${DMG_PATH}" ]]; then
+if [[ -n ${DMG_PATH} ]] && [[ -f ${DMG_PATH} ]]; then
 	step "Signing disk image: ${DMG_PATH}..."
 	codesign --force --verify --verbose \
 		--sign "${SIGNING_IDENTITY}" \
@@ -206,8 +206,8 @@ if [[ -n "${DMG_PATH}" ]] && [[ -f "${DMG_PATH}" ]]; then
 	ok "DMG signed successfully."
 fi
 
-if [[ ${DO_NOTARIZE} -eq 1 ]] && [[ -n "${DMG_PATH}" ]] && [[ -f "${DMG_PATH}" ]]; then
-	if [[ -n "${APPLE_ID:-}" ]] && [[ -n "${APPLE_APP_SPECIFIC_PASSWORD:-}" ]] && [[ -n "${APPLE_TEAM_ID:-}" ]]; then
+if [[ ${DO_NOTARIZE} -eq 1 ]] && [[ -n ${DMG_PATH} ]] && [[ -f ${DMG_PATH} ]]; then
+	if [[ -n ${APPLE_ID:-} ]] && [[ -n ${APPLE_APP_SPECIFIC_PASSWORD:-} ]] && [[ -n ${APPLE_TEAM_ID:-} ]]; then
 		step "Submitting DMG to Apple Notary Service via xcrun notarytool..."
 		xcrun notarytool submit "${DMG_PATH}" \
 			--apple-id "${APPLE_ID}" \

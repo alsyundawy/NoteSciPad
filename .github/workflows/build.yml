@@ -154,7 +154,7 @@ jobs:
 
       # ─── Install Qt ──────────────────────────────────────────────
       - name: Install Qt
-        uses: jdpurcell/install-qt-action@d715fb7cdd4e5661191a794764231398e2c952f2 # v5
+        uses: jurplel/install-qt-action@a9c63c7c123f3069cff414e7e482d95dfa9d8125 # v4.4.1
         with:
           version: ${{ matrix.qt_version }}
           host: ${{ matrix.platform == 'mac' && 'mac' || 'linux' }}
