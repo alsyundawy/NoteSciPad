@@ -21,14 +21,14 @@ Color design in NoteSciPad adheres strictly to international accessibility and t
 ## 2. Mathematical Contrast Verification (W3C Formula)
 
 The relative luminance $L$ of a color is defined by the W3C WCAG formula:
-$$L = 0.2126 	imes R + 0.7152 	imes G + 0.0722 	imes B$$
+$$L = 0.2126  imes R + 0.7152  imes G + 0.0722  imes B$$
 where each linear color channel $C$ is computed from standard 8-bit sRGB ($C_{srgb} = c / 255$):
 
 - If $C_{srgb} \le 0.04045 \implies C = C_{srgb} / 12.92$
 - Else $\implies C = ((C_{srgb} + 0.055) / 1.055)^{2.4}$
 
 The contrast ratio is calculated as:
-$$	ext{Contrast Ratio} = rac{L_1 + 0.05}{L_2 + 0.05} \quad (	ext{where } L_1 > L_2)$$
+$$ ext{Contrast Ratio} = rac{L_1 + 0.05}{L_2 + 0.05} \quad ( ext{where } L_1 > L_2)$$
 
 ### 2.1 Dark Mode Palette & Contrast Verification
 

@@ -13,9 +13,7 @@ This manual verification protocol ensures high quality, rock-solid stability, ze
 | **TC-ENC-03** | Open UTF-16 LE and BE files | Auto-detected as UTF-16; multi-byte characters display properly | [ ] Pass |
 | **TC-ENC-04** | Open ISO-8859-1 / Windows-1252 | Auto-detected by uchardet; accented European characters (`é, ç, ü, ñ`) correct | [ ] Pass |
 | **TC-ENC-05** | Convert Encoding (`Encoding > ...`) | Converts in-place; dirty dot updates; save verifies converted bytes on disk | [ ] Pass |
-| **TC-ENC-06** | Convert Line Endings (`CRLF` <-> `LF`)| Status bar reflects line ending; hex dump confirms `
-` or `
-` | [ ] Pass |
+| **TC-ENC-06** | Convert Line Endings (`CRLF` <-> `LF`) | Status bar reflects line ending; hex dump confirms `\r\n` or `\n` | [ ] Pass |
 
 ---
 
@@ -23,10 +21,10 @@ This manual verification protocol ensures high quality, rock-solid stability, ze
 
 | Test Case | Procedure | Expected Result | Status |
 | --- | --- | --- | --- |
-| **TC-PERF-01**| Open 10 MB text/code file | Opens in < 500ms; smooth scrolling at 60/120 fps; no UI freeze | [ ] Pass |
-| **TC-PERF-02**| Open 50 MB log file | Opens without crashing; memory footprint remains < 150MB | [ ] Pass |
-| **TC-PERF-03**| Find/Replace in 50 MB file | Find highlights matches quickly; Replace All completes smoothly | [ ] Pass |
-| **TC-PERF-04**| Syntax Highlighting on large file| Large source file lexing does not stutter typing or caret movement | [ ] Pass |
+| **TC-PERF-01** | Open 10 MB text/code file | Opens in < 500ms; smooth scrolling at 60/120 fps; no UI freeze | [ ] Pass |
+| **TC-PERF-02** | Open 50 MB log file | Opens without crashing; memory footprint remains < 150MB | [ ] Pass |
+| **TC-PERF-03** | Find/Replace in 50 MB file | Find highlights matches quickly; Replace All completes smoothly | [ ] Pass |
+| **TC-PERF-04** | Syntax Highlighting on large file | Large source file lexing does not stutter typing or caret movement | [ ] Pass |
 
 ---
 
@@ -35,9 +33,9 @@ This manual verification protocol ensures high quality, rock-solid stability, ze
 | Test Case | Procedure | Expected Result | Status |
 | --- | --- | --- | --- |
 | **TC-CJK-01** | Simplified & Traditional Chinese | Input Chinese via native IME; candidate popup aligns with caret; glyphs sharp | [ ] Pass |
-| **TC-CJK-02** | Japanese (Kanji, Hiragana, Katakana)| Japanese characters render crisp; arrow key moves through double-width glyphs correctly | [ ] Pass |
+| **TC-CJK-02** | Japanese (Kanji, Hiragana, Katakana) | Japanese characters render crisp; arrow key moves through double-width glyphs correctly | [ ] Pass |
 | **TC-CJK-03** | Korean (Hangul) | Hangul syllables compose cleanly without ghost backspaces | [ ] Pass |
-| **TC-CJK-04** | Emoji & Symbols (`Ctrl+Cmd+Space`)| Palette opens; inserting multi-codepoint emojis (`👨‍💻, 🚀, ⚡`) works without split surrogate artifacts | [ ] Pass |
+| **TC-CJK-04** | Emoji & Symbols (`Ctrl+Cmd+Space`) | Palette opens; inserting multi-codepoint emojis (`👨‍💻, 🚀, ⚡`) works without split surrogate artifacts | [ ] Pass |
 
 ---
 
@@ -75,6 +73,6 @@ This manual verification protocol ensures high quality, rock-solid stability, ze
 | Test Case | Procedure | Expected Result | Status |
 | --- | --- | --- | --- |
 | **TC-SEC-01** | AES-256 Encrypt & Decrypt | Envelope generated; valid password restores identical text; bad password rejected | [ ] Pass |
-| **TC-UTIL-01**| JavaScript Evaluator (`Ctrl+Alt+J`)| Evaluates JS expressions; formats JSON; handles syntax errors cleanly | [ ] Pass |
-| **TC-UTIL-02**| Log Tail Monitor (`Ctrl+Alt+M`)| Follows file updates; Pause freezes stream; Regex highlights lines | [ ] Pass |
-| **TC-UTIL-03**| Base64 Codec (`Ctrl+Alt+B`)| Encodes and decodes selection; preserves binary-safe UTF-8 bytes | [ ] Pass |
+| **TC-UTIL-01** | JavaScript Evaluator (`Ctrl+Alt+J`) | Evaluates JS expressions; formats JSON; handles syntax errors cleanly | [ ] Pass |
+| **TC-UTIL-02** | Log Tail Monitor (`Ctrl+Alt+M`) | Follows file updates; Pause freezes stream; Regex highlights lines | [ ] Pass |
+| **TC-UTIL-03** | Base64 Codec (`Ctrl+Alt+B`) | Encodes and decodes selection; preserves binary-safe UTF-8 bytes | [ ] Pass |

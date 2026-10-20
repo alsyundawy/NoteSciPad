@@ -5,6 +5,7 @@ Welcome to the **NoteSciPad Developer Guide**. This document serves as the autho
 ---
 
 ## Table of Contents
+
 1. [Core Architectural Invariants](#1-core-architectural-invariants)
 2. [Project Layout & Directory Structure](#2-project-layout--directory-structure)
 3. [Prerequisites & Development Setup](#3-prerequisites--development-setup)
@@ -41,7 +42,7 @@ Every modification to NoteSciPad must strictly respect these architectural invar
 
 ## 2. Project Layout & Directory Structure
 
-```
+```text
 NoteSciPad/
 ├── CMakeLists.txt                # Root CMake project configuration
 ├── TASK_LIST.md                  # Master roadmap and tracking task list
@@ -101,22 +102,26 @@ NoteSciPad/
 ## 3. Prerequisites & Development Setup
 
 ### 3.1 macOS
+
 - macOS 12+ (Apple Silicon or Intel).
 - Xcode Command Line Tools: `xcode-select --install`.
 - Qt 6 (via Homebrew): `brew install qt@6 cmake ninja`.
 - Set environment path:
+
   ```bash
   export PATH="/opt/homebrew/opt/qt@6/bin:$PATH"
   export CMAKE_PREFIX_PATH="/opt/homebrew/opt/qt@6"
   ```
 
 ### 3.2 Linux (Ubuntu / Debian)
+
 ```bash
 sudo apt update
 sudo apt install build-essential cmake ninja-build     qt6-base-dev qt6-base-private-dev qt6-tools-dev     libuchardet-dev libgl1-mesa-dev
 ```
 
 ### 3.3 Linux (Fedora / RHEL)
+
 ```bash
 sudo dnf install gcc-c++ cmake ninja-build     qt6-qtbase-devel qt6-qttools-devel     uchardet-devel mesa-libGL-devel
 ```
@@ -192,13 +197,17 @@ We maintain high codebase reliability through automated verification scripts:
 
 - **Brace & Parenthesis Balance Scanner:**
   Ensures every source file maintains balanced scope brackets, string literal delimiters, and comments.
+
   ```bash
   python3 scratch/verify_static.py
   ```
+
 - **High-DPI & Multi-Monitor Check:**
+
   ```bash
   python3 scratch/verify_multimonitor.py
   ```
+
 - **Cryptographic Sanity Check:**
   Verifies AES-256 roundtrip encryption, PKCS7 padding validity, and PBKDF2 key consistency.
 
@@ -241,6 +250,7 @@ The desktop file (`deploy/linux/NoteSciPad.desktop`) registers MIME associations
 ## 11. CI/CD Pipeline & Release Workflows
 
 GitHub Actions workflows are defined in `.github/workflows/`:
+
 - **`build.yml`:** Multi-platform CI matrix building NoteSciPad on macOS (Apple Silicon + Intel) and Linux (Ubuntu + Fedora) on every pull request and push to `main`.
 - **`release.yml`:** Automated tag-triggered release workflow that builds, signs, packages, and attaches `.dmg`, `.deb`, `.rpm`, and checksum assets to GitHub Releases.
 

@@ -3,6 +3,7 @@
 ## 1. Overview
 
 NoteSciPad features a native unit and integration test framework under \`tests/\` built on Qt Test and CTest, covering:
+
 - **Base64 Codec:** RFC-4648 test vectors and URL-safe conversions.
 - **Number Converter:** Binary (\`0b\`), Octal (\`0o\`), Decimal, and Hexadecimal (\`0x\`) conversions.
 - **UUID / GUID & Timestamps:** RFC-4122 v4 regex compliance and ISO-8601 timestamps.

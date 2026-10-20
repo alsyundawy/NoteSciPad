@@ -28,7 +28,7 @@
 ## 3. Naming Conventions
 
 | Entity | Convention | Example |
-|---|---|---|
+| --- | --- | --- |
 | Classes / Structs | `PascalCase` | `MarkOccurrences`, `FileBrowserDock` |
 | Member Functions | `camelCase` | `markAll()`, `updateMatchCount()` |
 | Local Variables | `camelCase` | `matchCount`, `editorInstance` |
@@ -41,6 +41,7 @@
 ## 4. Modularity & File Organization
 
 New features must be modular to keep core files maintainable:
+
 - Dock widgets: `src/docks/` (e.g., `FileBrowserDock.h/.cpp`)
 - Utilities & Converters: `src/utils/` (e.g., `Base64Utils.h`, `NumberConverter.h`)
 - Editor Features: `src/features/` (e.g., `MarkOccurrences.h/.cpp`)
@@ -53,12 +54,15 @@ Avoid large monolithic additions to `MainWindow.cpp`. Instead, instantiate featu
 ## 5. Porting from Notepad4 / Notepad3
 
 When adapting functionality from upstream projects:
+
 1. Re-implement cleanly using Qt 6 and Scintilla APIs; avoid Win32 API calls (`HWND`, `SendMessage`, `LRESULT`).
 2. Add a clear source comment:
+
    ```cpp
    // Adapted from Notepad4 EditAutoC / mark-occurrences logic
    // Source: zufuliu/Notepad4 (src/Edit.cpp)
    ```
+
 3. Test edge cases: Unicode / CJK text, large files, empty documents, undo/redo stacks.
 
 ---

@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [Unreleased]
+
+### 🛠️ Fixed
+
+- **Strict Markdownlint Compliance**: Remediated all markdown formatting issues across documentation files (`doc/*.md`, `CHANGELOG.md`, `USER_GUIDE.md`, `MANUAL_TEST_CHECKLIST.md`), normalizing code fence language specifiers (`MD040`), list blank line paddings (`MD032`), heading blank lines (`MD022`), and table cell formatting.
+- **CI Build & Workflow Dispatch**: Synchronized workflow triggers for seamless manual and branch builds across macOS, Linux, and Windows.
+
+---
+
 ## [1.1.0] - 2026-10-19
 
 ### 🎨 Themes & UI Modernization, Math Evaluation, and Trending Lexers

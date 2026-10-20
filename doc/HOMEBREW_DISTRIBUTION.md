@@ -22,6 +22,7 @@ notescipad
 ```
 
 To update NoteSciPad via Homebrew:
+
 ```bash
 brew upgrade --cask notescipad
 ```
@@ -31,6 +32,7 @@ brew upgrade --cask notescipad
 ## 3. Cask Structure & Artifacts
 
 The Cask recipe (`deploy/homebrew/Casks/notescipad.rb`) features:
+
 - Dual-architecture detection (`arch arm: "arm64", intel: "x86_64"`).
 - Universal CLI binary symlink: `notescipad` linked directly to `/usr/local/bin` or `/opt/homebrew/bin`.
 - Clean cleanup definitions in `zap trash` removing application caches and settings upon uninstallation.

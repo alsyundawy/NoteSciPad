@@ -94,9 +94,10 @@ The `ThemeManager.swift` file from [`alsyundawy/SubnetCalc-MacOS`](https://githu
 23. **Cobalt2 Family** (Classic, Bright, Light)
 24. **Alabaster Family** (Dark, Light)
 
-### Technical Architecture for NoteSciPad:
+### Technical Architecture for NoteSciPad
 
 - **`ThemePalette` C++ Structure**:
+
   ```cpp
   struct ThemePalette {
       QString id;
@@ -120,6 +121,7 @@ The `ThemeManager.swift` file from [`alsyundawy/SubnetCalc-MacOS`](https://githu
       QColor preprocessorColor;
   };
   ```
+
 - **Dedicated `Themes` MenuBar Menu**:
   - Add top-level menu `Themes` between `View` and `Tools`.
   - Hierarchical submenus grouped by the 24 families.
@@ -134,7 +136,7 @@ The `ThemeManager.swift` file from [`alsyundawy/SubnetCalc-MacOS`](https://githu
 
 ## 🪟 Pillar 3: Redesigned Elegant About Dialog
 
-### Design Specifications (Modeled after SubnetCalc-MacOS):
+### Design Specifications (Modeled after SubnetCalc-MacOS)
 
 - **Window Dimensions**: 680 × 520 px, modern macOS sheet appearance.
 - **Header**:
@@ -191,7 +193,7 @@ Combining the proven superpowers of legendary Scintilla editors:
 └─────────────────────┴───────────────────┴──────────────────┴─────────────────┘
 ```
 
-### Detailed Functional Additions:
+### Detailed Functional Additions
 
 1. **TinyExpr++ Inline Math Evaluator (Inspired by Notepad3)**:
    - Evaluates arithmetic and scientific expressions directly inside selected text.
