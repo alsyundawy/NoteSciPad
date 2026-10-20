@@ -24,7 +24,7 @@
 #include <QFont>
 #include <QDataStream>
 
-#include "NotepadNextApplication.h"
+#include "NoteSciPadApplication.h"
 
 int main(int argc, char *argv[])
 {
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
     // Default settings format
     QSettings::setDefaultFormat(QSettings::IniFormat);
 
-    NotepadNextApplication app(argc, argv);
+    NoteSciPadApplication app(argc, argv);
 
     // Log some debug info
     qInfo("=============================");

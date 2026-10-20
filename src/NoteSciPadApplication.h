@@ -17,7 +17,10 @@
  */
 
 
+#ifndef NOTESCIPADAPPLICATION_H
+#define NOTESCIPADAPPLICATION_H
 #ifndef NOTEPADNEXTAPPLICATION_H
+#define NOTEPADNEXTAPPLICATION_H
 #define NOTEPADNEXTAPPLICATION_H
 
 #include "ApplicationSettings.h"
@@ -102,4 +105,7 @@ private:
     QTimer autoSaveTimer; //save automatically the session
 };
 
+using NoteSciPadApplication = NotepadNextApplication;
+
 #endif // NOTEPADNEXTAPPLICATION_H
+#endif // NOTESCIPADAPPLICATION_H

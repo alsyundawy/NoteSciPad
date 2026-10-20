@@ -19,7 +19,7 @@
 
 
 #include "MainWindow.h"
-#include "NotepadNextApplication.h"
+#include "NoteSciPadApplication.h"
 #include "MarkerAppDecorator.h"
 #include "RecentFilesListManager.h"
 #include "EditorManager.h"

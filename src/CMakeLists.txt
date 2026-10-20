@@ -30,7 +30,7 @@ qt_add_executable(NoteSciPad
 	MacroRecorder.h
 	MacroStep.h
 	MacroStepTableModel.h
-	NotepadNextApplication.h
+	NoteSciPadApplication.h
 	NppImporter.h
 	QRegexSearch.h
 	RangeAllocator.h
@@ -77,7 +77,7 @@ qt_add_executable(NoteSciPad
 	MacroStep.cpp
 	MacroStepTableModel.cpp
 	main.cpp
-	NotepadNextApplication.cpp
+	NoteSciPadApplication.cpp
 	NppImporter.cpp
 	QRegexSearch.cpp
 	RangeAllocator.cpp
@@ -347,8 +347,8 @@ if(WIN32)
 	)
 	target_sources(NoteSciPad PRIVATE "${CMAKE_BINARY_DIR}/version.rc")
 	configure_file(
-		"${CMAKE_SOURCE_DIR}/icon/NotepadNext.ico"
-		"${CMAKE_BINARY_DIR}/NotepadNext.ico"
+		"${CMAKE_SOURCE_DIR}/icon/NoteSciPad.ico"
+		"${CMAKE_BINARY_DIR}/NoteSciPad.ico"
 		COPYONLY
 	)
 endif()
@@ -396,4 +396,4 @@ target_compile_definitions(NoteSciPad
         APP_DISTRIBUTION="${APP_DISTRIBUTION}"
 )
 
-add_executable(NotepadNext ALIAS NoteSciPad)
+# NoteSciPad Primary Executable Target
