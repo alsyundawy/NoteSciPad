@@ -255,7 +255,7 @@ QString ThemeManager::getThemeStyleSheet() const
     const ThemePalette *pal = currentPalette();
     if (!pal) {
         pal = isDarkActive() ? findThemePaletteById(QStringLiteral("catppuccinMocha"))
-                             : findThemePaletteById(QStringLiteral("catppuccinLatte"));
+                             : findThemePaletteById(QStringLiteral("githubLight"));
     }
 
     QString win = pal ? QString::fromLatin1(pal->win) : (isDarkActive() ? QStringLiteral("#1e1e1e") : QStringLiteral("#f6f8fa"));
@@ -264,142 +264,76 @@ QString ThemeManager::getThemeStyleSheet() const
     QString txtPri = pal ? QString::fromLatin1(pal->txtPri) : (isDarkActive() ? QStringLiteral("#e0e0e0") : QStringLiteral("#24292f"));
     QString txtSec = pal ? QString::fromLatin1(pal->txtSec) : (isDarkActive() ? QStringLiteral("#9aa0a6") : QStringLiteral("#57606a"));
     QString accent = pal ? QString::fromLatin1(pal->blue) : (isDarkActive() ? QStringLiteral("#58a6ff") : QStringLiteral("#0969da"));
-    QString cyan = pal ? QString::fromLatin1(pal->cyan) : accent;
 
-    return QString(
-        "QStatusBar {
-"
-        "    background-color: %1;
-"
-        "    color: %2;
-"
-        "    border-top: 1px solid %3;
-"
-        "}
-"
-        "QStatusBar::item {
-"
-        "    border: none;
-"
-        "}
-"
-        "ads--CDockWidgetTab ads--CElidingLabel {
-"
-        "    color: %4;
-"
-        "}
-"
-        "ads--CDockWidgetTab {
-"
-        "    background: %1;
-"
-        "    margin-top: 2px;
-"
-        "    border-left: 1px solid %3;
-"
-        "    border-top: 2px solid %3;
-"
-        "    border-right: 1px solid %3;
-"
-        "    padding: 3px 6px 1px 6px;
-"
-        "    border-top-left-radius: 4px;
-"
-        "    border-top-right-radius: 4px;
-"
-        "}
-"
-        "ads--CDockWidgetTab:hover[activeTab="false"] {
-"
-        "    background: %3;
-"
-        "    color: %2;
-"
-        "}
-"
-        "ads--CDockWidgetTab[activeTab="true"] {
-"
-        "    background: %5;
-"
-        "    border-top: 3px solid %6;
-"
-        "    padding-bottom: 3px;
-"
-        "    margin-top: 0px;
-"
-        "}
-"
-        "ads--CDockWidgetTab[activeTab="true"] ads--CElidingLabel {
-"
-        "    color: %2;
-"
-        "    font-weight: bold;
-"
-        "}
-"
-        "ads--CDockWidgetTab[focused="true"] {
-"
-        "    background: %5;
-"
-        "    border-top: 3px solid %6;
-"
-        "}
-"
-        "ads--CDockAreaTitleBar {
-"
-        "    background: %1;
-"
-        "    border-bottom: 1px solid %3;
-"
-        "    padding-bottom: 0px;
-"
-        "}
-"
-        "#tabCloseButton {
-"
-        "    background: transparent;
-"
-        "    margin-bottom: 1px;
-"
-        "    margin-left: 4px;
-"
-        "    border: none;
-"
-        "    padding: 0px 0px;
-"
-        "    border-radius: 3px;
-"
-        "}
-"
-        "#tabCloseButton:hover {
-"
-        "    background-color: rgba(235, 87, 87, 0.35);
-"
-        "    color: #eb5757;
-"
-        "}
-"
-        "#tabCloseButton:pressed {
-"
-        "    background-color: #eb5757;
-"
-        "    color: #ffffff;
-"
-        "}
-"
-        "#QuickFindWidget {
-"
-        "    border-left: 1px solid %3;
-"
-        "    border-right: 1px solid %3;
-"
-        "    border-bottom: 3px solid %6;
-"
-        "    background: %1;
-"
-        "    color: %2;
-"
-        "}
-"
-    ).arg(win, txtPri, border, txtSec, card, accent);
+    const QString templateStr = QString::fromUtf8(R"(
+QStatusBar {
+    background-color: %1;
+    color: %2;
+    border-top: 1px solid %3;
+}
+QStatusBar::item {
+    border: none;
+}
+ads--CDockWidgetTab ads--CElidingLabel {
+    color: %4;
+}
+ads--CDockWidgetTab {
+    background: %1;
+    margin-top: 2px;
+    border-left: 1px solid %3;
+    border-top: 2px solid %3;
+    border-right: 1px solid %3;
+    padding: 3px 6px 1px 6px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+ads--CDockWidgetTab:hover[activeTab="false"] {
+    background: %3;
+    color: %2;
+}
+ads--CDockWidgetTab[activeTab="true"] {
+    background: %5;
+    border-top: 3px solid %6;
+    padding-bottom: 3px;
+    margin-top: 0px;
+}
+ads--CDockWidgetTab[activeTab="true"] ads--CElidingLabel {
+    color: %2;
+    font-weight: bold;
+}
+ads--CDockWidgetTab[focused="true"] {
+    background: %5;
+    border-top: 3px solid %6;
+}
+ads--CDockAreaTitleBar {
+    background: %1;
+    border-bottom: 1px solid %3;
+    padding-bottom: 0px;
+}
+#tabCloseButton {
+    background: transparent;
+    margin-bottom: 1px;
+    margin-left: 4px;
+    border: none;
+    padding: 0px 0px;
+    border-radius: 3px;
+}
+#tabCloseButton:hover {
+    background-color: rgba(235, 87, 87, 0.35);
+    color: #eb5757;
+}
+#tabCloseButton:pressed {
+    background-color: #eb5757;
+    color: #ffffff;
+}
+#QuickFindWidget {
+    border-left: 1px solid %3;
+    border-right: 1px solid %3;
+    border-bottom: 3px solid %6;
+    background: %1;
+    color: %2;
+}
+)");
+
+    return templateStr.arg(win, txtPri, border, txtSec, card, accent);
 }
