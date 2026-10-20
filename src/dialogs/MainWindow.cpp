@@ -111,6 +111,7 @@
 #include "DecryptDialog.h"
 #include "ClipboardHistoryDialog.h"
 #include "TransparencyDialog.h"
+#include "MkcertDialog.h"
 #include "../features/TransparentWindowManager.h"
 #include "../features/ClipboardMonitor.h"
 #include "../features/PythonScriptEngine.h"
@@ -3639,6 +3640,12 @@ void MainWindow::setupRunMenu()
     connect(actionBrowser, &QAction::triggered, this, &MainWindow::onOpenInBrowserTriggered);
     menuRun->addAction(actionBrowser);
 
+    // 6. Generate Development SSL Certificate (mkcert / OpenSSL)
+    QAction *actionGenerateCert = new QAction(tr("Generate Development SSL &Certificate (mkcert/OpenSSL)..."), this);
+    actionGenerateCert->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_C));
+    connect(actionGenerateCert, &QAction::triggered, this, &MainWindow::onGenerateCertTriggered);
+    menuRun->addAction(actionGenerateCert);
+
     menuRun->addSeparator();
 
     // 6. Web Searches
@@ -3769,6 +3776,12 @@ void MainWindow::onManageToolsTriggered()
     }
 }
 
+
+void MainWindow::onGenerateCertTriggered()
+{
+    MkcertDialog dlg(this);
+    dlg.exec();
+}
 
 void MainWindow::onRegexHelperTriggered()
 {

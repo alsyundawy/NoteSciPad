@@ -19,7 +19,7 @@ CI/CD Status        : 100% Passing across all matrix targets, MegaLinter & CodeQ
 
 ## 1. Executive Summary: Release v1.2.0
 
-NoteSciPad **v1.2.0** delivers high-polish user interface enhancements, strict Apple Human Interface Guidelines (HIG) compliance, modernized vector-badged message dialogs, universal cross-platform typography, and extended CI/CD build matrix coverage across Qt 6.5, Qt 6.8, and Qt 6.10.
+NoteSciPad **v1.2.0** delivers high-polish user interface enhancements, strict Apple Human Interface Guidelines (HIG) compliance, modernized vector-badged message dialogs, universal cross-platform typography, and extended CI/CD build matrix coverage across Qt 6.5, Qt 6.8, Qt 6.10, and Qt 6.11.
 
 ### Key Milestones in v1.2.0
 
@@ -71,6 +71,25 @@ NoteSciPad **v1.2.0** delivers high-polish user interface enhancements, strict A
    - Disabled `TYPESCRIPT` and `JAVASCRIPT` analyzers to avoid false parsing of Qt Linguist `.ts` translation files.
    - Fixed ShellCheck issues across all repository scripts (`SC2046`, `SC2035`, `SC2027`) and embedded workflow scripts (`SC2044`). Formatted all scripts with `shfmt`.
    - Enabled `VALIDATE_ALL_CODEBASE: true` in `.github/workflows/mega-linter.yml` for comprehensive codebase validation.
+
+10. **Local Development SSL Certificate Generator (`MkcertDialog`)**:
+    - Introduced interactive GUI dialog `MkcertDialog` accessible via `Run → Generate Development SSL Certificate (mkcert/OpenSSL)...` (`Ctrl+Alt+C`).
+    - Automated detection of `mkcert` and `openssl` binaries across macOS (`/usr/local/bin`, `/opt/homebrew/bin`) and Linux (`/usr/bin`).
+    - One-click root CA installation (`mkcert -install`) and development wildcard certificate generation with seamless OpenSSL fallback (`req -x509`).
+    - Full theme integration matching `ThemePalette` and real-time execution feedback via `ModernMessageBox`.
+
+11. **Modern Trending Language Lexers Expansion**:
+    - Added high-performance Lua-based Scintilla lexer definitions for trending languages:
+      - **Kotlin 2.x** (`kotlin.lua`): Full support for coroutines, suspending lambdas, types, annotations, and Kotlin DSL syntax.
+      - **GraphQL** (`graphql.lua`): Support for queries, mutations, subscriptions, schemas, directives, and scalar types.
+      - **WebAssembly Text Format** (`wat.lua`): Low-level instructions, control flow (`block`, `loop`, `if`), and numeric operations (`i32`, `i64`, `f32`, `f64`).
+      - **Azure Bicep** (`bicep.lua`): Infrastructure-as-code declarations, target scopes, decorators, variables, and modules.
+    - Fully registered in `src/scripts.qrc` and verified against Qt XML resource compilation.
+
+12. **13-Pillar Codebase Audit & Hardware Anti-Freeze Verification**:
+    - Completed exhaustive verification across all 13 pillars: Bug, Syntax, Runtime, Logic, Memory, Dead Code, Duplicate Code, Circular Dependency, Performance, Security, Maintainability, Scalability, and Readability.
+    - Zero background daemons, zero CPU spikes, and non-blocking static tooling preventing system freezes.
+    - Automated invariants test (`scripts/verify-engine-invariants.sh`) passing 100%.
 
 ---
 

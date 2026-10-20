@@ -99,5 +99,9 @@
         <file>languages/terraform.lua</file>
         <file>languages/protobuf.lua</file>
         <file>languages/mermaid.lua</file>
+        <file>languages/kotlin.lua</file>
+        <file>languages/graphql.lua</file>
+        <file>languages/wat.lua</file>
+        <file>languages/bicep.lua</file>
     </qresource>
 </RCC>

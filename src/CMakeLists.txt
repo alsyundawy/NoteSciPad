@@ -261,6 +261,8 @@ qt_add_executable(NoteSciPad
 	dialogs/ThemeSwitcherDialog.cpp
 	dialogs/ModernMessageBox.h
 	dialogs/ModernMessageBox.cpp
+	dialogs/MkcertDialog.h
+	dialogs/MkcertDialog.cpp
 	docks/DebugLogDock.cpp
 	docks/DebugLogDock.h
 	docks/DebugLogDock.ui

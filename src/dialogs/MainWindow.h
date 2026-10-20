@@ -260,6 +260,7 @@ private:
     void onDisplayDiagnosticsTriggered();
     void onUserGuideTriggered();
     void onDeveloperGuideTriggered();
+    void onGenerateCertTriggered();
 
     QMenu *menuRun = nullptr;
     QMenu *menuSavedTools = nullptr;

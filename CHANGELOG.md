@@ -55,7 +55,19 @@ NoteSciPad v1.2.0 brings major visual and architectural refinements: full compli
   - `Run Python File...` (with native `QFileDialog` selection)
 - **Scintilla 5.6.7 & Lexilla 5.5.4**: Updated third-party engine metadata to latest official releases in `thirdparty/scintilla/` and `thirdparty/lexilla/`.
 - **Embedded Lua 5.5.1**: Upgraded embedded Lua core in `thirdparty/lua/` to the latest official 5.5.1 release (`LUA_VERSION_NUM 505`).
-- **CMake Python Integration**: Added automated CMake detection for Python 3.13+ in `thirdparty/CMakeLists.txt` and `src/CMakeLists.txt`.
+#### Local Development SSL Certificate Generator (`MkcertDialog`)
+
+- **Interactive Certificate Generator**: Added `Run → Generate Development SSL Certificate (mkcert/OpenSSL)...` (`Ctrl+Alt+C`) with automatic environment detection.
+- **mkcert + OpenSSL Dual Engine**: Automatically uses `mkcert` for locally trusted certificates with CA root installation, and seamlessly falls back to OpenSSL self-signed generation if mkcert is not present.
+- **Theme-Integrated Dialog (`MkcertDialog`)**: Styled with `ThemePalette` tokens, fixed-width command logging view, and instant system notifications via `ModernMessageBox`.
+
+#### Trending Language Lexer Expansion
+
+- **Kotlin 2.x (`kotlin.lua`)**: Syntax highlighting definitions for Kotlin keywords, coroutines (`suspend`, `flow`, `channel`), annotations, standard types, and DSL builders.
+- **GraphQL (`graphql.lua`)**: Definitions for queries, mutations, subscriptions, schemas, types, directives, and scalar primitives.
+- **WebAssembly Text (`wat.lua`)**: Definitions for WebAssembly Text format (`module`, `func`, `param`, `result`, `i32`, `i64`, `f32`, `f64`, instructions).
+- **Azure Bicep (`bicep.lua`)**: Definitions for infrastructure-as-code resources, modules, parameters, variables, outputs, and decorators.
+- **Resource Registration**: Registered all new lexers in `src/scripts.qrc` with verified XML and Lua syntax.
 
 ### 🗑️ Removed & Cleaned
 

@@ -201,7 +201,30 @@
 ### 5.5 Localization & Multi-Qt CI/CD
 
 - [x] Prune 21 untranslated `.ts` translation files, keeping only 100% complete English (`en`) and Indonesian (`id`)
-- [x] Support and test Qt 6.5, 6.8, and 6.10 on macOS and Linux CI matrices
+- [x] Support and test Qt 6.5, 6.8, 6.10, and Qt 6.11 on macOS and Linux CI matrices
 - [x] Fix DMG artifact pattern matching in `.github/workflows/release.yml` (`NoteSciPad*.dmg`)
 - [x] Bump project version to `1.2.0` in `CMakeLists.txt`, `updates.json`, `README.md`, `CHANGELOG.md`, and `DOCNOTE.md`
+
+### 5.6 Third-Party Modernization & Python 3.13+ Engine (Official Releases)
+
+- [x] Upgrade embedded Lua to official **Lua 5.5.1** (`LUA_VERSION_NUM 505`) in `thirdparty/lua/src/lua.h`
+- [x] Update Scintilla engine metadata to **5.6.7** in `thirdparty/scintilla/win32/ScintRes.rc`
+- [x] Update Lexilla engine metadata to **5.5.4** in `thirdparty/lexilla/src/LexillaVersion.rc`
+- [x] Implement `PythonScriptEngine` in `src/features/` with Python 3.13+ runtime bridge, process sandbox, timeout guard, and Scintilla text integration
+- [x] Add Python 3.13+ detection in `thirdparty/CMakeLists.txt` and `src/CMakeLists.txt`
+- [x] Implement `MkcertDialog` (`src/dialogs/MkcertDialog.h`, `MkcertDialog.cpp`) for local development SSL certificate generation via mkcert with OpenSSL fallback
+- [x] Add `Edit → Python Scripting (3.13+)` and `Run → Generate Development SSL Certificate (mkcert/OpenSSL)...` in `MainWindow`
+- [x] Update automated engine invariants verification script (`scripts/verify-engine-invariants.sh`) to assert Scintilla, Lexilla, Lua 5.5+, and PythonScriptEngine
+
+### 5.7 Trending Language Lexers & Qt 6.11 CI Matrices
+
+- [x] Add `kotlin.lua` (Kotlin 2.x keywords, coroutines, types, annotations)
+- [x] Add `graphql.lua` (GraphQL query, mutation, subscription, schemas)
+- [x] Add `wat.lua` (WebAssembly Text format)
+- [x] Add `bicep.lua` (Azure Bicep infrastructure as code)
+- [x] Register new languages in `src/scripts.qrc` and verify XML validation
+- [x] Add **Qt 6.11** to `.github/workflows/build.yml` and `.github/workflows/release.yml` across macOS Intel, macOS Apple Silicon, and Linux Ubuntu
+- [x] Tune MegaLinter configuration (`.mega-linter.yml`) with exclusions, non-blocking scanners (`DISABLE_ERRORS_LINTERS`), and tuned arguments
+- [x] Enable `VALIDATE_ALL_CODEBASE: true` in `.github/workflows/mega-linter.yml`
+- [x] Fix ShellCheck warnings (`SC2046`, `SC2035`, `SC2027`, `SC2044`) and format scripts with `shfmt -w`
 
