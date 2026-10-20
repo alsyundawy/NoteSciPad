@@ -31,6 +31,7 @@ qt_add_executable(NoteSciPad
 	MacroStep.h
 	MacroStepTableModel.h
 	NoteSciPadApplication.h
+	NotepadNextApplication.h
 	NppImporter.h
 	QRegexSearch.h
 	RangeAllocator.h

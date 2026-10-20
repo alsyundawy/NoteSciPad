@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2021 Justin Dailey
@@ -21,10 +22,9 @@
 
 #include <QObject>
 
-#include "NotepadNextApplication.h"
+#include "NoteSciPadApplication.h"
 
-class ApplicationDecorator : public QObject
-{
+class ApplicationDecorator : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled NOTIFY stateChanged)
 
@@ -42,7 +42,6 @@ signals:
 protected:
     NotepadNextApplication *app;
     bool enabled = false;
-
 };
 
-#endif // APPLICATIONDECORATOR_H
+#endif  // APPLICATIONDECORATOR_H

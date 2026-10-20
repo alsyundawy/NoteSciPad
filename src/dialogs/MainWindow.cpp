@@ -72,7 +72,7 @@
 
 #include "DockAreaWidget.h"
 
-#include "NotepadNextApplication.h"
+#include "NoteSciPadApplication.h"
 #include "ApplicationSettings.h"
 
 #include "ScintillaNext.h"

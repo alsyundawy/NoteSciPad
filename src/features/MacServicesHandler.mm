@@ -9,7 +9,7 @@
  */
 
 #include "MacServicesHandler.h"
-#include "NotepadNextApplication.h"
+#include "NoteSciPadApplication.h"
 #include "dialogs/MainWindow.h"
 #include "ScintillaNext.h"
 
