@@ -22,9 +22,13 @@
 
 #include "ApplicationSettings.h"
 
-#include <QDialog>
 #include <QCheckBox>
+#include <QComboBox>
+#include <QDialog>
 #include <QGroupBox>
+#include <QPushButton>
+#include <QSlider>
+#include <QSpinBox>
 
 namespace Ui {
 class PreferencesDialog;
