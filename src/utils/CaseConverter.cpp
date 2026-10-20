@@ -154,7 +154,7 @@ CaseConverter::ConvertResult CaseConverter::convertEditor(ScintillaNext *editor,
         int wStart = editor->wordStartPosition(pos, true);
         int wEnd = editor->wordEndPosition(pos, true);
         if (wEnd > wStart) {
-            ranges.push_back({0, wStart, wEnd, wEnd, wStart, true});
+            ranges.push_back({0, wStart, wEnd, true});
             wasWordExpanded = true;
         }
     }
