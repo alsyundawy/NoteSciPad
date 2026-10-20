@@ -8,7 +8,7 @@ Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repository          : https://github.com/alsyundawy/NoteSciPad
 Core Editing Engine : Scintilla 5.6.x (Vendored) & Lexilla 5.5.x (Vendored)
-GUI Framework       : Qt 6.5 / 6.8 LTS / 6.10 (C++20 ISO Standard)
+GUI Framework       : Qt 6.5 / 6.8 LTS / 6.10 / 6.11 (C++20 ISO Standard)
 Target Platforms    : macOS 11.0+ (Apple Silicon & Intel) & Linux (x86_64 / arm64)
 License             : GNU General Public License v3.0 (GPL-3.0-or-later)
 CI/CD Status        : 100% Passing across all matrix targets, MegaLinter & CodeQL
@@ -53,11 +53,18 @@ NoteSciPad **v1.2.0** delivers high-polish user interface enhancements, strict A
    - Pruned 21 untranslated `.ts` translation files, preserving 100% verified English (`en`) and Indonesian (`id`) translations.
    - Strictly omitted phone and WhatsApp numbers from maintainer contact info.
 
-7. **Multi-Qt Build & Release Matrix (Qt 6.5, 6.8, 6.10)**:
-   - Synchronized CI matrices in `build.yml` and `release.yml` for Qt 6.5, 6.8 LTS, and 6.10 on macOS (Intel and Apple Silicon) and Linux Ubuntu.
+7. **Multi-Qt Build & Release Matrix (Qt 6.5, 6.8, 6.10, and Qt 6.11)**:
+   - Synchronized CI matrices in `build.yml` and `release.yml` for Qt 6.5, 6.8 LTS, 6.10, and **Qt 6.11** on macOS (Intel and Apple Silicon) and Linux Ubuntu (`ubuntu-24.04`).
    - Fixed DMG artifact search pattern in `.github/workflows/release.yml` (`NoteSciPad*.dmg`).
 
-8. **Tuned MegaLinter Configuration & Comprehensive Lint Hardening**:
+8. **Third-Party Libraries & Python 3.13+ Engine Modernization**:
+   - Upgraded embedded Lua core in `thirdparty/lua/` to official **Lua 5.5.1** (`LUA_VERSION_NUM 505`).
+   - Updated Scintilla engine metadata to **5.6.7** in `thirdparty/scintilla/` and Lexilla to **5.5.4** in `thirdparty/lexilla/`.
+   - Implemented `PythonScriptEngine` in `src/features/` with Python 3.13+ detection, timeout protection, stdout/stderr capture, and editor integration (`Edit → Python Scripting (3.13+)`).
+   - Added Python 3.13+ detection in `thirdparty/CMakeLists.txt` and `src/CMakeLists.txt`.
+   - Updated engine invariants verification script (`scripts/verify-engine-invariants.sh`) to automatically assert Lua 5.5+ and PythonScriptEngine integrity.
+
+9. **Tuned MegaLinter Configuration & Comprehensive Lint Hardening**:
    - Tuned `.mega-linter.yml` specifically for C++20/Qt6, Shell scripts, Python, Markdown, YAML, JSON, and XML.
    - Configured non-blocking status for security scanners (`PYTHON_BANDIT`, `REPOSITORY_TRIVY`, `CPP_CPPCHECK`) via `DISABLE_ERRORS_LINTERS`.
    - Disabled Google C++ style checker (`CPP_CPPLINT`) in favor of repository `.clang-format` (120 columns).

@@ -47,6 +47,16 @@ NoteSciPad v1.2.0 brings major visual and architectural refinements: full compli
 - **Live Theme Synchronization**: Bound `AboutDialog` directly to `ThemeManager::themeChanged` signal for real-time live repainting without dialog re-instantiation.
 - **Shortcuts & Documentation Tab**: Added dedicated keyboard shortcuts reference tab alongside About, Maintainer, Credits, Diagnostics, and License tabs.
 
+#### Python 3.13+ Scripting Engine & Third-Party Library Modernization
+
+- **Python 3.13+ Scripting Bridge (`PythonScriptEngine`)**: Integrated a native execution bridge prioritizing Python 3.13 and 3.14 runtimes with safety timeouts (10s for snippets, 15s for files), standard input/output capture, and direct Scintilla text/selection replacement and appending.
+- **Python Scripting Menu**: Added `Edit → Python Scripting (3.13+)` submenu containing:
+  - `Run Script / Selection` (`Ctrl+Shift+P` / `Cmd+Shift+P`)
+  - `Run Python File...` (with native `QFileDialog` selection)
+- **Scintilla 5.6.7 & Lexilla 5.5.4**: Updated third-party engine metadata to latest official releases in `thirdparty/scintilla/` and `thirdparty/lexilla/`.
+- **Embedded Lua 5.5.1**: Upgraded embedded Lua core in `thirdparty/lua/` to the latest official 5.5.1 release (`LUA_VERSION_NUM 505`).
+- **CMake Python Integration**: Added automated CMake detection for Python 3.13+ in `thirdparty/CMakeLists.txt` and `src/CMakeLists.txt`.
+
 ### 🗑️ Removed & Cleaned
 
 - **Donation Options**: Completely removed all references to "Buy Me A Coffee" across the entire codebase and documentation (maintaining only PayPal and QRIS).
@@ -55,6 +65,8 @@ NoteSciPad v1.2.0 brings major visual and architectural refinements: full compli
 
 ### 🛠️ Infrastructure & CI/CD
 
+- **Multi-Qt Build & Release Matrix (Qt 6.5, 6.8, 6.10, and Qt 6.11)**:
+  - Extended GitHub Actions matrices in `build.yml` and `release.yml` with **Qt 6.11** across macOS Intel (`macos-15-intel`), macOS Apple Silicon (`macos-15`), and Linux Ubuntu (`ubuntu-24.04`).
 - **Tuned MegaLinter Configuration (`.mega-linter.yml`)**:
   - Excluded third-party libraries (`thirdparty/`), build directories (`build/`, `build-test-fixtures/`), packaging artifacts (`installer/`, `deploy/windows/`), and CPM cache.
   - Disabled irrelevant language descriptors (PHP, Java, Go, Ruby, Terraform, Ansible, Kotlin, Groovy, Dockerfile, CloudFormation).

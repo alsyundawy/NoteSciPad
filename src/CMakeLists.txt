@@ -111,6 +111,8 @@ qt_add_executable(NoteSciPad
 	features/ThemePaletteData.h
 	features/InlineMathEvaluator.h
 	features/InlineMathEvaluator.cpp
+	features/PythonScriptEngine.h
+	features/PythonScriptEngine.cpp
 	features/ScreenDisplayManager.h
 	features/ScreenDisplayManager.cpp
 	features/DocumentationManager.h

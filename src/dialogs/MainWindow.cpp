@@ -113,6 +113,7 @@
 #include "TransparencyDialog.h"
 #include "../features/TransparentWindowManager.h"
 #include "../features/ClipboardMonitor.h"
+#include "../features/PythonScriptEngine.h"
 #include "../utils/CryptoManager.h"
 #include "../features/TailMonitoringManager.h"
 #include "TailOptionsDialog.h"
@@ -827,6 +828,39 @@ connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
 
     ui->menuEdit->addSeparator();
     ui->menuEdit->addMenu(menuClipboardMonitoring);
+
+    // Setup Python Scripting (3.13+) Menu
+    QMenu *menuPython = new QMenu(tr("&Python Scripting (3.13+)"), this);
+    QAction *actionRunPython = new QAction(tr("&Run Script / Selection"), this);
+    actionRunPython->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_P));
+    connect(actionRunPython, &QAction::triggered, this, [this]() {
+        ScintillaNext *editor = currentEditor();
+        if (!editor) {
+            ui->statusBar->showMessage(tr("No active editor"), 3000);
+            return;
+        }
+        QString msg;
+        bool ok = PythonScriptEngine::executeInEditor(editor, false, &msg);
+        ui->statusBar->showMessage(msg, ok ? 4000 : 6000);
+    });
+
+    QAction *actionRunPythonFile = new QAction(tr("Run Python &File..."), this);
+    connect(actionRunPythonFile, &QAction::triggered, this, [this]() {
+        QString filePath = QFileDialog::getOpenFileName(this, tr("Select Python Script"), QString(), tr("Python Scripts (*.py);;All Files (*)"));
+        if (filePath.isEmpty()) {
+            return;
+        }
+        auto res = PythonScriptEngine::executeFile(filePath);
+        ScintillaNext *editor = currentEditor();
+        if (editor && !res.combinedOutput.isEmpty()) {
+            editor->appendText("\n" + res.combinedOutput);
+        }
+        ui->statusBar->showMessage(res.success ? tr("Script executed successfully.") : tr("Script finished with exit code %1").arg(res.exitCode), 4000);
+    });
+
+    menuPython->addAction(actionRunPython);
+    menuPython->addAction(actionRunPythonFile);
+    ui->menuEdit->addMenu(menuPython);
 
     // Setup Tail Monitoring (tail -f) Menu
     menuTailMonitoring = new QMenu(tr("Monitoring (tail -f)"), this);

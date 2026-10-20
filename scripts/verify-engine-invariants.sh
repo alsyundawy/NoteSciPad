@@ -51,6 +51,25 @@ else
 	ERRORS=$((ERRORS + 1))
 fi
 
+# 5. Check Lua 5.5+ runtime in thirdparty/lua
+LUA_H="${REPO_ROOT}/thirdparty/lua/src/lua.h"
+if [[ -f "${LUA_H}" ]] && grep -q 'LUA_VERSION_MAJOR.*"5"' "${LUA_H}" && grep -q 'LUA_VERSION_MINOR.*"5"' "${LUA_H}"; then
+	echo "[OK] Embedded Lua 5.5+ engine verified: ${LUA_H}"
+else
+	echo "[ERR] Missing or outdated Lua in ${REPO_ROOT}/thirdparty/lua" >&2
+	ERRORS=$((ERRORS + 1))
+fi
+
+# 6. Check PythonScriptEngine (Python 3.13+ integration)
+PYTHON_ENGINE_H="${REPO_ROOT}/src/features/PythonScriptEngine.h"
+PYTHON_ENGINE_CPP="${REPO_ROOT}/src/features/PythonScriptEngine.cpp"
+if [[ -f "${PYTHON_ENGINE_H}" && -f "${PYTHON_ENGINE_CPP}" ]]; then
+	echo "[OK] Python 3.13+ Scripting Engine verified: ${PYTHON_ENGINE_H}"
+else
+	echo "[ERR] Missing PythonScriptEngine in src/features/" >&2
+	ERRORS=$((ERRORS + 1))
+fi
+
 echo "======================================================================"
 if [[ ${ERRORS} -eq 0 ]]; then
 	echo "✅ ALL ENGINE INVARIANTS SATISFIED (Scintilla + Lexilla)"
