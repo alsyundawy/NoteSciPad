@@ -53,7 +53,7 @@ fi
 
 # 5. Check Lua 5.5+ runtime in thirdparty/lua
 LUA_H="${REPO_ROOT}/thirdparty/lua/src/lua.h"
-if [[ -f "${LUA_H}" ]] && grep -q 'LUA_VERSION_MAJOR.*"5"' "${LUA_H}" && grep -q 'LUA_VERSION_MINOR.*"5"' "${LUA_H}"; then
+if [[ -f "${LUA_H}" ]] && (grep -q 'LUA_VERSION_MAJOR_N.*5' "${LUA_H}" || grep -q 'LUA_VERSION_MAJOR.*"5"' "${LUA_H}") && (grep -q 'LUA_VERSION_MINOR_N.*5' "${LUA_H}" || grep -q 'LUA_VERSION_MINOR.*"5"' "${LUA_H}"); then
 	echo "[OK] Embedded Lua 5.5+ engine verified: ${LUA_H}"
 else
 	echo "[ERR] Missing or outdated Lua in ${REPO_ROOT}/thirdparty/lua" >&2
