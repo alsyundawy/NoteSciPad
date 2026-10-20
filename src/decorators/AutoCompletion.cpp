@@ -29,7 +29,7 @@ AutoCompletion::AutoCompletion(ScintillaNext *editor) : EditorDecorator(editor) 
     editor->autoCSetFillUps(" (");
 
     connect(editor, &ScintillaNext::lexerChanged, this, [this]() {
-        NotepadNextApplication *app = qobject_cast<NotepadNextApplication *>(qApp);
+        SparkNotePadApplication *app = qobject_cast<SparkNotePadApplication *>(qApp);
         if (app) {
             keywords = app->getLanguageKeywords(this->editor->languageName);
         }

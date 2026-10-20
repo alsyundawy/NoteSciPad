@@ -29,7 +29,7 @@ class ApplicationDecorator : public QObject {
     Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled NOTIFY stateChanged)
 
 public:
-    explicit ApplicationDecorator(NotepadNextApplication *app) : QObject(app), app(app) {}
+    explicit ApplicationDecorator(SparkNotePadApplication *app) : QObject(app), app(app) {}
 
     bool isEnabled() const { return enabled; }
 
@@ -40,7 +40,7 @@ signals:
     void stateChanged(bool b);
 
 protected:
-    NotepadNextApplication *app;
+    SparkNotePadApplication *app;
     bool enabled = false;
 };
 

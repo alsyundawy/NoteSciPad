@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2022 Justin Dailey
@@ -16,21 +17,17 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef SESSIONMANAGER_H
 #define SESSIONMANAGER_H
-
 
 #include <QDir>
 #include <QSettings>
 
-
 class ScintillaNext;
 class MainWindow;
-class NotepadNextApplication;
+class SparkNotePadApplication;
 
-class SessionManager
-{
+class SessionManager {
 public:
     enum SessionFileType {
         None = 0,
@@ -40,8 +37,7 @@ public:
     };
     Q_DECLARE_FLAGS(SessionFileTypes, SessionFileType)
 
-
-    SessionManager(NotepadNextApplication *app, SessionFileTypes types = SessionFileTypes());
+    SessionManager(SparkNotePadApplication *app, SessionFileTypes types = SessionFileTypes());
 
     void setSessionFileTypes(SessionFileTypes types);
 
@@ -74,10 +70,10 @@ private:
     void storeEditorViewDetails(ScintillaNext *editor, QSettings &settings);
     void loadEditorViewDetails(ScintillaNext *editor, QSettings &settings);
 
-    NotepadNextApplication *app;
+    SparkNotePadApplication *app;
     SessionFileTypes fileTypes;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(SessionManager::SessionFileTypes)
 
-#endif // SESSIONMANAGER_H
+#endif  // SESSIONMANAGER_H

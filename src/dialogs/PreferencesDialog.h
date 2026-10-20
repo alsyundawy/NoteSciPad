@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2019 Justin Dailey
@@ -16,7 +17,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef PREFERENCESDIALOG_H
 #define PREFERENCESDIALOG_H
 
@@ -32,8 +32,7 @@ class PreferencesDialog;
 
 class Settings;
 
-class PreferencesDialog : public QDialog
-{
+class PreferencesDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -53,6 +52,15 @@ private:
     void MapSettingToGroupBox(QGroupBox *groupBox, Func1 getter, Func2 setter, Func3 notifier) const;
 
     void populateTranslationComboBox();
+    void updateThemeColors();
+    void setupThemeAndFeatureSettings();
+
+    QComboBox *comboBoxTheme = nullptr;
+    QPushButton *btnToggleDarkLight = nullptr;
+    QSlider *sliderWindowOpacity = nullptr;
+    QSpinBox *spinBoxWindowOpacity = nullptr;
+    QSpinBox *spinBoxTailDebounce = nullptr;
+    QCheckBox *checkBoxMultiMonitorSafety = nullptr;
 };
 
-#endif // PREFERENCESDIALOG_H
+#endif  // PREFERENCESDIALOG_H

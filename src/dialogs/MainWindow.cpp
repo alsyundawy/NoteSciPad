@@ -17,6 +17,7 @@
  */
 
 #include "MainWindow.h"
+#include "SparkNotePadApplication.h"
 #include "ThemeSwitcherDialog.h"
 #include "features/ThemePaletteData.h"
 #include "AboutDialog.h"
@@ -146,7 +147,7 @@
 
 #include "ActionUtils.h"
 
-MainWindow::MainWindow(NotepadNextApplication *app)
+MainWindow::MainWindow(SparkNotePadApplication *app)
     : ui(new Ui::MainWindow),
       app(app),
       zoomEventWatcher(new ZoomEventWatcher(this)),
@@ -3136,7 +3137,21 @@ MainWindow::UserSaveAction MainWindow::promptForSave(const QVector<ScintillaNext
 }
 
 void MainWindow::newWindow() {
-    QProcess::startDetached(QCoreApplication::applicationFilePath(), QStringList());
+#if defined(Q_OS_MACOS)
+    QString appPath = QCoreApplication::applicationFilePath();
+    QDir dir(appPath);
+    if (dir.cdUp() && dir.cdUp() && dir.cdUp()) {
+        QString bundlePath = dir.absolutePath();
+        if (bundlePath.endsWith(QStringLiteral(".app"), Qt::CaseInsensitive)) {
+            QProcess::startDetached(QStringLiteral("/usr/bin/open"),
+                                    QStringList() << QStringLiteral("-n") << bundlePath << QStringLiteral("--args")
+                                                  << QStringLiteral("--multi-instance"));
+            return;
+        }
+    }
+#endif
+    QProcess::startDetached(QCoreApplication::applicationFilePath(), QStringList()
+                                                                         << QStringLiteral("--multi-instance"));
 }
 
 void MainWindow::exportPdf() {
@@ -4098,10 +4113,11 @@ void MainWindow::setupThemeMenu() {
 
     menuTheme->addSeparator();
 
-    // 4. All 25 Families Submenus
+    // 4. All 25 Families grouped neatly in a dedicated Submenu
+    QMenu *menuFamilies = menuTheme->addMenu(tr("📁 Themes by Family"));
     QStringList families = getThemeFamiliesList();
     for (const QString &family : families) {
-        QMenu *famMenu = menuTheme->addMenu(family);
+        QMenu *famMenu = menuFamilies->addMenu(family);
         QList<const ThemePalette *> palettes = getThemePalettesByFamily(family);
         for (const ThemePalette *pal : palettes) {
             QString itemLabel = QString::fromUtf8(pal->displayName);

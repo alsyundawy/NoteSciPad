@@ -20,21 +20,13 @@
 #include "EditorManager.h"
 #include "ScintillaNext.h"
 
+static QList<QColor> marker_colors = {QColor(0x00, 0xFF, 0xFF), QColor(0xFF, 0x80, 0x00), QColor(0xFF, 0xFF, 0x00)};
 
-static QList<QColor> marker_colors = {
-    QColor(0x00, 0xFF, 0xFF),
-    QColor(0xFF, 0x80, 0x00),
-    QColor(0xFF, 0xFF, 0x00)
-};
-
-static int QColorToScintillaColour(QColor c)
-{
+static int QColorToScintillaColour(QColor c) {
     return c.red() | (c.green() << 8) | (c.blue() << 16);
 }
 
-MarkerAppDecorator::MarkerAppDecorator(NotepadNextApplication *app)
-    : ApplicationDecorator(app)
-{
+MarkerAppDecorator::MarkerAppDecorator(SparkNotePadApplication *app) : ApplicationDecorator(app) {
     // Any time an editor is created go ahead and allocate/set the required indicators
     connect(app->getEditorManager(), &EditorManager::editorCreated, this, [](ScintillaNext *editor) {
         for (int i = 0; i < marker_colors.size(); i++) {
@@ -48,13 +40,11 @@ MarkerAppDecorator::MarkerAppDecorator(NotepadNextApplication *app)
     });
 }
 
-QColor MarkerAppDecorator::markerColor(int i) const
-{
+QColor MarkerAppDecorator::markerColor(int i) const {
     return marker_colors[i];
 }
 
-void MarkerAppDecorator::mark(ScintillaNext *editor, int i)
-{
+void MarkerAppDecorator::mark(ScintillaNext *editor, int i) {
     int selectionStart = editor->selectionStart();
     int selectionEnd = editor->selectionEnd();
     bool isWholeWord = false;
@@ -90,15 +80,13 @@ void MarkerAppDecorator::mark(ScintillaNext *editor, int i)
     });
 }
 
-void MarkerAppDecorator::clear(ScintillaNext *editor, int i)
-{
+void MarkerAppDecorator::clear(ScintillaNext *editor, int i) {
     int indicator = editor->allocateIndicator(QString("marker_%1").arg(i));
     editor->setIndicatorCurrent(indicator);
     editor->indicatorClearRange(0, editor->length());
 }
 
-void MarkerAppDecorator::clearAll(ScintillaNext *editor)
-{
+void MarkerAppDecorator::clearAll(ScintillaNext *editor) {
     for (int i = 0; i < marker_colors.size(); i++) {
         clear(editor, i);
     }

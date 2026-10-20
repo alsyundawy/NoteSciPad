@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2021 Justin Dailey
@@ -23,12 +24,11 @@
 
 class ScintillaNext;
 
-class EditorConfigAppDecorator : public ApplicationDecorator
-{
+class EditorConfigAppDecorator : public ApplicationDecorator {
     Q_OBJECT
 
 public:
-    explicit EditorConfigAppDecorator(NotepadNextApplication *app);
+    explicit EditorConfigAppDecorator(SparkNotePadApplication *app);
 
 private slots:
     void doEditorConfig(ScintillaNext *editor);
@@ -38,4 +38,4 @@ private slots:
     void ensureNoFinalNewline();
 };
 
-#endif // EDITORCONFIGAPPDECORATOR_H
+#endif  // EDITORCONFIGAPPDECORATOR_H

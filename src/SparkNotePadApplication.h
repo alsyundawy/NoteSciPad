@@ -94,7 +94,3 @@ private:
     QCommandLineParser parser;
     QTimer autoSaveTimer;  // Autosave session timer
 };
-
-// Aliases for seamless backward compatibility across external callers and legacy plugins
-using NoteSciPadApplication = SparkNotePadApplication;
-using NotepadNextApplication = SparkNotePadApplication;

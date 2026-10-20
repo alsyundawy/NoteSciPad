@@ -49,7 +49,7 @@ static QList<int> QVariantListToQList(const QVariantList &variantList) {
     return intList;
 }
 
-SessionManager::SessionManager(NotepadNextApplication *app, SessionFileTypes types) : app(app) {
+SessionManager::SessionManager(SparkNotePadApplication *app, SessionFileTypes types) : app(app) {
     setSessionFileTypes(types);
 }
 

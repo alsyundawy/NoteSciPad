@@ -31,8 +31,6 @@ qt_add_executable(SparkNotePad
 	MacroStep.h
 	MacroStepTableModel.h
 	SparkNotePadApplication.h
-	NoteSciPadApplication.h
-	NotepadNextApplication.h
 	NppImporter.h
 	QRegexSearch.h
 	RangeAllocator.h

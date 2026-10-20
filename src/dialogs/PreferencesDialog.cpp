@@ -21,14 +21,25 @@
 #include "TranslationManager.h"
 #include "ui_PreferencesDialog.h"
 #include "ScintillaNext.h"
+#include "ThemeManager.h"
+#include "features/ThemePaletteData.h"
+#include "features/TransparentWindowManager.h"
 
 #include <QButtonGroup>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QFormLayout>
+#include <QSlider>
+#include <QSpinBox>
+#include <QPushButton>
 
 PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *parent)
     : QDialog(parent, Qt::Tool), ui(new Ui::PreferencesDialog), settings(settings) {
     ui->setupUi(this);
+
+    setupThemeAndFeatureSettings();
+    connect(ThemeManager::instance(), &ThemeManager::themeChanged, this, &PreferencesDialog::updateThemeColors);
+    updateThemeColors();
 
     QIcon icon = style()->standardIcon(QStyle::SP_MessageBoxInformation);
     QPixmap pixmap = icon.pixmap(QSize(16, 16));
@@ -201,7 +212,7 @@ void PreferencesDialog::MapSettingToGroupBox(QGroupBox *groupBox, Func1 getter, 
 }
 
 void PreferencesDialog::populateTranslationComboBox() {
-    NotepadNextApplication *app = qobject_cast<NotepadNextApplication *>(qApp);
+    SparkNotePadApplication *app = qobject_cast<SparkNotePadApplication *>(qApp);
 
     // Add the system default at the top
     ui->comboBoxTranslation->addItem(tr("<System Default>"), QStringLiteral(""));
@@ -218,4 +229,204 @@ void PreferencesDialog::populateTranslationComboBox() {
     if (index != -1) {
         ui->comboBoxTranslation->setCurrentIndex(index);
     }
+}
+
+void PreferencesDialog::setupThemeAndFeatureSettings() {
+    QGroupBox *gbxThemes =
+        new QGroupBox(tr("🎨 Themes, Visual Styling & Modern Features"), ui->scrollAreaWidgetContents);
+    QFormLayout *themeLayout = new QFormLayout(gbxThemes);
+    themeLayout->setSpacing(10);
+    themeLayout->setContentsMargins(14, 16, 14, 14);
+
+    // 1. Theme Palette Selector
+    comboBoxTheme = new QComboBox(gbxThemes);
+    int selectedIdx = 0;
+    int idx = 0;
+    QString currentId = ThemeManager::instance()->currentPaletteId();
+    for (const auto &pal : kAllThemePalettes) {
+        QString label = QStringLiteral("[%1] %2 (%3)")
+                            .arg(QString::fromUtf8(pal.family), QString::fromUtf8(pal.displayName),
+                                 pal.isDark ? tr("Dark") : tr("Light"));
+        comboBoxTheme->addItem(label, QString::fromLatin1(pal.id));
+        if (pal.id == currentId) {
+            selectedIdx = idx;
+        }
+        idx++;
+    }
+    comboBoxTheme->setCurrentIndex(selectedIdx);
+    connect(comboBoxTheme, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int index) {
+        QString themeId = comboBoxTheme->itemData(index).toString();
+        ThemeManager::instance()->setPalette(themeId, this);
+    });
+
+    QHBoxLayout *themeRowLayout = new QHBoxLayout();
+    themeRowLayout->addWidget(comboBoxTheme, 1);
+
+    btnToggleDarkLight = new QPushButton(tr("🔄 Toggle Dark/Light"), gbxThemes);
+    btnToggleDarkLight->setToolTip(tr("Quickly switch between active dark and light modes"));
+    connect(btnToggleDarkLight, &QPushButton::clicked, this, [this]() {
+        ThemeManager::instance()->toggleTheme(this);
+        QString currentId = ThemeManager::instance()->currentPaletteId();
+        int found = comboBoxTheme->findData(currentId);
+        if (found >= 0) {
+            QSignalBlocker blocker(comboBoxTheme);
+            comboBoxTheme->setCurrentIndex(found);
+        }
+    });
+    themeRowLayout->addWidget(btnToggleDarkLight);
+    themeLayout->addRow(tr("Active Theme:"), themeRowLayout);
+
+    // 2. Window Opacity / Transparency
+    QHBoxLayout *opacityLayout = new QHBoxLayout();
+    sliderWindowOpacity = new QSlider(Qt::Horizontal, gbxThemes);
+    sliderWindowOpacity->setRange(20, 100);
+    spinBoxWindowOpacity = new QSpinBox(gbxThemes);
+    spinBoxWindowOpacity->setRange(20, 100);
+    spinBoxWindowOpacity->setSuffix(QStringLiteral("%"));
+
+    int currentOpacity = settings->value("Window/Opacity", 100).toInt();
+    sliderWindowOpacity->setValue(currentOpacity);
+    spinBoxWindowOpacity->setValue(currentOpacity);
+
+    connect(sliderWindowOpacity, &QSlider::valueChanged, spinBoxWindowOpacity, &QSpinBox::setValue);
+    connect(spinBoxWindowOpacity, QOverload<int>::of(&QSpinBox::valueChanged), sliderWindowOpacity, &QSlider::setValue);
+    connect(sliderWindowOpacity, &QSlider::valueChanged, this, [this](int val) {
+        settings->setValue("Window/Opacity", val);
+        if (QWidget *topWin = this->window()) {
+            TransparentWindowManager::instance().setWindowTransparency(topWin, val);
+        }
+    });
+
+    opacityLayout->addWidget(sliderWindowOpacity, 1);
+    opacityLayout->addWidget(spinBoxWindowOpacity);
+    themeLayout->addRow(tr("Window Opacity:"), opacityLayout);
+
+    // 3. Tail -f Monitoring Debounce Interval
+    spinBoxTailDebounce = new QSpinBox(gbxThemes);
+    spinBoxTailDebounce->setRange(100, 5000);
+    spinBoxTailDebounce->setSingleStep(100);
+    spinBoxTailDebounce->setSuffix(tr(" ms"));
+    int currentDebounce = settings->value("TailMonitoring/DebounceMs", 500).toInt();
+    spinBoxTailDebounce->setValue(currentDebounce);
+    connect(spinBoxTailDebounce, QOverload<int>::of(&QSpinBox::valueChanged), this,
+            [this](int val) { settings->setValue("TailMonitoring/DebounceMs", val); });
+    themeLayout->addRow(tr("Tail -f Reload Interval:"), spinBoxTailDebounce);
+
+    // 4. Multi-Monitor Boundary Safety
+    checkBoxMultiMonitorSafety =
+        new QCheckBox(tr("Guard windows against offscreen placement across multi-DPI displays"), gbxThemes);
+    bool currentSafety = settings->value("Screen/SafetyGuards", true).toBool();
+    checkBoxMultiMonitorSafety->setChecked(currentSafety);
+    connect(checkBoxMultiMonitorSafety, &QCheckBox::toggled, this,
+            [this](bool checked) { settings->setValue("Screen/SafetyGuards", checked); });
+    themeLayout->addRow(tr("Display Safety:"), checkBoxMultiMonitorSafety);
+
+    // Insert at the top of scrollAreaWidgetContents layout
+    ui->verticalLayout_4->insertWidget(0, gbxThemes);
+}
+
+void PreferencesDialog::updateThemeColors() {
+    const ThemePalette *pal = ThemeManager::instance()->currentPalette();
+    bool dark = ThemeManager::instance()->isDarkActive();
+
+    QString winBg, cardBg, borderCol, accentCol, txtPri, txtSec;
+    if (dark) {
+        winBg = pal ? QString::fromLatin1(pal->win) : QStringLiteral("#0f172a");
+        cardBg = pal ? QString::fromLatin1(pal->card) : QStringLiteral("#1e293b");
+        borderCol = pal ? QString::fromLatin1(pal->border) : QStringLiteral("#334155");
+        accentCol = pal ? QString::fromLatin1(pal->blue) : QStringLiteral("#38bdf8");
+        txtPri = pal ? QString::fromLatin1(pal->txtPri) : QStringLiteral("#f8fafc");
+        txtSec = pal ? QString::fromLatin1(pal->txtSec) : QStringLiteral("#94a3b8");
+    } else {
+        winBg = QStringLiteral("#f8fafc");
+        cardBg = QStringLiteral("#ffffff");
+        borderCol = QStringLiteral("#cbd5e1");
+        accentCol = QStringLiteral("#2563eb");
+        txtPri = QStringLiteral("#0f172a");
+        txtSec = QStringLiteral("#475569");
+    }
+
+    QString prefStyle =
+        QString(
+            "QDialog {"
+            "  background-color: %1;"
+            "  color: %4;"
+            "  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;"
+            "  font-size: 13px;"
+            "}"
+            "QScrollArea {"
+            "  background-color: %1;"
+            "  border: none;"
+            "}"
+            "QWidget#scrollAreaWidgetContents {"
+            "  background-color: %1;"
+            "}"
+            "QGroupBox {"
+            "  background-color: %2;"
+            "  border: 1px solid %3;"
+            "  border-left: 5px solid %6;"
+            "  border-radius: 8px;"
+            "  margin-top: 14px;"
+            "  padding: 16px;"
+            "  font-weight: 600;"
+            "  color: %4;"
+            "}"
+            "QGroupBox::title {"
+            "  subcontrol-origin: margin;"
+            "  subcontrol-position: top left;"
+            "  padding: 2px 8px;"
+            "  color: %4;"
+            "}"
+            "QLabel {"
+            "  color: %4;"
+            "  font-size: 13px;"
+            "}"
+            "QCheckBox, QRadioButton {"
+            "  color: %4;"
+            "  spacing: 8px;"
+            "  font-size: 13px;"
+            "}"
+            "QComboBox, QFontComboBox, QSpinBox, QLineEdit {"
+            "  background-color: %2;"
+            "  color: %4;"
+            "  border: 1px solid %3;"
+            "  border-radius: 6px;"
+            "  padding: 6px 10px;"
+            "  font-size: 13px;"
+            "}"
+            "QComboBox:focus, QFontComboBox:focus, QSpinBox:focus, QLineEdit:focus {"
+            "  border-color: %6;"
+            "}"
+            "QPushButton, QToolButton {"
+            "  background-color: %2;"
+            "  color: %4;"
+            "  border: 1px solid %3;"
+            "  border-radius: 6px;"
+            "  padding: 6px 16px;"
+            "  font-weight: 600;"
+            "}"
+            "QPushButton:hover, QToolButton:hover {"
+            "  border-color: %6;"
+            "  color: %6;"
+            "}"
+            "QPushButton:pressed, QToolButton:pressed {"
+            "  background-color: %6;"
+            "  color: #ffffff;"
+            "}"
+            "QScrollBar:vertical {"
+            "  background: %1;"
+            "  width: 10px;"
+            "  margin: 0px;"
+            "}"
+            "QScrollBar::handle:vertical {"
+            "  background: %3;"
+            "  min-height: 20px;"
+            "  border-radius: 5px;"
+            "}"
+            "QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {"
+            "  height: 0px;"
+            "}")
+            .arg(winBg, cardBg, borderCol, txtPri, txtSec, accentCol);
+
+    setStyleSheet(prefStyle);
 }

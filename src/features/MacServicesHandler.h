@@ -16,7 +16,7 @@
 #include <QString>
 #include <QStringList>
 
-class NotepadNextApplication;
+class SparkNotePadApplication;
 class MainWindow;
 
 class MacServicesHandler : public QObject {
@@ -26,7 +26,7 @@ public:
     static MacServicesHandler *instance();
 
     // Register macOS Services Provider with NSApp
-    void initialize(NotepadNextApplication *app);
+    void initialize(SparkNotePadApplication *app);
 
     // Set current active window
     void setActiveWindow(MainWindow *window);
@@ -49,7 +49,7 @@ private:
     explicit MacServicesHandler(QObject *parent = nullptr);
     ~MacServicesHandler() override;
 
-    NotepadNextApplication *m_app = nullptr;
+    SparkNotePadApplication *m_app = nullptr;
     MainWindow *m_activeWindow = nullptr;
 };
 

@@ -63,7 +63,7 @@ SearchResultsDock::SearchResultsDock(QWidget *parent) : QDockWidget(parent), ui(
 
     ui->treeWidget->setItemDelegate(new SearchResultHighlighterDelegate(ui->treeWidget));
 
-    ApplicationSettings *settings = qobject_cast<NotepadNextApplication *>(qApp)->getSettings();
+    ApplicationSettings *settings = qobject_cast<SparkNotePadApplication *>(qApp)->getSettings();
     auto updateTreeWidgetFont = [=, this]() {
         QFont f(settings->fontName(), settings->fontSize());
         ui->treeWidget->setFont(f);

@@ -22,6 +22,7 @@
 #include <QApplication>
 #include <QFont>
 #include <QDataStream>
+#include <QDateTime>
 
 #include "SparkNotePadApplication.h"
 
@@ -31,9 +32,22 @@ int main(int argc, char *argv[]) {
         "%{if-debug}D%{endif}%{if-info}I%{endif}%{if-warning}W%{endif}%{if-critical}C%{endif}%{if-fatal}F%{endif}: "
         "%{message}");
 
+    bool isMultiInstance = false;
+    for (int i = 1; i < argc; ++i) {
+        if (qstrcmp(argv[i], "--multi-instance") == 0 || qstrcmp(argv[i], "--new-window") == 0 ||
+            qstrcmp(argv[i], "-m") == 0) {
+            isMultiInstance = true;
+            break;
+        }
+    }
+
     // Set these since other parts of the app references these
     QApplication::setOrganizationName("SparkNotePad");
-    QApplication::setApplicationName("SparkNotePad");
+    if (isMultiInstance) {
+        QApplication::setApplicationName(QStringLiteral("SparkNotePad_%1").arg(QDateTime::currentMSecsSinceEpoch()));
+    } else {
+        QApplication::setApplicationName("SparkNotePad");
+    }
     QGuiApplication::setApplicationDisplayName("SparkNotePad");
     QGuiApplication::setApplicationVersion(APP_VERSION);
 

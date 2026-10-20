@@ -20,12 +20,11 @@
 
 #include "ApplicationDecorator.h"
 
-class MarkerAppDecorator : public ApplicationDecorator
-{
+class MarkerAppDecorator : public ApplicationDecorator {
     Q_OBJECT
 
 public:
-    explicit MarkerAppDecorator(NotepadNextApplication *app);
+    explicit MarkerAppDecorator(SparkNotePadApplication *app);
 
     QColor markerColor(int i) const;
 

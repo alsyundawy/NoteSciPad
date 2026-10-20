@@ -104,7 +104,7 @@ MacServicesHandler::~MacServicesHandler()
     }
 }
 
-void MacServicesHandler::initialize(NotepadNextApplication *app)
+void MacServicesHandler::initialize(SparkNotePadApplication *app)
 {
     m_app = app;
     @autoreleasepool {
