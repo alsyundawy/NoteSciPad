@@ -19,9 +19,11 @@
 #include "FindReplaceDialog.h"
 #include "ApplicationSettings.h"
 #include "ui_FindReplaceDialog.h"
+#include "features/ThemeManager.h"
 
 #include <QStatusBar>
 #include <QLineEdit>
+#include <QAbstractItemView>
 #include <QShortcut>
 #include <QClipboard>
 #include <QGuiApplication>
@@ -67,9 +69,23 @@ FindReplaceDialog::FindReplaceDialog(ISearchResultsHandler *searchResults, MainW
     statusBar->setSizeGripEnabled(false);  // the dialog has one already
     qobject_cast<QVBoxLayout *>(layout())->insertWidget(-1, statusBar);
 
-    // Disable auto completion
+    // Disable auto completion and cap dropdown items
     ui->comboFind->setCompleter(nullptr);
     ui->comboReplace->setCompleter(nullptr);
+    ui->comboFind->setMaxVisibleItems(10);
+    ui->comboReplace->setMaxVisibleItems(10);
+    if (ui->comboFind->view()) {
+        ui->comboFind->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    }
+    if (ui->comboReplace->view()) {
+        ui->comboReplace->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    }
+
+    setStyleSheet(ThemeManager::instance()->getThemeStyleSheet());
+    connect(ThemeManager::instance(), &ThemeManager::themeChanged, this,
+            [this]() { setStyleSheet(ThemeManager::instance()->getThemeStyleSheet()); });
+    connect(ThemeManager::instance(), &ThemeManager::paletteChanged, this,
+            [this]() { setStyleSheet(ThemeManager::instance()->getThemeStyleSheet()); });
 
     // If the selection changes highlight the text
     connect(ui->comboFind, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),

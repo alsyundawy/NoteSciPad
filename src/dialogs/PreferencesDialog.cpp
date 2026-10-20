@@ -40,6 +40,7 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
 
     setupThemeAndFeatureSettings();
     connect(ThemeManager::instance(), &ThemeManager::themeChanged, this, &PreferencesDialog::updateThemeColors);
+    connect(ThemeManager::instance(), &ThemeManager::paletteChanged, this, &PreferencesDialog::updateThemeColors);
     updateThemeColors();
 
     QIcon icon = style()->standardIcon(QStyle::SP_MessageBoxInformation);
@@ -241,22 +242,35 @@ void PreferencesDialog::setupThemeAndFeatureSettings() {
 
     // 1. Theme Palette Selector
     comboBoxTheme = new QComboBox(gbxThemes);
+    comboBoxTheme->setMaxVisibleItems(12);
+    if (comboBoxTheme->view()) {
+        comboBoxTheme->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    }
     int selectedIdx = 0;
-    int idx = 0;
     QString currentId = ThemeManager::instance()->currentPaletteId();
+    QString lastFamily;
     for (const auto &pal : kAllThemePalettes) {
+        QString family = QString::fromUtf8(pal.family);
+        if (family != lastFamily) {
+            if (!lastFamily.isEmpty()) {
+                comboBoxTheme->insertSeparator(comboBoxTheme->count());
+            }
+            lastFamily = family;
+        }
         QString label = QStringLiteral("[%1] %2 (%3)")
-                            .arg(QString::fromUtf8(pal.family), QString::fromUtf8(pal.displayName),
-                                 pal.isDark ? tr("Dark") : tr("Light"));
+                            .arg(family, QString::fromUtf8(pal.displayName), pal.isDark ? tr("Dark") : tr("Light"));
         comboBoxTheme->addItem(label, QString::fromLatin1(pal.id));
         if (pal.id == currentId) {
-            selectedIdx = idx;
+            selectedIdx = comboBoxTheme->count() - 1;
         }
-        idx++;
     }
     comboBoxTheme->setCurrentIndex(selectedIdx);
     connect(comboBoxTheme, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int index) {
+        if (index < 0)
+            return;
         QString themeId = comboBoxTheme->itemData(index).toString();
+        if (themeId.isEmpty())
+            return;
         MainWindow *mw = qobject_cast<MainWindow *>(parentWidget());
         ThemeManager::instance()->setPalette(themeId, mw);
     });
@@ -335,22 +349,18 @@ void PreferencesDialog::updateThemeColors() {
     const ThemePalette *pal = ThemeManager::instance()->currentPalette();
     bool dark = ThemeManager::instance()->isDarkActive();
 
-    QString winBg, cardBg, borderCol, accentCol, txtPri, txtSec;
-    if (dark) {
-        winBg = pal ? QString::fromLatin1(pal->win) : QStringLiteral("#0f172a");
-        cardBg = pal ? QString::fromLatin1(pal->card) : QStringLiteral("#1e293b");
-        borderCol = pal ? QString::fromLatin1(pal->border) : QStringLiteral("#334155");
-        accentCol = pal ? QString::fromLatin1(pal->blue) : QStringLiteral("#38bdf8");
-        txtPri = pal ? QString::fromLatin1(pal->txtPri) : QStringLiteral("#f8fafc");
-        txtSec = pal ? QString::fromLatin1(pal->txtSec) : QStringLiteral("#94a3b8");
-    } else {
-        winBg = QStringLiteral("#f8fafc");
-        cardBg = QStringLiteral("#ffffff");
-        borderCol = QStringLiteral("#cbd5e1");
-        accentCol = QStringLiteral("#2563eb");
-        txtPri = QStringLiteral("#0f172a");
-        txtSec = QStringLiteral("#475569");
-    }
+    QString winBg =
+        pal ? QString::fromLatin1(pal->win) : (dark ? QStringLiteral("#0f172a") : QStringLiteral("#f8fafc"));
+    QString cardBg =
+        pal ? QString::fromLatin1(pal->card) : (dark ? QStringLiteral("#1e293b") : QStringLiteral("#ffffff"));
+    QString borderCol =
+        pal ? QString::fromLatin1(pal->border) : (dark ? QStringLiteral("#334155") : QStringLiteral("#cbd5e1"));
+    QString accentCol =
+        pal ? QString::fromLatin1(pal->blue) : (dark ? QStringLiteral("#38bdf8") : QStringLiteral("#2563eb"));
+    QString txtPri =
+        pal ? QString::fromLatin1(pal->txtPri) : (dark ? QStringLiteral("#f8fafc") : QStringLiteral("#0f172a"));
+    QString txtSec =
+        pal ? QString::fromLatin1(pal->txtSec) : (dark ? QStringLiteral("#94a3b8") : QStringLiteral("#475569"));
 
     QString prefStyle =
         QString(
@@ -382,6 +392,7 @@ void PreferencesDialog::updateThemeColors() {
             "  subcontrol-position: top left;"
             "  padding: 2px 8px;"
             "  color: %4;"
+            "  font-weight: bold;"
             "}"
             "QLabel {"
             "  color: %4;"
@@ -391,6 +402,33 @@ void PreferencesDialog::updateThemeColors() {
             "  color: %4;"
             "  spacing: 8px;"
             "  font-size: 13px;"
+            "  background-color: transparent;"
+            "}"
+            "QCheckBox:disabled, QRadioButton:disabled {"
+            "  color: %5;"
+            "}"
+            "QCheckBox::indicator, QRadioButton::indicator {"
+            "  width: 15px;"
+            "  height: 15px;"
+            "  border: 1px solid %3;"
+            "  background-color: %2;"
+            "}"
+            "QCheckBox::indicator {"
+            "  border-radius: 3px;"
+            "}"
+            "QRadioButton::indicator {"
+            "  border-radius: 8px;"
+            "}"
+            "QCheckBox::indicator:hover, QRadioButton::indicator:hover {"
+            "  border-color: %6;"
+            "}"
+            "QCheckBox::indicator:checked, QRadioButton::indicator:checked {"
+            "  background-color: %6;"
+            "  border-color: %6;"
+            "}"
+            "QCheckBox::indicator:disabled, QRadioButton::indicator:disabled {"
+            "  border-color: %3;"
+            "  background-color: %1;"
             "}"
             "QComboBox, QFontComboBox, QSpinBox, QLineEdit {"
             "  background-color: %2;"
@@ -402,6 +440,69 @@ void PreferencesDialog::updateThemeColors() {
             "}"
             "QComboBox:focus, QFontComboBox:focus, QSpinBox:focus, QLineEdit:focus {"
             "  border-color: %6;"
+            "}"
+            "QComboBox::drop-down {"
+            "  subcontrol-origin: padding;"
+            "  subcontrol-position: top right;"
+            "  width: 24px;"
+            "  border-left: 1px solid %3;"
+            "  border-top-right-radius: 6px;"
+            "  border-bottom-right-radius: 6px;"
+            "  background-color: %1;"
+            "}"
+            "QComboBox::down-arrow {"
+            "  width: 0px;"
+            "  height: 0px;"
+            "  border-left: 4px solid transparent;"
+            "  border-right: 4px solid transparent;"
+            "  border-top: 5px solid %4;"
+            "  margin: 0 auto;"
+            "}"
+            "QComboBox QAbstractItemView, QListView {"
+            "  background-color: %2;"
+            "  color: %4;"
+            "  border: 1px solid %3;"
+            "  border-radius: 6px;"
+            "  padding: 4px;"
+            "  selection-background-color: %6;"
+            "  selection-color: #ffffff;"
+            "  outline: none;"
+            "}"
+            "QComboBox QAbstractItemView::item, QListView::item {"
+            "  min-height: 24px;"
+            "  padding: 3px 8px;"
+            "  border-radius: 4px;"
+            "  color: %4;"
+            "}"
+            "QComboBox QAbstractItemView::item:selected, QListView::item:selected {"
+            "  background-color: %6;"
+            "  color: #ffffff;"
+            "}"
+            "QComboBox QAbstractItemView::item:hover:!selected, QListView::item:hover:!selected {"
+            "  background-color: %3;"
+            "  color: %4;"
+            "}"
+            "QSlider::groove:horizontal {"
+            "  border: 1px solid %3;"
+            "  height: 6px;"
+            "  background: %1;"
+            "  border-radius: 3px;"
+            "}"
+            "QSlider::sub-page:horizontal {"
+            "  background: %6;"
+            "  border-radius: 3px;"
+            "}"
+            "QSlider::handle:horizontal {"
+            "  background: %2;"
+            "  border: 2px solid %6;"
+            "  width: 14px;"
+            "  height: 14px;"
+            "  margin-top: -5px;"
+            "  margin-bottom: -5px;"
+            "  border-radius: 8px;"
+            "}"
+            "QSlider::handle:horizontal:hover {"
+            "  background: %6;"
             "}"
             "QPushButton, QToolButton {"
             "  background-color: %2;"

@@ -28,6 +28,7 @@
 AboutDialog::AboutDialog(QWidget *parent) : QDialog(parent) {
     setupUi();
     connect(ThemeManager::instance(), &ThemeManager::themeChanged, this, &AboutDialog::updateThemeColors);
+    connect(ThemeManager::instance(), &ThemeManager::paletteChanged, this, &AboutDialog::updateThemeColors);
     updateThemeColors();
 }
 
@@ -59,22 +60,18 @@ void AboutDialog::updateThemeColors() {
     bool dark = ThemeManager::instance()->isDarkActive();
 
     // World standard accessible color metrics (WCAG 2.1 AAA: high contrast, zero blur)
-    QString winBg, cardBg, borderCol, accentCol, txtPri, txtSec;
-    if (dark) {
-        winBg = pal ? QString::fromLatin1(pal->win) : QStringLiteral("#0f172a");
-        cardBg = pal ? QString::fromLatin1(pal->card) : QStringLiteral("#1e293b");
-        borderCol = pal ? QString::fromLatin1(pal->border) : QStringLiteral("#334155");
-        accentCol = pal ? QString::fromLatin1(pal->blue) : QStringLiteral("#38bdf8");
-        txtPri = pal ? QString::fromLatin1(pal->txtPri) : QStringLiteral("#f8fafc");
-        txtSec = pal ? QString::fromLatin1(pal->txtSec) : QStringLiteral("#94a3b8");
-    } else {
-        winBg = QStringLiteral("#f8fafc");      // Slate 50 crisp light canvas
-        cardBg = QStringLiteral("#ffffff");     // Pure white card background
-        borderCol = QStringLiteral("#cbd5e1");  // Crisp Slate 300 border
-        accentCol = QStringLiteral("#2563eb");  // Royal Blue accent
-        txtPri = QStringLiteral("#0f172a");     // Slate 900 - Razor sharp, 19:1 contrast
-        txtSec = QStringLiteral("#475569");     // Slate 600 - Highly legible secondary
-    }
+    QString winBg =
+        pal ? QString::fromLatin1(pal->win) : (dark ? QStringLiteral("#0f172a") : QStringLiteral("#f8fafc"));
+    QString cardBg =
+        pal ? QString::fromLatin1(pal->card) : (dark ? QStringLiteral("#1e293b") : QStringLiteral("#ffffff"));
+    QString borderCol =
+        pal ? QString::fromLatin1(pal->border) : (dark ? QStringLiteral("#334155") : QStringLiteral("#cbd5e1"));
+    QString accentCol =
+        pal ? QString::fromLatin1(pal->blue) : (dark ? QStringLiteral("#38bdf8") : QStringLiteral("#2563eb"));
+    QString txtPri =
+        pal ? QString::fromLatin1(pal->txtPri) : (dark ? QStringLiteral("#f8fafc") : QStringLiteral("#0f172a"));
+    QString txtSec =
+        pal ? QString::fromLatin1(pal->txtSec) : (dark ? QStringLiteral("#94a3b8") : QStringLiteral("#475569"));
 
     QString badgeBg = dark ? QStringLiteral("rgba(255,255,255,0.08)") : QStringLiteral("rgba(0,0,0,0.05)");
     QString cardStyle =
