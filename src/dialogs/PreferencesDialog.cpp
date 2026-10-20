@@ -22,6 +22,7 @@
 #include "ui_PreferencesDialog.h"
 #include "ScintillaNext.h"
 #include "ThemeManager.h"
+#include "MainWindow.h"
 #include "features/ThemePaletteData.h"
 #include "features/TransparentWindowManager.h"
 
@@ -256,7 +257,8 @@ void PreferencesDialog::setupThemeAndFeatureSettings() {
     comboBoxTheme->setCurrentIndex(selectedIdx);
     connect(comboBoxTheme, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int index) {
         QString themeId = comboBoxTheme->itemData(index).toString();
-        ThemeManager::instance()->setPalette(themeId, this);
+        MainWindow *mw = qobject_cast<MainWindow *>(parentWidget());
+        ThemeManager::instance()->setPalette(themeId, mw);
     });
 
     QHBoxLayout *themeRowLayout = new QHBoxLayout();
@@ -265,7 +267,8 @@ void PreferencesDialog::setupThemeAndFeatureSettings() {
     btnToggleDarkLight = new QPushButton(tr("🔄 Toggle Dark/Light"), gbxThemes);
     btnToggleDarkLight->setToolTip(tr("Quickly switch between active dark and light modes"));
     connect(btnToggleDarkLight, &QPushButton::clicked, this, [this]() {
-        ThemeManager::instance()->toggleTheme(this);
+        MainWindow *mw = qobject_cast<MainWindow *>(parentWidget());
+        ThemeManager::instance()->toggleTheme(mw);
         QString currentId = ThemeManager::instance()->currentPaletteId();
         int found = comboBoxTheme->findData(currentId);
         if (found >= 0) {
@@ -293,7 +296,10 @@ void PreferencesDialog::setupThemeAndFeatureSettings() {
     connect(sliderWindowOpacity, &QSlider::valueChanged, this, [this](int val) {
         settings->setValue("Window/Opacity", val);
         if (QWidget *topWin = this->window()) {
-            TransparentWindowManager::instance().setWindowTransparency(topWin, val);
+            topWin->setWindowOpacity(val / 100.0);
+        }
+        if (QWidget *parentWin = this->parentWidget()) {
+            parentWin->setWindowOpacity(val / 100.0);
         }
     });
 
