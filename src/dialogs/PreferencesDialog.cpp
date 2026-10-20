@@ -236,7 +236,7 @@ void PreferencesDialog::populateTranslationComboBox() {
 
 void PreferencesDialog::setupThemeAndFeatureSettings() {
     QGroupBox *gbxThemes =
-        new QGroupBox(tr("🎨 Themes, Visual Styling & Modern Features"), ui->scrollAreaWidgetContents);
+        new QGroupBox(tr("Themes, Visual Styling & Modern Features"), ui->scrollAreaWidgetContents);
     QFormLayout *themeLayout = new QFormLayout(gbxThemes);
     themeLayout->setSpacing(10);
     themeLayout->setContentsMargins(14, 16, 14, 14);
@@ -279,7 +279,7 @@ void PreferencesDialog::setupThemeAndFeatureSettings() {
     QHBoxLayout *themeRowLayout = new QHBoxLayout();
     themeRowLayout->addWidget(comboBoxTheme, 1);
 
-    btnToggleDarkLight = new QPushButton(tr("🔄 Toggle Dark/Light"), gbxThemes);
+    btnToggleDarkLight = new QPushButton(tr("Toggle Dark/Light"), gbxThemes);
     btnToggleDarkLight->setToolTip(tr("Quickly switch between active dark and light modes"));
     connect(btnToggleDarkLight, &QPushButton::clicked, this, [this]() {
         MainWindow *mw = qobject_cast<MainWindow *>(parentWidget());
@@ -349,6 +349,15 @@ void PreferencesDialog::setupThemeAndFeatureSettings() {
 void PreferencesDialog::updateThemeColors() {
     const ThemePalette *pal = ThemeManager::instance()->currentPalette();
     bool dark = ThemeManager::instance()->isDarkActive();
+
+    if (comboBoxTheme) {
+        QString currentId = ThemeManager::instance()->currentPaletteId();
+        int found = comboBoxTheme->findData(currentId);
+        if (found >= 0 && comboBoxTheme->currentIndex() != found) {
+            QSignalBlocker blocker(comboBoxTheme);
+            comboBoxTheme->setCurrentIndex(found);
+        }
+    }
 
     QString winBg =
         pal ? QString::fromLatin1(pal->win) : (dark ? QStringLiteral("#0f172a") : QStringLiteral("#f8fafc"));

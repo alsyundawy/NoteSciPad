@@ -171,7 +171,7 @@ void AboutDialog::updateThemeColors() {
     if (m_badgesLabel) {
         m_badgesLabel->setText(QString("<p style='margin-top: 8px; font-size: 11px; line-height: 1.8;'>"
                                        "<span style='background: %1; color: %2; border: 1px solid %3; border-radius: "
-                                       "10px; padding: 3px 9px; font-weight: 500;'>🎨 75 Themes</span> "
+                                       "10px; padding: 3px 9px; font-weight: 500;'>75 Themes</span> "
                                        "<span style='background: %1; color: %2; border: 1px solid %3; border-radius: "
                                        "10px; padding: 3px 9px; font-weight: 500;'>📐 Math Eval</span> "
                                        "<span style='background: %1; color: %2; border: 1px solid %3; border-radius: "

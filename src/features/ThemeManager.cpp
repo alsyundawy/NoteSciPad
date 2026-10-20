@@ -72,17 +72,35 @@ bool ThemeManager::isDarkActive() const {
 const ThemePalette *ThemeManager::currentPalette() const {
     if (!m_currentPaletteId.isEmpty()) {
         const ThemePalette *p = findThemePaletteById(m_currentPaletteId);
-        if (p)
+        if (p) {
+            if (m_themeMode == ThemeMode::Dark && !p->isDark) {
+                return findThemePaletteById(QStringLiteral("catppuccinMocha"));
+            }
+            if (m_themeMode == ThemeMode::Light && p->isDark) {
+                return findThemePaletteById(QStringLiteral("defaultLight"));
+            }
             return p;
+        }
     }
     return isDarkActive() ? findThemePaletteById(QStringLiteral("catppuccinMocha"))
-                          : findThemePaletteById(QStringLiteral("githubLight"));
+                          : findThemePaletteById(QStringLiteral("defaultLight"));
 }
 
 void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window) {
     m_themeMode = mode;
     if (window) {
         m_activeWindow = window;
+    }
+
+    const ThemePalette *cur = findThemePaletteById(m_currentPaletteId);
+    if (mode == ThemeMode::Dark) {
+        if (!cur || !cur->isDark) {
+            m_currentPaletteId = QStringLiteral("catppuccinMocha");
+        }
+    } else if (mode == ThemeMode::Light) {
+        if (!cur || cur->isDark) {
+            m_currentPaletteId = QStringLiteral("defaultLight");
+        }
     }
 
     if (m_settings) {
@@ -92,6 +110,7 @@ void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window) {
         else if (mode == ThemeMode::Light)
             modeStr = QStringLiteral("Light");
         m_settings->setValue(QStringLiteral("App/ThemeMode"), modeStr);
+        m_settings->setValue(QStringLiteral("App/ThemePalette"), m_currentPaletteId);
     }
 
     if (m_activeWindow) {
@@ -99,6 +118,7 @@ void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window) {
     }
 
     emit themeChanged(isDarkActive());
+    emit paletteChanged(m_currentPaletteId);
 }
 
 void ThemeManager::setPalette(const QString &paletteId, MainWindow *window) {
@@ -150,7 +170,7 @@ void ThemeManager::applyTheme(MainWindow *window) {
     bool dark = isDarkActive();
     if (!pal) {
         pal = dark ? findThemePaletteById(QStringLiteral("catppuccinMocha"))
-                   : findThemePaletteById(QStringLiteral("githubLight"));
+                   : findThemePaletteById(QStringLiteral("defaultLight"));
     }
 
     QString win = pal ? QString::fromLatin1(pal->win) : (dark ? QStringLiteral("#1e1e1e") : QStringLiteral("#f6f8fa"));
@@ -291,7 +311,7 @@ QString ThemeManager::getThemeStyleSheet() const {
     const ThemePalette *pal = currentPalette();
     if (!pal) {
         pal = isDarkActive() ? findThemePaletteById(QStringLiteral("catppuccinMocha"))
-                             : findThemePaletteById(QStringLiteral("githubLight"));
+                             : findThemePaletteById(QStringLiteral("defaultLight"));
     }
 
     QString win =

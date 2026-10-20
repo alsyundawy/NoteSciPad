@@ -333,6 +333,7 @@ Detailed metrics recorded in [`doc/COLOR_STANDARDS_AND_ACCESSIBILITY.md`](file:/
 | **ADR-024** | WCAG 2.1 AA/AAA Color Palette Standards      | Color token verification and Scintilla BGR endianness abstraction.        |
 | **ADR-025** | 13-Pillar Production Code Review Engine      | Systematic verification across 13 engineering pillars for all releases.   |
 | **ADR-026** | Flat Native Toolbar Button Styling           | Preserved flat, borderless QToolBar QToolButton style across themes.      |
+| **ADR-027** | Clean Desktop Typography & Theme Sync        | Purged emojis across ThemeManager; enforced two-way Dark/Light sync.      |
 
 ---
 
