@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
@@ -25,16 +26,16 @@ struct PythonExecutionResult {
     QString errorMessage;
 };
 
-class PythonScriptEngine
-{
+class PythonScriptEngine {
 public:
     static QString getPythonInterpreterPath();
     static QString getPythonVersion();
     static bool isPython313OrNewer();
 
     static PythonExecutionResult executeCode(const QString &pythonCode, const QStringList &arguments = QStringList());
-    static PythonExecutionResult executeFile(const QString &scriptFilePath, const QStringList &arguments = QStringList());
+    static PythonExecutionResult executeFile(const QString &scriptFilePath,
+                                             const QStringList &arguments = QStringList());
     static bool executeInEditor(ScintillaNext *editor, bool replaceSelection, QString *outMessage = nullptr);
 };
 
-#endif // PYTHONSCRIPTENGINE_H
+#endif  // PYTHONSCRIPTENGINE_H

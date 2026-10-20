@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
@@ -18,8 +19,7 @@ class QLabel;
 class QPushButton;
 class QTextEdit;
 
-class MkcertDialog : public QDialog
-{
+class MkcertDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -48,4 +48,4 @@ private:
     QString m_opensslPath;
 };
 
-#endif // MKCERTDIALOG_H
+#endif  // MKCERTDIALOG_H

@@ -17,23 +17,12 @@
 #include <QProcess>
 #include <QStandardPaths>
 
-QString PythonScriptEngine::getPythonInterpreterPath()
-{
+QString PythonScriptEngine::getPythonInterpreterPath() {
     // Search candidates prioritizing Python 3.14, 3.13, then standard python3
-    const QStringList candidateNames = {
-        "python3.14",
-        "python3.13",
-        "python3",
-        "python"
-    };
+    const QStringList candidateNames = {"python3.14", "python3.13", "python3", "python"};
 
-    const QStringList standardPrefixes = {
-        "/usr/local/bin",
-        "/opt/homebrew/bin",
-        "/usr/bin",
-        "C:/Program Files/Python313",
-        "C:/Program Files/Python314"
-    };
+    const QStringList standardPrefixes = {"/usr/local/bin", "/opt/homebrew/bin", "/usr/bin",
+                                          "C:/Program Files/Python313", "C:/Program Files/Python314"};
 
     for (const QString &candidate : candidateNames) {
         QString found = QStandardPaths::findExecutable(candidate);
@@ -57,8 +46,7 @@ QString PythonScriptEngine::getPythonInterpreterPath()
     return QStringLiteral("python3");
 }
 
-QString PythonScriptEngine::getPythonVersion()
-{
+QString PythonScriptEngine::getPythonVersion() {
     QString interpreter = getPythonInterpreterPath();
     QProcess process;
     process.start(interpreter, QStringList() << "--version");
@@ -72,8 +60,7 @@ QString PythonScriptEngine::getPythonVersion()
     return QStringLiteral("Python 3.13+ (detected)");
 }
 
-bool PythonScriptEngine::isPython313OrNewer()
-{
+bool PythonScriptEngine::isPython313OrNewer() {
     QString ver = getPythonVersion();
     if (ver.contains("3.13") || ver.contains("3.14") || ver.contains("3.15")) {
         return true;
@@ -81,8 +68,7 @@ bool PythonScriptEngine::isPython313OrNewer()
     return false;
 }
 
-PythonExecutionResult PythonScriptEngine::executeCode(const QString &pythonCode, const QStringList &arguments)
-{
+PythonExecutionResult PythonScriptEngine::executeCode(const QString &pythonCode, const QStringList &arguments) {
     PythonExecutionResult result;
     QString interpreter = getPythonInterpreterPath();
 
@@ -125,8 +111,7 @@ PythonExecutionResult PythonScriptEngine::executeCode(const QString &pythonCode,
     return result;
 }
 
-PythonExecutionResult PythonScriptEngine::executeFile(const QString &scriptFilePath, const QStringList &arguments)
-{
+PythonExecutionResult PythonScriptEngine::executeFile(const QString &scriptFilePath, const QStringList &arguments) {
     PythonExecutionResult result;
     if (!QFileInfo::exists(scriptFilePath)) {
         result.success = false;
@@ -167,8 +152,7 @@ PythonExecutionResult PythonScriptEngine::executeFile(const QString &scriptFileP
     return result;
 }
 
-bool PythonScriptEngine::executeInEditor(ScintillaNext *editor, bool replaceSelection, QString *outMessage)
-{
+bool PythonScriptEngine::executeInEditor(ScintillaNext *editor, bool replaceSelection, QString *outMessage) {
     if (!editor) {
         if (outMessage) {
             *outMessage = QStringLiteral("No active editor.");
@@ -213,9 +197,8 @@ bool PythonScriptEngine::executeInEditor(ScintillaNext *editor, bool replaceSele
     }
 
     if (outMessage) {
-        *outMessage = execRes.success
-            ? QStringLiteral("Script executed successfully.")
-            : QStringLiteral("Execution returned warnings/errors.");
+        *outMessage = execRes.success ? QStringLiteral("Script executed successfully.")
+                                      : QStringLiteral("Execution returned warnings/errors.");
     }
 
     return execRes.success;

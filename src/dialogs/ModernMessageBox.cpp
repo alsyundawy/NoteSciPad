@@ -22,18 +22,13 @@
 #include <QGuiApplication>
 #include <QScreen>
 
-ModernMessageBox::ModernMessageBox(QWidget *parent,
-                                   IconType iconType,
-                                   const QString &title,
-                                   const QString &message,
+ModernMessageBox::ModernMessageBox(QWidget *parent, IconType iconType, const QString &title, const QString &message,
                                    const QString &detail)
-    : QDialog(parent)
-{
+    : QDialog(parent) {
     setupUi(iconType, title, message, detail);
 }
 
-QPixmap ModernMessageBox::createIconBadge(IconType iconType) const
-{
+QPixmap ModernMessageBox::createIconBadge(IconType iconType) const {
     const int size = 52;
     QPixmap pixmap(size, size);
     pixmap.fill(Qt::transparent);
@@ -46,26 +41,26 @@ QPixmap ModernMessageBox::createIconBadge(IconType iconType) const
     QString symbol;
 
     switch (iconType) {
-    case IconType::Question:
-        bgColor = QColor(0, 122, 255, 38);
-        fgColor = QColor(0, 122, 255);
-        symbol = QStringLiteral("?");
-        break;
-    case IconType::Information:
-        bgColor = QColor(14, 165, 233, 38);
-        fgColor = QColor(14, 165, 233);
-        symbol = QStringLiteral("i");
-        break;
-    case IconType::Warning:
-        bgColor = QColor(245, 158, 11, 38);
-        fgColor = QColor(245, 158, 11);
-        symbol = QStringLiteral("!");
-        break;
-    case IconType::Critical:
-        bgColor = QColor(239, 68, 68, 38);
-        fgColor = QColor(239, 68, 68);
-        symbol = QStringLiteral("×");
-        break;
+        case IconType::Question:
+            bgColor = QColor(0, 122, 255, 38);
+            fgColor = QColor(0, 122, 255);
+            symbol = QStringLiteral("?");
+            break;
+        case IconType::Information:
+            bgColor = QColor(14, 165, 233, 38);
+            fgColor = QColor(14, 165, 233);
+            symbol = QStringLiteral("i");
+            break;
+        case IconType::Warning:
+            bgColor = QColor(245, 158, 11, 38);
+            fgColor = QColor(245, 158, 11);
+            symbol = QStringLiteral("!");
+            break;
+        case IconType::Critical:
+            bgColor = QColor(239, 68, 68, 38);
+            fgColor = QColor(239, 68, 68);
+            symbol = QStringLiteral("×");
+            break;
     }
 
     // Outer soft glow circle
@@ -84,11 +79,7 @@ QPixmap ModernMessageBox::createIconBadge(IconType iconType) const
     return pixmap;
 }
 
-void ModernMessageBox::setupUi(IconType iconType,
-                               const QString &title,
-                               const QString &message,
-                               const QString &detail)
-{
+void ModernMessageBox::setupUi(IconType iconType, const QString &title, const QString &message, const QString &detail) {
     setWindowTitle(title.isEmpty() ? QStringLiteral("NoteSciPad") : title);
     setWindowFlags((windowFlags() & ~Qt::WindowContextHelpButtonHint) | Qt::Sheet);
     setModal(true);
@@ -96,19 +87,20 @@ void ModernMessageBox::setupUi(IconType iconType,
 
     const ThemePalette *pal = ThemeManager::instance()->currentPalette();
     bool dark = ThemeManager::instance()->isDarkActive();
-    QString winBg = pal ? QString::fromLatin1(pal->win) : (dark ? QStringLiteral("#1e1e1e") : QStringLiteral("#f6f8fa"));
-    QString txtPri = pal ? QString::fromLatin1(pal->txtPri) : (dark ? QStringLiteral("#e0e0e0") : QStringLiteral("#24292f"));
-    QString txtSec = pal ? QString::fromLatin1(pal->txtSec) : (dark ? QStringLiteral("#9aa0a6") : QStringLiteral("#57606a"));
-    QString border = pal ? QString::fromLatin1(pal->border) : (dark ? QStringLiteral("#33373e") : QStringLiteral("#d0d7de"));
-    QString accent = pal ? QString::fromLatin1(pal->blue) : (dark ? QStringLiteral("#58a6ff") : QStringLiteral("#0969da"));
-
-    setStyleSheet(QString(
-        "QDialog {"
-        "  background-color: %1;"
-        "  border: 1px solid %2;"
-        "  border-radius: 10px;"
-        "}"
-    ).arg(winBg, border));
+    QString winBg =
+        pal ? QString::fromLatin1(pal->win) : (dark ? QStringLiteral("#1e1e1e") : QStringLiteral("#f6f8fa"));
+    QString txtPri =
+        pal ? QString::fromLatin1(pal->txtPri) : (dark ? QStringLiteral("#e0e0e0") : QStringLiteral("#24292f"));
+    QString txtSec =
+        pal ? QString::fromLatin1(pal->txtSec) : (dark ? QStringLiteral("#9aa0a6") : QStringLiteral("#57606a"));
+    QString border =
+        pal ? QString::fromLatin1(pal->border) : (dark ? QStringLiteral("#33373e") : QStringLiteral("#d0d7de"));
+    setStyleSheet(QString("QDialog {"
+                          "  background-color: %1;"
+                          "  border: 1px solid %2;"
+                          "  border-radius: 10px;"
+                          "}")
+                      .arg(winBg, border));
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(24, 20, 24, 20);
@@ -130,9 +122,7 @@ void ModernMessageBox::setupUi(IconType iconType,
     QLabel *msgLabel = new QLabel(this);
     msgLabel->setTextFormat(Qt::RichText);
     msgLabel->setWordWrap(true);
-    msgLabel->setStyleSheet(QString(
-        "font-size: 15px; font-weight: bold; color: %1;"
-    ).arg(txtPri));
+    msgLabel->setStyleSheet(QString("font-size: 15px; font-weight: bold; color: %1;").arg(txtPri));
     msgLabel->setText(message);
     textLayout->addWidget(msgLabel);
 
@@ -140,9 +130,7 @@ void ModernMessageBox::setupUi(IconType iconType,
         QLabel *detailLabel = new QLabel(this);
         detailLabel->setTextFormat(Qt::RichText);
         detailLabel->setWordWrap(true);
-        detailLabel->setStyleSheet(QString(
-            "font-size: 13px; color: %1;"
-        ).arg(txtSec));
+        detailLabel->setStyleSheet(QString("font-size: 13px; color: %1;").arg(txtSec));
         detailLabel->setText(detail);
         textLayout->addWidget(detailLabel);
     }
@@ -159,10 +147,10 @@ void ModernMessageBox::setupUi(IconType iconType,
     mainLayout->addLayout(buttonLayout);
 }
 
-void ModernMessageBox::addButton(const QString &text, ActionChoice role, bool isDefault)
-{
+void ModernMessageBox::addButton(const QString &text, ActionChoice role, bool isDefault) {
     QHBoxLayout *layout = findChild<QHBoxLayout *>(QStringLiteral("buttonLayout"));
-    if (!layout) return;
+    if (!layout)
+        return;
 
     QPushButton *btn = new QPushButton(text, this);
     btn->setCursor(Qt::PointingHandCursor);
@@ -171,64 +159,65 @@ void ModernMessageBox::addButton(const QString &text, ActionChoice role, bool is
 
     const ThemePalette *pal = ThemeManager::instance()->currentPalette();
     bool dark = ThemeManager::instance()->isDarkActive();
-    QString cardBg = pal ? QString::fromLatin1(pal->card) : (dark ? QStringLiteral("#25282c") : QStringLiteral("#ffffff"));
-    QString border = pal ? QString::fromLatin1(pal->border) : (dark ? QStringLiteral("#33373e") : QStringLiteral("#d0d7de"));
-    QString txtPri = pal ? QString::fromLatin1(pal->txtPri) : (dark ? QStringLiteral("#e0e0e0") : QStringLiteral("#24292f"));
-    QString accent = pal ? QString::fromLatin1(pal->blue) : (dark ? QStringLiteral("#007aff") : QStringLiteral("#0969da"));
+    QString cardBg =
+        pal ? QString::fromLatin1(pal->card) : (dark ? QStringLiteral("#25282c") : QStringLiteral("#ffffff"));
+    QString border =
+        pal ? QString::fromLatin1(pal->border) : (dark ? QStringLiteral("#33373e") : QStringLiteral("#d0d7de"));
+    QString txtPri =
+        pal ? QString::fromLatin1(pal->txtPri) : (dark ? QStringLiteral("#e0e0e0") : QStringLiteral("#24292f"));
+    QString accent =
+        pal ? QString::fromLatin1(pal->blue) : (dark ? QStringLiteral("#007aff") : QStringLiteral("#0969da"));
 
     if (role == ActionChoice::SaveOrAccept) {
         // Vibrant primary accent button
-        btn->setStyleSheet(QString(
-            "QPushButton {"
-            "  background-color: %1;"
-            "  color: #ffffff;"
-            "  border: 1px solid %1;"
-            "  border-radius: 6px;"
-            "  padding: 5px 18px;"
-            "  font-weight: bold;"
-            "  font-size: 13px;"
-            "}"
-            "QPushButton:hover {"
-            "  background-color: #0062cc;"
-            "}"
-            "QPushButton:pressed {"
-            "  background-color: #004fb0;"
-            "}"
-        ).arg(accent));
+        btn->setStyleSheet(QString("QPushButton {"
+                                   "  background-color: %1;"
+                                   "  color: #ffffff;"
+                                   "  border: 1px solid %1;"
+                                   "  border-radius: 6px;"
+                                   "  padding: 5px 18px;"
+                                   "  font-weight: bold;"
+                                   "  font-size: 13px;"
+                                   "}"
+                                   "QPushButton:hover {"
+                                   "  background-color: #0062cc;"
+                                   "}"
+                                   "QPushButton:pressed {"
+                                   "  background-color: #004fb0;"
+                                   "}")
+                               .arg(accent));
     } else if (role == ActionChoice::Discard) {
         // Destructive / discard neutral button with red highlight on hover
-        btn->setStyleSheet(QString(
-            "QPushButton {"
-            "  background-color: %1;"
-            "  color: %2;"
-            "  border: 1px solid %3;"
-            "  border-radius: 6px;"
-            "  padding: 5px 16px;"
-            "  font-weight: 500;"
-            "  font-size: 13px;"
-            "}"
-            "QPushButton:hover {"
-            "  background-color: rgba(239, 68, 68, 0.15);"
-            "  color: #ef4444;"
-            "  border-color: #ef4444;"
-            "}"
-        ).arg(cardBg, txtPri, border));
+        btn->setStyleSheet(QString("QPushButton {"
+                                   "  background-color: %1;"
+                                   "  color: %2;"
+                                   "  border: 1px solid %3;"
+                                   "  border-radius: 6px;"
+                                   "  padding: 5px 16px;"
+                                   "  font-weight: 500;"
+                                   "  font-size: 13px;"
+                                   "}"
+                                   "QPushButton:hover {"
+                                   "  background-color: rgba(239, 68, 68, 0.15);"
+                                   "  color: #ef4444;"
+                                   "  border-color: #ef4444;"
+                                   "}")
+                               .arg(cardBg, txtPri, border));
     } else {
         // Neutral / cancel button
-        btn->setStyleSheet(QString(
-            "QPushButton {"
-            "  background-color: %1;"
-            "  color: %2;"
-            "  border: 1px solid %3;"
-            "  border-radius: 6px;"
-            "  padding: 5px 16px;"
-            "  font-weight: 500;"
-            "  font-size: 13px;"
-            "}"
-            "QPushButton:hover {"
-            "  border-color: %4;"
-            "}"
-        ).arg(cardBg, txtPri, border, accent));
+        btn->setStyleSheet(QString("QPushButton {"
+                                   "  background-color: %1;"
+                                   "  color: %2;"
+                                   "  border: 1px solid %3;"
+                                   "  border-radius: 6px;"
+                                   "  padding: 5px 16px;"
+                                   "  font-weight: 500;"
+                                   "  font-size: 13px;"
+                                   "}"
+                                   "QPushButton:hover {"
+                                   "  border-color: %4;"
+                                   "}")
+                               .arg(cardBg, txtPri, border, accent));
     }
 
     if (isDefault) {
@@ -245,8 +234,7 @@ void ModernMessageBox::addButton(const QString &text, ActionChoice role, bool is
     m_buttons.append(btn);
 }
 
-void ModernMessageBox::keyPressEvent(QKeyEvent *event)
-{
+void ModernMessageBox::keyPressEvent(QKeyEvent *event) {
     if (event->key() == Qt::Key_Escape) {
         m_chosenAction = ActionChoice::Cancel;
         reject();
@@ -255,16 +243,14 @@ void ModernMessageBox::keyPressEvent(QKeyEvent *event)
     QDialog::keyPressEvent(event);
 }
 
-ModernMessageBox::ActionChoice ModernMessageBox::promptForSave(QWidget *parent, const QVector<ScintillaNext *> &editors)
-{
+ModernMessageBox::ActionChoice ModernMessageBox::promptForSave(QWidget *parent,
+                                                               const QVector<ScintillaNext *> &editors) {
     const int count = editors.count();
-    QString mainText = (count == 1)
-        ? tr("Save changes to <b>%1</b>?").arg(editors.first()->getName())
-        : tr("There are %1 files with unsaved changes.").arg(count);
+    QString mainText = (count == 1) ? tr("Save changes to <b>%1</b>?").arg(editors.first()->getName())
+                                    : tr("There are %1 files with unsaved changes.").arg(count);
 
-    QString detailText = (count == 1)
-        ? tr("Your changes will be permanently lost if you close without saving.")
-        : tr("Do you want to save all documents before closing?");
+    QString detailText = (count == 1) ? tr("Your changes will be permanently lost if you close without saving.")
+                                      : tr("Do you want to save all documents before closing?");
 
     ModernMessageBox box(parent, IconType::Question, tr("Save File"), mainText, detailText);
     box.addButton(count > 1 ? tr("Discard All") : tr("Discard"), ActionChoice::Discard);
@@ -275,8 +261,7 @@ ModernMessageBox::ActionChoice ModernMessageBox::promptForSave(QWidget *parent, 
     return box.chosenAction();
 }
 
-bool ModernMessageBox::question(QWidget *parent, const QString &title, const QString &text, const QString &detail)
-{
+bool ModernMessageBox::question(QWidget *parent, const QString &title, const QString &text, const QString &detail) {
     ModernMessageBox box(parent, IconType::Question, title, text, detail);
     box.addButton(tr("No"), ActionChoice::Cancel);
     box.addButton(tr("Yes"), ActionChoice::SaveOrAccept, true);
@@ -284,22 +269,19 @@ bool ModernMessageBox::question(QWidget *parent, const QString &title, const QSt
     return box.chosenAction() == ActionChoice::SaveOrAccept;
 }
 
-void ModernMessageBox::information(QWidget *parent, const QString &title, const QString &text, const QString &detail)
-{
+void ModernMessageBox::information(QWidget *parent, const QString &title, const QString &text, const QString &detail) {
     ModernMessageBox box(parent, IconType::Information, title, text, detail);
     box.addButton(tr("OK"), ActionChoice::SaveOrAccept, true);
     box.exec();
 }
 
-void ModernMessageBox::warning(QWidget *parent, const QString &title, const QString &text, const QString &detail)
-{
+void ModernMessageBox::warning(QWidget *parent, const QString &title, const QString &text, const QString &detail) {
     ModernMessageBox box(parent, IconType::Warning, title, text, detail);
     box.addButton(tr("OK"), ActionChoice::SaveOrAccept, true);
     box.exec();
 }
 
-void ModernMessageBox::critical(QWidget *parent, const QString &title, const QString &text, const QString &detail)
-{
+void ModernMessageBox::critical(QWidget *parent, const QString &title, const QString &text, const QString &detail) {
     ModernMessageBox box(parent, IconType::Critical, title, text, detail);
     box.addButton(tr("Close"), ActionChoice::Cancel, true);
     box.exec();

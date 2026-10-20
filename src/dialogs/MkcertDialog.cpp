@@ -27,9 +27,7 @@
 #include <QTextEdit>
 #include <QVBoxLayout>
 
-MkcertDialog::MkcertDialog(QWidget *parent)
-    : QDialog(parent)
-{
+MkcertDialog::MkcertDialog(QWidget *parent) : QDialog(parent) {
     setWindowTitle(tr("Generate Development SSL Certificate (mkcert / OpenSSL)"));
     resize(580, 480);
     setModal(true);
@@ -46,9 +44,9 @@ MkcertDialog::MkcertDialog(QWidget *parent)
     titleLabel->setFont(titleFont);
     mainLayout->addWidget(titleLabel);
 
-    QLabel *descLabel = new QLabel(
-        tr("Generate locally trusted certificates using <b>mkcert</b> (automatic root CA) or fallback to <b>OpenSSL</b> self-signed certificates for local development."),
-        this);
+    QLabel *descLabel = new QLabel(tr("Generate locally trusted certificates using <b>mkcert</b> (automatic root CA) "
+                                      "or fallback to <b>OpenSSL</b> self-signed certificates for local development."),
+                                   this);
     descLabel->setWordWrap(true);
     mainLayout->addWidget(descLabel);
 
@@ -116,27 +114,24 @@ MkcertDialog::MkcertDialog(QWidget *parent)
     applyTheme();
 }
 
-void MkcertDialog::applyTheme()
-{
+void MkcertDialog::applyTheme() {
     const ThemePalette &palette = ThemeManager::instance()->currentPalette();
-    bool isDark = palette.isDark;
-
     QString bgColor = palette.background;
     QString fgColor = palette.foreground;
     QString cardBg = palette.card;
     QString borderColor = palette.border;
 
-    setStyleSheet(QString(
-        "QDialog { background-color: %1; color: %2; }"
-        "QLineEdit { background-color: %3; color: %2; border: 1px solid %4; border-radius: 6px; padding: 6px 10px; }"
-        "QTextEdit { background-color: %3; color: %2; border: 1px solid %4; border-radius: 6px; }"
-        "QPushButton { background-color: %3; color: %2; border: 1px solid %4; border-radius: 6px; padding: 6px 14px; font-weight: 500; }"
-        "QPushButton:hover { background-color: %4; }"
-    ).arg(bgColor, fgColor, cardBg, borderColor));
+    setStyleSheet(QString("QDialog { background-color: %1; color: %2; }"
+                          "QLineEdit { background-color: %3; color: %2; border: 1px solid %4; border-radius: 6px; "
+                          "padding: 6px 10px; }"
+                          "QTextEdit { background-color: %3; color: %2; border: 1px solid %4; border-radius: 6px; }"
+                          "QPushButton { background-color: %3; color: %2; border: 1px solid %4; border-radius: 6px; "
+                          "padding: 6px 14px; font-weight: 500; }"
+                          "QPushButton:hover { background-color: %4; }")
+                      .arg(bgColor, fgColor, cardBg, borderColor));
 }
 
-void MkcertDialog::checkToolsStatus()
-{
+void MkcertDialog::checkToolsStatus() {
     m_mkcertPath = QStandardPaths::findExecutable("mkcert");
     if (m_mkcertPath.isEmpty()) {
         const QStringList extraPaths = {"/usr/local/bin/mkcert", "/opt/homebrew/bin/mkcert"};
@@ -160,31 +155,40 @@ void MkcertDialog::checkToolsStatus()
     }
 
     if (!m_mkcertPath.isEmpty()) {
-        m_statusLabel->setText(tr("<b>mkcert detected:</b> %1<br>Locally trusted CA certificates are supported.").arg(m_mkcertPath));
-        m_statusLabel->setStyleSheet("background-color: rgba(46, 125, 50, 0.15); color: #2e7d32; border: 1px solid #2e7d32; border-radius: 6px; padding: 8px;");
+        m_statusLabel->setText(
+            tr("<b>mkcert detected:</b> %1<br>Locally trusted CA certificates are supported.").arg(m_mkcertPath));
+        m_statusLabel->setStyleSheet(
+            "background-color: rgba(46, 125, 50, 0.15); color: #2e7d32; border: 1px solid #2e7d32; border-radius: 6px; "
+            "padding: 8px;");
         m_installCaBtn->setEnabled(true);
     } else if (!m_opensslPath.isEmpty()) {
-        m_statusLabel->setText(tr("<b>mkcert not found, using OpenSSL:</b> %1<br>Self-signed certificates will be generated.").arg(m_opensslPath));
-        m_statusLabel->setStyleSheet("background-color: rgba(239, 108, 0, 0.15); color: #ef6c00; border: 1px solid #ef6c00; border-radius: 6px; padding: 8px;");
+        m_statusLabel->setText(
+            tr("<b>mkcert not found, using OpenSSL:</b> %1<br>Self-signed certificates will be generated.")
+                .arg(m_opensslPath));
+        m_statusLabel->setStyleSheet(
+            "background-color: rgba(239, 108, 0, 0.15); color: #ef6c00; border: 1px solid #ef6c00; border-radius: 6px; "
+            "padding: 8px;");
         m_installCaBtn->setEnabled(false);
     } else {
-        m_statusLabel->setText(tr("<b>Neither mkcert nor openssl was found in PATH.</b> Please install mkcert (e.g. <code>brew install mkcert</code>) or openssl."));
-        m_statusLabel->setStyleSheet("background-color: rgba(198, 40, 40, 0.15); color: #c62828; border: 1px solid #c62828; border-radius: 6px; padding: 8px;");
+        m_statusLabel->setText(
+            tr("<b>Neither mkcert nor openssl was found in PATH.</b> Please install mkcert (e.g. <code>brew install "
+               "mkcert</code>) or openssl."));
+        m_statusLabel->setStyleSheet(
+            "background-color: rgba(198, 40, 40, 0.15); color: #c62828; border: 1px solid #c62828; border-radius: 6px; "
+            "padding: 8px;");
         m_installCaBtn->setEnabled(false);
         m_generateBtn->setEnabled(false);
     }
 }
 
-void MkcertDialog::onBrowseDirClicked()
-{
+void MkcertDialog::onBrowseDirClicked() {
     QString dir = QFileDialog::getExistingDirectory(this, tr("Select Output Directory"), m_dirEdit->text());
     if (!dir.isEmpty()) {
         m_dirEdit->setText(dir);
     }
 }
 
-void MkcertDialog::onInstallCaClicked()
-{
+void MkcertDialog::onInstallCaClicked() {
     if (m_mkcertPath.isEmpty()) {
         return;
     }
@@ -200,20 +204,23 @@ void MkcertDialog::onInstallCaClicked()
             m_outputView->append(err);
         }
         if (proc.exitCode() == 0) {
-            ModernMessageBox::information(this, tr("mkcert CA Installed"), tr("The local root Certificate Authority (CA) was installed successfully into system trust stores!"));
+            ModernMessageBox::information(
+                this, tr("mkcert CA Installed"),
+                tr("The local root Certificate Authority (CA) was installed successfully into system trust stores!"));
         } else {
-            ModernMessageBox::warning(this, tr("mkcert Installation Warning"), tr("mkcert finished with status code: %1").arg(proc.exitCode()));
+            ModernMessageBox::warning(this, tr("mkcert Installation Warning"),
+                                      tr("mkcert finished with status code: %1").arg(proc.exitCode()));
         }
     } else {
         m_outputView->append(tr("mkcert installation timed out.\n"));
     }
 }
 
-void MkcertDialog::onGenerateClicked()
-{
+void MkcertDialog::onGenerateClicked() {
     QString domainsStr = m_domainsEdit->text().trimmed();
     if (domainsStr.isEmpty()) {
-        ModernMessageBox::warning(this, tr("Missing Domains"), tr("Please specify at least one domain name or IP address (e.g. localhost)."));
+        ModernMessageBox::warning(this, tr("Missing Domains"),
+                                  tr("Please specify at least one domain name or IP address (e.g. localhost)."));
         return;
     }
 
@@ -255,9 +262,13 @@ void MkcertDialog::onGenerateClicked()
 
             if (proc.exitCode() == 0 && QFileInfo::exists(certFile)) {
                 m_outputView->append(tr("\nSUCCESS!\nCertificate: %1\nPrivate Key: %2\n").arg(certFile, keyFile));
-                ModernMessageBox::information(this, tr("Certificate Created"), tr("Successfully generated locally trusted SSL certificate!\n\nCertificate: %1\nKey: %2").arg(certFile, keyFile));
+                ModernMessageBox::information(
+                    this, tr("Certificate Created"),
+                    tr("Successfully generated locally trusted SSL certificate!\n\nCertificate: %1\nKey: %2")
+                        .arg(certFile, keyFile));
             } else {
-                ModernMessageBox::warning(this, tr("Generation Warning"), tr("mkcert completed with error code: %1").arg(proc.exitCode()));
+                ModernMessageBox::warning(this, tr("Generation Warning"),
+                                          tr("mkcert completed with error code: %1").arg(proc.exitCode()));
             }
         }
     } else if (!m_opensslPath.isEmpty()) {
@@ -267,9 +278,8 @@ void MkcertDialog::onGenerateClicked()
         QStringList args;
         args << "req" << "-x509" << "-newkey" << "rsa:2048" << "-nodes" << "-sha256"
              << "-days" << "365"
-             << "-keyout" << keyFile
-             << "-out" << certFile
-             << "-subj" << QStringLiteral("/CN=%1/O=NoteSciPad Dev").arg(domainList.first());
+             << "-keyout" << keyFile << "-out" << certFile << "-subj"
+             << QStringLiteral("/CN=%1/O=NoteSciPad Dev").arg(domainList.first());
 
         proc.start(m_opensslPath, args);
         if (proc.waitForFinished(15000)) {
@@ -281,10 +291,15 @@ void MkcertDialog::onGenerateClicked()
             }
 
             if (proc.exitCode() == 0 && QFileInfo::exists(certFile)) {
-                m_outputView->append(tr("\nSUCCESS (OpenSSL)!\nCertificate: %1\nPrivate Key: %2\n").arg(certFile, keyFile));
-                ModernMessageBox::information(this, tr("Certificate Created"), tr("Successfully generated self-signed SSL certificate with OpenSSL!\n\nCertificate: %1\nKey: %2").arg(certFile, keyFile));
+                m_outputView->append(
+                    tr("\nSUCCESS (OpenSSL)!\nCertificate: %1\nPrivate Key: %2\n").arg(certFile, keyFile));
+                ModernMessageBox::information(
+                    this, tr("Certificate Created"),
+                    tr("Successfully generated self-signed SSL certificate with OpenSSL!\n\nCertificate: %1\nKey: %2")
+                        .arg(certFile, keyFile));
             } else {
-                ModernMessageBox::warning(this, tr("OpenSSL Error"), tr("OpenSSL exited with error code: %1").arg(proc.exitCode()));
+                ModernMessageBox::warning(this, tr("OpenSSL Error"),
+                                          tr("OpenSSL exited with error code: %1").arg(proc.exitCode()));
             }
         }
     }

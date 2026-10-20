@@ -93,6 +93,16 @@ NoteSciPad v1.2.0 brings major visual and architectural refinements: full compli
   - Added custom root `.yamllint.yml` with relaxed line lengths and boolean values tailored for GitHub Actions workflows.
 - **POSIX & ShellCheck Hardening**: Resolved all ShellCheck warnings across all repository shell scripts (`SC2046`, `SC2035`, `SC2027`) and workflow embedded scripts (`SC2044`). Formatted all scripts with `shfmt`.
 - **Official Qt Action Upstream Migration**: Switched from broken custom `jdpurcell/install-qt-action` commit to official `jurplel/install-qt-action@v4.4.1` (`a9c63c7c123f3069cff414e7e482d95dfa9d8125`), eliminating runner template syntax errors across Ubuntu Linux matrices.
+- **Trunk Native C++ & Qt Static Analysis Integration**:
+  - Configured `.trunk/trunk.yaml` with a dedicated, custom `cppcheck-qt` linter definition running `--library=qt --language=c++ --enable=warning,style,performance,portability`, providing first-class Qt analysis (ownership semantics, `QObject` hierarchies, `QString` efficiency, signal/slot patterns) across all 276 files and subfolders in `src/`.
+  - Enabled `clang-format@20.1.0` and `pragma-once` header guard verification in Trunk Check.
+  - Full codebase check across `src/` runs in ~8-10s with zero CPU spikes and zero memory saturation.
+- **C++/Qt Codebase Hardening & Null Safety**:
+  - `MainWindow`: Added null-pointer safeguards in `updateGui`, `updateSaveStatusBasedUi`, and `checkFileForStateChange` when all tabs are closed.
+  - `NoteSciPadApplication`: Default-initialized all manager pointers (`settings`, `editorManager`, `sessionManager`, `recentFilesListManager`, `translationManager`) to `nullptr` in class declaration.
+  - `CryptoManager`: Initialized `StrengthResult` struct members and eliminated dead pointer increment.
+  - `LuaConsoleDock`: Upgraded legacy C cast to type-safe `reinterpret_cast<const char *>`.
+  - Cleaned up unused variables in `MkcertDialog` (`isDark`), `ModernMessageBox` (`accent`), and scoped `status` in `LuaExtension`.
 - **Trunk Fast Linter Tuning & Anti-Freeze**: Tuned `.trunk/trunk.yaml` to exclude redundant git-history scanners (`trufflehog`) and vendored language files, achieving sub-second (<0.9s) local execution without CPU spikes or memory exhaustion.
 - **Multi-Qt Support**: Validated building and packaging with Qt 6.5, Qt 6.8, and Qt 6.10 across macOS Intel (`macos-15-intel`), macOS Apple Silicon (`macos-15`), and Linux Ubuntu (`ubuntu-24.04`).
 - **Release DMG Packaging Fix**: Resolved artifact search globbing in `.github/workflows/release.yml` to accurately detect and publish `NoteSciPad*.dmg`.

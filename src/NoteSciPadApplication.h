@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2019 Justin Dailey
@@ -16,7 +17,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef NOTESCIPADAPPLICATION_H
 #define NOTESCIPADAPPLICATION_H
 #ifndef NOTEPADNEXTAPPLICATION_H
@@ -31,7 +31,6 @@
 #include <QPointer>
 #include <QTimer>
 
-
 class MainWindow;
 class LuaState;
 class EditorManager;
@@ -40,9 +39,7 @@ class ScintillaNext;
 class SessionManager;
 class TranslationManager;
 
-
-class NotepadNextApplication : public SingleApplication
-{
+class NotepadNextApplication : public SingleApplication {
     Q_OBJECT
 
 public:
@@ -87,25 +84,25 @@ private:
 
     void loadSettings();
 
-    EditorManager *editorManager;
-    RecentFilesListManager *recentFilesListManager;
-    ApplicationSettings *settings;
-    SessionManager *sessionManager;
-    TranslationManager *translationManager;
+    EditorManager *editorManager = nullptr;
+    RecentFilesListManager *recentFilesListManager = nullptr;
+    ApplicationSettings *settings = nullptr;
+    SessionManager *sessionManager = nullptr;
+    TranslationManager *translationManager = nullptr;
 
     LuaState *luaState = Q_NULLPTR;
 
     MainWindow *window = Q_NULLPTR;
-    QPointer<QWidget> currentlyFocusedWidget; // Keep a weak pointer to the QWidget since we don't own it
+    QPointer<QWidget> currentlyFocusedWidget;  // Keep a weak pointer to the QWidget since we don't own it
 
     MainWindow *createNewWindow();
 
     QCommandLineParser parser;
 
-    QTimer autoSaveTimer; //save automatically the session
+    QTimer autoSaveTimer;  // save automatically the session
 };
 
 using NoteSciPadApplication = NotepadNextApplication;
 
-#endif // NOTEPADNEXTAPPLICATION_H
-#endif // NOTESCIPADAPPLICATION_H
+#endif  // NOTEPADNEXTAPPLICATION_H
+#endif  // NOTESCIPADAPPLICATION_H

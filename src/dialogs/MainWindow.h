@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2019 Justin Dailey
@@ -15,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
@@ -60,8 +60,7 @@ class FileBrowserDock;
 #include "ClipboardMonitor.h"
 #include "TransparentWindowManager.h"
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
@@ -172,7 +171,7 @@ protected:
 private slots:
     void tabBarRightClicked(ScintillaNext *editor);
     void languageMenuTriggered();
-    void checkForUpdatesFinished(QString url);
+    void checkForUpdatesFinished(const QString &url);
     void activateEditor(ScintillaNext *editor);
 
 private:
@@ -183,17 +182,17 @@ private:
     QScopedPointer<SearchResultsCollector> searchResults;
 
     template <typename Method>
-    void connectEditorAction(QAction* action, Method method) {
+    void connectEditorAction(QAction *action, Method method) {
         connect(action, &QAction::triggered, this, [this, method]() {
-            if (auto* editor = currentEditor()) {
+            if (auto *editor = currentEditor()) {
                 (editor->*method)();
             }
         });
     }
     template <typename Method, typename Arg>
-    void connectEditorAction(QAction* action, Method method, Arg value) {
+    void connectEditorAction(QAction *action, Method method, Arg value) {
         connect(action, &QAction::triggered, this, [this, method, value]() {
-            if (auto* editor = currentEditor()) {
+            if (auto *editor = currentEditor()) {
                 (editor->*method)(value);
             }
         });
@@ -296,7 +295,7 @@ private:
     FocusedViewDialog *focusedViewDialog = nullptr;
     LanguageInspectorDock *languageInspectorDock = nullptr;
 
-    //NppImporter *npp;
+    // NppImporter *npp;
 
     MacroManager macroManager;
     DefaultDirectoryManager *defaultDirectoryManager;
@@ -309,4 +308,4 @@ private:
     QMenu *buildMenu(QStringList actionNames);
 };
 
-#endif // MAINWINDOW_H
+#endif  // MAINWINDOW_H

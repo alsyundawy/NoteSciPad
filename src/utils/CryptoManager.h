@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -18,15 +19,14 @@
 #include <QString>
 #include <cstdint>
 
-class CryptoManager
-{
+class CryptoManager {
 public:
     static constexpr const char *MAGIC_HEADER = "NSPENC01";
     static constexpr size_t MAGIC_HEADER_LEN = 8;
     static constexpr size_t SALT_LEN = 16;
     static constexpr size_t IV_LEN = 16;
-    static constexpr size_t MAC_LEN = 32; // HMAC-SHA256
-    static constexpr size_t HEADER_META_LEN = MAGIC_HEADER_LEN + 4 + SALT_LEN + IV_LEN + MAC_LEN; // 76 bytes
+    static constexpr size_t MAC_LEN = 32;                                                          // HMAC-SHA256
+    static constexpr size_t HEADER_META_LEN = MAGIC_HEADER_LEN + 4 + SALT_LEN + IV_LEN + MAC_LEN;  // 76 bytes
     static constexpr uint32_t DEFAULT_PBKDF2_ITERATIONS = 100000;
 
     struct CryptoResult {
@@ -35,17 +35,11 @@ public:
         QString errorMessage;
     };
 
-    enum class PasswordStrength {
-        VeryWeak,
-        Weak,
-        Fair,
-        Good,
-        Strong
-    };
+    enum class PasswordStrength { VeryWeak, Weak, Fair, Good, Strong };
 
     struct StrengthResult {
-        PasswordStrength strength;
-        int score; // 0..100
+        PasswordStrength strength = PasswordStrength::Weak;
+        int score = 0;  // 0..100
         QString label;
     };
 
@@ -64,15 +58,16 @@ public:
     static bool constantTimeCompare(const uint8_t *a, const uint8_t *b, size_t length);
 
     // Key derivation: derives 64 bytes (32 bytes AES key + 32 bytes HMAC key)
-    static bool deriveKeys(const QString &passphrase, const uint8_t *salt, size_t saltLen,
-                           uint32_t iterations, uint8_t *aesKey, uint8_t *hmacKey);
+    static bool deriveKeys(const QString &passphrase, const uint8_t *salt, size_t saltLen, uint32_t iterations,
+                           uint8_t *aesKey, uint8_t *hmacKey);
 
     // Low-level AES-256-CBC with PKCS#7 padding
     static QByteArray aes256CbcEncrypt(const QByteArray &plaintext, const uint8_t *key, const uint8_t *iv);
-    static QByteArray aes256CbcDecrypt(const QByteArray &ciphertext, const uint8_t *key, const uint8_t *iv, bool *ok = nullptr);
+    static QByteArray aes256CbcDecrypt(const QByteArray &ciphertext, const uint8_t *key, const uint8_t *iv,
+                                       bool *ok = nullptr);
 
     // HMAC-SHA256
     static QByteArray hmacSha256(const QByteArray &data, const uint8_t *key, size_t keyLen);
 };
 
-#endif // CRYPTOMANAGER_H
+#endif  // CRYPTOMANAGER_H
