@@ -190,10 +190,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     needs: [build]
-    if: >
-      github.repository == 'alsyundawy/NoteSciPad' &&
-      github.event_name == 'push' &&
-      github.ref_type == 'tag'
+    if: |
+      always() && !cancelled() &&
+      (github.repository == 'alsyundawy/SparkNotePad' || github.repository == 'alsyundawy/NoteSciPad') &&
+      (
+        github.ref_type == 'tag' ||
+        github.event_name == 'workflow_dispatch'
+      )
     permissions:
       contents: write
     steps:
@@ -201,12 +204,22 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          fetch-depth: 0
+
+      - name: Resolve Release Tag
+        shell: bash
+        run: |
+          TAG="${{ github.ref_name }}"
+          if [ "${{ github.ref_type }}" != "tag" ]; then
+            TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.1.0")
+          fi
+          echo "Resolved release tag: ${TAG}"
+          echo "RELEASE_TAG=${TAG}" >> "$GITHUB_ENV"
 
       - name: Create or Verify Release
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_TAG: ${{ github.ref_name }}
         run: |
           gh release view "$RELEASE_TAG" >/dev/null 2>&1 || \
           gh release create "$RELEASE_TAG" \
@@ -224,7 +237,6 @@ jobs:
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_TAG: ${{ github.ref_name }}
         run: |
           echo "=== Downloaded artifact directories ==="
           ls -la
@@ -249,7 +261,6 @@ jobs:
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_TAG: ${{ github.ref_name }}
         run: |
           for pkg in $(find . -name "*.deb" -o -name "*.rpm"); do
             echo "Uploading Linux package: ${pkg}"
@@ -260,7 +271,6 @@ jobs:
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_TAG: ${{ github.ref_name }}
         run: |
           if [ -f "scripts/NoteSciPad-Default-Editor.sh" ]; then
             echo "Uploading scripts/NoteSciPad-Default-Editor.sh to release ${RELEASE_TAG}"
