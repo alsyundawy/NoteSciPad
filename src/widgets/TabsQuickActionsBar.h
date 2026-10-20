@@ -48,6 +48,7 @@ signals:
 
     void visibileButtonsChanged(const TabsQuickActionsBar::Buttons &visibileButtons);
 
+public:
     explicit inline TabsQuickActionsBar(QWidget *parent = nullptr) : TabsQuickActionsBar(Button::All, parent) {}
     explicit TabsQuickActionsBar(const Buttons &visibileButtons = Button::All, QWidget *parent = nullptr);
     virtual ~TabsQuickActionsBar() = default;
