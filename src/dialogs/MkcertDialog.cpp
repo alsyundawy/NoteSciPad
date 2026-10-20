@@ -22,6 +22,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QProcess>
+#include <QRegularExpression>
 #include <QPushButton>
 #include <QStandardPaths>
 #include <QTextEdit>
@@ -115,11 +116,16 @@ MkcertDialog::MkcertDialog(QWidget *parent) : QDialog(parent) {
 }
 
 void MkcertDialog::applyTheme() {
-    const ThemePalette &palette = ThemeManager::instance()->currentPalette();
-    QString bgColor = palette.background;
-    QString fgColor = palette.foreground;
-    QString cardBg = palette.card;
-    QString borderColor = palette.border;
+    const ThemePalette *palette = ThemeManager::instance()->currentPalette();
+    bool dark = ThemeManager::instance()->isDarkActive();
+    QString bgColor =
+        palette ? QString::fromLatin1(palette->win) : (dark ? QStringLiteral("#1e1e1e") : QStringLiteral("#f6f8fa"));
+    QString fgColor =
+        palette ? QString::fromLatin1(palette->txtPri) : (dark ? QStringLiteral("#e0e0e0") : QStringLiteral("#24292f"));
+    QString cardBg =
+        palette ? QString::fromLatin1(palette->card) : (dark ? QStringLiteral("#252526") : QStringLiteral("#ffffff"));
+    QString borderColor =
+        palette ? QString::fromLatin1(palette->border) : (dark ? QStringLiteral("#33373e") : QStringLiteral("#d0d7de"));
 
     setStyleSheet(QString("QDialog { background-color: %1; color: %2; }"
                           "QLineEdit { background-color: %3; color: %2; border: 1px solid %4; border-radius: 6px; "
