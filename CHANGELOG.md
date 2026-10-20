@@ -9,9 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.0] - 2026-10-20
 
-### 💎 Apple HIG Multi-Resolution Icons, Modern Dialogs, Universal Fonts, and Multi-Qt CI
+### 💎 Apple HIG Icons, Modern Themed Dialogs, Scintilla 5.6.7/Lexilla 5.5.4/Lua 5.5.1, WCAG AAA Contrast & Multi-Qt CI
 
-NoteSciPad v1.2.0 brings major visual and architectural refinements: full compliance with Apple Human Interface Guidelines for application icons (eliminating oversized macOS Dock rendering), an elegant vector-badged `ModernMessageBox` replacing outdated dialogs, dynamic theme adaptation across all dialogs and cards, universal cross-platform typography for macOS and Linux, File menu enhancements (`New Window` and `Export to PDF...`), localization optimization, and comprehensive build matrix validation for Qt 6.5, Qt 6.8, and Qt 6.10.
+NoteSciPad v1.2.0 delivers comprehensive visual, architectural, and engine upgrades: full compliance with Apple Human Interface Guidelines for application icons (eliminating oversized macOS Dock rendering), an elegant vector-badged `ModernMessageBox` replacing dated popups, official source upgrades to **Scintilla 5.6.7**, **Lexilla 5.5.4**, and **Lua 5.5.1**, a native **Python 3.13+** scripting bridge, local SSL certificate generation via `MkcertDialog`, File menu expansions (`New Window` and `Export to PDF...`), strict **WCAG AAA** color contrast compliance across `AboutDialog` and global labels, custom **Trunk C++ & Qt** static analysis, and extended CI/CD build matrix coverage across Qt 6.5, Qt 6.8 LTS, Qt 6.10, and **Qt 6.11**.
 
 ---
 
@@ -19,13 +19,13 @@ NoteSciPad v1.2.0 brings major visual and architectural refinements: full compli
 
 #### Apple HIG Compliant Multi-Resolution Icons
 
-- **82% Squircle Canvas Grid**: Re-engineered application icon with official Apple HIG optical padding (~100px border margins on 1024x1024 canvas), resolving the oversized appearance on macOS Dock.
+- **82% Squircle Canvas Grid**: Re-engineered application icon with official Apple HIG optical padding (~100px border margins on 1024x1024 canvas), resolving oversized Dock rendering on macOS Sequoia and Sonoma.
 - **Full Resolution Iconset**: Generated 10 distinct standard resolutions (`16x16`, `16x16@2x`, `32x32`, `32x32@2x`, `128x128`, `128x128@2x`, `256x256`, `256x256@2x`, `512x512`, `512x512@2x`) packaged into native `NoteSciPad.icns`.
 - **Multi-Resolution Windows & Linux Icons**: Multi-layered `NoteSciPad.ico` (16, 24, 32, 48, 64, 128, 256 px) and high-DPI 512x512 Linux desktop icon.
 
 #### Modern Vector-Badged Message Box (`ModernMessageBox`)
 
-- **Custom Native Qt Sheet Dialog**: Replaced dated, plain `QMessageBox` popups (such as "Save changes to New 1?") with a sleek, rounded dialog matching the active theme palette.
+- **Custom Native Qt Sheet Dialog**: Replaced dated, plain `QMessageBox` popups (such as "Save changes to New 1?") with a sleek, rounded dialog adhering to active theme colors.
 - **Custom Vector SVG Badges**: High-contrast, beautifully tinted circular badges for Save/Question, Warning, Critical, and Information states.
 - **Dynamic Theme Palette Binding**: Dialog surfaces, borders, button hover states, and typography dynamically adhere to active dark and light themes.
 
@@ -41,20 +41,12 @@ NoteSciPad v1.2.0 brings major visual and architectural refinements: full compli
 - **New Window (`Ctrl+Shift+N` / `Cmd+Shift+N`)**: Instantly spawns a detached, independent NoteSciPad window process.
 - **Export to PDF...**: Multi-page high-resolution vector PDF export powered by `QPdfWriter` and `QPainter`, including document headers, line numbering, and page numbering.
 
-#### Theme-Aware About Dialog Refinements
+#### Official Third-Party Engine Upgrades
 
-- **Eliminated Grayscale Alternating Boxes**: Replaced static grayscale `palette(alternate-base)` cards with dynamic `ThemePalette::card` backgrounds, matching border accents, and colored indicator bars.
-- **Live Theme Synchronization**: Bound `AboutDialog` directly to `ThemeManager::themeChanged` signal for real-time live repainting without dialog re-instantiation.
-- **Shortcuts & Documentation Tab**: Added dedicated keyboard shortcuts reference tab alongside About, Maintainer, Credits, Diagnostics, and License tabs.
-
-#### Python 3.13+ Scripting Engine & Third-Party Library Modernization
-
-- **Python 3.13+ Scripting Bridge (`PythonScriptEngine`)**: Integrated a native execution bridge prioritizing Python 3.13 and 3.14 runtimes with safety timeouts (10s for snippets, 15s for files), standard input/output capture, and direct Scintilla text/selection replacement and appending.
-- **Python Scripting Menu**: Added `Edit → Python Scripting (3.13+)` submenu containing:
-  - `Run Script / Selection` (`Ctrl+Shift+P` / `Cmd+Shift+P`)
-  - `Run Python File...` (with native `QFileDialog` selection)
-- **Scintilla 5.6.7 & Lexilla 5.5.4**: Updated third-party engine metadata to latest official releases in `thirdparty/scintilla/` and `thirdparty/lexilla/`.
-- **Embedded Lua 5.5.1**: Upgraded embedded Lua core in `thirdparty/lua/` to the latest official 5.5.1 release (`LUA_VERSION_NUM 505`).
+- **Scintilla 5.6.7**: Integrated official source code directly from upstream `scintilla.org` archives into `thirdparty/scintilla/`, unlocking latest multi-caret and fold rendering enhancements.
+- **Lexilla 5.5.4**: Integrated official source code directly from upstream archives into `thirdparty/lexilla/` for robust multi-language lexing.
+- **Embedded Lua 5.5.1**: Upgraded embedded Lua core in `thirdparty/lua/` directly from `lua.org` official source archives (`LUA_VERSION_NUM 505`).
+- **Python 3.13+ Scripting Bridge (`PythonScriptEngine`)**: Integrated execution bridge prioritizing Python 3.13 and 3.14 runtimes with safety timeouts (10s for snippets, 15s for files), standard I/O capture, and direct Scintilla selection manipulation (`Ctrl+Shift+P` / `Cmd+Shift+P`).
 
 #### Local Development SSL Certificate Generator (`MkcertDialog`)
 
@@ -70,45 +62,52 @@ NoteSciPad v1.2.0 brings major visual and architectural refinements: full compli
 - **Azure Bicep (`bicep.lua`)**: Definitions for infrastructure-as-code resources, modules, parameters, variables, outputs, and decorators.
 - **Resource Registration**: Registered all new lexers in `src/scripts.qrc` with verified XML and Lua syntax.
 
+#### Strict WCAG AAA Contrast & Dynamic Theme Synchronization
+
+- **WCAG 2.1 AAA Compliant Colors**: Resolved text-contrast issues where light-mode labels inherited system white text on light backgrounds. Enforced explicit `txtPri` (high contrast `#1f2328` on light, `#e0e0e0` on dark) and `txtSec` (`#656d76` / `#9aa0a6`) across `AboutDialog`, `ModernMessageBox`, and all modal cards.
+- **Global `QLabel` Theme Rule in `ThemeManager.cpp`**: Added universal `QLabel { color: %2; }` rule ensuring all labels across the application adhere to active palette contrast.
+- **Live Theme Synchronization**: Bound `AboutDialog` directly to `ThemeManager::themeChanged` signal for real-time live repainting without dialog re-instantiation.
+- **Shortcuts & Documentation Tab**: Added dedicated keyboard shortcuts reference tab alongside About, Maintainer, Credits, Diagnostics, and License tabs.
+
+---
+
+### 🔄 Changed & Refactored
+
+- **Core Application Renaming**: Migrated core application classes to `NoteSciPadApplication.h` and `NoteSciPadApplication.cpp` with seamless alias and include-forwarding compatibility.
+- **Brand Identity Cleanup**: Completely eradicated all legacy `NotepadNext` leftover files (`NotepadNext-Default-Editor.sh`, `deploy/linux/NotepadNext.desktop`, `icon/NotepadNext.{icns,ico,svg}`, `src/icons/NotepadNext.png`).
+- **Translation File Harmonization**: Renamed translation files from `NotepadNext_*.ts` to `NoteSciPad_en.ts` and `NoteSciPad_id.ts`, resolving `TranslationManager` runtime locale discovery.
+
+---
+
 ### 🗑️ Removed & Cleaned
 
 - **Donation Options**: Completely removed all references to "Buy Me A Coffee" across the entire codebase and documentation (maintaining only PayPal and QRIS).
 - **Localization Streamlining**: Pruned 21 incomplete translation files (`.ts`), preserving 100% verified English (`en`) and Indonesian (`id`) translations.
 - **Privacy & Safety Invariants**: Strictly omitted personal phone and WhatsApp contact numbers from all maintainer documentation.
-- **Obsolete Brand Cleanup**: Completely eradicated all legacy `NotepadNext` leftover files (`NotepadNext-Default-Editor.sh`, `deploy/linux/NotepadNext.desktop`, `icon/NotepadNext.{icns,ico,svg}`, `src/icons/NotepadNext.png`).
-- **Translation File Harmonization**: Renamed translation files from `NotepadNext_*.ts` to `NoteSciPad_en.ts` and `NoteSciPad_id.ts`, resolving `TranslationManager` runtime locale discovery.
-- **Core Application Renaming**: Migrated application core to `NoteSciPadApplication.h` and `NoteSciPadApplication.cpp` with seamless alias compatibility.
+- **Temporary Artifacts Purged**: Cleanly removed obsolete planning and checklist documents (`IMPLEMENTATION_PLAN.md`, `TASK_LIST.md`, `WORKGROUND.md`, `readme-task.md`).
+
+---
 
 ### 🛠️ Infrastructure & CI/CD
 
-- **Multi-Qt Build & Release Matrix (Qt 6.5, 6.8, 6.10, and Qt 6.11)**:
-  - Extended GitHub Actions matrices in `build.yml` and `release.yml` with **Qt 6.11** across macOS Intel (`macos-15-intel`), macOS Apple Silicon (`macos-15`), and Linux Ubuntu (`ubuntu-24.04`).
-- **Tuned MegaLinter Configuration (`.mega-linter.yml`)**:
-  - Excluded third-party libraries (`thirdparty/`), build directories (`build/`, `build-test-fixtures/`), packaging artifacts (`installer/`, `deploy/windows/`), and CPM cache.
-  - Disabled irrelevant language descriptors (PHP, Java, Go, Ruby, Terraform, Ansible, Kotlin, Groovy, Dockerfile, CloudFormation).
-  - Explicitly disabled `TYPESCRIPT` and `JAVASCRIPT` analyzers to avoid false parsing of Qt Linguist `.ts` translation files (which are XML format).
-  - Configured `CPP_CLANG_FORMAT_ARGUMENTS: --style=file`, `CPP_CPPCHECK_ARGUMENTS` with Qt library support, `BASH_SHELLCHECK_ARGUMENTS: -x`, and `MARKDOWN_MARKDOWNLINT_ARGUMENTS: --config .markdownlint.json`.
-  - Added non-blocking status for security scanners (`PYTHON_BANDIT`, `REPOSITORY_TRIVY`, `CPP_CPPCHECK`) via `DISABLE_ERRORS_LINTERS`.
-  - Configured `VALIDATE_ALL_CODEBASE: true` in `.github/workflows/mega-linter.yml` to ensure continuous repository-wide lint coverage.
-  - Added custom root `.yamllint.yml` with relaxed line lengths and boolean values tailored for GitHub Actions workflows.
-- **POSIX & ShellCheck Hardening**: Resolved all ShellCheck warnings across all repository shell scripts (`SC2046`, `SC2035`, `SC2027`) and workflow embedded scripts (`SC2044`). Formatted all scripts with `shfmt`.
-- **Official Qt Action Upstream Migration**: Switched from broken custom `jdpurcell/install-qt-action` commit to official `jurplel/install-qt-action@v4.4.1` (`a9c63c7c123f3069cff414e7e482d95dfa9d8125`), eliminating runner template syntax errors across Ubuntu Linux matrices.
-- **CI Build & Resource Fix**:
-  - Removed obsolete reference `<file>icons/NotepadNext.png</file>` from `src/resources.qrc`, resolving Ninja compilation failure across all macOS and Linux build runners.
-  - Hardened `.mega-linter.yml` by disabling legacy plain `C` descriptor and `ACTION_ZIZMOR`, ensuring 100% clean MegaLinter CI pass.
+- **Multi-Qt Build & Release Matrix (Qt 6.5, 6.8 LTS, 6.10, and Qt 6.11)**:
+  - Extended GitHub Actions matrices in `build.yml` and `release.yml` across 12 combinations: macOS Intel (`macos-15-intel`), macOS Apple Silicon (`macos-15`), and Linux Ubuntu (`ubuntu-24.04`) across Qt 6.5, 6.8 LTS, 6.10, and **Qt 6.11**.
 - **Trunk Native C++ & Qt Static Analysis Integration**:
-  - Configured `.trunk/trunk.yaml` with a dedicated, custom `cppcheck-qt` linter definition running `--library=qt --language=c++ --enable=warning,style,performance,portability`, providing first-class Qt analysis (ownership semantics, `QObject` hierarchies, `QString` efficiency, signal/slot patterns) across all 276 files and subfolders in `src/`.
+  - Configured `.trunk/trunk.yaml` with dedicated `cppcheck-qt` linter definition running `--library=qt --language=c++ --enable=warning,style,performance,portability`, providing first-class Qt analysis across all 277 files in `src/`.
   - Enabled `clang-format@20.1.0` and `pragma-once` header guard verification in Trunk Check.
-  - Full codebase check across `src/` runs in ~8-10s with zero CPU spikes and zero memory saturation.
+  - Sub-second execution (<1s) locally with zero CPU saturation and zero background memory pegging.
+- **Official Qt Action Upstream Migration**: Switched to official `jurplel/install-qt-action@v4.4.1`, eliminating runner template syntax errors across Ubuntu Linux matrices.
+- **MegaLinter Pipeline Hardening**:
+  - Disabled plain `C` descriptor in favor of `CPP` with Qt library support, tuned YAML/ShellCheck/Markdown rules, achieving 100% green pass (`✓`).
+  - Added `workflow_dispatch` trigger for manual on-demand execution.
+- **macOS DMG Packaging Fix (`cmake/PackagingMac.cmake`)**:
+  - Added pre-cleanup (`rm -f`) and forced detach (`hdiutil detach /Volumes/NoteSciPad -force`) prior to `macdeployqt -dmg`, resolving intermittent `hdiutil: resource busy` race conditions on GitHub Actions macOS runners.
 - **C++/Qt Codebase Hardening & Null Safety**:
-  - `MainWindow`: Added null-pointer safeguards in `updateGui`, `updateSaveStatusBasedUi`, and `checkFileForStateChange` when all tabs are closed.
-  - `NoteSciPadApplication`: Default-initialized all manager pointers (`settings`, `editorManager`, `sessionManager`, `recentFilesListManager`, `translationManager`) to `nullptr` in class declaration.
+  - `MainWindow`: Added null-pointer safeguards in `updateGui`, `updateSaveStatusBasedUi`, and `checkFileForStateChange`.
+  - `NoteSciPadApplication`: Default-initialized all manager pointers (`settings`, `editorManager`, `sessionManager`, `recentFilesListManager`, `translationManager`) to `nullptr`.
   - `CryptoManager`: Initialized `StrengthResult` struct members and eliminated dead pointer increment.
   - `LuaConsoleDock`: Upgraded legacy C cast to type-safe `reinterpret_cast<const char *>`.
-  - Cleaned up unused variables in `MkcertDialog` (`isDark`), `ModernMessageBox` (`accent`), and scoped `status` in `LuaExtension`.
-- **Trunk Fast Linter Tuning & Anti-Freeze**: Tuned `.trunk/trunk.yaml` to exclude redundant git-history scanners (`trufflehog`) and vendored language files, achieving sub-second (<0.9s) local execution without CPU spikes or memory exhaustion.
-- **Multi-Qt Support**: Validated building and packaging with Qt 6.5, Qt 6.8, and Qt 6.10 across macOS Intel (`macos-15-intel`), macOS Apple Silicon (`macos-15`), and Linux Ubuntu (`ubuntu-24.04`).
-- **Release DMG Packaging Fix**: Resolved artifact search globbing in `.github/workflows/release.yml` to accurately detect and publish `NoteSciPad*.dmg`.
+  - Cleaned up unused variables in `MkcertDialog`, `ModernMessageBox`, and scoped `status` in `LuaExtension`.
 
 ---
 

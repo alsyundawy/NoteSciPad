@@ -8,15 +8,15 @@
 
 <p align="center">
   <b>Independent, Ultra-Lightweight & High-Performance Text & Source Code Editor</b><br>
-  <i>Powered natively by Vendored Scintilla 5.5.4 & Lexilla 5.4.3 Engines with Modern Qt 6</i>
+  <i>Powered natively by Vendored Scintilla 5.6.7 & Lexilla 5.5.4 Engines with Modern Qt 6</i>
 </p>
 
 <p align="center">
   <a href="https://github.com/alsyundawy/NoteSciPad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.2.0-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.2.0"></a>
   <a href="https://apple.com/macos"><img src="https://img.shields.io/badge/Platform-macOS%20Sequoia%20%7C%20Sonoma%20%7C%20Linux-000000?style=for-the-badge&logo=apple&logoColor=white" alt="Supported Platforms"></a>
   <a href="https://isocpp.org"><img src="https://img.shields.io/badge/Standard-ISO%20C%2B%2B20-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="C++20 Standard"></a>
-  <a href="https://qt.io"><img src="https://img.shields.io/badge/Framework-Qt%206.5%20%7C%206.8%20%7C%206.10-41CD52?style=for-the-badge&logo=qt&logoColor=white" alt="Qt Framework"></a>
-  <a href="https://www.scintilla.org"><img src="https://img.shields.io/badge/Engine-Scintilla%205.5.4%20%2B%20Lexilla%205.4.3-8957e5?style=for-the-badge" alt="Scintilla + Lexilla"></a>
+  <a href="https://qt.io"><img src="https://img.shields.io/badge/Framework-Qt%206.5%20%7C%206.8%20%7C%206.10%20%7C%206.11-41CD52?style=for-the-badge&logo=qt&logoColor=white" alt="Qt Framework"></a>
+  <a href="https://www.scintilla.org"><img src="https://img.shields.io/badge/Engine-Scintilla%205.6.7%20%2B%20Lexilla%205.5.4-8957e5?style=for-the-badge" alt="Scintilla + Lexilla"></a>
   <a href="https://github.com/alsyundawy/NoteSciPad/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-GPL--3.0-blue?style=for-the-badge" alt="GPL-3.0 License"></a>
   <a href="https://github.com/alsyundawy/NoteSciPad/actions"><img src="https://img.shields.io/badge/CI%2FCD-100%25%20Passing-success?style=for-the-badge&logo=githubactions&logoColor=white" alt="CI/CD Status"></a>
 </p>
@@ -60,7 +60,7 @@
 > ### ⚠️ Architectural Heritage, Engine Invariants & Legal Notice
 >
 > **Core Editing Invariant**<br>
-> NoteSciPad is strictly bound to its vendored **Scintilla 5.5.4** and **Lexilla 5.4.3** core engines (`src/ScintillaNext.h`). NoteSciPad will never replace, swap, or abstract away its native Scintilla engine for web runtimes or generic text controls.
+> NoteSciPad is strictly bound to its vendored **Scintilla 5.6.7** and **Lexilla 5.5.4** core engines (`src/ScintillaNext.h`). NoteSciPad will never replace, swap, or abstract away its native Scintilla engine for web runtimes or generic text controls.
 >
 > **Independent Open-Source Lineage**<br>
 > NoteSciPad builds upon architectural ideas from historical open-source projects including NotepadNext (Justin Dailey), Notepad4 (Zufu Liu), and Notepad3 (Rizonesoft), modernized and re-engineered with native C++20, Qt 6, AES-256 security hardening, and decoupled CI/CD automation.
@@ -145,8 +145,8 @@ Andromeda    Nightfox     Cobalt2       Alabaster    Tomorrow
 │                                                                        │
 │  ┌───────────────────────┐  ┌───────────────────────────────────────┐  │
 │  │   UI & Dock System    │  │       ScintillaNext (Core View)       │  │
-│  │   (Qt 6 Widgets / ADS)│  │   - Scintilla 5.5.4 (Vendored)        │  │
-│  └───────────┬───────────┘  │   - Lexilla 5.4.3 (Vendored)          │  │
+│  │   (Qt 6 Widgets / ADS)│  │   - Scintilla 5.6.7 (Vendored)        │  │
+│  └───────────┬───────────┘  │   - Lexilla 5.5.4 (Vendored)          │  │
 │              │              └───────────────────┬───────────────────┘  │
 │              ▼                                  ▼                      │
 │  ┌──────────────────────────────────────────────────────────────────┐  │
@@ -224,15 +224,19 @@ trunk check -n -j 2
 
 For the complete chronological release history, see [CHANGELOG.md](CHANGELOG.md).
 
-### [v1.2.0] — UI/UX Polish, Apple HIG Icons, Modern Dialogs & Multi-Qt Release (2026-10-20)
+### [v1.2.0] — UI/UX Polish, Apple HIG Icons, Engine Upgrades, WCAG AAA Contrast & Multi-Qt Release (2026-10-20)
 
+- **Official Engine Upgrades**: Vendored Scintilla upgraded to **5.6.7**, Lexilla to **5.5.4**, and Lua core to **5.5.1** from official upstream source archives.
+- **Python 3.13+ Scripting Bridge**: Built-in runtime bridge with timeout safeguards (`Ctrl+Shift+P` / `Cmd+Shift+P`).
+- **Development SSL Certificate Generator (`MkcertDialog`)**: One-click local certificate generation (`Ctrl+Alt+C`) with mkcert and OpenSSL.
 - **Apple HIG Multi-Size Icons**: Redesigned official app icon with 82% squircle grid and optical padding (16x16 to 1024x1024) to eliminate oversized macOS Dock display.
-- **Modern Message Box**: Replaced plain legacy message dialogs with sleek vector-badged `ModernMessageBox` adhering to active theme colors.
+- **Modern Themed Dialogs (`ModernMessageBox`)**: Replaced plain legacy message popups with sleek vector-badged dialogs adhering to active theme colors.
+- **Strict WCAG AAA Color Contrast**: Resolved text-contrast issues across light and dark modes in `AboutDialog` and global `QLabel` rules.
 - **Universal Cross-Platform Typography**: Unified GUI fonts across macOS (`-apple-system`/`SF Pro Text`) and Linux (`Inter`/`Ubuntu`/`Roboto`).
-- **Dynamic Theme-Aware About Dialog**: Rich 6-tab About dialog adapting live to all 75 dark & light theme palettes.
-- **File Menu Enhancements**: Added `New Window` (Ctrl/Cmd+Shift+N) and native multi-page `Export to PDF...`.
-- **Streamlined Localizations**: Purged untranslated legacy `.ts` files, maintaining 100% complete English and Indonesian (`id`) translations.
-- **Multi-Qt Build Matrix**: Comprehensive support and testing for Qt 6.5, Qt 6.8, and Qt 6.10 across macOS and Linux.
+- **File Menu Enhancements**: Added `New Window` (`Ctrl/Cmd+Shift+N`) and native vector `Export to PDF...`.
+- **Trending Lexers**: Added Kotlin 2.x, GraphQL, WebAssembly Text (WAT), and Azure Bicep.
+- **Trunk Native C++ & Qt Linter**: Integrated custom `cppcheck-qt` (`--library=qt --language=c++`), `clang-format@20.1.0`, and `pragma-once`.
+- **Multi-Qt Build Matrix**: Full 12-target validation across Qt 6.5, Qt 6.8 LTS, Qt 6.10, and Qt 6.11 on macOS and Linux.
 
 ### [v1.1.0] — Production Release (2026-10-19)
 
