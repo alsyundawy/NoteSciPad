@@ -83,10 +83,10 @@ TransparentWindowManager::TransparencyMode TransparentWindowManager::mode() cons
     return m_mode;
 }
 
-void TransparentWindowManager::setMode(TransparencyMode mode)
+void TransparentWindowManager::setMode(TransparencyMode targetMode)
 {
-    if (m_mode != mode) {
-        m_mode = mode;
+    if (m_mode != targetMode) {
+        m_mode = targetMode;
         if (m_enabled) {
             applyOpacity();
         }

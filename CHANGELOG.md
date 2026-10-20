@@ -32,6 +32,23 @@ NoteSciPad v1.1.0 introduces the complete 75-theme collection adapted from Subne
 
 ### ✨ Added
 
+#### Official Thirdparty Engine Modernization (Scintilla 5.6.7, Lexilla 5.5.4, Lua 5.5.1)
+
+- **Scintilla 5.6.7**: Integrated upstream Scintilla release from the main branch into `thirdparty/scintilla/`, providing enhanced multi-caret editing, scroll optimization, and sub-millisecond line navigation.
+- **Lexilla 5.5.4**: Integrated upstream Lexilla release into `thirdparty/lexilla/` for robust multi-language lexing.
+- **Lua 5.5.1 / 5.4.7**: Upgraded embedded Lua core in `thirdparty/lua/` directly from upstream source archives.
+
+#### Native UI Divider & Tab Border Restoration
+
+- **Toolbar Dividing Line Restoration**: Added `border-bottom: 1px solid %3;` and refined padding to `QToolBar` in `src/features/ThemeManager.cpp`, restoring the clean horizontal separation line between toolbar and editor tabs.
+- **Classic Tab Top Border Color Restoration**: Restored classic soft peach (`rgb(255, 202, 176)`) active tab top border and orange focus top border matching `npp.css`, stripping out unwanted blue accent line from `ads--CDockWidgetTab`.
+
+#### Comprehensive 13-Pillar Code Quality Audit
+
+- **Signal Disconnect Safety**: Fixed signal disconnect bug on editor switch in `QuickFindWidget::setEditor(ScintillaNext *newEditor)` where previously `disconnect` was invoked on the new editor instead of `this->editor`.
+- **Parameter Shadowing Elimination**: Eliminated parameter shadows in `ReleaseManager` (`currentVersionStr`), `TransparentWindowManager` (`targetMode`), and `QuickFindWidget` (`newEditor`).
+- **Const Pointer Correctness**: Enforced pointer constness on `ScreenDisplayManager` (`activeScreen`, `primary`, `scr`) and `ReleaseManager` (`btnDownload`).
+
 #### Official Application Icon & Attribution
 
 - **Icon Design by Lon McGregor**: NoteSciPad's official application icon has been adapted from the celebrated open-source artwork by Lon McGregor ([`LonMcGregor/NotepadPlusPlusIcons`](https://github.com/LonMcGregor/NotepadPlusPlusIcons)), honoring open-source iconography heritage across macOS (`.icns`), Windows (`.ico`), and Linux desktop environments (`.png`).

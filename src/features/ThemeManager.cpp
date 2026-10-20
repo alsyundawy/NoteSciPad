@@ -280,7 +280,9 @@ ads--CDockWidgetTab:hover[activeTab="false"] {
 }
 ads--CDockWidgetTab[activeTab="true"] {
     background: %5;
-    border-top: 3px solid %6;
+    border-left: 1px solid %3;
+    border-right: 1px solid %3;
+    border-top: 4px solid rgb(255, 202, 176);
     padding-bottom: 3px;
     margin-top: 0px;
 }
@@ -290,7 +292,9 @@ ads--CDockWidgetTab[activeTab="true"] ads--CElidingLabel {
 }
 ads--CDockWidgetTab[focused="true"] {
     background: %5;
-    border-top: 3px solid %6;
+    border-left: 1px solid %3;
+    border-right: 1px solid %3;
+    border-top: 4px solid orange;
 }
 ads--CDockAreaTitleBar {
     background: %1;
@@ -319,6 +323,18 @@ ads--CDockAreaTitleBar {
     border-bottom: 3px solid %6;
     background: %1;
     color: %2;
+}
+QToolBar {
+    background: %1;
+    border: none;
+    border-bottom: 1px solid %3;
+    spacing: 1px;
+    padding: 2px 4px;
+}
+QToolBar::separator {
+    background: %3;
+    width: 1px;
+    margin: 4px 2px;
 }
 QToolBar QToolButton {
     background: transparent;

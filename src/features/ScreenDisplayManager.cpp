@@ -246,7 +246,7 @@ qreal ScreenDisplayManager::currentDevicePixelRatio(const QWidget *window) const
 {
     if (window)
         return window->devicePixelRatio();
-    QScreen *primary = QGuiApplication::primaryScreen();
+    const QScreen *primary = QGuiApplication::primaryScreen();
     return primary ? primary->devicePixelRatio() : 1.0;
 }
 
@@ -254,14 +254,14 @@ QList<DisplayInfo> ScreenDisplayManager::getConnectedDisplaysInfo(const QWidget 
 {
     QList<DisplayInfo> list;
     const auto screens = QGuiApplication::screens();
-    QScreen *activeScreen = window ? window->screen() : nullptr;
+    const QScreen *activeScreen = window ? window->screen() : nullptr;
     if (!activeScreen && window) {
         activeScreen = QGuiApplication::screenAt(window->geometry().center());
     }
-    QScreen *primary = QGuiApplication::primaryScreen();
+    const QScreen *primary = QGuiApplication::primaryScreen();
 
     for (int i = 0; i < screens.size(); ++i) {
-        QScreen *scr = screens.at(i);
+        const QScreen *scr = screens.at(i);
         DisplayInfo info;
         info.index = i + 1;
         info.name = scr->name();

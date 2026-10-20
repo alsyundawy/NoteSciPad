@@ -29,6 +29,8 @@ Key milestones achieved in this release:
 4. **Inline Mathematical Expression Evaluation (`Ctrl+Shift+E` / `Cmd+Shift+E`)**: Instant calculation of mathematical formulas in selection or current line with append or replace options, supporting trigonometric, logarithmic, root, and power functions.
 5. **Official Application Icon & Attribution**: Adapted from the celebrated icon design by Lon McGregor ([](https://github.com/LonMcGregor/NotepadPlusPlusIcons)), honoring open-source iconography heritage.
 6. **7 Trending Language Lexers**: First-class syntax highlighting definitions for Mojo (`.mojo`), Solidity (`.sol`), Julia (`.jl`), Dockerfile (`Dockerfile`), Terraform (`.tf`), Protobuf (`.proto`), and Mermaid (`.mermaid`).
+7. **Official Thirdparty Engine Modernization**: Successfully retrieved, merged, and integrated Scintilla 5.6.7, Lexilla 5.5.4, and Lua 5.5.1 from the primary upstream branch, elevating code editing performance, syntax tokenization, and embedded Lua scripting fidelity.
+8. **Native Dark/Light Mode Streamlining & UI Polish**: Simplified ThemeManager to dedicated native Dark and Light modes without thirdparty theme catalog overhead; restored toolbar horizontal divider (`border-bottom: 1px solid %3;`), classic soft peach (`rgb(255, 202, 176)`) active tab top borders, and orange focus top borders.
 
 ---
 
@@ -170,6 +172,7 @@ Detailed metrics recorded in [`doc/COLOR_STANDARDS_AND_ACCESSIBILITY.md`](file:/
 | **ADR-024** | WCAG 2.1 AA/AAA Color Palette Standards      | Color token verification and Scintilla BGR endianness abstraction.        |
 | **ADR-025** | 13-Pillar Production Code Review Engine      | Systematic verification across 13 engineering pillars for all releases.   |
 | **ADR-026** | Native Dark and Light Mode Simplification    | Streamlined ThemeManager to dedicated Dark/Light modes with zero emojis.  |
+| **ADR-027** | Upstream Thirdparty Upgrade & UI Divider     | Merged Scintilla 5.6.7/Lexilla 5.5.4, restored toolbar divider & tabs.    |
 
 ---
 

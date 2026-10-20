@@ -36,7 +36,7 @@ public:
 
     void checkForUpdates(QWidget *parent = nullptr, bool silent = false);
     QString currentVersion() const;
-    bool isNewerVersion(const QString &latestVersion, const QString &currentVersion) const;
+    bool isNewerVersion(const QString &latestVersion, const QString &currentVersionStr) const;
 
 signals:
     void updateCheckFinished(bool updateAvailable, const ReleaseInfo &info);

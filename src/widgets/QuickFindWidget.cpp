@@ -61,22 +61,24 @@ QuickFindWidget::~QuickFindWidget()
     delete ui;
 }
 
-void QuickFindWidget::setEditor(ScintillaNext *editor)
+void QuickFindWidget::setEditor(ScintillaNext *newEditor)
 {
     if (this->editor != Q_NULLPTR) {
-        disconnect(editor, &ScintillaNext::resized, this, &QuickFindWidget::positionWidget);
+        disconnect(this->editor, &ScintillaNext::resized, this, &QuickFindWidget::positionWidget);
     }
 
-    connect(editor, &ScintillaNext::resized, this, &QuickFindWidget::positionWidget);
+    if (newEditor != Q_NULLPTR) {
+        connect(newEditor, &ScintillaNext::resized, this, &QuickFindWidget::positionWidget);
+    }
 
-    this->editor = editor;
+    this->editor = newEditor;
 
     if (finder == Q_NULLPTR) {
-        finder = new Finder(editor);
+        finder = new Finder(newEditor);
         finder->options().wrapAround = true; // Always wrap the search
     }
     else {
-        finder->setEditor(editor);
+        finder->setEditor(newEditor);
     }
 
     initializeEditorIndicator();

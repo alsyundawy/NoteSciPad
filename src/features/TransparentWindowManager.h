@@ -40,7 +40,7 @@ public:
     void decreaseOpacity(int delta = 10);
 
     TransparencyMode mode() const;
-    void setMode(TransparencyMode mode);
+    void setMode(TransparencyMode targetMode);
 
     bool isAlwaysOnTop() const;
     void setAlwaysOnTop(bool onTop);
