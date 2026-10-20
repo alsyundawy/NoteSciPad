@@ -151,6 +151,7 @@ qt_add_executable(NoteSciPad
 	utils/CryptoManager.h
 	utils/CryptoManager.cpp
 	utils/CaseConverter.h
+	utils/EditorSelectionIterator.h
 	utils/CaseConverter.cpp
 	utils/FunctionParser.h
 	utils/FunctionParser.cpp

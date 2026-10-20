@@ -75,13 +75,13 @@ bool ThemeManager::isDarkActive() const
 
 const ThemePalette *ThemeManager::currentPalette() const
 {
-    if (!m_currentPaletteId.isEmpty() && m_currentPaletteId != QStringLiteral("defaultLight")) {
+    if (!m_currentPaletteId.isEmpty()) {
         const ThemePalette *p = findThemePaletteById(m_currentPaletteId);
         if (p)
             return p;
     }
     return isDarkActive() ? findThemePaletteById(QStringLiteral("catppuccinMocha"))
-                          : findThemePaletteById(QStringLiteral("catppuccinLatte"));
+                          : findThemePaletteById(QStringLiteral("githubLight"));
 }
 
 void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window)

@@ -360,8 +360,6 @@ void EditorManager::setupEditor(ScintillaNext *editor)
     editor->styleSetFont(STYLE_DEFAULT, settings->fontName().toUtf8().data());
     editor->styleClearAll();
 
-    ThemeManager::instance()->applyThemeToEditor(editor);
-
     editor->styleSetFore(STYLE_LINENUMBER, 0x808080);
     editor->styleSetBack(STYLE_LINENUMBER, 0xE4E4E4);
     editor->styleSetBold(STYLE_LINENUMBER, false);
@@ -374,6 +372,8 @@ void EditorManager::setupEditor(ScintillaNext *editor)
 
     editor->styleSetFore(STYLE_INDENTGUIDE, 0xC0C0C0);
     editor->styleSetBack(STYLE_INDENTGUIDE, 0xFFFFFF);
+
+    ThemeManager::instance()->applyThemeToEditor(editor);
 
     // STYLE_CONTROLCHAR
     // STYLE_CALLTIP

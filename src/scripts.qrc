@@ -95,7 +95,7 @@
         <file>languages/mojo.lua</file>
         <file>languages/solidity.lua</file>
         <file>languages/julia.lua</file>
-        <file>languages/dockerfile.lua</file>
+        <file>languages/docker.lua</file>
         <file>languages/terraform.lua</file>
         <file>languages/protobuf.lua</file>
         <file>languages/mermaid.lua</file>

@@ -118,7 +118,8 @@ void ThemeSwitcherDialog::setupUi()
 void ThemeSwitcherDialog::populateTable(const QString &filterText, int modeFilter)
 {
     m_table->setRowCount(0);
-    QString current = ThemeManager::instance()->currentPaletteId();
+    const ThemePalette *curPal = ThemeManager::instance()->currentPalette();
+    QString activeId = curPal ? QString::fromLatin1(curPal->id) : ThemeManager::instance()->currentPaletteId();
     int selectedRow = -1;
 
     for (size_t i = 0; i < kTotalThemePaletteCount; ++i) {
@@ -169,7 +170,7 @@ void ThemeSwitcherDialog::populateTable(const QString &filterText, int modeFilte
         item3->setIcon(QIcon(pix));
         m_table->setItem(row, 3, item3);
 
-        if (current.compare(QLatin1String(p.id), Qt::CaseInsensitive) == 0) {
+        if (activeId.compare(QLatin1String(p.id), Qt::CaseInsensitive) == 0) {
             selectedRow = row;
         }
     }

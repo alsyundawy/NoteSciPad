@@ -113,6 +113,15 @@ inline const ThemePalette kAllThemePalettes[] = {
 inline constexpr size_t kTotalThemePaletteCount = sizeof(kAllThemePalettes) / sizeof(kAllThemePalettes[0]);
 
 inline const ThemePalette* findThemePaletteById(const QString &id) {
+    if (id.isEmpty()) {
+        return nullptr;
+    }
+    if (id.compare(QLatin1String("defaultLight"), Qt::CaseInsensitive) == 0) {
+        return findThemePaletteById(QStringLiteral("githubLight"));
+    }
+    if (id.compare(QLatin1String("defaultDark"), Qt::CaseInsensitive) == 0) {
+        return findThemePaletteById(QStringLiteral("catppuccinMocha"));
+    }
     for (size_t i = 0; i < kTotalThemePaletteCount; ++i) {
         if (id.compare(QLatin1String(kAllThemePalettes[i].id), Qt::CaseInsensitive) == 0 ||
             id.compare(QLatin1String(kAllThemePalettes[i].displayName), Qt::CaseInsensitive) == 0) {

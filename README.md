@@ -243,6 +243,7 @@ NoteSciPad represents dedicated software engineering honoring its foundational l
 - **Justin Dailey (dail8859)**: Creator of NotepadNext, providing the original Qt scaffolding.
 - **Zufu Liu (zufuliu)**: Creator of Notepad4, providing invaluable architectural patterns.
 - **Rizonesoft**: Creators of Notepad3, inspiring Scintilla power-user text transformations.
+- **Lon McGregor ([LonMcGregor/NotepadPlusPlusIcons](https://github.com/LonMcGregor/NotepadPlusPlusIcons))**: Designer of the iconic icon artwork series, adapted as NoteSciPad's official application icon.
 - **The Qt Project**: Powers NoteSciPad's modern cross-platform interface.
 - **Lead Maintainer**: **Harry Dertin Sutisna Alsyundawy** ([`@alsyundawy`](https://github.com/alsyundawy)).
 

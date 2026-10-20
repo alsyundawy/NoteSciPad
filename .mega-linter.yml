@@ -9,6 +9,7 @@ ADDITIONAL_EXCLUDED_DIRECTORIES:
   - installer
   - deploy/windows
   - .trunk
+  - src/languages
 
 FILTER_REGEX_EXCLUDE: (^thirdparty/|^build/|^build-test-fixtures/|^installer/|libcrypto.*\.dll|libssl.*\.dll)
 

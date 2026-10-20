@@ -186,6 +186,7 @@ QWidget *AboutDialog::createCreditsTab()
            "<li><b>Notepad4:</b> Created by Zufu Liu (zufuliu). Provided invaluable architectural ideas, lexer updates, and utility concepts. (<a href=\'https://github.com/zufuliu/notepad4\'>github.com/zufuliu/notepad4</a>)</li>"
            "<li><b>Notepad3:</b> Created by Rizonesoft and contributors. Inspired Scintilla power-user text transformation patterns and UI polish. (<a href=\'https://www.rizonesoft.com\'>rizonesoft.com</a>)</li>"
            "<li><b>SubnetCalc for macOS:</b> Inspired UI elegance, theme architecture, and release documentation standards. (<a href=\'https://github.com/alsyundawy/SubnetCalc-MacOS\'>github.com/alsyundawy/SubnetCalc-MacOS</a>)</li>"
+           "<li><b>Lon McGregor (NotepadPlusPlusIcons):</b> Designer of the iconic open-source editor and chameleon artwork series, adapted as NoteSciPad\'s official application icon. (<a href=\'https://github.com/LonMcGregor/NotepadPlusPlusIcons\'>github.com/LonMcGregor/NotepadPlusPlusIcons</a>)</li>"
            "<li><b>Qt Project:</b> Developed by The Qt Company and the Qt Open Source Community. (<a href=\'https://www.qt.io\'>qt.io</a>)</li>"
            "<li><b>uchardet:</b> Maintained by Freedesktop. Enables fast universal character encoding detection.</li>"
            "<li><b>Qt Advanced Docking System (ADS):</b> Advanced dock widget management.</li>"

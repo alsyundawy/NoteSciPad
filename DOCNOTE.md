@@ -27,7 +27,8 @@ Key milestones achieved in this release:
 2. **Dedicated Top-Level MenuBar `Themes` Menu & Switcher**: Positioned prominently on the main menu bar, featuring instant filters (Light Themes Only, Dark Themes Only), 25 family submenus, and the interactive `ThemeSwitcherDialog` (`Ctrl+Shift+T` / `Cmd+Shift+T`) with live search and real-time canvas preview.
 3. **Redesigned 5-Tab Modern About Dialog**: Providing a tabbed experience (About, Maintainer Card with complete contact information strictly omitting phone and WhatsApp, Credits & Attribution, Real-Time System Diagnostics with one-click clipboard copy, and Full GPL-3.0 License).
 4. **Inline Mathematical Expression Evaluation (`Ctrl+Shift+E` / `Cmd+Shift+E`)**: Instant calculation of mathematical formulas in selection or current line with append or replace options, supporting trigonometric, logarithmic, root, and power functions.
-5. **7 Trending Language Lexers**: First-class syntax highlighting definitions for Mojo (`.mojo`), Solidity (`.sol`), Julia (`.jl`), Dockerfile (`Dockerfile`), Terraform (`.tf`), Protobuf (`.proto`), and Mermaid (`.mermaid`).
+5. **Official Application Icon & Attribution**: Adapted from the celebrated icon design by Lon McGregor ([](https://github.com/LonMcGregor/NotepadPlusPlusIcons)), honoring open-source iconography heritage.
+6. **7 Trending Language Lexers**: First-class syntax highlighting definitions for Mojo (`.mojo`), Solidity (`.sol`), Julia (`.jl`), Dockerfile (`Dockerfile`), Terraform (`.tf`), Protobuf (`.proto`), and Mermaid (`.mermaid`).
 
 ---
 

@@ -17,6 +17,10 @@ NoteSciPad v1.1.0 introduces the complete 75-theme collection adapted from Subne
 
 ### ✨ Added
 
+#### Official Application Icon & Attribution
+
+- **Icon Design by Lon McGregor**: NoteSciPad's official application icon has been adapted from the celebrated open-source artwork by Lon McGregor ([`LonMcGregor/NotepadPlusPlusIcons`](https://github.com/LonMcGregor/NotepadPlusPlusIcons)), honoring open-source iconography heritage across macOS (`.icns`), Windows (`.ico`), and Linux desktop environments (`.png`).
+
 #### Visual & Theme Engine (75 Themes across 25 Families)
 
 - **75 Theme Palettes**: Extracted and adapted from SubnetCalc-MacOS `ThemeManager.swift` into `ThemePaletteData.h`, providing curated color themes across 25 families (Catppuccin, Dracula, Tokyo Night, Nord, One Dark, Gruvbox, Solarized, GitHub, Monokai, Rosé Pine, Ayu, Kanagawa, Everforest, Night Owl, Material, SynthWave '84, Cyberpunk, Shades of Purple, Poimandres, Horizon, Andromeda, Nightfox, Cobalt2, Alabaster, and Tomorrow).
