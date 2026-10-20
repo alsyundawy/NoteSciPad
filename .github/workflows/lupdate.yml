@@ -40,7 +40,7 @@ jobs:
         run: |
           git config --local user.name "SparkNotePad Automation"
           git config --local user.email "sparknotepad-bot@users.noreply.github.com"
-          git add i18n/NotepadNext_en.ts
+          git add i18n/SparkNotePad_en.ts i18n/SparkNotePad_id.ts
           if git diff --staged --quiet; then
             echo "No translation changes to commit."
           else

@@ -1679,7 +1679,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
 #endif
     connect(actionAccessibilityHelp, &QAction::triggered, this,
             [this]() { AccessibilityManager::instance()->openAccessibilityHelp(this); });
-    ui->menuHelp->insertAction(ui->actionAboutNotepadNext, actionAccessibilityHelp);
+    ui->menuHelp->insertAction(ui->actionAboutSparkNotePad, actionAccessibilityHelp);
 
     // User & Developer Documentation
     QAction *actionUserGuide = new QAction(tr("SparkNotePad &User Guide"), this);
@@ -1689,15 +1689,15 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     actionUserGuide->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_F1));
 #endif
     connect(actionUserGuide, &QAction::triggered, this, &MainWindow::onUserGuideTriggered);
-    ui->menuHelp->insertAction(ui->actionAboutNotepadNext, actionUserGuide);
+    ui->menuHelp->insertAction(ui->actionAboutSparkNotePad, actionUserGuide);
 
     QAction *actionDeveloperGuide = new QAction(tr("SparkNotePad &Developer Guide"), this);
     actionDeveloperGuide->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_F12));
     connect(actionDeveloperGuide, &QAction::triggered, this, &MainWindow::onDeveloperGuideTriggered);
-    ui->menuHelp->insertAction(ui->actionAboutNotepadNext, actionDeveloperGuide);
+    ui->menuHelp->insertAction(ui->actionAboutSparkNotePad, actionDeveloperGuide);
 
-    ui->actionAboutNotepadNext->setShortcut(QKeySequence::HelpContents);
-    connect(ui->actionAboutNotepadNext, &QAction::triggered, this, [this]() {
+    ui->actionAboutSparkNotePad->setShortcut(QKeySequence::HelpContents);
+    connect(ui->actionAboutSparkNotePad, &QAction::triggered, this, [this]() {
         AboutDialog dlg(this);
         dlg.exec();
     });

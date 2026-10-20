@@ -447,7 +447,7 @@
     <addaction name="actionCheckForUpdates"/>
     <addaction name="separator"/>
     <addaction name="actionAboutQt"/>
-    <addaction name="actionAboutNotepadNext"/>
+    <addaction name="actionAboutSparkNotePad"/>
     <addaction name="actionPerformanceDiagnostics"/>
     <addaction name="actionDebugInfo"/>
    </widget>
@@ -1011,7 +1011,7 @@
     <enum>QAction::AboutQtRole</enum>
    </property>
   </action>
-  <action name="actionAboutNotepadNext">
+  <action name="actionAboutSparkNotePad">
    <property name="icon">
     <iconset resource="../resources.qrc">
      <normaloff>:/icons/newfile.png</normaloff>:/icons/newfile.png</iconset>

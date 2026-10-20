@@ -227,7 +227,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     needs: [build]
-    if: >
+    if: |
+      always() && !cancelled() &&
       github.repository == 'alsyundawy/SparkNotePad' &&
       github.event_name == 'push' &&
       github.ref_type == 'tag'
@@ -254,10 +255,8 @@ jobs:
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
 
       - name: Upload Release Assets
-        # For each arch (x64, arm64), upload only the canonical DMG from
-        # the default QT_RELEASE_VER build. The DMG is already named
-        # NotepadNext-v{VERSION}-{arch}.dmg by PackagingMac.cmake, so we
-        # just upload it directly — no extra zip/rename steps needed.
+        # For each arch (x64, arm64), upload the canonical DMG from
+        # the default QT_RELEASE_VER build.
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -269,8 +268,7 @@ jobs:
             dir="SparkNotePad-macOS-${arch}-Qt${QT_RELEASE_VER}"
             echo "Looking for canonical release dir: ${dir}"
             if [ -d "${dir}" ]; then
-              # Find the single DMG produced by PackagingMac.cmake
-              dmg_file=$(find "${dir}" -maxdepth 1 \( -name 'SparkNotePad*.dmg' -o -name 'NotepadNext*.dmg' \) | head -1)
+              dmg_file=$(find "${dir}" -maxdepth 1 -name 'SparkNotePad*.dmg' | head -1)
               if [ -n "${dmg_file}" ]; then
                 echo "Uploading ${dmg_file} → release ${RELEASE_TAG}"
                 gh release upload "${RELEASE_TAG}" "${dmg_file}" --clobber

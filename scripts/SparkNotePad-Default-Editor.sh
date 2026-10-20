@@ -50,7 +50,6 @@ export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${HO
 # ====================== CONFIGURATION ======================
 readonly SCRIPT_VERSION="2.0.0"
 readonly BUNDLE_ID="io.github.alsyundawy.SparkNotePad"
-readonly LEGACY_BUNDLE_ID="io.github.dail8859.NotepadNext"
 readonly APP_NAME="SparkNotePad.app"
 readonly DESKTOP_FILE="SparkNotePad.desktop"
 
@@ -62,8 +61,6 @@ readonly CANDIDATE_APP_PATHS=(
 	"${HOME}/Applications/SparkNotePad-MacOS.app"
 	"$(pwd)/build/${APP_NAME}"
 	"$(pwd)/${APP_NAME}"
-	"/Applications/NotepadNext.app"
-	"${HOME}/Applications/NotepadNext.app"
 )
 
 APP_RESOLVED_PATH=""
@@ -239,18 +236,13 @@ resolve_app() {
 	for p in "${CANDIDATE_APP_PATHS[@]}"; do
 		if [[ -d ${p} ]]; then
 			APP_RESOLVED_PATH="${p}"
-			if [[ ${p} == *"NotepadNext.app"* ]]; then
-				warn "SparkNotePad.app not found; falling back to detected: ${p}"
-				ACTIVE_BUNDLE_ID="${LEGACY_BUNDLE_ID}"
-			else
-				ACTIVE_BUNDLE_ID="${BUNDLE_ID}"
-			fi
+			ACTIVE_BUNDLE_ID="${BUNDLE_ID}"
 			ok "Resolved application: ${APP_RESOLVED_PATH} (${ACTIVE_BUNDLE_ID})"
 			return 0
 		fi
 	done
 
-	err "Neither SparkNotePad.app nor NotepadNext.app was found in candidate paths."
+	err "SparkNotePad.app was not found in candidate paths."
 	err "Please build or install SparkNotePad.app, or pass --app-path /path/to/SparkNotePad.app"
 	exit 1
 }
@@ -424,8 +416,6 @@ audit_status_macos() {
 
 		if [[ ${current} == *"${BUNDLE_ID}"* ]]; then
 			printf "  %b✓%b %-30s → SparkNotePad (%s)\n" "${GREEN}" "${NC}" "${label}" "${current}"
-		elif [[ ${current} == *"${LEGACY_BUNDLE_ID}"* ]]; then
-			printf "  %b⚠%b %-30s → NotepadNext (%s)\n" "${YELLOW}" "${NC}" "${label}" "${current}"
 		else
 			printf "  %b✗%b %-30s → %s\n" "${RED}" "${NC}" "${label}" "${current}"
 		fi
