@@ -46,7 +46,7 @@ The new **ThemeManager** engine provides real-time, dynamic theme switching acro
 
 ## 3. Architecture
 
-```
+```text
                  ┌──────────────────────────────────────────────────┐
                  │                OS System Appearance              │
                  │        (macOS / Linux Color Scheme Event)        │

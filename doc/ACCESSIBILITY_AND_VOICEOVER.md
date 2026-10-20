@@ -44,7 +44,7 @@ Implemented via `AccessibilityManager` and Cocoa `MacServicesHandler`:
 
 ## 3. Architecture & Implementation
 
-```
+```text
                ┌────────────────────────────────────────────────────────┐
                │                  MainWindow & Actions                  │
                │  - Help > Keyboard Shortcuts & Accessibility (Shift+F1)│

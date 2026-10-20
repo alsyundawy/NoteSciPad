@@ -26,6 +26,7 @@
 #include "features/ThemePaletteData.h"
 #include "features/TransparentWindowManager.h"
 
+#include <QAbstractItemView>
 #include <QButtonGroup>
 #include <QFileDialog>
 #include <QMessageBox>

@@ -81,6 +81,11 @@ SparkNotePad **v1.3.0** marks the definitive brand evolution from NoteSciPad int
     - Upgraded `.github/workflows/release.yml` with resilient execution condition (`always() && !cancelled()`), ensuring release assets publish reliably even if macOS runners experience queue delays.
     - Uploaded official `.deb` and `.rpm` packages for Qt 6.5, Qt 6.8 (LTS), and Qt 6.11 directly to GitHub Release `v1.3.0`.
 
+12. **Linux GCC Compatibility & Markdownlint Compliance Across All Branches**:
+    - Added `#include <QAbstractItemView>` in `src/dialogs/PreferencesDialog.cpp`, resolving Linux GCC compilation failure on Ubuntu 24.04 (`invalid use of incomplete type 'class QAbstractItemView'`).
+    - Enforced strict markdownlint compliance across all documentation files (`doc/*.md`, `README.md`, `README-id.md`, `CHANGELOG.md`, `DOCNOTE.md`), adding explicit language identifiers on code fences and standardizing formatting.
+    - Synchronized maintenance branch topology (`main`, `1.3.0`, `develop`, `1.2.0`, `1.1.0`, `1.0.0`) with manual workflow dispatch triggers for streamlined building across any branch.
+
 ---
 
 ## 2. NoteSciPad Release DocNote — v1.2.0

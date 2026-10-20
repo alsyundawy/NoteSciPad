@@ -55,7 +55,7 @@ When an external monitor is unplugged, windows previously located on that screen
 
 ## 3. Architecture
 
-```
+```text
                       ┌──────────────────────────────────────────┐
                       │          QGuiApplication Screens         │
                       │  - screenAdded / screenRemoved           │

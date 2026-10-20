@@ -42,7 +42,7 @@ Every modification to SparkNotePad must strictly respect these architectural inv
 
 ## 2. Project Layout & Directory Structure
 
-```
+```text
 SparkNotePad/
 ├── CMakeLists.txt                # Root CMake project configuration
 ├── TASK_LIST.md                  # Master roadmap and tracking task list
@@ -107,6 +107,7 @@ SparkNotePad/
 - Xcode Command Line Tools: `xcode-select --install`.
 - Qt 6 (via Homebrew): `brew install qt@6 cmake ninja`.
 - Set environment path:
+
   ```bash
   export PATH="/opt/homebrew/opt/qt@6/bin:$PATH"
   export CMAKE_PREFIX_PATH="/opt/homebrew/opt/qt@6"
@@ -196,13 +197,17 @@ We maintain high codebase reliability through automated verification scripts:
 
 - **Brace & Parenthesis Balance Scanner:**
   Ensures every source file maintains balanced scope brackets, string literal delimiters, and comments.
+
   ```bash
   python3 scratch/verify_static.py
   ```
+
 - **High-DPI & Multi-Monitor Check:**
+
   ```bash
   python3 scratch/verify_multimonitor.py
   ```
+
 - **Cryptographic Sanity Check:**
   Verifies AES-256 roundtrip encryption, PKCS7 padding validity, and PBKDF2 key consistency.
 

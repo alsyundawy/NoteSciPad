@@ -37,17 +37,21 @@ An exhaustive, evidence-grounded engineering and architectural review of the ent
 - **Investigation:** Audited boundary conditions across mathematical expression parser, number base converter (hex/bin/oct/dec), GUID/timestamp generator, and monitor switching shortcuts.
 - **Evidence:**
   - `ScreenDisplayManager::moveActiveWindowToScreen`:
+
     ```cpp
     int targetScreen = qBound(0, currentScreen + 1, screens.size() - 1);
     ```
+
     Guarantees that navigating past the last display or before the first display clamps safely without index out of bounds.
   - `ThemeManager::applyTheme`:
+
     ```cpp
     if (!window) return;
     for (ScintillaNext *editor : window->editors()) {
         applyThemeToEditor(editor);
     }
     ```
+
     Guarantees null-pointer resilience during early startup or window closure.
 
 ### 2. Syntax Review

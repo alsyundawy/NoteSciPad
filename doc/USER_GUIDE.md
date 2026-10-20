@@ -49,6 +49,7 @@ SparkNotePad is designed for developers, sysadmins, writers, and power users who
 ### 2.2 Linux (Debian / Ubuntu / Linux Mint)
 
 - Install the `.deb` package:
+
   ```bash
   sudo apt install ./SparkNotePad_<version>_amd64.deb
   ```
@@ -56,6 +57,7 @@ SparkNotePad is designed for developers, sysadmins, writers, and power users who
 ### 2.3 Linux (Fedora / RHEL / openSUSE)
 
 - Install the `.rpm` package:
+
   ```bash
   sudo rpm -ivh SparkNotePad-<version>-1.x86_64.rpm
   # or using dnf:
@@ -88,7 +90,7 @@ On macOS, this configures LaunchServices using `duti` (or native LS fallback) ac
 
 ## 4. User Interface Overview
 
-```
+```text
 ┌────────────────────────────────────────────────────────────────────────┐
 │ SparkNotePad — [Window Title: filename.cpp] (Proxy Icon Drag & Dirty Dot)│
 ├────────────────────────────────────────────────────────────────────────┤
@@ -177,13 +179,17 @@ Transform SparkNotePad into an interactive scratchpad:
 
 - **Launch:** Press `Ctrl+Alt+J` or select `Tools > Evaluate JavaScript / Math...`.
 - **Expression Evaluation:** Calculate inline mathematical expressions:
+
   ```js
   Math.sqrt(144) * Math.PI + Math.pow(2, 10); // = 1061.699...
   ```
+
 - **Text & JSON Transformation:** Format, parse, or clean up data:
+
   ```js
   JSON.stringify(JSON.parse(editorText), null, 4);
   ```
+
 - **Security Sandboxing:** Executed inside an isolated `JSGlobalContextRef` engine (JavaScriptCore on macOS) with zero filesystem or network privileges.
 
 ---

@@ -60,6 +60,12 @@ SparkNotePad v1.3.0 represents a landmark release featuring the official transfo
 - **Sharp Native Font Rendering**: Enforced system font stacks (`-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif`) with explicit font weights and antialiasing, eliminating blurry text rendering.
 - **Enhanced About Dialog Repository Card**: Redesigned GitHub repository section featuring official `🏷️ v1.3.0 Official Release` tag badge, issue tracker, release download links, and system runtime diagnostics.
 
+### 🛠️ Fixed
+
+- **Linux GCC Incomplete Type Resolution**: Added `#include <QAbstractItemView>` in `src/dialogs/PreferencesDialog.cpp`, resolving compiler failure on Linux (`ubuntu-24.04`) where `comboBoxTheme->view()->setVerticalScrollBarPolicy(...)` required the complete definition of `QAbstractItemView`.
+- **Strict Markdownlint Compliance**: Remediated all markdown formatting issues across repository documentation, including adding explicit language tags (`text`) on ASCII architecture and layout diagrams (`MD040`), eliminating hard tabs (`MD010`), and normalizing code fence blank line spacing (`MD031`).
+- **Release & Build Runner Branch Dispatch**: Updated `.github/workflows/build.yml` and `.github/workflows/release.yml` with empty `workflow_dispatch` triggers and branch support across `1.*`, `develop`, and `main`, adhering to Checkov `CKV_GHA_7` security standards while permitting manual branch selection.
+
 ---
 
 ### 🔄 Changed

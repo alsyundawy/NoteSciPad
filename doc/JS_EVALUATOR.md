@@ -32,7 +32,7 @@ The feature is implemented across two dedicated classes:
 - **`evaluateInEditor(ScintillaNext *editor, Action action)`**:
   - Automatically detects whether the user selected a code range or placed the caret on an expression line.
   - Supports `ReplaceSelection` (replaces expression directly with result).
-  - Supports `AppendComment` (appends ` // -> <result>` after the expression).
+  - Supports `AppendComment` (appends `// -> <result>` after the expression).
 
 ### 2.2 `JsEvaluationDialog` (`src/dialogs/JsEvaluationDialog.h`, `src/dialogs/JsEvaluationDialog.cpp`, `src/dialogs/JsEvaluationDialog.ui`)
 

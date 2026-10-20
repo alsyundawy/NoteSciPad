@@ -21,7 +21,7 @@ This update establishes full compliance with Apple Human Interface Guidelines (H
 - **Bring All to Front** (brings SparkNotePad windows to front).
 - **Dynamic Document List**:
   - Dynamically updates upon `aboutToShow`.
-  - Displays all open tabs with clean dirty indicators (`● `).
+  - Displays all open tabs with clean dirty indicators (`●`).
   - Checkmarks the currently active document.
   - Numbers the first 9 documents (`&1` through `&9`) for rapid keyboard navigation.
   - Sets full file paths as tooltips and status tips.
@@ -63,7 +63,7 @@ Implemented via `MacServicesHandler` and Cocoa `SparkNotePadServicesProvider`:
 
 ## 3. Architecture & Cross-Platform Implementation
 
-```
+```text
                ┌────────────────────────────────────────────────────────┐
                │                MainWindow / Menu Bar                   │
                │  - Window Menu (Minimize, Zoom, Tabs, Dynamic Docs)    │

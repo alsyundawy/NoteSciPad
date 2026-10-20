@@ -57,10 +57,12 @@ When adapting functionality from upstream projects:
 
 1. Re-implement cleanly using Qt 6 and Scintilla APIs; avoid Win32 API calls (`HWND`, `SendMessage`, `LRESULT`).
 2. Add a clear source comment:
+
    ```cpp
    // Adapted from Notepad4 EditAutoC / mark-occurrences logic
    // Source: zufuliu/Notepad4 (src/Edit.cpp)
    ```
+
 3. Test edge cases: Unicode / CJK text, large files, empty documents, undo/redo stacks.
 
 ---
