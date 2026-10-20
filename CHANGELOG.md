@@ -108,6 +108,7 @@ NoteSciPad v1.2.0 delivers comprehensive visual, architectural, and engine upgra
   - `CryptoManager`: Initialized `StrengthResult` struct members and eliminated dead pointer increment.
   - `LuaConsoleDock`: Upgraded legacy C cast to type-safe `reinterpret_cast<const char *>`.
   - Cleaned up unused variables in `MkcertDialog`, `ModernMessageBox`, and scoped `status` in `LuaExtension`.
+- **Strict Markdownlint Compliance**: Remediated all markdown formatting issues across documentation files (`doc/*.md`, `CHANGELOG.md`, `USER_GUIDE.md`, `MANUAL_TEST_CHECKLIST.md`), normalizing code fence language specifiers (`MD040`), list blank line paddings (`MD032`), heading blank lines (`MD022`), and table cell formatting.
 
 ---
 

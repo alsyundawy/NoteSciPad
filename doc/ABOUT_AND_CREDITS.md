@@ -26,6 +26,7 @@ We gratefully acknowledge the foundational open-source technologies that make No
 ## 3. Dedicated AboutDialog
 
 NoteSciPad features a native, tabbed `AboutDialog` (`src/dialogs/AboutDialog.h` & `.cpp`) providing:
+
 1. **About Tab:** Versioning, maintainer info, and explicit non-affiliation declaration.
 2. **Credits & Attribution Tab:** Comprehensive acknowledgments for all upstream engines.
 3. **License Tab:** GPLv3 terms and conditions.

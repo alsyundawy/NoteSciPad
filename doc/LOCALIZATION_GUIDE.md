@@ -5,6 +5,7 @@
 NoteSciPad prioritizes first-class **Bahasa Indonesia** and **English** interface translations. Translation source files are maintained under `i18n/` in standard Qt Linguist XML format (`.ts`) and compiled into binary `.qm` resources at build time.
 
 Supported languages:
+
 - **Indonesian (`id_ID`):** `i18n/NotepadNext_id.ts` (Primary priority)
 - **English (`en_US`):** `i18n/NotepadNext_en.ts` (Source reference)
 - Additional community languages: Arabic, German, Spanish, French, Italian, Japanese, Korean, Dutch, Polish, Portuguese, Russian, Swedish, Turkish, Ukrainian, Vietnamese, Chinese (Simplified/Traditional).

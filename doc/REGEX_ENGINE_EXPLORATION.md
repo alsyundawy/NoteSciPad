@@ -11,13 +11,16 @@
 A core objective in NoteSciPad's roadmap (Phase 3, Task 4) is exploring and strengthening regular expression capabilities for advanced search and replace operations, matching the expectations of power users accustomed to Notepad++, Notepad4, and modern IDEs.
 
 We conducted an architectural, performance, and dependency evaluation comparing four regex solutions:
+
 1. **Direct C PCRE2 (`libpcre2-8`)**
 2. **Boost.Regex (`boost::regex`)**
 3. **C++ Standard Library (`std::regex`)**
 4. **Qt `QRegularExpression` (PCRE2 Backend Wrapper)**
 
 ### Key Finding
+
 Qt's `QRegularExpression` is already backed internally by **PCRE2** with JIT compilation. The perceived limitations in NoteSciPad were not caused by the underlying regex engine, but rather by **omissions in the Scintilla bridge layer** (`QRegexSearch.cpp` and `FindReplaceDialog.cpp`):
+
 - "Dot matches newline" option (`.`) was present in the UI but ignored in `FindOption` flags.
 - Capture group replacement (`\1`..`\9`, `$1`..`$9`, `\0`, `&`) was not parsed, causing naive regex replacement failures.
 - Backward regex search was previously disabled due to range calculation limits.
@@ -86,6 +89,7 @@ On Apple Silicon (M-series, ARM64) and modern Linux x86_64:
 **Decision:** Retain and optimize Qt's embedded **PCRE2** engine through `QRegularExpression` and our enhanced `QRegexSearch` bridge.
 
 **Rationale:**
+
 - Adding Boost.Regex would introduce unwanted build-time complexity (~150MB dependencies) with zero functional benefit over PCRE2.
 - Standalone `libpcre2` risks symbol collisions with Qt's internal PCRE2 symbols on macOS/Linux.
 - The upgraded bridge fulfills 100% of the advanced regex features required by power users while maintaining lean resource usage and strict engine invariants.

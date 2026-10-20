@@ -9,6 +9,7 @@ NoteSciPad's public release pipeline provides automated builds, codesigning, pac
 ## 2. Release Management Tools
 
 ### 2.1 Automated Release Preparation
+
 The maintainer utility `scripts/prepare-release.sh` coordinates end-to-end packaging:
 
 ```bash
@@ -20,6 +21,7 @@ The maintainer utility `scripts/prepare-release.sh` coordinates end-to-end packa
 ```
 
 Outputs produced:
+
 - `build-release-assets/NoteSciPad-*.dmg` (macOS Apple Silicon & Intel)
 - `build-release-assets/NoteSciPad_*.deb` (Debian / Ubuntu)
 - `build-release-assets/NoteSciPad-*.rpm` (Fedora / RHEL)
@@ -27,7 +29,9 @@ Outputs produced:
 - `RELEASE_NOTES.md` (Categorized release notes formatted for GitHub Releases)
 
 ### 2.2 Native In-App Update Engine (ReleaseManager)
+
 Unlike legacy Windows-only updater implementations, `ReleaseManager`:
+
 - Directly checks the official GitHub Releases API (`https://api.github.com/repos/alsyundawy/NoteSciPad/releases/latest`) using native `QNetworkAccessManager`.
 - Compares semantic versions (handling major, minor, patch, and pre-release `-alpha`/`-beta` suffixes).
 - Prompts the user with release notes and a direct action button to open the release download page.
@@ -38,6 +42,7 @@ Unlike legacy Windows-only updater implementations, `ReleaseManager`:
 ## 3. GitHub Actions CI/CD Release Flow
 
 When a new version tag is pushed (e.g., `git push origin v1.0.0-beta1`):
+
 1. `.github/workflows/release.yml` triggers.
 2. Build matrix compiles NoteSciPad on macOS (arm64 + x64) and Linux.
 3. macOS binaries are signed with Hardened Runtime entitlements and submitted to Apple for notarization.

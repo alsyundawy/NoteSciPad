@@ -11,6 +11,7 @@ The new **ThemeManager** engine provides real-time, dynamic theme switching acro
 ## 2. Key Features
 
 ### 2.1 Dynamic Mode Support
+
 - **System Default (Auto):** Automatically monitors the OS appearance (`QStyleHints::colorSchemeChanged`) and adapts NoteSciPad's theme dynamically without requiring an application restart.
 - **Dark Mode:** Forces a sleek dark palette across dock tabs, title bars, status bar, and code editor.
 - **Light Mode:** Forces a clean, high-contrast modern light theme.
@@ -38,14 +39,14 @@ The new **ThemeManager** engine provides real-time, dynamic theme switching acro
 | **Caret & Caret Line** | `#ffffff` / `#2a2d2e` | `#000000` / `#ffffe8` |
 | **Selection Background** | `#3e4451` | `#c0d0ff` |
 | **Fold Margin & Lines** | `#1e1e1e` / `#505050` | `#ffffff` / `#a0a0a0` |
-| **Brace Match (Light / Bad)**| `#00d7ff` / `#5050ff` | `#0000ff` / `#000080` |
-| **Indent Guides & Whitespace**| `#404040` / `#505050` | `#c0c0c0` / `#d0d0d0` |
+| **Brace Match (Light / Bad)** | `#00d7ff` / `#5050ff` | `#0000ff` / `#000080` |
+| **Indent Guides & Whitespace** | `#404040` / `#505050` | `#c0c0c0` / `#d0d0d0` |
 
 ---
 
 ## 3. Architecture
 
-```
+```text
                  ┌──────────────────────────────────────────────────┐
                  │                OS System Appearance              │
                  │        (macOS / Linux Color Scheme Event)        │

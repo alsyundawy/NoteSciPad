@@ -3,6 +3,7 @@
 ## 1. Overview
 
 NoteSciPad provides native packaging support for modern Linux distributions via CMake and CPack:
+
 - **Debian / Ubuntu / Linux Mint:** Debian packages (`.deb`)
 - **Fedora / RHEL / AlmaLinux / openSUSE:** RPM packages (`.rpm`)
 - **Cross-Distro Portable:** AppImage
@@ -27,6 +28,7 @@ NoteSciPad provides native packaging support for modern Linux distributions via 
 ## 3. Building Packages Locally
 
 ### 3.1 Prerequisites
+
 ```bash
 # Ubuntu / Debian
 sudo apt install build-essential cmake ninja-build dpkg-dev rpm
@@ -36,6 +38,7 @@ sudo dnf install gcc-c++ cmake ninja-build rpm-build
 ```
 
 ### 3.2 Build via CMake Targets
+
 ```bash
 cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
 cmake --build build --parallel
@@ -48,6 +51,7 @@ cmake --build build --target rpm
 ```
 
 ### 3.3 Build via Helper Script
+
 ```bash
 ./scripts/package-deb-rpm.sh build
 ```
@@ -57,12 +61,14 @@ cmake --build build --target rpm
 ## 4. Installation & Verification
 
 ### Debian / Ubuntu
+
 ```bash
 sudo dpkg -i build/notesci-pad_*.deb
 sudo apt-get install -f  # resolves any missing dependencies
 ```
 
 ### Fedora / Red Hat
+
 ```bash
 sudo dnf install build/notesci-pad-*.rpm
 ```

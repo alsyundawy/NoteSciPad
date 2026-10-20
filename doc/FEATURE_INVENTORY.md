@@ -9,6 +9,7 @@
 ## 1. Existing Feature Inventory (Inherited from NotepadNext)
 
 ### 1.1 Core Editor & Scintilla Integration
+
 - **ScintillaNext Wrapper**: C++ Qt wrapper encapsulating Scintilla's native document model, styles, margins, and commands.
 - **Lexilla Lexers**: Static linking to Lexilla lexers covering standard languages (C/C++, Python, Java, JS, HTML/XML, SQL, PHP, Bash, etc.).
 - **Lua-Based Language Definitions**: Extensible language definition system in `src/languages/*.lua` configuring keyword lists, comment characters, and style mapping.
@@ -22,12 +23,14 @@
   - Line ending conversions (CRLF, LF, CR).
 
 ### 1.2 Search & Navigation
+
 - **QuickFindWidget**: In-buffer search bar with forward/backward find and incremental search.
 - **Find / Replace Dialog**: Extended search with case sensitivity, whole word, wrap around, and regular expressions (`SCI_OWNREGEX`).
 - **Goto Line / Position**: Modal dialog for direct buffer navigation.
 - **Find in Files**: Multi-threaded directory search across project files.
 
 ### 1.3 Text Editing & Transformation Tools
+
 - **Sorting**: `ScintillaSorter` supporting lexicographical, numeric, case-sensitive, and reverse sorting.
 - **Indentation & Whitespace**: Tab-to-space, space-to-tab, trim trailing whitespace, indent guides, and visible whitespace toggle.
 - **Case Conversion**: Basic Uppercase and Lowercase transformation.
@@ -35,6 +38,7 @@
 - **Bookmarking**: Margin bookmark indicators and navigation shortcuts.
 
 ### 1.4 Platform Polish (macOS & Linux)
+
 - **macOS Bundle**: Native `.app` bundle, `Info.plist`, Dark Mode styling, Retina display assets.
 - **Gatekeeper Integration**: `NotepadNext-Default-Editor.sh` for registering as default text editor via `duti`.
 - **Packaging**: macOS DMG builder (`macdeployqt`) and Linux AppImage packaging scripts.
@@ -46,7 +50,7 @@
 While the base codebase provides a robust Scintilla foundation, power-user utilities from **Notepad4** (zufuliu) and **Notepad3** (rizonesoft) are absent:
 
 | Capability | Base NotepadNext Status | Notepad4 / Notepad3 Baseline | NoteSciPad Target Phase |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | **Mark All Occurrences + Match Count** | ❌ No count, basic highlight | ✅ Scintilla indicator marking + real-time count in status bar | **Phase 1** |
 | **Enhanced Auto-completion** | ⚠️ Keywords only | ✅ Auto-close quotes/brackets, context completion, smart indent | **Phase 1** |
 | **File Browser Dock** | ❌ None (uses standard file dialog) | ✅ Integrated file explorer dock (`matepath` style) | **Phase 1** |

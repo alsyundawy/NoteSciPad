@@ -11,6 +11,7 @@ This update establishes full compliance with Apple Human Interface Guidelines (H
 ## 2. Key Capabilities
 
 ### 2.1 Native macOS Window Menu (`menuWindow`)
+
 - Placed in the canonical HIG position immediately before the **Help** menu.
 - **Minimize** (`Cmd+M` on macOS, `Alt+F9` on Linux).
 - **Zoom** (Maximize / Restore).
@@ -20,12 +21,13 @@ This update establishes full compliance with Apple Human Interface Guidelines (H
 - **Bring All to Front** (brings NoteSciPad windows to front).
 - **Dynamic Document List**:
   - Dynamically updates upon `aboutToShow`.
-  - Displays all open tabs with clean dirty indicators (`● `).
+  - Displays all open tabs with clean dirty indicators (`●`).
   - Checkmarks the currently active document.
   - Numbers the first 9 documents (`&1` through `&9`) for rapid keyboard navigation.
   - Sets full file paths as tooltips and status tips.
 
 ### 2.2 macOS Title Bar Proxy Icon & Dirty State
+
 - **Proxy Icon**: Implemented via `QMainWindow::setWindowFilePath(editor->getFilePath())`.
   - Enables dragging the document proxy icon directly from the window title bar into Finder, Terminal, Mail, Slack, or other apps.
   - Enables `Cmd+Click` on the title bar to display and navigate the parent folder hierarchy.
@@ -33,11 +35,14 @@ This update establishes full compliance with Apple Human Interface Guidelines (H
   - Displays the native macOS dirty dot indicator inside the red close button when unsaved changes exist.
 
 ### 2.3 Native Emoji & Symbols Palette
+
 - Located at **Edit > Emoji & Symbols** with native macOS shortcut `Ctrl+Cmd+Space`.
 - Triggers Cocoa `[NSApp orderFrontCharacterPalette:nil]` directly at the cursor insertion point.
 
 ### 2.4 macOS System Services (`NSServices`)
+
 Implemented via `MacServicesHandler` and Cocoa `NoteSciPadServicesProvider`:
+
 1. **NoteSciPad: New Document with Selection**:
    - Available in any macOS application (Safari, Mail, Terminal, TextEdit, Pages).
    - Right-click or use **App > Services > NoteSciPad: New Document with Selection** to immediately spawn a new tab in NoteSciPad with the selected text.
@@ -47,6 +52,7 @@ Implemented via `MacServicesHandler` and Cocoa `NoteSciPadServicesProvider`:
    - Enables opening files directly via the macOS Services menu.
 
 ### 2.5 Linux Desktop Integration (`deploy/linux/NoteSciPad.desktop`)
+
 - Associated with all common source code and text MIME types:
   - `text/plain`, `text/x-c`, `text/x-c++`, `text/x-python`, `text/x-shellscript`, `application/json`, `text/markdown`, `text/html`, `text/css`, `application/xml`, `text/x-lua`, `text/x-rust`, `text/x-go`, `text/x-php`, `text/x-java`, `text/x-sql`, `text/x-yaml`.
 - Provides Desktop Actions:
@@ -57,7 +63,7 @@ Implemented via `MacServicesHandler` and Cocoa `NoteSciPadServicesProvider`:
 
 ## 3. Architecture & Cross-Platform Implementation
 
-```
+```text
                ┌────────────────────────────────────────────────────────┐
                │                MainWindow / Menu Bar                   │
                │  - Window Menu (Minimize, Zoom, Tabs, Dynamic Docs)    │
