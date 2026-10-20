@@ -563,7 +563,7 @@ connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
     auto reopenWith = [this](const QString &enc) {
         if (auto *ed = currentEditor()) {
             if (!ed->isFile()) {
-                QMessageBox::information(this, tr("NoteSciPad"), tr("Cannot reopen unsaved new buffer from disk."));
+                ModernMessageBox::information(this, tr("NoteSciPad"), tr("Cannot reopen unsaved new buffer from disk."));
                 return;
             }
             ed->reloadWithEncoding(enc);
@@ -596,7 +596,7 @@ connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
         if (!editor) return;
         CharacterInfo::Details details = CharacterInfo::getDetailsAt(editor);
         if (!details.isValid) {
-            QMessageBox::information(this, tr("NoteSciPad"), tr("No character found at the current position."));
+            ModernMessageBox::information(this, tr("NoteSciPad"), tr("No character found at the current position."));
             return;
         }
         CharacterInfoDialog dlg(details, this);
@@ -1635,12 +1635,7 @@ connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
     });
 
     connect(ui->actionDebugInfo, &QAction::triggered, this, [=, this]() {
-        QMessageBox mb(QMessageBox::Information, tr("Debug Info"), app->debugInfo().join('\n'), QMessageBox::Ok, this);
-
-        mb.setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont).family());
-        mb.setTextInteractionFlags(Qt::TextSelectableByMouse);
-
-        mb.exec();
+        ModernMessageBox::information(this, tr("Debug Info"), app->debugInfo().join('\n'));
     });
 
     tabsQuickActionsBar = new TabsQuickActionsBar(ui->menuBar);
@@ -1948,9 +1943,7 @@ void MainWindow::openFileList(const QStringList &fileNames)
             QFileInfo fileInfo(filePath);
 
             if (!fileInfo.isFile()) {
-                auto reply = QMessageBox::question(this, tr("Create File"), tr("<b>%1</b> does not exist. Do you want to create it?").arg(filePath));
-
-                if (reply == QMessageBox::Yes) {
+                if (ModernMessageBox::question(this, tr("Create File"), tr("<b>%1</b> does not exist. Do you want to create it?").arg(filePath))) {
                     editor = app->getEditorManager()->createEditorFromFile(filePath, true);
                 }
                 else {
@@ -2090,9 +2083,7 @@ void MainWindow::reloadFile()
     }
 
     const QString filePath = editor->getFilePath();
-    auto reply = QMessageBox::question(this, tr("Reload File"), tr("Are you sure you want to reload <b>%1</b>? Any unsaved changes will be lost.").arg(filePath));
-
-    if (reply == QMessageBox::Yes) {
+    if (ModernMessageBox::question(this, tr("Reload File"), tr("Are you sure you want to reload <b>%1</b>? Any unsaved changes will be lost.").arg(filePath))) {
         editor->QObject::setProperty("LogTimestampApplied", false);
         editor->reload();
         if (LogAutoTimestamp::isAutoLogEnabled() && LogAutoTimestamp::checkAndApplyLogTimestamp(editor)) {
@@ -2223,7 +2214,7 @@ bool MainWindow::saveFile(ScintillaNext *editor)
             const QByteArray rawText = editor->getText();
             CryptoManager::CryptoResult encRes = CryptoManager::encrypt(rawText, pass);
             if (!encRes.success) {
-                QMessageBox::critical(this, tr("Encryption Failed"), tr("Could not encrypt document: %1").arg(encRes.errorMessage));
+                ModernMessageBox::critical(this, tr("Encryption Failed"), tr("Could not encrypt document: %1").arg(encRes.errorMessage));
                 return false;
             }
 
@@ -2439,7 +2430,7 @@ bool MainWindow::saveFileAs(ScintillaNext *editor, const QString &fileName)
         const QByteArray rawText = editor->getText();
         CryptoManager::CryptoResult encRes = CryptoManager::encrypt(rawText, pass);
         if (!encRes.success) {
-            QMessageBox::critical(this, tr("Encryption Failed"), tr("Could not encrypt document: %1").arg(encRes.errorMessage));
+            ModernMessageBox::critical(this, tr("Encryption Failed"), tr("Could not encrypt document: %1").arg(encRes.errorMessage));
             return false;
         }
 
@@ -2620,9 +2611,7 @@ void MainWindow::moveFileToTrash(ScintillaNext *editor)
     Q_ASSERT(editor->isFile());
 
     const QString filePath = editor->getFilePath();
-    auto reply = QMessageBox::question(this, tr("Delete File"), tr("Are you sure you want to move <b>%1</b> to the trash?").arg(filePath));
-
-    if (reply == QMessageBox::Yes) {
+    if (ModernMessageBox::question(this, tr("Delete File"), tr("Are you sure you want to move <b>%1</b> to the trash?").arg(filePath))) {
         if (editor->moveToTrash()) {
             closeCurrentFile();
 
@@ -2630,7 +2619,7 @@ void MainWindow::moveFileToTrash(ScintillaNext *editor)
             app->getRecentFilesListManager()->removeFile(editor->getFilePath());
         }
         else {
-            QMessageBox::warning(this, tr("Error Deleting File"),  tr("Something went wrong deleting <b>%1</b>?").arg(filePath));
+            ModernMessageBox::warning(this, tr("Error Deleting File"),  tr("Something went wrong deleting <b>%1</b>?").arg(filePath));
         }
     }
 }
@@ -3041,9 +3030,7 @@ bool MainWindow::checkFileForModification(ScintillaNext *editor)
     else if (state == ScintillaNext::Modified) {
         qInfo("ScintillaNext::Modified");
         const QString filePath = editor->getFilePath();
-        auto reply = QMessageBox::question(this, tr("Reload File"), tr("<b>%1</b> has been modified by another program. Do you want to reload it?").arg(filePath));
-
-        if (reply == QMessageBox::Yes) {
+        if (ModernMessageBox::question(this, tr("Reload File"), tr("<b>%1</b> has been modified by another program. Do you want to reload it?").arg(filePath))) {
             editor->reload();
         }
         else {
@@ -3084,7 +3071,7 @@ void MainWindow::showSaveErrorMessage(ScintillaNext *editor, QFileDevice::FileEr
         default:                            errorString = tr("Unknown error (%1)").arg(static_cast<int>(error)); break;
     }
 
-    QMessageBox::warning(this, tr("Error Saving File"),
+    ModernMessageBox::warning(this, tr("Error Saving File"),
         tr("An error occurred when saving <b>%1</b><br><br>Error: %2").arg(name, errorString));
 }
 
@@ -3672,7 +3659,7 @@ void MainWindow::updateCustomToolsMenu()
             QString err;
             if (!ExternalToolManager::executeTool(tool, currentEditor(), &err)) {
                 if (!err.isEmpty()) {
-                    QMessageBox::warning(this, tr("Tool Execution Error"), err);
+                    ModernMessageBox::warning(this, tr("Tool Execution Error"), err);
                 }
             }
         });
@@ -3692,7 +3679,7 @@ void MainWindow::onRunCurrentFileTriggered()
     QString err;
     if (!ExternalToolManager::runCurrentFileWithInterpreter(currentEditor(), &err)) {
         if (!err.isEmpty()) {
-            QMessageBox::warning(this, tr("Run Current File"), err);
+            ModernMessageBox::warning(this, tr("Run Current File"), err);
         }
     }
 }
@@ -3773,7 +3760,7 @@ void MainWindow::onEncryptDocumentTriggered()
         editor->QObject::setProperty("EncryptionPassword", dlg.passphrase());
         editor->insertText(editor->currentPos(), "");
         ui->statusBar->showMessage(tr("🔒 Document configured for AES-256 encryption. Save to write to disk."), 5000);
-        QMessageBox::information(this, tr("Encryption Configured"),
+        ModernMessageBox::information(this, tr("Encryption Configured"),
             tr("This document is now set to be encrypted with AES-256 upon saving.\n\n"
                "Warning: Lost passphrases cannot be recovered by NoteSciPad. Ensure you keep your passphrase secure."));
     }
@@ -3792,10 +3779,8 @@ void MainWindow::onDecryptDocumentTriggered()
         return;
     }
 
-    auto reply = QMessageBox::question(this, tr("Remove Encryption"),
-        tr("Are you sure you want to remove encryption from <b>%1</b>?<br>The next save will store it as plain unencrypted text.").arg(editor->getName()));
-
-    if (reply == QMessageBox::Yes) {
+    if (ModernMessageBox::question(this, tr("Remove Encryption"),
+        tr("Are you sure you want to remove encryption from <b>%1</b>?<br>The next save will store it as plain unencrypted text.").arg(editor->getName()))) {
         editor->QObject::setProperty("IsEncrypted", false);
         editor->QObject::setProperty("EncryptionPassword", QString());
         editor->insertText(editor->currentPos(), "");

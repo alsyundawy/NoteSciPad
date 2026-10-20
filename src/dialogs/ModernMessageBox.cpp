@@ -141,7 +141,7 @@ void ModernMessageBox::setupUi(IconType iconType,
         detailLabel->setTextFormat(Qt::RichText);
         detailLabel->setWordWrap(true);
         detailLabel->setStyleSheet(QString(
-            "font-size: 12.5px; color: %1; line-height: 1.4;"
+            "font-size: 13px; color: %1;"
         ).arg(txtSec));
         detailLabel->setText(detail);
         textLayout->addWidget(detailLabel);
