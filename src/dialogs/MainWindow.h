@@ -282,8 +282,6 @@ private:
     FocusedView *focusedView = nullptr;
     QMenu *menuWindow = nullptr;
     QMenu *menuTheme = nullptr;
-    QAction *actionThemeSwitcher = nullptr;
-    QAction *actionThemeAuto = nullptr;
     QAction *actionThemeLight = nullptr;
     QAction *actionThemeDark = nullptr;
     QAction *actionToggleTheme = nullptr;

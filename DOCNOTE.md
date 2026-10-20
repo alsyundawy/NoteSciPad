@@ -169,6 +169,7 @@ Detailed metrics recorded in [`doc/COLOR_STANDARDS_AND_ACCESSIBILITY.md`](file:/
 | **ADR-019** | Standardized Application Namespace           | Canonical transition to `io.github.alsyundawy.NoteSciPad`.                |
 | **ADR-024** | WCAG 2.1 AA/AAA Color Palette Standards      | Color token verification and Scintilla BGR endianness abstraction.        |
 | **ADR-025** | 13-Pillar Production Code Review Engine      | Systematic verification across 13 engineering pillars for all releases.   |
+| **ADR-026** | Native Dark and Light Mode Simplification    | Streamlined ThemeManager to dedicated Dark/Light modes with zero emojis.  |
 
 ---
 

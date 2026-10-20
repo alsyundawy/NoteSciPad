@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### 🎨 Theme Simplification
+
+- **Simplified Native Dark and Light Modes**: Streamlined ThemeManager to exclusively support dedicated Dark and Light modes without external palette catalogs or ThemeSwitcherDialog.
+- **Emoji-Free GUI**: Removed all emoji icons from theme menu actions ("Light Mode", "Dark Mode", "Toggle Dark / Light Mode") ensuring a clean, distraction-free native user interface.
+- **Dynamic Mode Synchronization**: Bound action check states directly to active theme mode with real-time status bar feedback.
+
 ### 🛠️ Fixed
 
 - **Strict Markdownlint Compliance**: Remediated all markdown formatting issues across documentation files (`doc/*.md`, `CHANGELOG.md`, `USER_GUIDE.md`, `MANUAL_TEST_CHECKLIST.md`), normalizing code fence language specifiers (`MD040`), list blank line paddings (`MD032`), heading blank lines (`MD022`), and table cell formatting.

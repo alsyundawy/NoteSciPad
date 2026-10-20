@@ -18,6 +18,40 @@
 #include <QPalette>
 #include <QColor>
 
+static const ThemePalette kLightPalette = {
+    "light",
+    "Light Mode",
+    false,
+    "#f6f8fa", // win
+    "#ffffff", // card
+    "#d0d7de", // border
+    "#24292f", // txtPri
+    "#57606a", // txtSec
+    "#0550ae", // cyan
+    "#0969da", // blue
+    "#116329", // net
+    "#953800", // sub
+    "#0a3069", // host
+    "#57606a"  // sep
+};
+
+static const ThemePalette kDarkPalette = {
+    "dark",
+    "Dark Mode",
+    true,
+    "#181825", // win
+    "#1e1e2e", // card
+    "#313244", // border
+    "#cdd6f4", // txtPri
+    "#a6adc8", // txtSec
+    "#89dceb", // cyan
+    "#89b4fa", // blue
+    "#a6e3a1", // net
+    "#fab387", // sub
+    "#f9e2af", // host
+    "#6c7086"  // sep
+};
+
 ThemeManager *ThemeManager::instance()
 {
     static ThemeManager s_instance;
@@ -49,13 +83,6 @@ void ThemeManager::initialize(ApplicationSettings *settings)
         } else {
             m_themeMode = ThemeMode::Light;
         }
-
-        QString savedPalette = m_settings->value(QStringLiteral("App/ThemePalette"), QString()).toString();
-        if (!savedPalette.isEmpty() && findThemePaletteById(savedPalette)) {
-            m_currentPaletteId = savedPalette;
-        } else {
-            m_currentPaletteId = (m_themeMode == ThemeMode::Dark) ? QStringLiteral("catppuccinMocha") : QStringLiteral("defaultLight");
-        }
     }
 }
 
@@ -75,13 +102,7 @@ bool ThemeManager::isDarkActive() const
 
 const ThemePalette *ThemeManager::currentPalette() const
 {
-    if (!m_currentPaletteId.isEmpty()) {
-        const ThemePalette *p = findThemePaletteById(m_currentPaletteId);
-        if (p)
-            return p;
-    }
-    return isDarkActive() ? findThemePaletteById(QStringLiteral("catppuccinMocha"))
-                          : findThemePaletteById(QStringLiteral("githubLight"));
+    return isDarkActive() ? &kDarkPalette : &kLightPalette;
 }
 
 void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window)
@@ -103,36 +124,6 @@ void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window)
     }
 
     emit themeChanged(isDarkActive());
-}
-
-void ThemeManager::setPalette(const QString &paletteId, MainWindow *window)
-{
-    const ThemePalette *p = findThemePaletteById(paletteId);
-    if (!p)
-        return;
-
-    m_currentPaletteId = paletteId;
-    if (p->isDark) {
-        m_themeMode = ThemeMode::Dark;
-    } else {
-        m_themeMode = ThemeMode::Light;
-    }
-
-    if (window) {
-        m_activeWindow = window;
-    }
-
-    if (m_settings) {
-        m_settings->setValue(QStringLiteral("App/ThemePalette"), m_currentPaletteId);
-        m_settings->setValue(QStringLiteral("App/ThemeMode"), p->isDark ? QStringLiteral("Dark") : QStringLiteral("Light"));
-    }
-
-    if (m_activeWindow) {
-        applyTheme(m_activeWindow);
-    }
-
-    emit themeChanged(isDarkActive());
-    emit paletteChanged(m_currentPaletteId);
 }
 
 void ThemeManager::toggleTheme(MainWindow *window)
@@ -253,17 +244,13 @@ void ThemeManager::applyThemeToEditor(ScintillaNext *editor)
 QString ThemeManager::getThemeStyleSheet() const
 {
     const ThemePalette *pal = currentPalette();
-    if (!pal) {
-        pal = isDarkActive() ? findThemePaletteById(QStringLiteral("catppuccinMocha"))
-                             : findThemePaletteById(QStringLiteral("githubLight"));
-    }
 
-    QString win = pal ? QString::fromLatin1(pal->win) : (isDarkActive() ? QStringLiteral("#1e1e1e") : QStringLiteral("#f6f8fa"));
-    QString card = pal ? QString::fromLatin1(pal->card) : (isDarkActive() ? QStringLiteral("#25282c") : QStringLiteral("#ffffff"));
-    QString border = pal ? QString::fromLatin1(pal->border) : (isDarkActive() ? QStringLiteral("#33373e") : QStringLiteral("#d0d7de"));
-    QString txtPri = pal ? QString::fromLatin1(pal->txtPri) : (isDarkActive() ? QStringLiteral("#e0e0e0") : QStringLiteral("#24292f"));
-    QString txtSec = pal ? QString::fromLatin1(pal->txtSec) : (isDarkActive() ? QStringLiteral("#9aa0a6") : QStringLiteral("#57606a"));
-    QString accent = pal ? QString::fromLatin1(pal->blue) : (isDarkActive() ? QStringLiteral("#58a6ff") : QStringLiteral("#0969da"));
+    QString win = pal ? QString::fromLatin1(pal->win) : (isDarkActive() ? QStringLiteral("#181825") : QStringLiteral("#f6f8fa"));
+    QString card = pal ? QString::fromLatin1(pal->card) : (isDarkActive() ? QStringLiteral("#1e1e2e") : QStringLiteral("#ffffff"));
+    QString border = pal ? QString::fromLatin1(pal->border) : (isDarkActive() ? QStringLiteral("#313244") : QStringLiteral("#d0d7de"));
+    QString txtPri = pal ? QString::fromLatin1(pal->txtPri) : (isDarkActive() ? QStringLiteral("#cdd6f4") : QStringLiteral("#24292f"));
+    QString txtSec = pal ? QString::fromLatin1(pal->txtSec) : (isDarkActive() ? QStringLiteral("#a6adc8") : QStringLiteral("#57606a"));
+    QString accent = pal ? QString::fromLatin1(pal->blue) : (isDarkActive() ? QStringLiteral("#89b4fa") : QStringLiteral("#0969da"));
 
     const QString templateStr = QString::fromUtf8(R"(
 QStatusBar {
@@ -332,6 +319,19 @@ ads--CDockAreaTitleBar {
     border-bottom: 3px solid %6;
     background: %1;
     color: %2;
+}
+QToolBar QToolButton {
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    padding: 3px;
+    margin: 1px;
+}
+QToolBar QToolButton:hover {
+    background-color: rgba(128, 128, 128, 0.2);
+}
+QToolBar QToolButton:pressed {
+    background-color: rgba(128, 128, 128, 0.35);
 }
 )");
 

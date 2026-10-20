@@ -108,7 +108,6 @@ qt_add_executable(NoteSciPad
 	features/LogAutoTimestamp.h
 	features/ThemeManager.h
 	features/ThemeManager.cpp
-	features/ThemePaletteData.h
 	features/InlineMathEvaluator.h
 	features/InlineMathEvaluator.cpp
 	features/ScreenDisplayManager.h
@@ -255,8 +254,6 @@ qt_add_executable(NoteSciPad
 	dialogs/DisplayInfoDialog.h
 	dialogs/AboutDialog.cpp
 	dialogs/AboutDialog.h
-	dialogs/ThemeSwitcherDialog.h
-	dialogs/ThemeSwitcherDialog.cpp
 	docks/DebugLogDock.cpp
 	docks/DebugLogDock.h
 	docks/DebugLogDock.ui

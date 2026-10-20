@@ -14,12 +14,27 @@
 #include <QObject>
 #include <QString>
 #include <QColor>
-#include <QList>
-#include "ThemePaletteData.h"
 
 class MainWindow;
 class ScintillaNext;
 class ApplicationSettings;
+
+struct ThemePalette {
+    const char *id;
+    const char *name;
+    bool isDark;
+    const char *win;
+    const char *card;
+    const char *border;
+    const char *txtPri;
+    const char *txtSec;
+    const char *cyan;
+    const char *blue;
+    const char *net;
+    const char *sub;
+    const char *host;
+    const char *sep;
+};
 
 class ThemeManager : public QObject
 {
@@ -55,9 +70,7 @@ public:
 
     bool isDarkActive() const;
 
-    QString currentPaletteId() const { return m_currentPaletteId; }
     const ThemePalette *currentPalette() const;
-    void setPalette(const QString &paletteId, MainWindow *window = nullptr);
 
     void applyTheme(MainWindow *window);
     void applyThemeToEditor(ScintillaNext *editor);
@@ -65,7 +78,6 @@ public:
 
 signals:
     void themeChanged(bool isDark);
-    void paletteChanged(const QString &paletteId);
 
 private slots:
     void onSystemColorSchemeChanged();
@@ -75,7 +87,6 @@ private:
     ~ThemeManager() override;
 
     ThemeMode m_themeMode = ThemeMode::Light;
-    QString m_currentPaletteId = QStringLiteral("defaultLight");
     ApplicationSettings *m_settings = nullptr;
     MainWindow *m_activeWindow = nullptr;
 };
