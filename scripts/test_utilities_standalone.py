@@ -16,7 +16,7 @@ test_vectors = [
     ("foo", "Zm9v"),
     ("foob", "Zm9vYg=="),
     ("fooba", "Zm9vYmE="),
-    ("foobar", "Zm9vYmFy")
+    ("foobar", "Zm9vYmFy"),
 ]
 for raw, enc in test_vectors:
     computed = base64.b64encode(raw.encode()).decode()
@@ -33,8 +33,11 @@ assert oct(63) == "0o77"
 print("[PASS] Radix & Number Conversions (Hex, Bin, Oct, Dec)")
 
 # 3. GUID / UUID v4 Regex
-uuid_pattern = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", re.I)
+uuid_pattern = re.compile(
+    r"^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", re.I
+)
 import uuid
+
 sample_uuid = str(uuid.uuid4())
 assert uuid_pattern.match(sample_uuid), f"UUID v4 invalid format: {sample_uuid}"
 print("[PASS] UUID / GUID v4 Validation")

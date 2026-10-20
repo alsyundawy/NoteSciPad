@@ -57,6 +57,14 @@ NoteSciPad **v1.2.0** delivers high-polish user interface enhancements, strict A
    - Synchronized CI matrices in `build.yml` and `release.yml` for Qt 6.5, 6.8 LTS, and 6.10 on macOS (Intel and Apple Silicon) and Linux Ubuntu.
    - Fixed DMG artifact search pattern in `.github/workflows/release.yml` (`NoteSciPad*.dmg`).
 
+8. **Tuned MegaLinter Configuration & Comprehensive Lint Hardening**:
+   - Tuned `.mega-linter.yml` specifically for C++20/Qt6, Shell scripts, Python, Markdown, YAML, JSON, and XML.
+   - Configured non-blocking status for security scanners (`PYTHON_BANDIT`, `REPOSITORY_TRIVY`, `CPP_CPPCHECK`) via `DISABLE_ERRORS_LINTERS`.
+   - Disabled Google C++ style checker (`CPP_CPPLINT`) in favor of repository `.clang-format` (120 columns).
+   - Disabled `TYPESCRIPT` and `JAVASCRIPT` analyzers to avoid false parsing of Qt Linguist `.ts` translation files.
+   - Fixed ShellCheck issues across all repository scripts (`SC2046`, `SC2035`, `SC2027`) and embedded workflow scripts (`SC2044`). Formatted all scripts with `shfmt`.
+   - Enabled `VALIDATE_ALL_CODEBASE: true` in `.github/workflows/mega-linter.yml` for comprehensive codebase validation.
+
 ---
 
 ## 2. NoteSciPad Release DocNote — v1.1.0

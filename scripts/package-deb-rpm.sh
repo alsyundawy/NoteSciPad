@@ -14,7 +14,7 @@ DO_DEB=1
 DO_RPM=1
 
 show_help() {
-    cat <<EOF
+	cat <<EOF
 NoteSciPad Linux Package Builder (.deb & .rpm)
 
 Usage: $(basename "$0") [BUILD_DIR] [OPTIONS]
@@ -32,41 +32,52 @@ EOF
 }
 
 while [[ $# -gt 0 ]]; do
-    case "$1" in
-        --deb-only) DO_RPM=0; shift ;;
-        --rpm-only) DO_DEB=0; shift ;;
-        -h|--help)  show_help; exit 0 ;;
-        *)
-            if [[ -d "$1" ]] || [[ "$1" == "build"* ]]; then
-                BUILD_DIR="$1"; shift
-            else
-                echo "Unknown option: $1" >&2; exit 1
-            fi
-            ;;
-    esac
+	case "$1" in
+	--deb-only)
+		DO_RPM=0
+		shift
+		;;
+	--rpm-only)
+		DO_DEB=0
+		shift
+		;;
+	-h | --help)
+		show_help
+		exit 0
+		;;
+	*)
+		if [[ -d "$1" ]] || [[ "$1" == "build"* ]]; then
+			BUILD_DIR="$1"
+			shift
+		else
+			echo "Unknown option: $1" >&2
+			exit 1
+		fi
+		;;
+	esac
 done
 
 if [[ ! -d "${BUILD_DIR}" ]]; then
-    echo "[ERR] Build directory '${BUILD_DIR}' does not exist. Please configure and build NoteSciPad first." >&2
-    exit 1
+	echo "[ERR] Build directory '${BUILD_DIR}' does not exist. Please configure and build NoteSciPad first." >&2
+	exit 1
 fi
 
 cd "${BUILD_DIR}"
 
 if [[ ${DO_DEB} -eq 1 ]]; then
-    echo "=== Building Debian Package (.deb) ==="
-    cpack -G DEB
-    echo "[OK] Debian package built in ${BUILD_DIR}/"
+	echo "=== Building Debian Package (.deb) ==="
+	cpack -G DEB
+	echo "[OK] Debian package built in ${BUILD_DIR}/"
 fi
 
 if [[ ${DO_RPM} -eq 1 ]]; then
-    echo "=== Building Red Hat Package (.rpm) ==="
-    if command -v rpmbuild &>/dev/null; then
-        cpack -G RPM
-        echo "[OK] RPM package built in ${BUILD_DIR}/"
-    else
-        echo "[WARN] rpmbuild command not found. Skipping RPM package." >&2
-    fi
+	echo "=== Building Red Hat Package (.rpm) ==="
+	if command -v rpmbuild &>/dev/null; then
+		cpack -G RPM
+		echo "[OK] RPM package built in ${BUILD_DIR}/"
+	else
+		echo "[WARN] rpmbuild command not found. Skipping RPM package." >&2
+	fi
 fi
 
 echo "Package generation complete."

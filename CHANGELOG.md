@@ -55,6 +55,15 @@ NoteSciPad v1.2.0 brings major visual and architectural refinements: full compli
 
 ### 🛠️ Infrastructure & CI/CD
 
+- **Tuned MegaLinter Configuration (`.mega-linter.yml`)**:
+  - Excluded third-party libraries (`thirdparty/`), build directories (`build/`, `build-test-fixtures/`), packaging artifacts (`installer/`, `deploy/windows/`), and CPM cache.
+  - Disabled irrelevant language descriptors (PHP, Java, Go, Ruby, Terraform, Ansible, Kotlin, Groovy, Dockerfile, CloudFormation).
+  - Explicitly disabled `TYPESCRIPT` and `JAVASCRIPT` analyzers to avoid false parsing of Qt Linguist `.ts` translation files (which are XML format).
+  - Configured `CPP_CLANG_FORMAT_ARGUMENTS: --style=file`, `CPP_CPPCHECK_ARGUMENTS` with Qt library support, `BASH_SHELLCHECK_ARGUMENTS: -x`, and `MARKDOWN_MARKDOWNLINT_ARGUMENTS: --config .markdownlint.json`.
+  - Added non-blocking status for security scanners (`PYTHON_BANDIT`, `REPOSITORY_TRIVY`, `CPP_CPPCHECK`) via `DISABLE_ERRORS_LINTERS`.
+  - Configured `VALIDATE_ALL_CODEBASE: true` in `.github/workflows/mega-linter.yml` to ensure continuous repository-wide lint coverage.
+  - Added custom root `.yamllint.yml` with relaxed line lengths and boolean values tailored for GitHub Actions workflows.
+- **POSIX & ShellCheck Hardening**: Resolved all ShellCheck warnings across all repository shell scripts (`SC2046`, `SC2035`, `SC2027`) and workflow embedded scripts (`SC2044`). Formatted all scripts with `shfmt`.
 - **Multi-Qt Support**: Validated building and packaging with Qt 6.5, Qt 6.8, and Qt 6.10 across macOS Intel (`macos-15-intel`), macOS Apple Silicon (`macos-15`), and Linux Ubuntu (`ubuntu-24.04`).
 - **Release DMG Packaging Fix**: Resolved artifact search globbing in `.github/workflows/release.yml` to accurately detect and publish `NoteSciPad*.dmg`.
 

@@ -15,7 +15,7 @@ mkdir -p "${TARGET_DIR}"
 echo "Generating manual QA test fixtures in: ${TARGET_DIR}"
 
 # 1. Plain UTF-8
-cat << 'EOF' > "${TARGET_DIR}/test_utf8.txt"
+cat <<'EOF' >"${TARGET_DIR}/test_utf8.txt"
 NoteSciPad UTF-8 Test Document
 ASCII: Hello World 1234567890
 Latin-1 Supplement: Café, naïve, façade, über, señor
@@ -24,7 +24,7 @@ Emojis: ⚡ 🚀 💻 🛡️ 🎨
 EOF
 
 # 2. CJK Multilingual Text
-cat << 'EOF' > "${TARGET_DIR}/test_cjk.txt"
+cat <<'EOF' >"${TARGET_DIR}/test_cjk.txt"
 === NoteSciPad CJK Multi-Language Test ===
 Simplified Chinese: 欢迎使用 NoteSciPad 高性能文本编辑器！
 Traditional Chinese: 歡迎使用 NoteSciPad 高性能文字編輯器！
@@ -36,7 +36,7 @@ EOF
 # 3. UTF-8 with BOM
 printf 'ï»¿NoteSciPad UTF-8 with BOM Test
 This file starts with a byte-order mark (0xEF, 0xBB, 0xBF).
-' > "${TARGET_DIR}/test_utf8_bom.txt"
+' >"${TARGET_DIR}/test_utf8_bom.txt"
 
 # 4. Large 10 MB Test File
 echo "Generating 10 MB synthetic code file..."

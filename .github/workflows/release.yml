@@ -258,7 +258,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
-          for pkg in $(find . -name "*.deb" -o -name "*.rpm"); do
+          find . \( -name "*.deb" -o -name "*.rpm" \) | while IFS= read -r pkg; do
             echo "Uploading Linux package: ${pkg}"
             gh release upload "${RELEASE_TAG}" "${pkg}" --clobber || true
           done

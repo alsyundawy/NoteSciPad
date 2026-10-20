@@ -90,20 +90,20 @@ else
 	NC=''
 fi
 
-info()    { printf "%b[INFO]%b %s\n" "${BLUE}" "${NC}" "$*"; }
-step()    { printf "%b[STEP]%b %s\n" "${CYAN}" "${NC}" "$*"; }
-ok()      { printf "%b[ OK ]%b %s\n" "${GREEN}" "${NC}" "$*"; }
-warn()    { printf "%b[WARN]%b %s\n" "${YELLOW}" "${NC}" "$*" >&2; }
-err()     { printf "%b[ERR ]%b %s\n" "${RED}" "${NC}" "$*" >&2; }
-header()  { printf "%b%s%b\n" "${BOLD}" "$*" "${NC}"; }
+info() { printf "%b[INFO]%b %s\n" "${BLUE}" "${NC}" "$*"; }
+step() { printf "%b[STEP]%b %s\n" "${CYAN}" "${NC}" "$*"; }
+ok() { printf "%b[ OK ]%b %s\n" "${GREEN}" "${NC}" "$*"; }
+warn() { printf "%b[WARN]%b %s\n" "${YELLOW}" "${NC}" "$*" >&2; }
+err() { printf "%b[ERR ]%b %s\n" "${RED}" "${NC}" "$*" >&2; }
+header() { printf "%b%s%b\n" "${BOLD}" "$*" "${NC}"; }
 
 detect_platform() {
 	local uname_s
 	uname_s=$(uname -s)
 	case "${uname_s}" in
-		Darwin) PLATFORM="macos" ;;
-		Linux)  PLATFORM="linux" ;;
-		*)      PLATFORM="unsupported" ;;
+	Darwin) PLATFORM="macos" ;;
+	Linux) PLATFORM="linux" ;;
+	*) PLATFORM="unsupported" ;;
 	esac
 }
 
@@ -358,10 +358,10 @@ apply_batch_handlers_macos() {
 		for e in "${EXTENSIONS[@]}"; do
 			printf "%s .%s all\n" "${ACTIVE_BUNDLE_ID}" "${e}"
 		done
-	} > "${TMP_BATCH_CONFIG}"
+	} >"${TMP_BATCH_CONFIG}"
 
 	if [[ ${dry_run} -eq 1 ]]; then
-		info "[DRY-RUN] Would apply batch config with $(wc -l < "${TMP_BATCH_CONFIG}" | tr -d ' ') mappings via duti."
+		info "[DRY-RUN] Would apply batch config with $(wc -l <"${TMP_BATCH_CONFIG}" | tr -d ' ') mappings via duti."
 		return 0
 	fi
 
@@ -538,18 +538,51 @@ main() {
 
 	while [[ $# -gt 0 ]]; do
 		case "$1" in
-			-y|--yes|-f|--force) auto_confirm=1; shift ;;
-			-d|--dry-run)        dry_run=1; shift ;;
-			-s|--status|--check) audit_only=1; shift ;;
-			--restore|--revert)  restore_only=1; shift ;;
-			--no-rebuild-cache)  rebuild_cache=0; shift ;;
-			--no-restart)        restart_services=0; shift ;;
-			--app-path)
-				if [[ $# -lt 2 ]]; then err "--app-path requires a path argument"; exit 1; fi
-				APP_RESOLVED_PATH="$2"; shift 2 ;;
-			-h|--help)           show_help; exit 0 ;;
-			-v|--version)        echo "NoteSciPad-Default-Editor.sh v${SCRIPT_VERSION}"; exit 0 ;;
-			*)                   err "Unknown option: $1"; show_help; exit 1 ;;
+		-y | --yes | -f | --force)
+			auto_confirm=1
+			shift
+			;;
+		-d | --dry-run)
+			dry_run=1
+			shift
+			;;
+		-s | --status | --check)
+			audit_only=1
+			shift
+			;;
+		--restore | --revert)
+			restore_only=1
+			shift
+			;;
+		--no-rebuild-cache)
+			rebuild_cache=0
+			shift
+			;;
+		--no-restart)
+			restart_services=0
+			shift
+			;;
+		--app-path)
+			if [[ $# -lt 2 ]]; then
+				err "--app-path requires a path argument"
+				exit 1
+			fi
+			APP_RESOLVED_PATH="$2"
+			shift 2
+			;;
+		-h | --help)
+			show_help
+			exit 0
+			;;
+		-v | --version)
+			echo "NoteSciPad-Default-Editor.sh v${SCRIPT_VERSION}"
+			exit 0
+			;;
+		*)
+			err "Unknown option: $1"
+			show_help
+			exit 1
+			;;
 		esac
 	done
 

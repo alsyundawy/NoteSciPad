@@ -16,10 +16,10 @@ echo "======================================================================"
 python3 "${REPO_ROOT}/scripts/test_utilities_standalone.py"
 
 if [[ -f "${REPO_ROOT}/build/tests/NoteSciPadTests" ]]; then
-    echo "Running native Qt test binary..."
-    "${REPO_ROOT}/build/tests/NoteSciPadTests"
+	echo "Running native Qt test binary..."
+	"${REPO_ROOT}/build/tests/NoteSciPadTests"
 elif command -v ctest >/dev/null 2>&1 && [[ -d "${REPO_ROOT}/build" && -f "${REPO_ROOT}/build/CTestTestfile.cmake" ]]; then
-    ctest --test-dir "${REPO_ROOT}/build" --output-on-failure || true
+	ctest --test-dir "${REPO_ROOT}/build" --output-on-failure || true
 fi
 
 echo "======================================================================"
