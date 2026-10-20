@@ -1,6 +1,6 @@
 /*
- * NoteSciPad Unit Test Suite Runner
- * Copyright 2026 NoteSciPad Project
+ * SparkNotePad Unit Test Suite Runner
+ * Copyright 2026 SparkNotePad Project
  */
 
 #include <QTest>
@@ -15,8 +15,7 @@
 #include "test_crypto_manager.h"
 #include "test_code_compress_pretty.h"
 
-int runAllTests(int argc, char *argv[])
-{
+int runAllTests(int argc, char *argv[]) {
     int status = 0;
     {
         TestBase64 t;
@@ -49,11 +48,10 @@ int runAllTests(int argc, char *argv[])
     return status;
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     QCoreApplication app(argc, argv);
     std::cout << "===================================================\n";
-    std::cout << "⚡ NoteSciPad Unit & Integration Test Suite\n";
+    std::cout << "⚡ SparkNotePad Unit & Integration Test Suite\n";
     std::cout << "===================================================\n";
 
     return runAllTests(argc, argv);

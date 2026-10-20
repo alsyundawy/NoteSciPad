@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Window Transparency Options - NoteSciPad</string>
+   <string>Window Transparency Options - SparkNotePad</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

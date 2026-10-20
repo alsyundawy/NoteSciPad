@@ -1,17 +1,17 @@
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad4 auto-completion & context suggestions logic.
  * Source: zufuliu/Notepad4 (src/EditAutoC.cpp)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  */
 
 #include "AutoCompletion.h"
-#include "NoteSciPadApplication.h"
+#include "SparkNotePadApplication.h"
 
 #include <QApplication>
 #include <QSet>

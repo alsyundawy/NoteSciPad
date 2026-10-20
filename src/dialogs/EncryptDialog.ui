@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Encrypt Document (AES-256) - NoteSciPad</string>
+   <string>Encrypt Document (AES-256) - SparkNotePad</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -24,7 +24,7 @@
    <item>
     <widget class="QLabel" name="labelDesc">
      <property name="text">
-      <string>Enter a strong passphrase below. The document will be encrypted using authenticated AES-256 (CBC + HMAC-SHA256 with PBKDF2).&lt;br&gt;&lt;font color=&quot;#d9534f&quot;&gt;&lt;b&gt;Warning:&lt;/b&gt; Lost passphrases cannot be recovered by NoteSciPad.&lt;/font&gt;</string>
+      <string>Enter a strong passphrase below. The document will be encrypted using authenticated AES-256 (CBC + HMAC-SHA256 with PBKDF2).&lt;br&gt;&lt;font color=&quot;#d9534f&quot;&gt;&lt;b&gt;Warning:&lt;/b&gt; Lost passphrases cannot be recovered by SparkNotePad.&lt;/font&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

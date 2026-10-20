@@ -1,9 +1,10 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Implements AES-256 decryption prompt dialog.
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -19,8 +20,7 @@ namespace Ui {
 class DecryptDialog;
 }
 
-class DecryptDialog : public QDialog
-{
+class DecryptDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -38,4 +38,4 @@ private:
     Ui::DecryptDialog *ui;
 };
 
-#endif // DECRYPTDIALOG_H
+#endif  // DECRYPTDIALOG_H

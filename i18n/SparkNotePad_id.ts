@@ -2179,8 +2179,8 @@
   <context>
     <name>DisplayInfoDialog</name>
     <message>
-      <source>Display &amp; Retina Diagnostics — NoteSciPad</source>
-      <translation>Diagnostik Layar &amp; Retina — NoteSciPad</translation>
+      <source>Display &amp; Retina Diagnostics — SparkNotePad</source>
+      <translation>Diagnostik Layar &amp; Retina — SparkNotePad</translation>
     </message>
     <message>
       <source>Display Name</source>
@@ -2234,8 +2234,8 @@
       <translation>Pemeriksaan Pembaruan Gagal</translation>
     </message>
     <message>
-      <source>NoteSciPad Update Available</source>
-      <translation>Pembaruan NoteSciPad Tersedia</translation>
+      <source>SparkNotePad Update Available</source>
+      <translation>Pembaruan SparkNotePad Tersedia</translation>
     </message>
     <message>
       <source>&amp;Download Update</source>
@@ -2246,8 +2246,8 @@
       <translation>&amp;Ingatkan Nanti</translation>
     </message>
     <message>
-      <source>NoteSciPad Up to Date</source>
-      <translation>NoteSciPad Sudah Versi Terbaru</translation>
+      <source>SparkNotePad Up to Date</source>
+      <translation>SparkNotePad Sudah Versi Terbaru</translation>
     </message>
   </context>
   <context>
@@ -2257,12 +2257,12 @@
       <translation>Kesalahan Dokumentasi</translation>
     </message>
     <message>
-      <source>NoteSciPad &amp;User Guide</source>
-      <translation>Panduan &amp;Pengguna NoteSciPad</translation>
+      <source>SparkNotePad &amp;User Guide</source>
+      <translation>Panduan &amp;Pengguna SparkNotePad</translation>
     </message>
     <message>
-      <source>NoteSciPad &amp;Developer Guide</source>
-      <translation>Panduan &amp;Pengembang NoteSciPad</translation>
+      <source>SparkNotePad &amp;Developer Guide</source>
+      <translation>Panduan &amp;Pengembang SparkNotePad</translation>
     </message>
   </context>
 </TS>

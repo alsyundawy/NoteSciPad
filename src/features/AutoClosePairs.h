@@ -1,10 +1,11 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad4 auto-completion & auto-close pair logic.
  * Source: zufuliu/Notepad4 (src/EditAutoC.cpp, Edit.cpp)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -15,8 +16,7 @@
 
 #include "EditorDecorator.h"
 
-class AutoClosePairs : public EditorDecorator
-{
+class AutoClosePairs : public EditorDecorator {
     Q_OBJECT
 
 public:
@@ -39,8 +39,8 @@ private:
     bool handleKeyPress(class QKeyEvent *keyEvent);
     bool isWordChar(char ch) const;
 
-    bool m_autoCloseBrackets {true};
-    bool m_autoCloseQuotes {true};
+    bool m_autoCloseBrackets{true};
+    bool m_autoCloseQuotes{true};
 };
 
-#endif // AUTOCLOSEPAIRS_H
+#endif  // AUTOCLOSEPAIRS_H

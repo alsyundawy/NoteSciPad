@@ -21,7 +21,7 @@
 #include "MainWindow.h"
 #include "SessionManager.h"
 #include "EditorManager.h"
-#include "NoteSciPadApplication.h"
+#include "SparkNotePadApplication.h"
 
 #include <QDir>
 #include <QStandardPaths>

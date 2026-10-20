@@ -1,10 +1,11 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad3 status bar customization architecture.
  * Sources: rizonesoft/Notepad3 (src/Notepad3.ini, Statusbar Settings)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -20,8 +21,7 @@ class QCheckBox;
 class QPushButton;
 class EditorInfoStatusBar;
 
-class StatusBarCustomizerDialog : public QDialog
-{
+class StatusBarCustomizerDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -37,7 +37,7 @@ private:
     void setupUi();
 
     EditorInfoStatusBar *m_statusBar;
-    QMap<int, QCheckBox*> m_checkBoxes;
+    QMap<int, QCheckBox *> m_checkBoxes;
 };
 
-#endif // STATUSBARCUSTOMIZERDIALOG_H
+#endif  // STATUSBARCUSTOMIZERDIALOG_H

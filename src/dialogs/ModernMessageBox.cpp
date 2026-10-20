@@ -1,8 +1,8 @@
 /*
- * This file is part of NoteSciPad.
- * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
+ * This file is part of SparkNotePad.
+ * Copyright 2026 Harry DS Alsyundawy (SparkNotePad Maintainer)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -80,7 +80,7 @@ QPixmap ModernMessageBox::createIconBadge(IconType iconType) const {
 }
 
 void ModernMessageBox::setupUi(IconType iconType, const QString &title, const QString &message, const QString &detail) {
-    setWindowTitle(title.isEmpty() ? QStringLiteral("NoteSciPad") : title);
+    setWindowTitle(title.isEmpty() ? QStringLiteral("SparkNotePad") : title);
     setWindowFlags((windowFlags() & ~Qt::WindowContextHelpButtonHint) | Qt::Sheet);
     setModal(true);
     resize(480, 180);

@@ -22,7 +22,7 @@
 
 #include <QObject>
 
-#include "NoteSciPadApplication.h"
+#include "SparkNotePadApplication.h"
 
 class ApplicationDecorator : public QObject {
     Q_OBJECT

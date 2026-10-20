@@ -1,9 +1,10 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad4 (zufuliu/notepad4) and Notepad3 (rizonesoft/Notepad3).
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -19,8 +20,7 @@ namespace Ui {
 class CharacterInfoDialog;
 }
 
-class CharacterInfoDialog : public QDialog
-{
+class CharacterInfoDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -38,4 +38,4 @@ private:
     CharacterInfo::Details m_details;
 };
 
-#endif // CHARACTERINFODIALOG_H
+#endif  // CHARACTERINFODIALOG_H

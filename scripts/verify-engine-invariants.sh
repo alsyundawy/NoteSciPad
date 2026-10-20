@@ -10,7 +10,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
 echo "======================================================================"
-echo "⚡ Checking NoteSciPad Engine Invariants (Scintilla & Lexilla)"
+echo "⚡ Checking SparkNotePad Engine Invariants (Scintilla & Lexilla)"
 echo "======================================================================"
 
 ERRORS=0

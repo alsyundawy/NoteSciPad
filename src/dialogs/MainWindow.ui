@@ -14,7 +14,7 @@
    <bool>true</bool>
   </property>
   <property name="windowTitle">
-   <string>NoteSciPad[*]</string>
+   <string>SparkNotePad[*]</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QPushButton" name="pushExitFullScreen">
@@ -569,14 +569,14 @@
   <action name="actionNewWindow">
    <property name="icon">
     <iconset>
-     <normalon>:/icons/NoteSciPad.png</normalon>
+     <normalon>:/icons/SparkNotePad.png</normalon>
     </iconset>
    </property>
    <property name="text">
     <string>New &amp;Window</string>
    </property>
    <property name="toolTip">
-    <string>Open a new NoteSciPad window</string>
+    <string>Open a new SparkNotePad window</string>
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+Shift+N</string>
@@ -1017,7 +1017,7 @@
      <normaloff>:/icons/newfile.png</normaloff>:/icons/newfile.png</iconset>
    </property>
    <property name="text">
-    <string>About NoteSciPad</string>
+    <string>About SparkNotePad</string>
    </property>
    <property name="menuRole">
     <enum>QAction::AboutRole</enum>

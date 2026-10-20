@@ -1,0 +1,36 @@
+[Desktop Entry]
+Categories=Qt;TextEditor;Utility;Development;
+Exec=SparkNotePad %F
+Icon=SparkNotePad
+MimeType=text/plain;text/x-c;text/x-c++;text/x-python;text/x-shellscript;application/json;text/markdown;text/html;text/css;application/xml;text/x-lua;text/x-rust;text/x-go;text/x-php;text/x-java;text/x-sql;text/x-yaml;
+StartupNotify=true
+Type=Application
+Terminal=false
+Actions=NewWindow;NewEmptyDocument;
+
+Name=SparkNotePad
+Name[id]=SparkNotePad
+Name[pt_BR]=SparkNotePad
+
+GenericName=Text and Source Code Editor
+GenericName[id]=Editor Teks dan Kode Sumber
+GenericName[pt_BR]=Editor de Texto e Código-Fonte
+
+Comment=A lightweight Scintilla-based text and source code editor for Linux and macOS
+Comment[id]=Editor teks dan kode sumber ringan berbasis Scintilla dan Qt untuk Linux dan macOS
+Comment[pt_BR]=Editor de texto e código-fonte leve baseado em Scintilla e Qt para Linux e macOS
+
+Keywords=sparknotepad;spark;notepad;text;editor;scintilla;lexilla;tabs;programming;source;code;
+Keywords[id]=sparknotepad;spark;notepad;teks;editor;scintilla;lexilla;tab;pemrograman;sumber;kode;
+
+[DesktopAction NewWindow]
+Name=New Window
+Name[id]=Jendela Baru
+Exec=SparkNotePad
+Icon=SparkNotePad
+
+[DesktopAction NewEmptyDocument]
+Name=New Empty Document
+Name[id]=Dokumen Kosong Baru
+Exec=SparkNotePad
+Icon=SparkNotePad

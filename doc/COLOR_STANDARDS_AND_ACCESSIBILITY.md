@@ -1,4 +1,4 @@
-# World Color Standards & WCAG 2.1 Accessibility Guide — NoteSciPad
+# World Color Standards & WCAG 2.1 Accessibility Guide — SparkNotePad
 
 **Document Version:** 1.0.0  
 **Effective Date:** 2026-10-19  
@@ -8,13 +8,13 @@
 
 ## 1. Executive Summary
 
-Color design in NoteSciPad adheres strictly to international accessibility and typography standards. The core goals are:
+Color design in SparkNotePad adheres strictly to international accessibility and typography standards. The core goals are:
 
 1. **WCAG 2.1 Level AAA** contrast ratio for default editor reading text (> 7.0:1).
 2. **WCAG 2.1 Level AA** contrast ratio for secondary chrome text, line numbers, and status indicators (> 4.5:1).
 3. **WCAG 2.1 Non-Text Contrast** for active UI boundaries, tab borders, and focus rings (> 3.0:1).
 4. **Perceptual Safety for Color Blindness** (Protanopia, Deuteranopia, Tritanopia, Monochromacy) by never relying solely on color hue to convey critical state.
-5. **Architectural Safety**: Scintilla engine internally uses Win32 `COLORREF` (BGR format `0x00BBGGRR`). NoteSciPad provides an explicit `ThemeManager::scColor(r, g, b)` and `ThemeManager::scFromRgb(QRgb)` conversion system to eliminate RGB/BGR bit-swap confusion.
+5. **Architectural Safety**: Scintilla engine internally uses Win32 `COLORREF` (BGR format `0x00BBGGRR`). SparkNotePad provides an explicit `ThemeManager::scColor(r, g, b)` and `ThemeManager::scFromRgb(QRgb)` conversion system to eliminate RGB/BGR bit-swap confusion.
 
 ---
 
@@ -78,7 +78,7 @@ If a developer directly passes `0x0000FF` to Scintilla thinking it means Blue, S
 
 ### The Solution: Safe C++20 Constexpr Helpers
 
-NoteSciPad eliminates this cognitive friction with inline constexpr utility functions in `src/features/ThemeManager.h`:
+SparkNotePad eliminates this cognitive friction with inline constexpr utility functions in `src/features/ThemeManager.h`:
 
 ```cpp
 // Helper to construct Scintilla BGR colour from RGB components

@@ -1,12 +1,13 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Implements Monitoring / Tail Mode (tail -f).
  * Adapted from Notepad++ and Notepad4 monitoring architectures.
  * Provides live disk monitoring, zero-modal log streaming, atomic chunk appending,
  * and automatic scrolling for log files.
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -25,17 +26,16 @@
 
 class ScintillaNext;
 
-class TailMonitoringManager : public QObject
-{
+class TailMonitoringManager : public QObject {
     Q_OBJECT
 
 public:
     struct MonitoredDocState {
         QString filePath;
-        qint64 lastSize {0};
+        qint64 lastSize{0};
         QDateTime lastModified;
-        bool wasReadOnly {false};
-        bool autoScrollToEnd {true};
+        bool wasReadOnly{false};
+        bool autoScrollToEnd{true};
     };
 
     static TailMonitoringManager *instance();
@@ -81,9 +81,9 @@ private:
     QFileSystemWatcher *m_fileWatcher;
     QTimer *m_timer;
 
-    int m_pollIntervalMs {750};
-    bool m_readOnlyLock {true};
-    qint64 m_maxChunkBytes {10 * 1024 * 1024};
+    int m_pollIntervalMs{750};
+    bool m_readOnlyLock{true};
+    qint64 m_maxChunkBytes{10 * 1024 * 1024};
 };
 
-#endif // TAILMONITORINGMANAGER_H
+#endif  // TAILMONITORINGMANAGER_H

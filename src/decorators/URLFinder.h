@@ -1,10 +1,11 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad4 (zufuliu/notepad4, UrlThreshold) and Notepad3 URL features.
  * Sources: zufuliu/notepad4 & rizonesoft/Notepad3
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -15,8 +16,7 @@
 
 #include "EditorDecorator.h"
 
-class URLFinder : public EditorDecorator
-{
+class URLFinder : public EditorDecorator {
     Q_OBJECT
 
 public:
@@ -38,7 +38,7 @@ public slots:
 private:
     QTimer *timer;
     int indicator;
-    int m_urlThresholdMB {5};
+    int m_urlThresholdMB{5};
 };
 
-#endif // URLFINDER_H
+#endif  // URLFINDER_H

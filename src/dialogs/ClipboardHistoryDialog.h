@@ -1,9 +1,10 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Implements Clipboard History & Monitoring Dialog.
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -21,8 +22,7 @@ class ClipboardHistoryDialog;
 
 class ScintillaNext;
 
-class ClipboardHistoryDialog : public QDialog
-{
+class ClipboardHistoryDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -47,4 +47,4 @@ private:
     ScintillaNext *m_editor;
 };
 
-#endif // CLIPBOARDHISTORYDIALOG_H
+#endif  // CLIPBOARDHISTORYDIALOG_H

@@ -1,10 +1,10 @@
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad4 smart auto-indent rules.
  * Source: zufuliu/Notepad4 (src/Edit.cpp, EditAutoC.cpp)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -15,14 +15,11 @@
 
 using namespace Scintilla;
 
-AutoIndentation::AutoIndentation(ScintillaNext *editor) :
-    EditorDecorator(editor)
-{
+AutoIndentation::AutoIndentation(ScintillaNext *editor) : EditorDecorator(editor) {
     setObjectName(QStringLiteral("AutoIndentation"));
 }
 
-void AutoIndentation::notify(const NotificationData *pscn)
-{
+void AutoIndentation::notify(const NotificationData *pscn) {
     if (pscn->nmhdr.code == Notification::CharAdded && isEnabled()) {
         const int ch = pscn->ch;
         const int eolMode = editor->eOLMode();
@@ -33,9 +30,9 @@ void AutoIndentation::notify(const NotificationData *pscn)
     }
 }
 
-void AutoIndentation::autoIndentLine(int line) const
-{
-    if (line <= 0 || !editor) return;
+void AutoIndentation::autoIndentLine(int line) const {
+    if (line <= 0 || !editor)
+        return;
 
     const int previousLine = line - 1;
     int targetIndentation = editor->lineIndentation(previousLine);

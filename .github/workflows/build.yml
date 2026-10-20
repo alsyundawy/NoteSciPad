@@ -1,4 +1,4 @@
-name: Build NoteSciPad
+name: Build SparkNotePad
 
 on:
   push:
@@ -202,8 +202,8 @@ jobs:
         if: matrix.platform == 'mac'
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: NoteSciPad-macOS-${{ matrix.arch }}-Qt${{ matrix.qt_version }}
-          path: build/NoteSciPad*.dmg
+          name: SparkNotePad-macOS-${{ matrix.arch }}-Qt${{ matrix.qt_version }}
+          path: build/SparkNotePad*.dmg
           if-no-files-found: warn
 
       - name: Build Linux Targets (deb, rpm)
@@ -217,9 +217,9 @@ jobs:
         if: matrix.platform == 'linux'
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: NoteSciPad-Linux-${{ matrix.arch }}-Qt${{ matrix.qt_version }}
+          name: SparkNotePad-Linux-${{ matrix.arch }}-Qt${{ matrix.qt_version }}
           path: |
-            build/src/NoteSciPad
+            build/src/SparkNotePad
             build/*.deb
             build/*.rpm
           if-no-files-found: warn

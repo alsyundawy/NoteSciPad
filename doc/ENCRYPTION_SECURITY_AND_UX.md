@@ -2,23 +2,23 @@
 
 ## 1. Executive Summary
 
-This report documents the architectural design, cryptographic evaluation, and user experience (UX) model for **AES-256 Document Encryption** in NoteSciPad.
+This report documents the architectural design, cryptographic evaluation, and user experience (UX) model for **AES-256 Document Encryption** in SparkNotePad.
 
-NoteSciPad introduces authenticated file encryption designed to protect sensitive code, notes, configurations, and private credentials stored on local drives or synchronized cloud storage. The implementation follows modern NIST, RFC, and OWASP cryptographic standards, delivering high security, zero external third-party dependencies, and a smooth user experience.
+SparkNotePad introduces authenticated file encryption designed to protect sensitive code, notes, configurations, and private credentials stored on local drives or synchronized cloud storage. The implementation follows modern NIST, RFC, and OWASP cryptographic standards, delivering high security, zero external third-party dependencies, and a smooth user experience.
 
 ---
 
 ## 2. Threat Model & Security Objectives
 
-| Threat Vector | Mitigation in NoteSciPad |
-| --- | --- |
-| **Physical theft / unauthorized storage access** | Strong 256-bit symmetric encryption renders document contents unreadable without the passphrase. |
-| **Offline dictionary & GPU brute-force attacks** | Key derivation via **PBKDF2-HMAC-SHA256** with **100,000 iterations** and a unique 128-bit random salt per file. |
-| **Malleability / bit-flipping / truncation attacks** | **Encrypt-then-MAC (HMAC-SHA256)** verifies integrity and authenticity before ciphertext decryption. |
-| **Padding oracle attacks (e.g. Vaudenay's attack)** | Decryption is aborted immediately if HMAC verification fails in constant time; no padding checks are performed on unauthenticated data. |
-| **Side-channel timing analysis** | HMAC comparison uses constant-time byte comparison (`CryptoManager::constantTimeCompare`), eliminating timing discrepancies. |
-| **Accidental file corruption / write interruption** | Documents are written atomically to disk to prevent partial or corrupted file states. |
-| **Memory leakage / persistence** | Passphrases and derived keys exist only in volatile memory during the active session and are never written to disk, cache, or logs. |
+| Threat Vector                                        | Mitigation in SparkNotePad                                                                                                              |
+| ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **Physical theft / unauthorized storage access**     | Strong 256-bit symmetric encryption renders document contents unreadable without the passphrase.                                        |
+| **Offline dictionary & GPU brute-force attacks**     | Key derivation via **PBKDF2-HMAC-SHA256** with **100,000 iterations** and a unique 128-bit random salt per file.                        |
+| **Malleability / bit-flipping / truncation attacks** | **Encrypt-then-MAC (HMAC-SHA256)** verifies integrity and authenticity before ciphertext decryption.                                    |
+| **Padding oracle attacks (e.g. Vaudenay's attack)**  | Decryption is aborted immediately if HMAC verification fails in constant time; no padding checks are performed on unauthenticated data. |
+| **Side-channel timing analysis**                     | HMAC comparison uses constant-time byte comparison (`CryptoManager::constantTimeCompare`), eliminating timing discrepancies.            |
+| **Accidental file corruption / write interruption**  | Documents are written atomically to disk to prevent partial or corrupted file states.                                                   |
+| **Memory leakage / persistence**                     | Passphrases and derived keys exist only in volatile memory during the active session and are never written to disk, cache, or logs.     |
 
 ---
 
@@ -26,7 +26,7 @@ NoteSciPad introduces authenticated file encryption designed to protect sensitiv
 
 ### Container Binary Layout (`NSPENC01`)
 
-An encrypted file produced by NoteSciPad is structured as follows:
+An encrypted file produced by SparkNotePad is structured as follows:
 
 ```text
 +-------------------+--------------------+--------------------+--------------------+
@@ -72,28 +72,28 @@ An encrypted file produced by NoteSciPad is structured as follows:
 
 ## 4. Evaluation of Alternative Approaches
 
-| Feature / Metric | Legacy Notepad3 | NppCrypt (Notepad++) | NoteSciPad (`NSPENC01`) |
-| --- | --- | --- | --- |
-| **Cipher Algorithm** | Rijndael-256 CBC | Multiple (AES, Blowfish, DES, RC2) | AES-256-CBC (FIPS 197) |
-| **Key Derivation** | Single SHA-256 (0 iterations) | PBKDF2 / Scrypt (configurable) | PBKDF2-HMAC-SHA256 (100,000 iterations) |
-| **Integrity Check** | None (Unauthenticated CBC) | Optional HMAC depending on cipher | Mandatory Encrypt-then-MAC (HMAC-SHA256) |
-| **Padding Oracle Defense** | Vulnerable | Partial | Complete (verify-before-decrypt) |
-| **Platform Portability** | Windows only (CryptoAPI) | Windows only | macOS (ARM64/x86_64) & Linux (POSIX) |
-| **Dependencies** | Win32 API | OpenSSL / LibTomCrypt DLLs | Zero external libs (CommonCrypto + Qt std) |
-| **UI Complexity** | Minimal prompt | Overly complex modal with algorithm selectors | Clean dialogs with live strength meter |
+| Feature / Metric           | Legacy Notepad3               | NppCrypt (Notepad++)                          | SparkNotePad (`NSPENC01`)                  |
+| -------------------------- | ----------------------------- | --------------------------------------------- | ------------------------------------------ |
+| **Cipher Algorithm**       | Rijndael-256 CBC              | Multiple (AES, Blowfish, DES, RC2)            | AES-256-CBC (FIPS 197)                     |
+| **Key Derivation**         | Single SHA-256 (0 iterations) | PBKDF2 / Scrypt (configurable)                | PBKDF2-HMAC-SHA256 (100,000 iterations)    |
+| **Integrity Check**        | None (Unauthenticated CBC)    | Optional HMAC depending on cipher             | Mandatory Encrypt-then-MAC (HMAC-SHA256)   |
+| **Padding Oracle Defense** | Vulnerable                    | Partial                                       | Complete (verify-before-decrypt)           |
+| **Platform Portability**   | Windows only (CryptoAPI)      | Windows only                                  | macOS (ARM64/x86_64) & Linux (POSIX)       |
+| **Dependencies**           | Win32 API                     | OpenSSL / LibTomCrypt DLLs                    | Zero external libs (CommonCrypto + Qt std) |
+| **UI Complexity**          | Minimal prompt                | Overly complex modal with algorithm selectors | Clean dialogs with live strength meter     |
 
 ---
 
 ## 5. User Experience (UX) Architecture
 
 1. **Automatic Format Detection**:
-   When opening any file starting with `NSPENC01`, NoteSciPad detects encryption transparently and presents `DecryptDialog` displaying the document name and an unlock passphrase input.
+   When opening any file starting with `NSPENC01`, SparkNotePad detects encryption transparently and presents `DecryptDialog` displaying the document name and an unlock passphrase input.
 
 2. **Interactive Password Strength Meter**:
    In `EncryptDialog`, users receive immediate visual feedback on passphrase strength (Weak, Fair, Good, Strong) based on length, character diversity, and common password pattern heuristics.
 
 3. **Session Passphrase Retention**:
-   To prevent asking the user for their passphrase on every single save keystroke (`Cmd+S`), the verified passphrase is kept in memory attached to the active document tab. When the tab is closed or NoteSciPad quits, the passphrase is permanently purged from memory.
+   To prevent asking the user for their passphrase on every single save keystroke (`Cmd+S`), the verified passphrase is kept in memory attached to the active document tab. When the tab is closed or SparkNotePad quits, the passphrase is permanently purged from memory.
 
 4. **Status Bar Visibility**:
    Encrypted documents display a persistent status notification in the status bar (`🔒 AES-256 Encrypted`), reassuring the user that encryption remains active.

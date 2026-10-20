@@ -1,8 +1,9 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
- * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
+ * This file is part of SparkNotePad.
+ * Copyright 2026 Harry DS Alsyundawy (SparkNotePad Maintainer)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -16,8 +17,7 @@
 
 class QWidget;
 
-class DocumentationManager : public QObject
-{
+class DocumentationManager : public QObject {
     Q_OBJECT
 
 public:
@@ -40,4 +40,4 @@ private:
     void openUrlOrFile(const QString &filePath, const QString &fallbackUrl, QWidget *parent);
 };
 
-#endif // DOCUMENTATIONMANAGER_H
+#endif  // DOCUMENTATIONMANAGER_H

@@ -1,10 +1,11 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad4 (zufuliu/notepad4, UrlThreshold) and Notepad3 URL features.
  * Sources: zufuliu/notepad4 & rizonesoft/Notepad3
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -18,8 +19,7 @@
 
 class ScintillaNext;
 
-class UrlUtils
-{
+class UrlUtils {
 public:
     // Checks if the document size exceeds the given UrlThreshold in MB.
     // If thresholdMB is 0, returns true (indicating threshold exceeded / disabled).
@@ -38,4 +38,4 @@ public:
     static const char *urlRegexPattern();
 };
 
-#endif // URLUTILS_H
+#endif  // URLUTILS_H

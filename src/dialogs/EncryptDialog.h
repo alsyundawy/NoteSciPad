@@ -1,9 +1,10 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Implements AES-256 encryption configuration dialog.
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -19,8 +20,7 @@ namespace Ui {
 class EncryptDialog;
 }
 
-class EncryptDialog : public QDialog
-{
+class EncryptDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -41,4 +41,4 @@ private:
     Ui::EncryptDialog *ui;
 };
 
-#endif // ENCRYPTDIALOG_H
+#endif  // ENCRYPTDIALOG_H

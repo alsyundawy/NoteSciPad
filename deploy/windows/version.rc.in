@@ -1,6 +1,6 @@
 #include <windows.h>
 
-IDI_APP_ICON ICON "NoteSciPad.ico"
+IDI_APP_ICON ICON "SparkNotePad.ico"
 
 VS_VERSION_INFO VERSIONINFO
  FILEVERSION @PROJECT_VERSION_MAJOR@,@PROJECT_VERSION_MINOR@,0,0
@@ -15,13 +15,13 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "CompanyName", "NoteSciPad Contributors"
-            VALUE "FileDescription", "NoteSciPad - Scientific Code & Text Editor"
+            VALUE "CompanyName", "SparkNotePad Contributors"
+            VALUE "FileDescription", "SparkNotePad - Text & Source Code Editor"
             VALUE "FileVersion", "@PROJECT_VERSION@"
-            VALUE "InternalName", "NoteSciPad.exe"
+            VALUE "InternalName", "SparkNotePad.exe"
             VALUE "LegalCopyright", "@APP_COPYRIGHT@"
-            VALUE "OriginalFilename", "NoteSciPad.exe"
-            VALUE "ProductName", "NoteSciPad"
+            VALUE "OriginalFilename", "SparkNotePad.exe"
+            VALUE "ProductName", "SparkNotePad"
             VALUE "ProductVersion", "@PROJECT_VERSION@"
         END
     END

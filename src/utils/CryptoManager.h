@@ -1,12 +1,12 @@
 #pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Implements AES-256 authenticated encryption (AES-256-CBC + HMAC-SHA256
  * Encrypt-then-MAC with PBKDF2-HMAC-SHA256 key derivation) following
  * NIST SP 800-38A, NIST SP 800-132, and RFC 8018 standards.
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -18,7 +18,9 @@
 
 class CryptoManager {
 public:
-    static constexpr const char *MAGIC_HEADER = "NSPENC01";
+    static constexpr const char *MAGIC_HEADER = "SPKENC01";
+    // cppcheck-suppress unusedStructMember
+    static constexpr const char *LEGACY_MAGIC_HEADER = "NSPENC01";
     static constexpr size_t MAGIC_HEADER_LEN = 8;
     static constexpr size_t SALT_LEN = 16;
     static constexpr size_t IV_LEN = 16;

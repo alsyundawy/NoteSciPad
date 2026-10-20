@@ -1,10 +1,11 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Windows Notepad, Notepad++, and Notepad3 .LOG auto-timestamp specification.
  * Sources: rizonesoft/Notepad3 & classic Notepad .LOG behavior
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -17,8 +18,7 @@
 
 class ScintillaNext;
 
-class LogAutoTimestamp
-{
+class LogAutoTimestamp {
 public:
     // Returns true if document starts with .LOG header on line 0
     static bool hasLogHeader(ScintillaNext *editor);
@@ -41,4 +41,4 @@ public:
     static QString currentLogTimestampString();
 };
 
-#endif // LOGAUTOTIMESTAMP_H
+#endif  // LOGAUTOTIMESTAMP_H

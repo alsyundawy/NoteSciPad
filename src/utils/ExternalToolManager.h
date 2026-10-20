@@ -1,10 +1,11 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad++ Run menu and variable macro expansion concept
  * ($(FULL_CURRENT_PATH), $(CURRENT_DIRECTORY), $(FILE_NAME), etc.)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -30,8 +31,7 @@ struct ExternalTool {
     bool saveBeforeRun = true;
 };
 
-class ExternalToolManager : public QObject
-{
+class ExternalToolManager : public QObject {
     Q_OBJECT
 
 public:
@@ -39,7 +39,8 @@ public:
     static QString expandVariables(const QString &cmdTemplate, ScintillaNext *editor);
 
     // Command execution
-    static bool executeCommand(const QString &commandLine, const QString &workingDir, bool inTerminal, QString *errorOut = nullptr);
+    static bool executeCommand(const QString &commandLine, const QString &workingDir, bool inTerminal,
+                               QString *errorOut = nullptr);
     static bool executeTool(const ExternalTool &tool, ScintillaNext *editor, QString *errorOut = nullptr);
 
     // Common system actions
@@ -64,4 +65,4 @@ public:
     static QString getSelectedOrCurrentWord(ScintillaNext *editor);
 };
 
-#endif // EXTERNALTOOLMANAGER_H
+#endif  // EXTERNALTOOLMANAGER_H

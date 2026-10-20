@@ -2,14 +2,15 @@
 
 ## Executive Summary
 
-As part of Phase 3, Task 10 of NoteSciPad's roadmap, this document details the implementation of **Monitoring / Tail Mode (tail -f)** improvements. Adapted from the battle-tested monitoring architectures of **Notepad++** and **Notepad4**, this feature transforms NoteSciPad into an ultra-fast, zero-modal log viewer capable of streaming live log files in real-time.
+As part of Phase 3, Task 10 of SparkNotePad's roadmap, this document details the implementation of **Monitoring / Tail Mode (tail -f)** improvements. Adapted from the battle-tested monitoring architectures of **Notepad++** and **Notepad4**, this feature transforms SparkNotePad into an ultra-fast, zero-modal log viewer capable of streaming live log files in real-time.
 
 ---
 
 ## 1. Problem Statement & Motivation
 
 Traditional text editors monitor file modifications by comparing timestamps upon window activation. When an open file changes on disk (such as a server log, build log, or simulation output), the editor interrupts the user with a modal prompt:
-> *"File has been modified by another program. Do you want to reload it?"*
+
+> _"File has been modified by another program. Do you want to reload it?"_
 
 For active log files, this creates an unusable loop of modal dialogs that blocks editing and freezes workflow. Furthermore, reloading the entire file from the top causes visual flashing, resets the scroll position to line 1, and consumes excessive memory and CPU on large logs.
 
@@ -17,9 +18,10 @@ For active log files, this creates an unusable loop of modal dialogs that blocks
 
 ## 2. Technical Architecture
 
-NoteSciPad solves this via a dedicated, non-intrusive monitoring engine:
+SparkNotePad solves this via a dedicated, non-intrusive monitoring engine:
 
 ### 2.1 `TailMonitoringManager` (`src/features/TailMonitoringManager.h`, `src/features/TailMonitoringManager.cpp`)
+
 - **Dual-Engine Notification**: Combines native `QFileSystemWatcher` events with a heartbeat timer (configurable 250ms–5000ms, default 750ms). This ensures prompt detection on all OS filesystems, including those where writes bypass immediate filesystem events.
 - **Atomic Delta Appending**: When a monitored file grows on disk, `TailMonitoringManager` seeks directly to `lastSize` and reads only the newly appended delta bytes. It then calls Scintilla's native `appendText(length, data)` method, appending the new lines in sub-millisecond time without reloading the existing document.
 - **Log Rotation & Truncation Handling**: If the file size shrinks (`currentSize < lastSize`) or jumps beyond the configurable reload threshold (default 10 MB), the manager recognizes that the log was rotated or truncated and automatically reloads the entire document cleanly.
@@ -28,7 +30,9 @@ NoteSciPad solves this via a dedicated, non-intrusive monitoring engine:
 - **Auto-scroll to End**: Automatically scrolls the viewport and caret to the end of the document (`editor->gotoLine(editor->lineCount())`, `editor->scrollCaret()`) on every update. Can be toggled off to allow inspecting historical log lines without jumping.
 
 ### 2.2 `TailOptionsDialog` (`src/dialogs/TailOptionsDialog.h`, `src/dialogs/TailOptionsDialog.cpp`, `src/dialogs/TailOptionsDialog.ui`)
+
 Provides full user control over streaming and safety parameters:
+
 - **Polling Heartbeat Interval**: 250 ms (Ultra High Speed), 500 ms (Fast), 750 ms (Standard / Recommended), 1000 ms, 2000 ms, 5000 ms.
 - **Full Reload Threshold**: 1 MB, 5 MB, 10 MB, 25 MB (safeguard against huge file jumps).
 - **Auto-scroll to End**: Checkbox (default checked).
@@ -53,6 +57,6 @@ Provides full user control over streaming and safety parameters:
 
 ## 4. Invariant Compliance
 
-- **Engine Invariant**: Strictly uses NoteSciPad's vendored `ScintillaNext + thirdparty/scintilla + thirdparty/lexilla`.
+- **Engine Invariant**: Strictly uses SparkNotePad's vendored `ScintillaNext + thirdparty/scintilla + thirdparty/lexilla`.
 - **Zero Modal Blocking**: Log streaming never interrupts the user with modal popups.
 - **Clean Architecture**: Implemented as a modular separate class (`TailMonitoringManager`), decoupled from core document models.

@@ -1,9 +1,55 @@
 # Changelog
 
-All notable changes to **NoteSciPad** will be documented in this file.
+All notable changes to **SparkNotePad** will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [1.3.0] - 2026-10-20
+
+### ⚡ Official SparkNotePad Brand Evolution, High-Precision Iconography, 13-Pillar Code Quality & Dual-Format Crypto Compatibility
+
+SparkNotePad v1.3.0 represents a landmark release featuring the official transformation from NoteSciPad into **SparkNotePad** across all application targets, repositories, packaging pipelines, and system integrations. This release delivers an updated visual identity with a custom high-definition iconset adhering to Apple HIG and Windows standards, comprehensive 13-pillar code quality refactoring (eliminating performance bottlenecks, enforcing const-correctness, and resolving lint invariants), refined Indonesian localization and documentation, and dual-format cryptographic compatibility supporting both `SPKENC01` and legacy `NSPENC01` encrypted files.
+
+---
+
+### ✨ Added
+
+#### Official SparkNotePad Brand Identity & Vector Iconography
+
+- **New Visual Identity**: Replaced legacy iconography with high-precision artwork derived from master assets, featuring vibrant typography and contrast.
+- **Apple HIG Compliant `SparkNotePad.icns`**: Generated 10 distinct standard macOS icon resolutions (`16x16`, `16x16@2x`, `32x32`, `32x32@2x`, `128x128`, `128x128@2x`, `256x256`, `256x256@2x`, `512x512`, `512x512@2x`) packaged via native `iconutil`.
+- **Cross-Platform Icons**: Generated multi-resolution Windows `SparkNotePad.ico` (16, 24, 32, 48, 64, 128, 256 px), high-DPI 512x512 Linux desktop icon (`SparkNotePad.png`), and clean vector SVG (`SparkNotePad.svg`).
+- **In-App Resource Bundling**: Updated `src/resources.qrc` and window application headers to load `:/icons/SparkNotePad.png`.
+
+#### Dual-Format Cryptographic Backward Compatibility
+
+- **Primary `SPKENC01` Magic Header**: New documents encrypted with AES-256-CBC and HMAC-SHA256 authenticated containers use the `SPKENC01` format header.
+- **Transparent Legacy Decryption**: Added seamless fallback for legacy `NSPENC01` encrypted containers, ensuring users can decrypt existing confidential documents without migration friction.
+
+#### Comprehensive 13-Pillar Code Quality Audit
+
+- **Const Reference Return**: Updated `MarkOccurrences::lastQuery()` to return `const QString &` instead of value copy, eliminating allocation overhead on hot search paths.
+- **Single-Argument Constructor Safety**: Declared `TabsQuickActionsBar(MainWindow *mainWindow, QWidget *parent = nullptr)` as `explicit` to prevent unintended implicit conversions.
+- **Dead Code Cleanup**: Purged unused `caret` and `anchor` struct members in `CaseConverter::SelectionRange`.
+- **Const Pointer Enforcement**: Made `QTextCodec *` pointer `const` in `EncodingDetector::detectEncoding`.
+- **Shell Script Return Value Hardening**: Resolved all ShellCheck SC2312 warnings across utility and default editor shell scripts by assigning subshell commands to isolated local variables.
+
+#### Indonesian Localization & Documentation Refinement
+
+- **Standard Technical Phrasing**: Polished `i18n/SparkNotePad_id.ts` and documentation for natural, idiomatic Indonesian developer terminology.
+- **README Standardization**: Integrated official standardized tagline ("SparkNotePad — editor teks dan kode sumber ringan berbasis Scintilla & Qt untuk Linux dan macOS") and architectural overview.
+
+---
+
+### 🔄 Changed
+
+- **Target & Binary Renaming**: Renamed CMake executable target to `SparkNotePad`, unit tests to `SparkNotePadTests` / `SparkNotePadUnitTests`.
+- **Application Class Structure**: Introduced `SparkNotePadApplication` with forward-compatibility type aliases (`using NoteSciPadApplication = SparkNotePadApplication;` and `using NotepadNextApplication = SparkNotePadApplication;`).
+- **Packaging & Desktop Integration**: Updated Flatpak manifest (`io.github.alsyundawy.SparkNotePad.yml`), AppStream metainfo, desktop entry, Homebrew Cask and Formula (`sparknotepad.rb`), and macOS Info.plist bundle identifier (`io.github.alsyundawy.SparkNotePad`).
+- **CI/CD Automation**: Updated GitHub Actions build matrices, release workflows, and lupdate routines to reference `SparkNotePad`.
 
 ---
 

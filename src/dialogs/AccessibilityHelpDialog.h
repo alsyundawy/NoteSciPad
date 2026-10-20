@@ -1,8 +1,9 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
- * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
+ * This file is part of SparkNotePad.
+ * Copyright 2026 Harry DS Alsyundawy (SparkNotePad Maintainer)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -19,8 +20,7 @@ class AccessibilityHelpDialog;
 
 class QTreeWidgetItem;
 
-class AccessibilityHelpDialog : public QDialog
-{
+class AccessibilityHelpDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -33,7 +33,8 @@ private slots:
 private:
     Ui::AccessibilityHelpDialog *ui;
     void populateShortcuts();
-    void addShortcutItem(const QString &action, const QString &shortcut, const QString &category, const QString &description);
+    void addShortcutItem(const QString &action, const QString &shortcut, const QString &category,
+                         const QString &description);
 };
 
-#endif // ACCESSIBILITYHELPDIALOG_H
+#endif  // ACCESSIBILITYHELPDIALOG_H

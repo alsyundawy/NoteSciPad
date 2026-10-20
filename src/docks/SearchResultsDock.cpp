@@ -17,7 +17,7 @@
  */
 
 #include "ApplicationSettings.h"
-#include "NoteSciPadApplication.h"
+#include "SparkNotePadApplication.h"
 #include "SearchResultHighlighterDelegate.h"
 #include "SearchResultData.h"
 #include "SearchResultsDock.h"

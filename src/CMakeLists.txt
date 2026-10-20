@@ -1,4 +1,4 @@
-qt_add_executable(NoteSciPad
+qt_add_executable(SparkNotePad
 	WIN32
 	MACOSX_BUNDLE
 	ActionUtils.h
@@ -30,6 +30,7 @@ qt_add_executable(NoteSciPad
 	MacroRecorder.h
 	MacroStep.h
 	MacroStepTableModel.h
+	SparkNotePadApplication.h
 	NoteSciPadApplication.h
 	NotepadNextApplication.h
 	NppImporter.h
@@ -78,7 +79,7 @@ qt_add_executable(NoteSciPad
 	MacroStep.cpp
 	MacroStepTableModel.cpp
 	main.cpp
-	NoteSciPadApplication.cpp
+	SparkNotePadApplication.cpp
 	NppImporter.cpp
 	QRegexSearch.cpp
 	RangeAllocator.cpp
@@ -312,9 +313,9 @@ qt_add_executable(NoteSciPad
 
 )
 
-set_target_properties(NoteSciPad PROPERTIES
-    OUTPUT_NAME NoteSciPad
-    MACOSX_BUNDLE_BUNDLE_NAME NoteSciPad
+set_target_properties(SparkNotePad PROPERTIES
+    OUTPUT_NAME SparkNotePad
+    MACOSX_BUNDLE_BUNDLE_NAME SparkNotePad
     MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/deploy/macos/info.plist
 )
 
@@ -323,13 +324,13 @@ file(GLOB TS_FILES
 )
 
 find_package(Qt6 REQUIRED COMPONENTS LinguistTools)
-qt_add_translations(NoteSciPad
+qt_add_translations(SparkNotePad
     TS_FILES ${TS_FILES}
     RESOURCE_PREFIX "/i18n"
 )
 
 
-target_include_directories(NoteSciPad
+target_include_directories(SparkNotePad
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/decorators
         ${CMAKE_CURRENT_SOURCE_DIR}/dialogs
@@ -346,15 +347,15 @@ if(WIN32)
 		"${CMAKE_BINARY_DIR}/version.rc"
 		@ONLY
 	)
-	target_sources(NoteSciPad PRIVATE "${CMAKE_BINARY_DIR}/version.rc")
+	target_sources(SparkNotePad PRIVATE "${CMAKE_BINARY_DIR}/version.rc")
 	configure_file(
-		"${CMAKE_SOURCE_DIR}/icon/NoteSciPad.ico"
-		"${CMAKE_BINARY_DIR}/NoteSciPad.ico"
+		"${CMAKE_SOURCE_DIR}/icon/SparkNotePad.ico"
+		"${CMAKE_BINARY_DIR}/SparkNotePad.ico"
 		COPYONLY
 	)
 endif()
 
-target_link_libraries(NoteSciPad
+target_link_libraries(SparkNotePad
     PRIVATE
         Qt6::Core
         Qt6::Gui
@@ -373,20 +374,20 @@ target_link_libraries(NoteSciPad
 )
 
 if(APPLE)
-    target_link_directories(NoteSciPad PRIVATE "${CMAKE_BINARY_DIR}/dummy_frameworks")
-    target_link_libraries(NoteSciPad PRIVATE "-framework Security" "-framework JavaScriptCore" "-framework AppKit")
-    target_sources(NoteSciPad PRIVATE
+    target_link_directories(SparkNotePad PRIVATE "${CMAKE_BINARY_DIR}/dummy_frameworks")
+    target_link_libraries(SparkNotePad PRIVATE "-framework Security" "-framework JavaScriptCore" "-framework AppKit")
+    target_sources(SparkNotePad PRIVATE
         features/MacServicesHandler.h
         features/MacServicesHandler.mm
     )
 else()
-    target_sources(NoteSciPad PRIVATE
+    target_sources(SparkNotePad PRIVATE
         features/MacServicesHandler.h
         features/MacServicesHandler.cpp
     )
 endif()
 
-target_compile_definitions(NoteSciPad
+target_compile_definitions(SparkNotePad
     PRIVATE
         ADS_STATIC
         QSIMPLEUPDATER_STATIC
@@ -397,4 +398,4 @@ target_compile_definitions(NoteSciPad
         APP_DISTRIBUTION="${APP_DISTRIBUTION}"
 )
 
-# NoteSciPad Primary Executable Target
+# SparkNotePad Primary Executable Target

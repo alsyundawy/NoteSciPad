@@ -43,7 +43,7 @@ jobs:
               f.write(content)
 
           # Update Flatpak metadata
-          meta_path = "deploy/linux/io.github.alsyundawy.NoteSciPad.metainfo.xml"
+          meta_path = "deploy/linux/io.github.alsyundawy.SparkNotePad.metainfo.xml"
           today = datetime.date.today().isoformat()
           entry = f"<release version=\"v{ver}\" date=\"{today}\" />"
           with open(meta_path, "r", encoding="utf-8") as f:
@@ -61,7 +61,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add CMakeLists.txt deploy/linux/io.github.alsyundawy.NoteSciPad.metainfo.xml
+          git add CMakeLists.txt deploy/linux/io.github.alsyundawy.SparkNotePad.metainfo.xml
           git commit -m "v${NEW_VERSION} release"
           git tag "v${NEW_VERSION}"
           git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" main --tags

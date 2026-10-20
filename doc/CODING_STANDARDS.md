@@ -1,8 +1,8 @@
-# NoteSciPad — Coding Standards & Architectural Guidelines
+# SparkNotePad — Coding Standards & Architectural Guidelines
 
-**Project:** NoteSciPad (Alternative Notepad for macOS & Linux)  
-**Standard:** C++20 / Qt 6.5+ / ScintillaNext  
-**Reference Document:** WORKGROUND.md  
+**Project:** SparkNotePad (Alternative Notepad for macOS & Linux)
+**Standard:** C++20 / Qt 6.5+ / ScintillaNext
+**Reference Document:** WORKGROUND.md
 
 ---
 
@@ -10,7 +10,7 @@
 
 1. **Vendored Editor Engine**: Always use vendored copies of Scintilla (`thirdparty/scintilla`) and Lexilla (`thirdparty/lexilla`). Never replace them with system libraries or dynamic Qt bindings.
 2. **ScintillaNext Wrapper**: All editor operations, indicators, markers, and styling calls must pass through `ScintillaNext` or clean helper wrappers. Do not bypass the Scintilla document model.
-3. **Product Branding**: The product name is **NoteSciPad**. Binary name is `NoteSciPad` or `notesci`. Never use Notepad++, NotepadNext, or Notepad4 as application names.
+3. **Product Branding**: The product name is **SparkNotePad**. Binary name is `SparkNotePad` or `notesci`. Never use Notepad++, NotepadNext, or Notepad4 as application names.
 4. **Mandatory Attribution & Non-Affiliation**: Maintain clear attribution in About dialog and README. Every ported algorithm from Notepad4 or Notepad3 must include source commentary.
 
 ---
@@ -27,20 +27,21 @@
 
 ## 3. Naming Conventions
 
-| Entity | Convention | Example |
-|---|---|---|
-| Classes / Structs | `PascalCase` | `MarkOccurrences`, `FileBrowserDock` |
-| Member Functions | `camelCase` | `markAll()`, `updateMatchCount()` |
-| Local Variables | `camelCase` | `matchCount`, `editorInstance` |
-| Member Variables | `camelCase` or `m_` prefix | `m_matchCount`, `editor` |
-| Constants & Enums | `PascalCase` or `kConstant` | `IndicatorMarkOccurrences`, `kDefaultLimit` |
-| Signals & Slots | `camelCase` (descriptive verbs) | `matchesCountChanged(int)` |
+| Entity            | Convention                      | Example                                     |
+| ----------------- | ------------------------------- | ------------------------------------------- |
+| Classes / Structs | `PascalCase`                    | `MarkOccurrences`, `FileBrowserDock`        |
+| Member Functions  | `camelCase`                     | `markAll()`, `updateMatchCount()`           |
+| Local Variables   | `camelCase`                     | `matchCount`, `editorInstance`              |
+| Member Variables  | `camelCase` or `m_` prefix      | `m_matchCount`, `editor`                    |
+| Constants & Enums | `PascalCase` or `kConstant`     | `IndicatorMarkOccurrences`, `kDefaultLimit` |
+| Signals & Slots   | `camelCase` (descriptive verbs) | `matchesCountChanged(int)`                  |
 
 ---
 
 ## 4. Modularity & File Organization
 
 New features must be modular to keep core files maintainable:
+
 - Dock widgets: `src/docks/` (e.g., `FileBrowserDock.h/.cpp`)
 - Utilities & Converters: `src/utils/` (e.g., `Base64Utils.h`, `NumberConverter.h`)
 - Editor Features: `src/features/` (e.g., `MarkOccurrences.h/.cpp`)
@@ -53,6 +54,7 @@ Avoid large monolithic additions to `MainWindow.cpp`. Instead, instantiate featu
 ## 5. Porting from Notepad4 / Notepad3
 
 When adapting functionality from upstream projects:
+
 1. Re-implement cleanly using Qt 6 and Scintilla APIs; avoid Win32 API calls (`HWND`, `SendMessage`, `LRESULT`).
 2. Add a clear source comment:
    ```cpp

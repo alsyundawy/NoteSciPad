@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Unlock Encrypted Document - NoteSciPad</string>
+   <string>Unlock Encrypted Document - SparkNotePad</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

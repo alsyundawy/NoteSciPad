@@ -3,39 +3,36 @@ message(STATUS "Configuring macOS packaging")
 set(INSTALL_DIR ${CMAKE_BINARY_DIR}/install)
 
 # Custom Info.plist
-set_target_properties(NoteSciPad PROPERTIES
+set_target_properties(SparkNotePad PROPERTIES
     MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/deploy/macos/info.plist
 )
 
 # Application icon
-set(APP_ICON_MACOS ${CMAKE_SOURCE_DIR}/icon/NoteSciPad.icns)
-if(NOT EXISTS ${APP_ICON_MACOS})
-    set(APP_ICON_MACOS ${CMAKE_SOURCE_DIR}/icon/NotepadNext.icns)
-endif()
+set(APP_ICON_MACOS ${CMAKE_SOURCE_DIR}/icon/SparkNotePad.icns)
 
 set_source_files_properties(${APP_ICON_MACOS}
     PROPERTIES MACOSX_PACKAGE_LOCATION "Resources"
 )
 
-target_sources(NoteSciPad PRIVATE ${APP_ICON_MACOS})
+target_sources(SparkNotePad PRIVATE ${APP_ICON_MACOS})
 
-set_target_properties(NoteSciPad PROPERTIES
-    MACOSX_BUNDLE_ICON_FILE NoteSciPad.icns
+set_target_properties(SparkNotePad PROPERTIES
+    MACOSX_BUNDLE_ICON_FILE SparkNotePad.icns
 )
 
-install(TARGETS NoteSciPad
+install(TARGETS SparkNotePad
     BUNDLE DESTINATION .
 )
 
 install(FILES ${APP_ICON_MACOS}
-    DESTINATION NoteSciPad.app/Contents/Resources
+    DESTINATION SparkNotePad.app/Contents/Resources
 )
 
 add_custom_target(install_local
     COMMAND ${CMAKE_COMMAND}
         --install ${CMAKE_BINARY_DIR}
         --prefix ${INSTALL_DIR}
-    DEPENDS NoteSciPad
+    DEPENDS SparkNotePad
 )
 
 # Determine macOS target architecture suffix (arm64 or x64)
@@ -51,18 +48,18 @@ if(NOT DEFINED MAC_ARCH_SUFFIX OR MAC_ARCH_SUFFIX STREQUAL "")
     endif()
 endif()
 
-set(MAC_DMG_NAME "NoteSciPad-v${PROJECT_VERSION}-${MAC_ARCH_SUFFIX}.dmg")
+set(MAC_DMG_NAME "SparkNotePad-v${PROJECT_VERSION}-${MAC_ARCH_SUFFIX}.dmg")
 
 find_program(MACDEPLOYQT_EXECUTABLE macdeployqt REQUIRED)
 
 add_custom_target(dmg
-    COMMAND ${CMAKE_COMMAND} -E rm -f ${INSTALL_DIR}/NoteSciPad.dmg ${CMAKE_BINARY_DIR}/${MAC_DMG_NAME}
-    COMMAND hdiutil detach /Volumes/NoteSciPad -force 2>/dev/null || true
+    COMMAND ${CMAKE_COMMAND} -E rm -f ${INSTALL_DIR}/SparkNotePad.dmg ${CMAKE_BINARY_DIR}/${MAC_DMG_NAME}
+    COMMAND hdiutil detach /Volumes/SparkNotePad -force 2>/dev/null || true
     COMMAND ${MACDEPLOYQT_EXECUTABLE}
-        ${INSTALL_DIR}/NoteSciPad.app
+        ${INSTALL_DIR}/SparkNotePad.app
         -dmg
     COMMAND ${CMAKE_COMMAND} -E rename
-        ${INSTALL_DIR}/NoteSciPad.dmg
+        ${INSTALL_DIR}/SparkNotePad.dmg
         ${CMAKE_BINARY_DIR}/${MAC_DMG_NAME}
     DEPENDS install_local
 )

@@ -17,7 +17,7 @@
  */
 
 #include "PreferencesDialog.h"
-#include "NoteSciPadApplication.h"
+#include "SparkNotePadApplication.h"
 #include "TranslationManager.h"
 #include "ui_PreferencesDialog.h"
 #include "ScintillaNext.h"

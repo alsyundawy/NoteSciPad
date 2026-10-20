@@ -72,7 +72,7 @@
 
 #include "DockAreaWidget.h"
 
-#include "NoteSciPadApplication.h"
+#include "SparkNotePadApplication.h"
 #include "ApplicationSettings.h"
 
 #include "ScintillaNext.h"
@@ -575,7 +575,7 @@ MainWindow::MainWindow(NotepadNextApplication *app)
     auto reopenWith = [this](const QString &enc) {
         if (auto *ed = currentEditor()) {
             if (!ed->isFile()) {
-                ModernMessageBox::information(this, tr("NoteSciPad"),
+                ModernMessageBox::information(this, tr("SparkNotePad"),
                                               tr("Cannot reopen unsaved new buffer from disk."));
                 return;
             }
@@ -616,7 +616,7 @@ MainWindow::MainWindow(NotepadNextApplication *app)
             return;
         CharacterInfo::Details details = CharacterInfo::getDetailsAt(editor);
         if (!details.isValid) {
-            ModernMessageBox::information(this, tr("NoteSciPad"), tr("No character found at the current position."));
+            ModernMessageBox::information(this, tr("SparkNotePad"), tr("No character found at the current position."));
             return;
         }
         CharacterInfoDialog dlg(details, this);
@@ -1681,7 +1681,7 @@ MainWindow::MainWindow(NotepadNextApplication *app)
     ui->menuHelp->insertAction(ui->actionAboutNotepadNext, actionAccessibilityHelp);
 
     // User & Developer Documentation
-    QAction *actionUserGuide = new QAction(tr("NoteSciPad &User Guide"), this);
+    QAction *actionUserGuide = new QAction(tr("SparkNotePad &User Guide"), this);
 #if defined(Q_OS_MACOS)
     actionUserGuide->setShortcut(QKeySequence(Qt::Key_F1));
 #else
@@ -1690,7 +1690,7 @@ MainWindow::MainWindow(NotepadNextApplication *app)
     connect(actionUserGuide, &QAction::triggered, this, &MainWindow::onUserGuideTriggered);
     ui->menuHelp->insertAction(ui->actionAboutNotepadNext, actionUserGuide);
 
-    QAction *actionDeveloperGuide = new QAction(tr("NoteSciPad &Developer Guide"), this);
+    QAction *actionDeveloperGuide = new QAction(tr("SparkNotePad &Developer Guide"), this);
     actionDeveloperGuide->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_F12));
     connect(actionDeveloperGuide, &QAction::triggered, this, &MainWindow::onDeveloperGuideTriggered);
     ui->menuHelp->insertAction(ui->actionAboutNotepadNext, actionDeveloperGuide);
@@ -2732,7 +2732,7 @@ void MainWindow::updateFileStatusBasedUi(ScintillaNext *editor) {
         fileName = editor->getName();
     }
 
-    QString title = QStringLiteral("[*]%1 - NoteSciPad").arg(fileName);
+    QString title = QStringLiteral("[*]%1 - SparkNotePad").arg(fileName);
     if (app->isRunningAsAdmin()) {
         title += QStringLiteral(" - [%1]").arg(tr("Administrator"));
     }
@@ -3164,7 +3164,7 @@ void MainWindow::exportPdf() {
     pdfWriter.setPageSize(QPageSize(QPageSize::A4));
     pdfWriter.setPageMargins(QMarginsF(15, 15, 15, 15), QPageLayout::Millimeter);
     pdfWriter.setTitle(editor->getName());
-    pdfWriter.setCreator(QStringLiteral("NoteSciPad v%1").arg(APP_VERSION));
+    pdfWriter.setCreator(QStringLiteral("SparkNotePad v%1").arg(APP_VERSION));
 
     QPainter painter(&pdfWriter);
     if (!painter.isActive()) {
@@ -3192,7 +3192,7 @@ void MainWindow::exportPdf() {
     headerFont.setPointSize(11);
     painter.setFont(headerFont);
     painter.setPen(QColor(100, 100, 100));
-    painter.drawText(pageRect.left(), pageRect.top() + 20, tr("%1 — NoteSciPad").arg(editor->getName()));
+    painter.drawText(pageRect.left(), pageRect.top() + 20, tr("%1 — SparkNotePad").arg(editor->getName()));
     painter.drawLine(pageRect.left(), pageRect.top() + 28, pageRect.right(), pageRect.top() + 28);
 
     painter.setFont(docFont);
@@ -3213,7 +3213,7 @@ void MainWindow::exportPdf() {
 
             painter.setFont(headerFont);
             painter.setPen(QColor(100, 100, 100));
-            painter.drawText(pageRect.left(), pageRect.top() + 20, tr("%1 — NoteSciPad").arg(editor->getName()));
+            painter.drawText(pageRect.left(), pageRect.top() + 20, tr("%1 — SparkNotePad").arg(editor->getName()));
             painter.drawLine(pageRect.left(), pageRect.top() + 28, pageRect.right(), pageRect.top() + 28);
 
             painter.setFont(docFont);
@@ -3769,10 +3769,10 @@ void MainWindow::onEncryptDocumentTriggered() {
         editor->QObject::setProperty("EncryptionPassword", dlg.passphrase());
         editor->insertText(editor->currentPos(), "");
         ui->statusBar->showMessage(tr("🔒 Document configured for AES-256 encryption. Save to write to disk."), 5000);
-        ModernMessageBox::information(
-            this, tr("Encryption Configured"),
-            tr("This document is now set to be encrypted with AES-256 upon saving.\n\n"
-               "Warning: Lost passphrases cannot be recovered by NoteSciPad. Ensure you keep your passphrase secure."));
+        ModernMessageBox::information(this, tr("Encryption Configured"),
+                                      tr("This document is now set to be encrypted with AES-256 upon saving.\n\n"
+                                         "Warning: Lost passphrases cannot be recovered by SparkNotePad. Ensure you "
+                                         "keep your passphrase secure."));
     }
 }
 

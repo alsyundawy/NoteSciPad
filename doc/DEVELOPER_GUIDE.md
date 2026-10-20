@@ -1,14 +1,15 @@
-# NoteSciPad Developer Guide
+# SparkNotePad Developer Guide
 
-Welcome to the **NoteSciPad Developer Guide**. This document serves as the authoritative architectural blueprint, development runbook, and contribution manual for NoteSciPad maintainers and developers.
+Welcome to the **SparkNotePad Developer Guide**. This document serves as the authoritative architectural blueprint, development runbook, and contribution manual for SparkNotePad maintainers and developers.
 
 ---
 
 ## Table of Contents
+
 1. [Core Architectural Invariants](#1-core-architectural-invariants)
 2. [Project Layout & Directory Structure](#2-project-layout--directory-structure)
 3. [Prerequisites & Development Setup](#3-prerequisites--development-setup)
-4. [Building NoteSciPad](#4-building-notescipad)
+4. [Building SparkNotePad](#4-building-sparknotepad)
 5. [Step-by-Step: Adding a New Feature](#5-step-by-step-adding-a-new-feature)
 6. [Scintilla & Lexilla Integration Model](#6-scintilla--lexilla-integration-model)
 7. [Coding Standards & Conventions](#7-coding-standards--conventions)
@@ -22,7 +23,7 @@ Welcome to the **NoteSciPad Developer Guide**. This document serves as the autho
 
 ## 1. Core Architectural Invariants
 
-Every modification to NoteSciPad must strictly respect these architectural invariants:
+Every modification to SparkNotePad must strictly respect these architectural invariants:
 
 1. **Vendored Engine Invariant:**
    - Always compile against `thirdparty/scintilla` and `thirdparty/lexilla`.
@@ -33,16 +34,16 @@ Every modification to NoteSciPad must strictly respect these architectural invar
 3. **Discoverability (Menu & Shortcut Guarantee):**
    - Every user-facing feature must be exposed via an intuitive top menu entry and an explicit, conflict-free keyboard shortcut.
 4. **Permanent Application Branding:**
-   - The application name is strictly **NoteSciPad**.
-   - Bundle identifier: `io.github.alsyundawy.NoteSciPad`.
-   - Organization name: `NoteSciPad`.
+   - The application name is strictly **SparkNotePad**.
+   - Bundle identifier: `io.github.alsyundawy.SparkNotePad`.
+   - Organization name: `SparkNotePad`.
 
 ---
 
 ## 2. Project Layout & Directory Structure
 
 ```
-NoteSciPad/
+SparkNotePad/
 ├── CMakeLists.txt                # Root CMake project configuration
 ├── TASK_LIST.md                  # Master roadmap and tracking task list
 ├── WORKGROUND.md                 # Architectural guidelines & execution rules
@@ -59,7 +60,7 @@ NoteSciPad/
 │   ├── DEVELOPER_GUIDE.md        # Contributor and maintainer guide
 │   └── ...                       # Feature-specific technical briefs
 ├── scripts/                      # Maintainer automation scripts
-│   ├── NoteSciPad-Default-Editor.sh # Default editor association utility
+│   ├── SparkNotePad-Default-Editor.sh # Default editor association utility
 │   ├── codesign-and-notarize-macos.sh # macOS codesign + notarytool pipeline
 │   └── package-deb-rpm.sh        # CPack multi-distribution packager
 ├── src/                          # Primary C++ / Qt6 source tree
@@ -101,6 +102,7 @@ NoteSciPad/
 ## 3. Prerequisites & Development Setup
 
 ### 3.1 macOS
+
 - macOS 12+ (Apple Silicon or Intel).
 - Xcode Command Line Tools: `xcode-select --install`.
 - Qt 6 (via Homebrew): `brew install qt@6 cmake ninja`.
@@ -111,19 +113,21 @@ NoteSciPad/
   ```
 
 ### 3.2 Linux (Ubuntu / Debian)
+
 ```bash
 sudo apt update
 sudo apt install build-essential cmake ninja-build     qt6-base-dev qt6-base-private-dev qt6-tools-dev     libuchardet-dev libgl1-mesa-dev
 ```
 
 ### 3.3 Linux (Fedora / RHEL)
+
 ```bash
 sudo dnf install gcc-c++ cmake ninja-build     qt6-qtbase-devel qt6-qttools-devel     uchardet-devel mesa-libGL-devel
 ```
 
 ---
 
-## 4. Building NoteSciPad
+## 4. Building SparkNotePad
 
 From the repository root:
 
@@ -131,14 +135,14 @@ From the repository root:
 # 1. Configure the build directory
 cmake -B build -G Ninja     -DCMAKE_BUILD_TYPE=Release     -DCMAKE_PREFIX_PATH="$(brew --prefix qt@6 2>/dev/null || echo /usr/lib/qt6)"
 
-# 2. Compile NoteSciPad
+# 2. Compile SparkNotePad
 cmake --build build --parallel
 
-# 3. Launch NoteSciPad locally
+# 3. Launch SparkNotePad locally
 # macOS:
-open build/src/NoteSciPad.app
+open build/src/SparkNotePad.app
 # Linux:
-./build/src/NoteSciPad
+./build/src/SparkNotePad
 ```
 
 ---
@@ -166,7 +170,7 @@ Follow this checklist whenever you implement a new feature:
 
 ## 6. Scintilla & Lexilla Integration Model
 
-NoteSciPad interfaces with Scintilla through `src/ScintillaNext.cpp` which subclasses `QsciScintillaBase` / `ScintillaEditBase`:
+SparkNotePad interfaces with Scintilla through `src/ScintillaNext.cpp` which subclasses `QsciScintillaBase` / `ScintillaEditBase`:
 
 - **Sending Messages:** Use the Scintilla messaging interface (`send(SCI_..., wParam, lParam)`).
 - **Styling & Lexers:** Lexers are loaded from `thirdparty/lexilla`. The `LanguageInspectorDock` provides real-time introspection into token indices and styling bytes.
@@ -209,39 +213,40 @@ We maintain high codebase reliability through automated verification scripts:
 Production releases on macOS require deep signing and Apple notarization.
 The automated script `scripts/codesign-and-notarize-macos.sh` performs:
 
-1. Entitlements injection (`deploy/macos/NoteSciPad.entitlements`):
+1. Entitlements injection (`deploy/macos/SparkNotePad.entitlements`):
    - `com.apple.security.cs.allow-jit`
    - `com.apple.security.cs.allow-unsigned-executable-memory`
    - `com.apple.security.cs.disable-library-validation`
    - `com.apple.security.automation.apple-events`
 2. Deep nested signing of embedded frameworks, plugins, and helper binaries.
 3. Notarization submission via `xcrun notarytool submit --wait`.
-4. Ticket stapling via `xcrun stapler staple NoteSciPad.app`.
-5. Gatekeeper verification via `spctl -a -vvv -t install NoteSciPad.app`.
+4. Ticket stapling via `xcrun stapler staple SparkNotePad.app`.
+5. Gatekeeper verification via `spctl -a -vvv -t install SparkNotePad.app`.
 
 ---
 
 ## 10. Linux Packaging (.deb, .rpm, CPack)
 
-NoteSciPad integrates with CPack for Linux distributions:
+SparkNotePad integrates with CPack for Linux distributions:
 
 ```bash
 # Build both Debian and RPM packages:
 ./scripts/package-deb-rpm.sh
 
 # Generated packages:
-# build/NoteSciPad-<version>-Linux.deb
-# build/NoteSciPad-<version>-Linux.rpm
+# build/SparkNotePad-<version>-Linux.deb
+# build/SparkNotePad-<version>-Linux.rpm
 ```
 
-The desktop file (`deploy/linux/NoteSciPad.desktop`) registers MIME associations and Desktop Actions (New Window, New File).
+The desktop file (`deploy/linux/SparkNotePad.desktop`) registers MIME associations and Desktop Actions (New Window, New File).
 
 ---
 
 ## 11. CI/CD Pipeline & Release Workflows
 
 GitHub Actions workflows are defined in `.github/workflows/`:
-- **`build.yml`:** Multi-platform CI matrix building NoteSciPad on macOS (Apple Silicon + Intel) and Linux (Ubuntu + Fedora) on every pull request and push to `main`.
+
+- **`build.yml`:** Multi-platform CI matrix building SparkNotePad on macOS (Apple Silicon + Intel) and Linux (Ubuntu + Fedora) on every pull request and push to `main`.
 - **`release.yml`:** Automated tag-triggered release workflow that builds, signs, packages, and attaches `.dmg`, `.deb`, `.rpm`, and checksum assets to GitHub Releases.
 
 ---

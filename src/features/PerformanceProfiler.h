@@ -1,10 +1,11 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Performance Profiler, Memory Diagnostics, and Hardware Benchmark Engine.
  * Tailored for Apple Silicon (ARM64) and Linux (x86_64/ARM64).
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -18,39 +19,38 @@
 
 class ScintillaNext;
 
-class PerformanceProfiler
-{
+class PerformanceProfiler {
 public:
     struct SystemInfo {
         QString osName;
         QString cpuArchitecture;
         QString cpuModel;
-        int logicalCores {0};
-        bool isAppleSilicon {false};
-        bool isArm64 {false};
+        int logicalCores{0};
+        bool isAppleSilicon{false};
+        bool isArm64{false};
     };
 
     struct MemoryMetrics {
-        qint64 rssBytes {0};
-        qint64 virtualBytes {0};
-        double rssMegabytes {0.0};
-        double virtualMegabytes {0.0};
+        qint64 rssBytes{0};
+        qint64 virtualBytes{0};
+        double rssMegabytes{0.0};
+        double virtualMegabytes{0.0};
     };
 
     struct DocumentMetrics {
         QString fileName;
-        qint64 byteSize {0};
-        int lineCount {0};
+        qint64 byteSize{0};
+        int lineCount{0};
         QString language;
-        bool isLargeFile {false};
-        bool isHighPerformanceMode {false};
+        bool isLargeFile{false};
+        bool isHighPerformanceMode{false};
     };
 
     struct BenchmarkResult {
         QString testName;
-        int iterations {0};
-        double elapsedMs {0.0};
-        double throughputMBps {0.0};
+        int iterations{0};
+        double elapsedMs{0.0};
+        double throughputMBps{0.0};
         QString details;
     };
 
@@ -74,4 +74,4 @@ public:
     static QString generateDiagnosticReport(ScintillaNext *currentEditor = nullptr);
 };
 
-#endif // PERFORMANCEPROFILER_H
+#endif  // PERFORMANCEPROFILER_H

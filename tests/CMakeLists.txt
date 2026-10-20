@@ -23,25 +23,25 @@ set(TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/src/utils/CodeCompressPretty.cpp
 )
 
-add_executable(NoteSciPadTests ${TEST_SOURCES} ${TEST_HEADERS})
+add_executable(SparkNotePadTests ${TEST_SOURCES} ${TEST_HEADERS})
 
-target_compile_definitions(NoteSciPadTests PRIVATE UNIT_TESTING=1)
+target_compile_definitions(SparkNotePadTests PRIVATE UNIT_TESTING=1)
 
-target_include_directories(NoteSciPadTests PRIVATE
+target_include_directories(SparkNotePadTests PRIVATE
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/src/utils
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-target_link_libraries(NoteSciPadTests PRIVATE
+target_link_libraries(SparkNotePadTests PRIVATE
     Qt6::Core
     Qt6::Test
     Qt6::Widgets
 )
 
 if(APPLE)
-    target_link_directories(NoteSciPadTests PRIVATE "${CMAKE_BINARY_DIR}/dummy_frameworks")
-    target_link_libraries(NoteSciPadTests PRIVATE "-framework Security")
+    target_link_directories(SparkNotePadTests PRIVATE "${CMAKE_BINARY_DIR}/dummy_frameworks")
+    target_link_libraries(SparkNotePadTests PRIVATE "-framework Security")
 endif()
 
-add_test(NAME NoteSciPadUnitTests COMMAND NoteSciPadTests)
+add_test(NAME SparkNotePadUnitTests COMMAND SparkNotePadTests)

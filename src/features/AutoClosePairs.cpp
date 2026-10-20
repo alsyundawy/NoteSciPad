@@ -1,10 +1,10 @@
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad4 auto-completion & auto-close pair logic.
  * Source: zufuliu/Notepad4 (src/EditAutoC.cpp, Edit.cpp)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -16,25 +16,20 @@
 #include <QEvent>
 #include <QKeyEvent>
 
-AutoClosePairs::AutoClosePairs(ScintillaNext *editor)
-    : EditorDecorator(editor)
-{
+AutoClosePairs::AutoClosePairs(ScintillaNext *editor) : EditorDecorator(editor) {
     setObjectName(QStringLiteral("AutoClosePairs"));
     editor->installEventFilter(this);
 }
 
-void AutoClosePairs::notify(const Scintilla::NotificationData *pscn)
-{
+void AutoClosePairs::notify(const Scintilla::NotificationData *pscn) {
     Q_UNUSED(pscn)
 }
 
-bool AutoClosePairs::isWordChar(char ch) const
-{
+bool AutoClosePairs::isWordChar(char ch) const {
     return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_';
 }
 
-bool AutoClosePairs::eventFilter(QObject *obj, QEvent *event)
-{
+bool AutoClosePairs::eventFilter(QObject *obj, QEvent *event) {
     Q_UNUSED(obj)
 
     if (event->type() == QEvent::KeyPress && isEnabled()) {
@@ -47,8 +42,7 @@ bool AutoClosePairs::eventFilter(QObject *obj, QEvent *event)
     return false;
 }
 
-bool AutoClosePairs::handleKeyPress(QKeyEvent *keyEvent)
-{
+bool AutoClosePairs::handleKeyPress(QKeyEvent *keyEvent) {
     if (!editor || !editor->selectionEmpty()) {
         return false;
     }
@@ -62,12 +56,9 @@ bool AutoClosePairs::handleKeyPress(QKeyEvent *keyEvent)
     if (text.isEmpty()) {
         // Handle Backspace between empty pairs
         if (keyEvent->key() == Qt::Key_Backspace && curPos > 0 && curPos < docLen) {
-            bool isPair = (charBefore == '(' && charAtPos == ')') ||
-                          (charBefore == '[' && charAtPos == ']') ||
-                          (charBefore == '{' && charAtPos == '}') ||
-                          (charBefore == '"' && charAtPos == '"') ||
-                          (charBefore == '\'' && charAtPos == '\'') ||
-                          (charBefore == '`' && charAtPos == '`');
+            bool isPair = (charBefore == '(' && charAtPos == ')') || (charBefore == '[' && charAtPos == ']') ||
+                          (charBefore == '{' && charAtPos == '}') || (charBefore == '"' && charAtPos == '"') ||
+                          (charBefore == '\'' && charAtPos == '\'') || (charBefore == '`' && charAtPos == '`');
             if (isPair) {
                 editor->deleteRange(curPos - 1, 2);
                 return true;

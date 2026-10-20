@@ -1,10 +1,11 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Implements Transparent Window Mode & Window Opacity Manager.
  * Adapted from Notepad3 (rizonesoft/notepad3) window transparency architecture.
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -17,15 +18,11 @@
 #include <QMainWindow>
 #include <QEvent>
 
-class TransparentWindowManager : public QObject
-{
+class TransparentWindowManager : public QObject {
     Q_OBJECT
 
 public:
-    enum class TransparencyMode {
-        Always = 0,
-        OnlyWhenInactive = 1
-    };
+    enum class TransparencyMode { Always = 0, OnlyWhenInactive = 1 };
 
     explicit TransparentWindowManager(QMainWindow *window, QObject *parent = nullptr);
     ~TransparentWindowManager() override;
@@ -34,7 +31,7 @@ public:
     void setEnabled(bool enabled);
     void toggle();
 
-    int opacity() const; // 20..100
+    int opacity() const;  // 20..100
     void setOpacity(int percent);
     void increaseOpacity(int delta = 10);
     void decreaseOpacity(int delta = 10);
@@ -66,4 +63,4 @@ private:
     bool m_alwaysOnTop = false;
 };
 
-#endif // TRANSPARENTWINDOWMANAGER_H
+#endif  // TRANSPARENTWINDOWMANAGER_H

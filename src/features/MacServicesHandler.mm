@@ -1,21 +1,21 @@
 /*
- * This file is part of NoteSciPad.
- * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
+ * This file is part of SparkNotePad.
+ * Copyright 2026 Harry DS Alsyundawy (SparkNotePad Maintainer)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  */
 
 #include "MacServicesHandler.h"
-#include "NoteSciPadApplication.h"
+#include "SparkNotePadApplication.h"
 #include "dialogs/MainWindow.h"
 #include "ScintillaNext.h"
 
 #import <Cocoa/Cocoa.h>
 
-@interface NoteSciPadServicesProvider : NSObject
+@interface SparkNotePadServicesProvider : NSObject
 {
     MacServicesHandler *m_handler;
 }
@@ -25,7 +25,7 @@
 - (void)openFileService:(NSPasteboard *)pboard userData:(NSString *)userData error:(NSString **)error;
 @end
 
-@implementation NoteSciPadServicesProvider
+@implementation SparkNotePadServicesProvider
 
 - (instancetype)initWithHandler:(MacServicesHandler *)handler {
     if (self = [super init]) {
@@ -83,7 +83,7 @@
 
 @end
 
-static NoteSciPadServicesProvider *s_servicesProvider = nil;
+static SparkNotePadServicesProvider *s_servicesProvider = nil;
 
 MacServicesHandler *MacServicesHandler::instance()
 {
@@ -109,7 +109,7 @@ void MacServicesHandler::initialize(NotepadNextApplication *app)
     m_app = app;
     @autoreleasepool {
         if (!s_servicesProvider) {
-            s_servicesProvider = [[NoteSciPadServicesProvider alloc] initWithHandler:this];
+            s_servicesProvider = [[SparkNotePadServicesProvider alloc] initWithHandler:this];
             [NSApp setServicesProvider:s_servicesProvider];
             NSUpdateDynamicServices();
         }

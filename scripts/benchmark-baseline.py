@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
-import time
-import os
-import sys
-import resource
-import hashlib
 import base64
+import hashlib
 import json
+import resource
+import sys
+import time
 
 print("======================================================================")
-print("⚡ NoteSciPad Performance & Memory Baseline Benchmark Suite")
+print("⚡ SparkNotePad Performance & Memory Baseline Benchmark Suite")
 print("======================================================================")
 
 # 1. Memory Measurement via Pure Stdlib resource module
@@ -23,7 +22,7 @@ print(f"Base Benchmark Runner RSS: {rss_mb:.2f} MB")
 # 2. Benchmark Text Search & Regex Throughput
 sample_size_mb = 10
 sample_text = (
-    "NoteSciPad fast lightweight Scintilla editor text sample line.\n" * 160000
+    "SparkNotePad fast lightweight Scintilla editor text sample line.\n" * 160000
 ).encode("utf-8")
 actual_mb = len(sample_text) / (1024 * 1024)
 

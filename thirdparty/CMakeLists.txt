@@ -40,7 +40,7 @@ if(NOT Python3_FOUND)
     find_package(Python3 QUIET COMPONENTS Interpreter)
 endif()
 if(Python3_FOUND)
-    message(STATUS "NoteSciPad: Python interpreter found: ${Python3_EXECUTABLE} (version ${Python3_VERSION})")
+    message(STATUS "SparkNotePad: Python interpreter found: ${Python3_EXECUTABLE} (version ${Python3_VERSION})")
 endif()
 
 target_link_libraries(lexilla PRIVATE scintilla)

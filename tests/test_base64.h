@@ -3,13 +3,11 @@
 #include <QTest>
 #include "utils/Base64Utils.h"
 
-class TestBase64 : public QObject
-{
+class TestBase64 : public QObject {
     Q_OBJECT
 
 private slots:
-    void testStandardVectors()
-    {
+    void testStandardVectors() {
         // RFC 4648 standard test vectors
         QCOMPARE(Base64Utils::encode(""), QString(""));
         QCOMPARE(Base64Utils::encode("f"), QString("Zg=="));
@@ -27,9 +25,8 @@ private slots:
         QCOMPARE(Base64Utils::decode("Zm9vYmFy"), QString("foobar"));
     }
 
-    void testUrlSafe()
-    {
-        QString sample = "Hello? NoteSciPad / World+Test=";
+    void testUrlSafe() {
+        QString sample = "Hello? SparkNotePad / World+Test=";
         QString enc = Base64Utils::encodeUrlSafe(sample);
         QVERIFY(!enc.contains('+'));
         QVERIFY(!enc.contains('/'));

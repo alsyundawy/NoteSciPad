@@ -1,10 +1,11 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad4 matepath explorer integration.
  * Source: zufuliu/Notepad4 & Notepad3 file browser concept
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -24,8 +25,7 @@ class QFileSystemModel;
 class QModelIndex;
 class QPoint;
 
-class FileBrowserDock : public QDockWidget
-{
+class FileBrowserDock : public QDockWidget {
     Q_OBJECT
 
 public:
@@ -54,8 +54,8 @@ private:
     void restoreSettings();
 
     Ui::FileBrowserDock *ui;
-    QFileSystemModel *m_model {nullptr};
+    QFileSystemModel *m_model{nullptr};
     QString m_currentPath;
 };
 
-#endif // FILEBROWSERDOCK_H
+#endif  // FILEBROWSERDOCK_H

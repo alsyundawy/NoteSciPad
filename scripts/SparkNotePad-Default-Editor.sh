@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# SCRIPT NAME: NoteSciPad-Default-Editor.sh
-# DESCRIPTION: Production-grade cross-platform script to set NoteSciPad as the
+# SCRIPT NAME: SparkNotePad-Default-Editor.sh
+# DESCRIPTION: Production-grade cross-platform script to set SparkNotePad as the
 #              default system handler for all text, code, scripts, configs,
 #              markup, dotfiles, and extensionless documents on macOS & Linux.
-# AUTHOR:      Harry DS Alsyundawy (NoteSciPad Maintainer)
+# AUTHOR:      Harry DS Alsyundawy (SparkNotePad Maintainer)
 # VERSION:     2.0.0
 # LICENSE:     GPL-3.0-or-later / MIT
 # ==============================================================================
@@ -19,12 +19,12 @@
 # files (public.data). On Linux, FreeDesktop xdg-mime and update-alternatives
 # govern desktop and terminal editor assignments.
 #
-# This script executes a complete, deterministic takeover for NoteSciPad:
-# - macOS: com.alsyundawy.NoteSciPad (NoteSciPad.app)
+# This script executes a complete, deterministic takeover for SparkNotePad:
+# - macOS: com.alsyundawy.SparkNotePad (SparkNotePad.app)
 #   Applies batch LaunchServices registrations via duti, unblocks Gatekeeper
 #   quarantine flags, preserves macOS 13+ ExtensionKit System Settings plugins,
 #   rebuilds user LaunchServices cache, and refreshes Finder and Dock.
-# - Linux: NoteSciPad.desktop
+# - Linux: SparkNotePad.desktop
 #   Configures xdg-mime associations for 40+ programming & text MIME types,
 #   and configures update-alternatives for /usr/bin/editor if running with root.
 #
@@ -34,7 +34,7 @@
 #   -d, --dry-run            Simulate operations without modifying system settings
 #   -s, --status, --check    Audit and report current default editor associations
 #   --restore, --revert      Restore system defaults (TextEdit on macOS)
-#   --app-path <path>        Explicit path to NoteSciPad.app
+#   --app-path <path>        Explicit path to SparkNotePad.app
 #   --no-rebuild-cache       Skip rebuilding LaunchServices database cache (macOS)
 #   --no-restart             Skip restarting Finder and Dock at completion (macOS)
 #   -h, --help               Display help and usage information
@@ -49,17 +49,17 @@ export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${HO
 
 # ====================== CONFIGURATION ======================
 readonly SCRIPT_VERSION="2.0.0"
-readonly BUNDLE_ID="io.github.alsyundawy.NoteSciPad"
+readonly BUNDLE_ID="io.github.alsyundawy.SparkNotePad"
 readonly LEGACY_BUNDLE_ID="io.github.dail8859.NotepadNext"
-readonly APP_NAME="NoteSciPad.app"
-readonly DESKTOP_FILE="NoteSciPad.desktop"
+readonly APP_NAME="SparkNotePad.app"
+readonly DESKTOP_FILE="SparkNotePad.desktop"
 
 # Candidate search paths for macOS app bundle
 readonly CANDIDATE_APP_PATHS=(
 	"/Applications/${APP_NAME}"
 	"${HOME}/Applications/${APP_NAME}"
-	"/Applications/NoteSciPad-MacOS.app"
-	"${HOME}/Applications/NoteSciPad-MacOS.app"
+	"/Applications/SparkNotePad-MacOS.app"
+	"${HOME}/Applications/SparkNotePad-MacOS.app"
 	"$(pwd)/build/${APP_NAME}"
 	"$(pwd)/${APP_NAME}"
 	"/Applications/NotepadNext.app"
@@ -114,7 +114,7 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM HUP
 
-# Comprehensive UTIs targeted for NoteSciPad on macOS
+# Comprehensive UTIs targeted for SparkNotePad on macOS
 readonly UTIS=(
 	"public.data"
 	"public.plain-text"
@@ -240,7 +240,7 @@ resolve_app() {
 		if [[ -d ${p} ]]; then
 			APP_RESOLVED_PATH="${p}"
 			if [[ ${p} == *"NotepadNext.app"* ]]; then
-				warn "NoteSciPad.app not found; falling back to detected: ${p}"
+				warn "SparkNotePad.app not found; falling back to detected: ${p}"
 				ACTIVE_BUNDLE_ID="${LEGACY_BUNDLE_ID}"
 			else
 				ACTIVE_BUNDLE_ID="${BUNDLE_ID}"
@@ -250,8 +250,8 @@ resolve_app() {
 		fi
 	done
 
-	err "Neither NoteSciPad.app nor NotepadNext.app was found in candidate paths."
-	err "Please build or install NoteSciPad.app, or pass --app-path /path/to/NoteSciPad.app"
+	err "Neither SparkNotePad.app nor NotepadNext.app was found in candidate paths."
+	err "Please build or install SparkNotePad.app, or pass --app-path /path/to/SparkNotePad.app"
 	exit 1
 }
 
@@ -348,7 +348,7 @@ register_app_launchservices() {
 apply_batch_handlers_macos() {
 	local dry_run="$1"
 
-	TMP_BATCH_CONFIG=$(mktemp -t notescipad_duti_XXXXXX)
+	TMP_BATCH_CONFIG=$(mktemp -t sparknotepadpad_duti_XXXXXX)
 	chmod 600 "${TMP_BATCH_CONFIG}"
 
 	{
@@ -361,7 +361,9 @@ apply_batch_handlers_macos() {
 	} >"${TMP_BATCH_CONFIG}"
 
 	if [[ ${dry_run} -eq 1 ]]; then
-		info "[DRY-RUN] Would apply batch config with $(wc -l <"${TMP_BATCH_CONFIG}" | tr -d ' ') mappings via duti."
+		local line_count
+		line_count=$(wc -l <"${TMP_BATCH_CONFIG}" | tr -d ' ')
+		info "[DRY-RUN] Would apply batch config with ${line_count} mappings via duti."
 		return 0
 	fi
 
@@ -388,7 +390,7 @@ restart_desktop_services_macos() {
 audit_status_macos() {
 	ensure_duti
 	header "======================================================"
-	header "  NoteSciPad Default Editor Association Audit (macOS)"
+	header "  SparkNotePad Default Editor Association Audit (macOS)"
 	header "======================================================"
 	echo
 
@@ -421,7 +423,7 @@ audit_status_macos() {
 		current="${current:-unknown}"
 
 		if [[ ${current} == *"${BUNDLE_ID}"* ]]; then
-			printf "  %b✓%b %-30s → NoteSciPad (%s)\n" "${GREEN}" "${NC}" "${label}" "${current}"
+			printf "  %b✓%b %-30s → SparkNotePad (%s)\n" "${GREEN}" "${NC}" "${label}" "${current}"
 		elif [[ ${current} == *"${LEGACY_BUNDLE_ID}"* ]]; then
 			printf "  %b⚠%b %-30s → NotepadNext (%s)\n" "${YELLOW}" "${NC}" "${label}" "${current}"
 		else
@@ -448,7 +450,7 @@ apply_linux() {
 	local auto_confirm="$2"
 
 	header "======================================================"
-	header "  Set NoteSciPad as Default Editor (Linux)"
+	header "  Set SparkNotePad as Default Editor (Linux)"
 	header "======================================================"
 	echo
 
@@ -461,7 +463,7 @@ apply_linux() {
 		info "This will associate ${DESKTOP_FILE} with ${#LINUX_MIME_TYPES[@]} text/code MIME types."
 		local answer=""
 		if [[ -t 0 ]]; then
-			read -r -p "Proceed with setting NoteSciPad as default? [y/N] " answer || answer="n"
+			read -r -p "Proceed with setting SparkNotePad as default? [y/N] " answer || answer="n"
 		else
 			warn "Non-interactive shell. Pass -y / -f to proceed."
 			exit 1
@@ -484,13 +486,15 @@ apply_linux() {
 	# Configure update-alternatives if running as root or with sudo
 	if command -v update-alternatives &>/dev/null; then
 		local binary_path=""
-		for bin in "/usr/local/bin/NoteSciPad" "/usr/bin/NoteSciPad" "/usr/local/bin/notesci" "/usr/bin/notesci"; do
+		for bin in "/usr/local/bin/SparkNotePad" "/usr/bin/SparkNotePad" "/usr/local/bin/sparknotepad" "/usr/bin/sparknotepad"; do
 			if [[ -x ${bin} ]]; then
 				binary_path="${bin}"
 				break
 			fi
 		done
-		if [[ -n ${binary_path} ]] && [[ $(id -u) -eq 0 ]]; then
+		local user_id
+		user_id=$(id -u)
+		if [[ -n ${binary_path} ]] && [[ ${user_id} -eq 0 ]]; then
 			step "Registering /usr/bin/editor alternative with: ${binary_path}..."
 			update-alternatives --install /usr/bin/editor editor "${binary_path}" 50 2>/dev/null || true
 			update-alternatives --set editor "${binary_path}" 2>/dev/null || true
@@ -498,12 +502,12 @@ apply_linux() {
 		fi
 	fi
 
-	ok "Linux desktop associations successfully updated for NoteSciPad."
+	ok "Linux desktop associations successfully updated for SparkNotePad."
 }
 
 show_help() {
 	cat <<EOF
-NoteSciPad Default Editor Automation Tool v${SCRIPT_VERSION}
+SparkNotePad Default Editor Automation Tool v${SCRIPT_VERSION}
 
 Usage: $(basename "$0") [OPTIONS]
 
@@ -512,16 +516,16 @@ Options:
   -d, --dry-run            Simulate operations without making changes
   -s, --status, --check    Audit and report current default editor associations
   --restore, --revert      Restore system defaults (TextEdit on macOS)
-  --app-path <path>        Custom path to NoteSciPad.app (macOS)
+  --app-path <path>        Custom path to SparkNotePad.app (macOS)
   --no-rebuild-cache       Skip LaunchServices cache rebuild (macOS)
   --no-restart             Skip restarting Finder/Dock (macOS)
   -h, --help               Display this help message
   -v, --version            Display version information
 
 Examples:
-  ./NoteSciPad-Default-Editor.sh -f               # Set NoteSciPad as default non-interactively
-  ./NoteSciPad-Default-Editor.sh --status         # Check current associations
-  ./NoteSciPad-Default-Editor.sh -d               # Dry-run preview
+  ./SparkNotePad-Default-Editor.sh -f               # Set SparkNotePad as default non-interactively
+  ./SparkNotePad-Default-Editor.sh --status         # Check current associations
+  ./SparkNotePad-Default-Editor.sh -d               # Dry-run preview
 EOF
 }
 
@@ -575,7 +579,7 @@ main() {
 			exit 0
 			;;
 		-v | --version)
-			echo "NoteSciPad-Default-Editor.sh v${SCRIPT_VERSION}"
+			echo "SparkNotePad-Default-Editor.sh v${SCRIPT_VERSION}"
 			exit 0
 			;;
 		*)
@@ -597,7 +601,7 @@ main() {
 		fi
 
 		header "======================================================"
-		header "  Set NoteSciPad as Default Editor (macOS Force Mode)"
+		header "  Set SparkNotePad as Default Editor (macOS Force Mode)"
 		header "======================================================"
 		echo
 
@@ -609,11 +613,11 @@ main() {
 		lsregister_bin=$(get_lsregister_path)
 
 		if [[ ${auto_confirm} -eq 0 ]] && [[ ${dry_run} -eq 0 ]]; then
-			info "This will configure LaunchServices to set NoteSciPad (${ACTIVE_BUNDLE_ID})"
+			info "This will configure LaunchServices to set SparkNotePad (${ACTIVE_BUNDLE_ID})"
 			info "as default editor for 38 UTIs and 470+ file extensions."
 			local answer=""
 			if [[ -t 0 ]]; then
-				read -r -p "Proceed with setting NoteSciPad as default editor? [y/N] " answer || answer="n"
+				read -r -p "Proceed with setting SparkNotePad as default editor? [y/N] " answer || answer="n"
 			else
 				warn "Non-interactive shell. Pass -y / -f to proceed."
 				exit 1
@@ -643,12 +647,14 @@ main() {
 
 		echo
 		audit_status_macos
-		ok "NoteSciPad default editor configuration complete."
+		ok "SparkNotePad default editor configuration complete."
 
 	elif [[ ${PLATFORM} == "linux" ]]; then
 		apply_linux "${dry_run}" "${auto_confirm}"
 	else
-		err "Unsupported platform: $(uname -s). This script supports macOS and Linux."
+		local plat_name
+		plat_name=$(uname -s)
+		err "Unsupported platform: ${plat_name}. This script supports macOS and Linux."
 		exit 1
 	fi
 }

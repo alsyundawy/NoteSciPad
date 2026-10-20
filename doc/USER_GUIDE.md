@@ -1,13 +1,14 @@
-# NoteSciPad User Guide
+# SparkNotePad User Guide
 
-Welcome to **NoteSciPad** — an independent, fast, lightweight text and source code editor engineered for macOS and Linux, powered by native Qt 6 and vendored Scintilla and Lexilla editing engines.
+Welcome to **SparkNotePad** — an independent, fast, lightweight text and source code editor engineered for macOS and Linux, powered by native Qt 6 and vendored Scintilla and Lexilla editing engines.
 
 ---
 
 ## Table of Contents
+
 1. [Overview & Philosophy](#1-overview--philosophy)
 2. [Installation & Setup](#2-installation--setup)
-3. [Setting NoteSciPad as Default Editor](#3-setting-notescipad-as-default-editor)
+3. [Setting SparkNotePad as Default Editor](#3-setting-sparknotepad-as-default-editor)
 4. [User Interface Overview](#4-user-interface-overview)
 5. [Text & Code Editing Features](#5-text--code-editing-features)
 6. [Syntax Highlighting & Language Support](#6-syntax-highlighting--language-support)
@@ -26,7 +27,8 @@ Welcome to **NoteSciPad** — an independent, fast, lightweight text and source 
 
 ## 1. Overview & Philosophy
 
-NoteSciPad is designed for developers, sysadmins, writers, and power users who value:
+SparkNotePad is designed for developers, sysadmins, writers, and power users who value:
+
 - **Instant startup & low memory footprint**: Boots in milliseconds without heavy web runtimes or background daemon bloat.
 - **Battle-tested Scintilla engine**: The gold standard in code editing, syntax styling, fold margins, and multi-cursor selection.
 - **Strict User Privacy & Security**: Zero telemetry, zero analytics, zero external network phoning home. Built-in AES-256-CBC encryption.
@@ -37,44 +39,47 @@ NoteSciPad is designed for developers, sysadmins, writers, and power users who v
 ## 2. Installation & Setup
 
 ### 2.1 macOS
+
 - **System Requirements:** macOS 12.0 (Monterey), 13.0 (Ventura), 14.0 (Sonoma), 15.0+ (Sequoia) on Apple Silicon (M1/M2/M3/M4) or Intel x86_64.
 - **Installation:**
-  1. Download `NoteSciPad-<version>-macOS-arm64.dmg` (or `x86_64.dmg`).
-  2. Open the DMG image and drag `NoteSciPad.app` into your `/Applications` directory.
+  1. Download `SparkNotePad-<version>-macOS-arm64.dmg` (or `x86_64.dmg`).
+  2. Open the DMG image and drag `SparkNotePad.app` into your `/Applications` directory.
   3. The application is codesigned with Apple Hardened Runtime.
 
 ### 2.2 Linux (Debian / Ubuntu / Linux Mint)
+
 - Install the `.deb` package:
   ```bash
-  sudo apt install ./NoteSciPad_<version>_amd64.deb
+  sudo apt install ./SparkNotePad_<version>_amd64.deb
   ```
 
 ### 2.3 Linux (Fedora / RHEL / openSUSE)
+
 - Install the `.rpm` package:
   ```bash
-  sudo rpm -ivh NoteSciPad-<version>-1.x86_64.rpm
+  sudo rpm -ivh SparkNotePad-<version>-1.x86_64.rpm
   # or using dnf:
-  sudo dnf install ./NoteSciPad-<version>-1.x86_64.rpm
+  sudo dnf install ./SparkNotePad-<version>-1.x86_64.rpm
   ```
 
 ---
 
-## 3. Setting NoteSciPad as Default Editor
+## 3. Setting SparkNotePad as Default Editor
 
-NoteSciPad includes an automated utility script (`scripts/NoteSciPad-Default-Editor.sh`):
+SparkNotePad includes an automated utility script (`scripts/SparkNotePad-Default-Editor.sh`):
 
 ```bash
 # Check current system file associations:
-./scripts/NoteSciPad-Default-Editor.sh --status
+./scripts/SparkNotePad-Default-Editor.sh --status
 
 # Dry-run inspection without changing configuration:
-./scripts/NoteSciPad-Default-Editor.sh --dry-run
+./scripts/SparkNotePad-Default-Editor.sh --dry-run
 
-# Set NoteSciPad as default editor for 470+ source code and text extensions:
-./scripts/NoteSciPad-Default-Editor.sh
+# Set SparkNotePad as default editor for 470+ source code and text extensions:
+./scripts/SparkNotePad-Default-Editor.sh
 
 # Restore previous associations if desired:
-./scripts/NoteSciPad-Default-Editor.sh --restore
+./scripts/SparkNotePad-Default-Editor.sh --restore
 ```
 
 On macOS, this configures LaunchServices using `duti` (or native LS fallback) across 38 Uniform Type Identifiers (UTIs) including `public.plain-text`, `public.source-code`, and markdown. On Linux, it configures `xdg-mime` and `update-alternatives`.
@@ -85,7 +90,7 @@ On macOS, this configures LaunchServices using `duti` (or native LS fallback) ac
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
-│ NoteSciPad — [Window Title: filename.cpp] (Proxy Icon Drag & Dirty Dot)│
+│ SparkNotePad — [Window Title: filename.cpp] (Proxy Icon Drag & Dirty Dot)│
 ├────────────────────────────────────────────────────────────────────────┤
 │ Menu: File  Edit  Search  View  Tools  Run  Window  Help               │
 ├────────────────────────────────────────────────────────────────────────┤
@@ -95,7 +100,7 @@ On macOS, this configures LaunchServices using `duti` (or native LS fallback) ac
 │ ───────────── │ 1 │ #include <iostream>                                │
 │ > src/        │ 2 │                                                    │
 │   > features/ │ 3 │ int main() {                                       │
-│   CMakeLists  │ 4 │     std::cout << "Hello NoteSciPad!" << std::endl; │
+│   CMakeLists  │ 4 │     std::cout << "Hello SparkNotePad!" << std::endl; │
 │   README.md   │ 5 │     return 0;                                      │
 │               │ 6 │ }                                                  │
 ├───────────────┴────────────────────────────────────────────────────────┤
@@ -128,7 +133,8 @@ On macOS, this configures LaunchServices using `duti` (or native LS fallback) ac
 
 ## 6. Syntax Highlighting & Language Support
 
-NoteSciPad supports over 100 programming languages, configuration formats, and markup types out of the box via vendored Lexilla:
+SparkNotePad supports over 100 programming languages, configuration formats, and markup types out of the box via vendored Lexilla:
+
 - **Web & Scripting:** JavaScript, TypeScript, Python, Ruby, PHP, Lua, Perl, HTML5, CSS3, SCSS, JSON, YAML, TOML, XML.
 - **Compiled Languages:** C, C++, Rust, Go, Swift, Java, C#, Kotlin, D, Zig, Fortran, Pascal.
 - **Shell & Systems:** Bash, Zsh, PowerShell, Batch, CMake, Makefile, Dockerfile, NSIS.
@@ -140,15 +146,15 @@ To override or manually select a language, select `Language > <Language Name>` f
 
 ## 7. Military-Grade File & Text Encryption
 
-NoteSciPad provides built-in cryptographic protection to safeguard sensitive files, credentials, and confidential notes:
+SparkNotePad provides built-in cryptographic protection to safeguard sensitive files, credentials, and confidential notes:
 
 - **Algorithm:** AES-256-CBC with PKCS#7 padding.
 - **Key Derivation:** PBKDF2 with SHA-256 and **100,000 iterations**, utilizing a cryptographically secure 128-bit random salt.
-- **Integrity Validation:** Encrypted envelopes are encoded in standard Base64 with a distinctive header banner (`-----BEGIN NOTESCIPAD ENCRYPTED FILE-----`). Decryption validates PKCS#7 padding integrity and alerts the user if a password is incorrect.
+- **Integrity Validation:** Encrypted envelopes are encoded with a binary container header (`SPKENC01`, with dual-format backwards compatibility for legacy `NSPENC01`). Decryption validates PKCS#7 padding integrity and HMAC-SHA256 authenticated envelope verification, immediately alerting the user if a password or ciphertext is corrupted.
 - **Usage:**
   - **Encrypt Document / Selection:** Select `Tools > Encryption > Encrypt Document...` (`Ctrl+Alt+E`). Enter a secure passphrase.
   - **Decrypt Document / Selection:** Select `Tools > Encryption > Decrypt Document...` (`Ctrl+Alt+X`). Enter your passphrase to restore plain text.
-  - **macOS Services Integration:** Highlight text in any application (e.g., Safari or Mail), right-click and choose `Services > NoteSciPad: Encrypt Selection`.
+  - **macOS Services Integration:** Highlight text in any application (e.g., Safari or Mail), right-click and choose `Services > SparkNotePad: Encrypt Selection`.
 
 ---
 
@@ -167,7 +173,7 @@ Sysadmins and backend developers can monitor live log files without spawning a t
 
 ## 9. JavaScript & Math Expression Evaluator
 
-Transform NoteSciPad into an interactive scratchpad:
+Transform SparkNotePad into an interactive scratchpad:
 
 - **Launch:** Press `Ctrl+Alt+J` or select `Tools > Evaluate JavaScript / Math...`.
 - **Expression Evaluation:** Calculate inline mathematical expressions:
@@ -185,6 +191,7 @@ Transform NoteSciPad into an interactive scratchpad:
 ## 10. Developer & Text Utilities
 
 Located under the `Tools` and `Edit` menus:
+
 - **Base64 Encoding & Decoding:** Encode or decode selected text (`Ctrl+Alt+B`).
 - **Number Radix Conversion:** Convert integers seamlessly between Binary (`0b`), Octal (`0o`), Decimal, and Hexadecimal (`0x`).
 - **UUID / GUID Generation:** Generate RFC-4122 v4 GUIDs directly into your document (`Ctrl+Alt+G`).
@@ -198,7 +205,8 @@ Located under the `Tools` and `Edit` menus:
 
 ## 11. Dynamic Theme Engine (Dark & Light Modes)
 
-NoteSciPad features a customized, native theme engine:
+SparkNotePad features a customized, native theme engine:
+
 - **System Default (Auto):** Synchronizes with the OS appearance (`QStyleHints::colorSchemeChanged`) in real-time.
 - **Forced Dark Mode:** Deep, contrast-rich palettes (`#1e1e1e` canvas, `#25282c` tabs) reducing eye strain during night coding.
 - **Forced Light Mode:** Crisp, clean styling with high-contrast text and line borders.
@@ -209,6 +217,7 @@ NoteSciPad features a customized, native theme engine:
 ## 12. Multi-Monitor & Retina High-DPI Adaptation
 
 Optimized for mixed-display setups (Retina display + external standard/4K monitors):
+
 - **PassThrough High-DPI Policy:** Prevents fuzzy text or glyph distortion during fractional scaling (125%, 150%, 175%).
 - **Move to Next Screen (`Ctrl+Alt+Right` / `Cmd+Alt+Right`):** Moves the active window smoothly to the next connected display.
 - **Move to Previous Screen (`Ctrl+Alt+Left` / `Cmd+Alt+Left`):** Returns window to previous display.
@@ -224,17 +233,18 @@ Optimized for mixed-display setups (Retina display + external standard/4K monito
 - **Proxy Icon Dragging:** Drag the icon in the title bar directly into other applications.
 - **Window Dirty Indicator:** macOS standard dirty dot inside the red close button when documents contain unsaved edits.
 - **macOS Services Menu:**
-  - `NoteSciPad: Open Selected File or Path`
-  - `NoteSciPad: New Document with Selection`
-  - `NoteSciPad: Encrypt Selection`
-  - `NoteSciPad: Decrypt Selection`
+  - `SparkNotePad: Open Selected File or Path`
+  - `SparkNotePad: New Document with Selection`
+  - `SparkNotePad: Encrypt Selection`
+  - `SparkNotePad: Decrypt Selection`
 - **Emoji & Symbols:** Press `Ctrl+Cmd+Space` to trigger the native macOS Character Palette.
 
 ---
 
 ## 14. Accessibility & VoiceOver Support
 
-NoteSciPad is built with universal accessibility compliance (WCAG 2.1 AA):
+SparkNotePad is built with universal accessibility compliance (WCAG 2.1 AA):
+
 - **VoiceOver Spoken Alerts:** Native speech notifications announce document tab switches, line counts, find results, and editor focus.
 - **Focus Editor Shortcut:** Press `Ctrl+Alt+E` (or `Escape` in dialogs) to instantly return keyboard focus to the code canvas.
 - **Searchable Shortcuts & Accessibility Guide:** Press `Shift+F1` to open the interactive keyboard reference dialog.
@@ -244,42 +254,43 @@ NoteSciPad is built with universal accessibility compliance (WCAG 2.1 AA):
 
 ## 15. Keyboard Shortcuts Quick Reference
 
-| Action | macOS Shortcut | Linux / Windows Shortcut |
-| --- | --- | --- |
-| **New Document** | `Cmd+N` | `Ctrl+N` |
-| **Open Document** | `Cmd+O` | `Ctrl+O` |
-| **Save Document** | `Cmd+S` | `Ctrl+S` |
-| **Save As** | `Cmd+Shift+S` | `Ctrl+Shift+S` |
-| **Close Tab** | `Cmd+W` | `Ctrl+W` |
-| **Find Text** | `Cmd+F` | `Ctrl+F` |
-| **Replace Text** | `Cmd+H` | `Ctrl+H` |
-| **Find in Files** | `Cmd+Shift+F` | `Ctrl+Shift+F` |
-| **Go to Line** | `Cmd+G` | `Ctrl+G` |
-| **Next Tab / Prev Tab** | `Ctrl+Tab` / `Ctrl+Shift+Tab` | `Ctrl+Tab` / `Ctrl+Shift+Tab` |
-| **Focus Editor** | `Ctrl+Alt+E` | `Ctrl+Alt+E` |
-| **Toggle Dark/Light Theme** | `Cmd+Alt+T` | `Ctrl+Alt+T` |
-| **Move to Next Screen** | `Cmd+Alt+Right` | `Ctrl+Alt+Right` |
-| **Move to Previous Screen** | `Cmd+Alt+Left` | `Ctrl+Alt+Left` |
-| **Center Window on Screen** | `Cmd+Alt+C` | `Ctrl+Alt+C` |
-| **Display Diagnostics** | `Cmd+Alt+D` | `Ctrl+Alt+D` |
-| **Encrypt Document** | `Cmd+Alt+E` | `Ctrl+Alt+E` |
-| **Decrypt Document** | `Cmd+Alt+X` | `Ctrl+Alt+X` |
-| **Evaluate JS / Math** | `Cmd+Alt+J` | `Ctrl+Alt+J` |
-| **Log Tail Monitoring** | `Cmd+Alt+M` | `Ctrl+Alt+M` |
-| **Clipboard History** | `Cmd+Alt+V` | `Ctrl+Alt+V` |
-| **Accessibility & Shortcuts**| `Shift+F1` | `Shift+F1` / `F1` |
-| **User Guide** | `F1` | `Ctrl+F1` |
+| Action                        | macOS Shortcut                | Linux / Windows Shortcut      |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| **New Document**              | `Cmd+N`                       | `Ctrl+N`                      |
+| **Open Document**             | `Cmd+O`                       | `Ctrl+O`                      |
+| **Save Document**             | `Cmd+S`                       | `Ctrl+S`                      |
+| **Save As**                   | `Cmd+Shift+S`                 | `Ctrl+Shift+S`                |
+| **Close Tab**                 | `Cmd+W`                       | `Ctrl+W`                      |
+| **Find Text**                 | `Cmd+F`                       | `Ctrl+F`                      |
+| **Replace Text**              | `Cmd+H`                       | `Ctrl+H`                      |
+| **Find in Files**             | `Cmd+Shift+F`                 | `Ctrl+Shift+F`                |
+| **Go to Line**                | `Cmd+G`                       | `Ctrl+G`                      |
+| **Next Tab / Prev Tab**       | `Ctrl+Tab` / `Ctrl+Shift+Tab` | `Ctrl+Tab` / `Ctrl+Shift+Tab` |
+| **Focus Editor**              | `Ctrl+Alt+E`                  | `Ctrl+Alt+E`                  |
+| **Toggle Dark/Light Theme**   | `Cmd+Alt+T`                   | `Ctrl+Alt+T`                  |
+| **Move to Next Screen**       | `Cmd+Alt+Right`               | `Ctrl+Alt+Right`              |
+| **Move to Previous Screen**   | `Cmd+Alt+Left`                | `Ctrl+Alt+Left`               |
+| **Center Window on Screen**   | `Cmd+Alt+C`                   | `Ctrl+Alt+C`                  |
+| **Display Diagnostics**       | `Cmd+Alt+D`                   | `Ctrl+Alt+D`                  |
+| **Encrypt Document**          | `Cmd+Alt+E`                   | `Ctrl+Alt+E`                  |
+| **Decrypt Document**          | `Cmd+Alt+X`                   | `Ctrl+Alt+X`                  |
+| **Evaluate JS / Math**        | `Cmd+Alt+J`                   | `Ctrl+Alt+J`                  |
+| **Log Tail Monitoring**       | `Cmd+Alt+M`                   | `Ctrl+Alt+M`                  |
+| **Clipboard History**         | `Cmd+Alt+V`                   | `Ctrl+Alt+V`                  |
+| **Accessibility & Shortcuts** | `Shift+F1`                    | `Shift+F1` / `F1`             |
+| **User Guide**                | `F1`                          | `Ctrl+F1`                     |
 
 ---
 
 ## 16. Troubleshooting & FAQ
 
-**Q: Why does macOS say "NoteSciPad cannot be opened because developer cannot be verified"?**  
-A: NoteSciPad is codesigned with Apple Hardened Runtime. If installing an unnotarized development build, right-click `NoteSciPad.app` in Finder, select **Open**, and click **Open Anyway**.
+**Q: Why does macOS say "SparkNotePad cannot be opened because developer cannot be verified"?**
+A: SparkNotePad is codesigned with Apple Hardened Runtime. If installing an unnotarized development build, right-click `SparkNotePad.app` in Finder, select **Open**, and click **Open Anyway**.
 
-**Q: Can I run multiple instances of NoteSciPad?**  
-A: By default, opening files or running NoteSciPad communicates with the primary instance via single-application IPC. To launch an independent window, pass the `--multi-instance` flag from the command line.
+**Q: Can I run multiple instances of SparkNotePad?**
+A: By default, opening files or running SparkNotePad communicates with the primary instance via single-application IPC. To launch an independent window, pass the `--multi-instance` flag from the command line.
 
-**Q: Where are my settings and custom configurations stored?**  
-- **macOS:** `~/Library/Preferences/NoteSciPad/NoteSciPad.ini`
-- **Linux:** `~/.config/NoteSciPad/NoteSciPad.ini`
+**Q: Where are my settings and custom configurations stored?**
+
+- **macOS:** `~/Library/Preferences/SparkNotePad/SparkNotePad.ini`
+- **Linux:** `~/.config/SparkNotePad/SparkNotePad.ini`

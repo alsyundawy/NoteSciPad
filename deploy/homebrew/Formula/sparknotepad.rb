@@ -1,10 +1,10 @@
-class Notescipad < Formula
-  desc "Lightweight and high-performance text and source code editor"
-  homepage "https://github.com/alsyundawy/NoteSciPad"
-  url "https://github.com/alsyundawy/NoteSciPad/archive/refs/tags/v0.9.0.tar.gz"
+class Sparknotepad < Formula
+  desc "Lightweight and high-performance native text and source code editor"
+  homepage "https://github.com/alsyundawy/SparkNotePad"
+  url "https://github.com/alsyundawy/SparkNotePad/archive/refs/tags/v1.3.0.tar.gz"
   sha256 "0000000000000000000000000000000000000000000000000000000000000000"
   license "GPL-3.0-or-later"
-  head "https://github.com/alsyundawy/NoteSciPad.git", branch: "main"
+  head "https://github.com/alsyundawy/SparkNotePad.git", branch: "main"
 
   depends_on "cmake" => :build
   depends_on "ninja" => :build
@@ -18,6 +18,6 @@ class Notescipad < Formula
   end
 
   test do
-    assert_match "NoteSciPad", shell_output("#{bin}/notescipad --help", 0)
+    assert_match "SparkNotePad", shell_output("#{bin}/sparknotepad --help", 0)
   end
 end

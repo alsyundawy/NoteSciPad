@@ -1,11 +1,12 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad4 (zufuliu/notepad4) and Notepad3 (rizonesoft/notepad3)
  * case conversion routines (Upper, Lower, Invert, Title, Sentence case)
- * with multi-selection support for NoteSciPad.
+ * with multi-selection support for SparkNotePad.
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -20,16 +21,9 @@
 class ScintillaNext;
 #endif
 
-class CaseConverter
-{
+class CaseConverter {
 public:
-    enum class CaseType {
-        UpperCase,
-        LowerCase,
-        InvertCase,
-        TitleCase,
-        SentenceCase
-    };
+    enum class CaseType { UpperCase, LowerCase, InvertCase, TitleCase, SentenceCase };
 
     struct ConvertResult {
         bool success = false;
@@ -58,4 +52,4 @@ public:
 #endif
 };
 
-#endif // CASECONVERTER_H
+#endif  // CASECONVERTER_H

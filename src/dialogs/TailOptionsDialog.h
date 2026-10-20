@@ -1,9 +1,10 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Implements Tail Monitoring Options Dialog.
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -20,8 +21,7 @@ class TailOptionsDialog;
 
 class ScintillaNext;
 
-class TailOptionsDialog : public QDialog
-{
+class TailOptionsDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -35,7 +35,7 @@ private:
     void loadSettings();
 
     Ui::TailOptionsDialog *ui;
-    ScintillaNext *m_editor {nullptr};
+    ScintillaNext *m_editor{nullptr};
 };
 
-#endif // TAILOPTIONSDIALOG_H
+#endif  // TAILOPTIONSDIALOG_H

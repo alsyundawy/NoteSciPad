@@ -1,11 +1,11 @@
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Implements AES-256 authenticated encryption (AES-256-CBC + HMAC-SHA256
  * Encrypt-then-MAC with PBKDF2-HMAC-SHA256 key derivation) following
  * NIST SP 800-38A, NIST SP 800-132, and RFC 8018 standards.
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -255,7 +255,8 @@ static void decryptBlock(const uint8_t *in, uint8_t *out, const uint8_t *roundKe
 // --- CryptoManager Implementation ---
 
 bool CryptoManager::isEncryptedData(const QByteArray &data) {
-    return data.size() >= static_cast<int>(MAGIC_HEADER_LEN) && data.startsWith(MAGIC_HEADER);
+    return data.size() >= static_cast<int>(MAGIC_HEADER_LEN) &&
+           (data.startsWith(MAGIC_HEADER) || data.startsWith(LEGACY_MAGIC_HEADER));
 }
 
 bool CryptoManager::isEncryptedFile(const QString &filePath) {
@@ -488,8 +489,10 @@ CryptoManager::CryptoResult CryptoManager::encrypt(const QByteArray &plaintext, 
         uint8_t *k2;
         size_t s2;
         ~KeyScopeGuard() {
-            if (k1 && s1 > 0) secureZeroMemory(k1, s1);
-            if (k2 && s2 > 0) secureZeroMemory(k2, s2);
+            if (k1 && s1 > 0)
+                secureZeroMemory(k1, s1);
+            if (k2 && s2 > 0)
+                secureZeroMemory(k2, s2);
         }
     } keyGuard{aesKey, sizeof(aesKey), hmacKey, sizeof(hmacKey)};
 
@@ -540,11 +543,12 @@ CryptoManager::CryptoResult CryptoManager::decrypt(const QByteArray &ciphertext,
     }
 
     if (!isEncryptedData(ciphertext) || ciphertext.size() < static_cast<int>(HEADER_META_LEN)) {
-        res.errorMessage = QStringLiteral("Invalid file format: not a recognized NoteSciPad encrypted file.");
+        res.errorMessage = QStringLiteral("Invalid file format: not a recognized SparkNotePad encrypted file.");
         return res;
     }
 
     const char *ptr = ciphertext.constData();
+    const char *fileMagic = ptr;
     ptr += MAGIC_HEADER_LEN;
 
     // Parse iterations
@@ -587,14 +591,16 @@ CryptoManager::CryptoResult CryptoManager::decrypt(const QByteArray &ciphertext,
         uint8_t *k2;
         size_t s2;
         ~KeyScopeGuard() {
-            if (k1 && s1 > 0) secureZeroMemory(k1, s1);
-            if (k2 && s2 > 0) secureZeroMemory(k2, s2);
+            if (k1 && s1 > 0)
+                secureZeroMemory(k1, s1);
+            if (k2 && s2 > 0)
+                secureZeroMemory(k2, s2);
         }
     } keyGuard{aesKey, sizeof(aesKey), hmacKey, sizeof(hmacKey)};
 
     // 2. Reconstruct authenticated payload and verify HMAC
     QByteArray authenticatedPayload;
-    authenticatedPayload.append(MAGIC_HEADER, static_cast<int>(MAGIC_HEADER_LEN));
+    authenticatedPayload.append(fileMagic, static_cast<int>(MAGIC_HEADER_LEN));
     authenticatedPayload.append(reinterpret_cast<const char *>(&iterRaw), sizeof(iterRaw));
     authenticatedPayload.append(reinterpret_cast<const char *>(salt), static_cast<int>(SALT_LEN));
     authenticatedPayload.append(reinterpret_cast<const char *>(iv), static_cast<int>(IV_LEN));

@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.21)
 
-project(NoteSciPad
-    VERSION 1.2.0
-    DESCRIPTION "Lightweight Scintilla-based text editor for macOS and Linux"
+project(SparkNotePad
+    VERSION 1.3.0
+    DESCRIPTION "Lightweight Scintilla-based text and source code editor for macOS and Linux"
     LANGUAGES C CXX
 )
 
@@ -10,11 +10,11 @@ if(APPLE)
     enable_language(OBJCXX)
 endif()
 
-set(APP_VERSION "1.2.0")
+set(APP_VERSION "1.3.0")
 set(APP_DISTRIBUTION "" CACHE STRING "Distribution type")
 string(TIMESTAMP CURRENT_YEAR "%Y")
-set(APP_COPYRIGHT "Copyright 2019-${CURRENT_YEAR} Justin Dailey & NoteSciPad Contributors")
-set(APP_COPYRIGHT_BUILDER "Copyright ${CURRENT_YEAR} HARRY DS ALSYUNDAWY (NoteSciPad Maintainer)")
+set(APP_COPYRIGHT "Copyright 2019-${CURRENT_YEAR} Justin Dailey & SparkNotePad Contributors")
+set(APP_COPYRIGHT_BUILDER "Copyright ${CURRENT_YEAR} HARRY DS ALSYUNDAWY (SparkNotePad Maintainer)")
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -83,7 +83,7 @@ set(CPM_SOURCE_CACHE "${CMAKE_SOURCE_DIR}/.cpm-cache" CACHE PATH "CPM source cac
 
 add_subdirectory(thirdparty)
 add_subdirectory(src)
-option(BUILD_TESTS "Build NoteSciPad unit tests" ON)
+option(BUILD_TESTS "Build SparkNotePad unit tests" ON)
 if(BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)

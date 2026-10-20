@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # SCRIPT NAME: build-deb-rpm.sh
-# DESCRIPTION: Automates building native .deb and .rpm packages for NoteSciPad.
-# AUTHOR:      Harry DS Alsyundawy (NoteSciPad Maintainer)
+# DESCRIPTION: Automates building native .deb and .rpm packages for SparkNotePad.
+# AUTHOR:      Harry DS Alsyundawy (SparkNotePad Maintainer)
 # VERSION:     1.0.0
 # ==============================================================================
 
@@ -15,7 +15,7 @@ DO_RPM=1
 
 show_help() {
 	cat <<EOF
-NoteSciPad Linux Package Builder (.deb & .rpm)
+SparkNotePad Linux Package Builder (.deb & .rpm)
 
 Usage: $(basename "$0") [BUILD_DIR] [OPTIONS]
 
@@ -58,7 +58,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [[ ! -d ${BUILD_DIR} ]]; then
-	echo "[ERR] Build directory '${BUILD_DIR}' does not exist. Please configure and build NoteSciPad first." >&2
+	echo "[ERR] Build directory '${BUILD_DIR}' does not exist. Please configure and build SparkNotePad first." >&2
 	exit 1
 fi
 

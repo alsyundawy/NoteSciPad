@@ -21,8 +21,8 @@ jobs:
 
       - run: |
           gh issue create --title "Publish Windows Release for $RELEASE_TAG" --body "Update json file in root of project."
-          gh issue create --title "Publish Flatpak Release for $RELEASE_TAG" --body "Update https://github.com/flathub/io.github.alsyundawy.NoteSciPad"
-          gh issue create --title "Publish Homebrew Release for $RELEASE_TAG" --body "Update https://github.com/alsyundawy/homebrew-notescipad/blob/master/Casks/notescipad.rb with release number and DMG sha256"
+          gh issue create --title "Publish Flatpak Release for $RELEASE_TAG" --body "Update https://github.com/flathub/io.github.alsyundawy.SparkNotePad"
+          gh issue create --title "Publish Homebrew Release for $RELEASE_TAG" --body "Update https://github.com/alsyundawy/homebrew-sparknotepad/blob/master/Casks/sparknotepad.rb with release number and DMG sha256"
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -37,5 +37,5 @@ jobs:
       - uses: vedantmgoyal2009/winget-releaser@b7370d4d152efdce803a26cc6ca9eee58cb2ad54 # v2
         continue-on-error: true
         with:
-          identifier: alsyundawy.NoteSciPad
+          identifier: alsyundawy.SparkNotePad
           token: ${{ secrets.GITHUB_TOKEN }}

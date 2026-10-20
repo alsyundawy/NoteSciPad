@@ -1,56 +1,60 @@
 <p align="center">
-  <a href="https://github.com/alsyundawy/NoteSciPad">
-    <img src="logo.png" width="128" height="128" alt="NoteSciPad Native macOS & Linux Application Icon" />
+  <a href="https://github.com/alsyundawy/SparkNotePad">
+    <img src="logo.png" width="128" height="128" alt="SparkNotePad Native macOS & Linux Application Icon" />
   </a>
 </p>
 
-<h1 align="center">NoteSciPad</h1>
+<h1 align="center">SparkNotePad</h1>
 
 <p align="center">
-  <b>Independent, Ultra-Lightweight & High-Performance Text & Source Code Editor</b><br>
-  <i>Powered natively by Vendored Scintilla 5.6.7 & Lexilla 5.5.4 Engines with Modern Qt 6</i>
+  <b>SparkNotePad — editor teks dan kode sumber ringan berbasis Scintilla &amp; Qt untuk Linux dan macOS.</b><br>
+  <i>Dibangun dengan Qt 6 dan engine Scintilla 5.6.7 / Lexilla 5.5.4 native untuk performa maksimal dan efisiensi memori tinggi</i>
 </p>
 
 <p align="center">
-  <a href="https://github.com/alsyundawy/NoteSciPad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.2.0-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.2.0"></a>
+  <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.3.0-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.3.0"></a>
   <a href="https://apple.com/macos"><img src="https://img.shields.io/badge/Platform-macOS%20Sequoia%20%7C%20Sonoma%20%7C%20Linux-000000?style=for-the-badge&logo=apple&logoColor=white" alt="Supported Platforms"></a>
   <a href="https://isocpp.org"><img src="https://img.shields.io/badge/Standard-ISO%20C%2B%2B20-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="C++20 Standard"></a>
   <a href="https://qt.io"><img src="https://img.shields.io/badge/Framework-Qt%206.5%20%7C%206.8%20%7C%206.10%20%7C%206.11-41CD52?style=for-the-badge&logo=qt&logoColor=white" alt="Qt Framework"></a>
   <a href="https://www.scintilla.org"><img src="https://img.shields.io/badge/Engine-Scintilla%205.6.7%20%2B%20Lexilla%205.5.4-8957e5?style=for-the-badge" alt="Scintilla + Lexilla"></a>
-  <a href="https://github.com/alsyundawy/NoteSciPad/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-GPL--3.0-blue?style=for-the-badge" alt="GPL-3.0 License"></a>
-  <a href="https://github.com/alsyundawy/NoteSciPad/actions"><img src="https://img.shields.io/badge/CI%2FCD-100%25%20Passing-success?style=for-the-badge&logo=githubactions&logoColor=white" alt="CI/CD Status"></a>
+  <a href="https://github.com/alsyundawy/SparkNotePad/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-GPL--3.0-blue?style=for-the-badge" alt="GPL-3.0 License"></a>
+  <a href="https://github.com/alsyundawy/SparkNotePad/actions"><img src="https://img.shields.io/badge/CI%2FCD-100%25%20Passing-success?style=for-the-badge&logo=githubactions&logoColor=white" alt="CI/CD Status"></a>
 </p>
 
 <p align="center">
-  A production-grade, ultra-low-footprint native text and code editor built for engineers, system administrators, and developers who refuse to compromise on speed and memory efficiency. NoteSciPad delivers instantaneous line rendering, native multi-caret editing, AES-256 document encryption, live disk tail monitoring (<code>tail -f</code>), 75 curated developer themes across 25 families with dedicated Themes menu and interactive Theme Switcher (Ctrl+Shift+T) (WCAG 2.1 AA/AAA compliant), sandboxed JavaScript evaluation, live regex testing, and comprehensive packaging across macOS (Universal 2, Apple Silicon ARM64, and Intel) and Linux (DEB, RPM, Flatpak, and AppImage) — running natively with zero web-view overhead and an active memory footprint of under 35 MB.
+  <b>SparkNotePad</b> adalah editor teks dan kode sumber native yang ringan dan cepat, dibangun dengan Qt 6 dan engine Scintilla/Lexilla. Proyek ini menjadi alternatif native keluarga Notepad untuk pengguna Linux dan macOS, dengan fokus pada performa, efisiensi memori, dan fitur power-user.
+</p>
+
+<p align="center">
+  SparkNotePad adalah editor teks dan kode sumber ringan berbasis Scintilla dan Qt, dirancang sebagai alternatif native keluarga Notepad untuk Linux dan macOS. Aplikasi ini menghadirkan perenderan baris instan, pengeditan multi-kursor, enkripsi dokumen AES-256, pemantauan log langsung (<code>tail -f</code>), 75 tema pengembang dalam 25 rumpun berstandar WCAG 2.1 AA/AAA, evaluasi JavaScript mandiri, pengujian ekspresi reguler interaktif, serta paket distribusi lengkap untuk macOS (Universal 2, Apple Silicon ARM64, Intel) dan Linux (DEB, RPM, Flatpak, AppImage) — berjalan native tanpa beban webview dengan konsumsi memori kurang dari 35 MB.
 </p>
 
 <p align="center">
   <a href="#downloads--artifact-catalogs">
-    <img src="https://img.shields.io/badge/🚀_Download_Artifacts-v1.2.0-238636?style=for-the-badge&logo=cloudsmith&logoColor=white" alt="Download Artifacts">
+    <img src="https://img.shields.io/badge/🚀_Download_Artifacts-v1.3.0-238636?style=for-the-badge&logo=cloudsmith&logoColor=white" alt="Download Artifacts">
   </a>
-  <a href="https://github.com/alsyundawy/NoteSciPad/releases/latest">
+  <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest">
     <img src="https://img.shields.io/badge/🪞_Releases_&_Changelog-GitHub-0284c7?style=for-the-badge&logo=github&logoColor=white" alt="Releases & Changelog">
   </a>
   <a href="https://www.scintilla.org">
     <img src="https://img.shields.io/badge/⚙️_Engine_Heritage-Scintilla_&_Lexilla-orange?style=for-the-badge&logo=cplusplus&logoColor=white" alt="Scintilla Heritage">
   </a>
-  <a href="https://github.com/alsyundawy/NoteSciPad/issues">
+  <a href="https://github.com/alsyundawy/SparkNotePad/issues">
     <img src="https://img.shields.io/badge/🐛_Report_Issue-GitHub_Issues-red?style=for-the-badge&logo=github&logoColor=white" alt="Report Issue">
   </a>
 </p>
 
 <p align="center">
-  <img src="doc/screenshot.png" width="85%" alt="NoteSciPad Application Preview Screenshot" />
+  <img src="doc/screenshot.png" width="85%" alt="SparkNotePad Application Preview Screenshot" />
 </p>
 
 > Lead Developer & Maintainer:<br>
 > **[`HARRY DERTIN SUTISNA ALSYUNDAWY (@alsyundawy)`](https://github.com/alsyundawy)** — [`ALSYUNDAWY IT SOLUTION`](https://alsyundawy.com)<br>
 >
-> 🍏 **[`Latest Releases (v1.2.0)`](https://github.com/alsyundawy/NoteSciPad/releases/latest)** &nbsp;|&nbsp;
+> 🍏 **[`Latest Releases (v1.3.0)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
 > 📖 **[`Release DocNotes (DOCNOTE.md)`](DOCNOTE.md)** &nbsp;|&nbsp;
 > 📜 **[`Changelog (CHANGELOG.md)`](CHANGELOG.md)** &nbsp;|&nbsp;
-> 🐛 **[`Issue Tracker`](https://github.com/alsyundawy/NoteSciPad/issues)** &nbsp;|&nbsp;
+> 🐛 **[`Issue Tracker`](https://github.com/alsyundawy/SparkNotePad/issues)** &nbsp;|&nbsp;
 > 💖 **[`Support via PayPal`](https://www.paypal.me/alsyundawy)**
 
 ---
@@ -60,69 +64,69 @@
 > ### ⚠️ Architectural Heritage, Engine Invariants & Legal Notice
 >
 > **Core Editing Invariant**<br>
-> NoteSciPad is strictly bound to its vendored **Scintilla 5.6.7** and **Lexilla 5.5.4** core engines (`src/ScintillaNext.h`). NoteSciPad will never replace, swap, or abstract away its native Scintilla engine for web runtimes or generic text controls.
+> SparkNotePad terikat secara native pada engine inti **Scintilla 5.6.7** dan **Lexilla 5.5.4** (`src/ScintillaNext.h`). SparkNotePad tidak akan mengganti engine native Scintilla dengan runtime berbasis web (Electron/CEF) atau kontrol teks generik demi mempertahankan efisiensi dan reliabilitas mutlak.
 >
 > **Independent Open-Source Lineage**<br>
-> NoteSciPad builds upon architectural ideas from historical open-source projects including NotepadNext (Justin Dailey), Notepad4 (Zufu Liu), and Notepad3 (Rizonesoft), modernized and re-engineered with native C++20, Qt 6, AES-256 security hardening, and decoupled CI/CD automation.
+> SparkNotePad dikembangkan dari gagasan arsitektur proyek open-source terkemuka seperti NotepadNext (Justin Dailey), Notepad4 (Zufu Liu), dan Notepad3 (Rizonesoft), yang dimodernisasi dan direkayasa ulang dengan standar C++20, Qt 6, pengerasan keamanan AES-256, serta otomatisasi CI/CD mandiri.
 >
 > **Legal Notice**<br>
-> NoteSciPad is an independent open-source project. It is not affiliated with, endorsed by, or associated with Notepad++, NotepadNext, Notepad4, or Notepad3. Distributed under the **GNU General Public License v3.0 (GPL-3.0-or-later)**.
+> SparkNotePad adalah proyek perangkat lunak bebas dan sumber terbuka independen. Proyek ini tidak berafiliasi dengan, didukung oleh, atau terkait dengan Notepad++, NotepadNext, Notepad4, maupun Notepad3. Didistribusikan di bawah lisensi **GNU General Public License v3.0 (GPL-3.0-or-later)**.
 
 ---
 
 ## 🧭 Navigation
 
-- [Overview & Value Proposition](#overview--value-proposition)
-- [Key Features & Capabilities Matrix](#key-features--capabilities-matrix)
-- [Premier 25 Developer Theme Families Engine](#premier-25-developer-theme-families-engine)
-- [System Architecture & Component Topology](#system-architecture--component-topology)
+- [Ikhtisar & Nilai Keunggulan](#ikhtisar--nilai-keunggulan)
+- [Fitur Utama & Matriks Kapabilitas](#fitur-utama--matriks-kapabilitas)
+- [Koleksi 25 Rumpun Tema Pengembang](#koleksi-25-rumpun-tema-pengembang)
+- [Arsitektur Sistem & Topologi Komponen](#arsitektur-sistem--topologi-komponen)
 - [Downloads & Artifact Catalogs](#downloads--artifact-catalogs)
 - [macOS Gatekeeper & Quarantine Removal](#macos-gatekeeper--quarantine-removal)
 - [Developer Setup, Building & CI Verification](#developer-setup-building--ci-verification)
 - [Release DocNotes (DOCNOTE.md)](DOCNOTE.md)
 - [Changelog (CHANGELOG.md)](CHANGELOG.md)
 - [Upstream Credits & Attribution](#upstream-credits--attribution)
-- [FAQ & Troubleshooting](#faq--troubleshooting)
+- [Tanya Jawab (FAQ) & Pemecahan Masalah](#tanya-jawab-faq--pemecahan-masalah)
 - [📬 Maintainer & Contact](#-maintainer--contact)
-- [💖 Support & Donation](#-support--donation)
+- [💖 Dukungan & Donasi](#-dukungan--donasi)
 - [License](#license)
 
 ---
 
-## Overview & Value Proposition
+## Ikhtisar & Nilai Keunggulan
 
-In an era where modern desktop text editors frequently consume over 500 MB of system RAM just to render an empty buffer, **NoteSciPad** is engineered from the metal up to deliver maximum efficiency:
+Ketika editor teks desktop modern kerap menghabiskan lebih dari 500 MB RAM hanya untuk membuka dokumen kosong, **SparkNotePad** dirancang dari level sistem untuk memberikan efisiensi resource dan kecepatan eksekusi terbaik:
 
-1. **Sub-Millisecond Rendering**: Direct integration with Scintilla ensures immediate rendering without intermediate virtual DOM reconciliation or JavaScript IPC bridges.
-2. **Ultra-Low Memory Footprint**: Active idle resident set size (RSS) of **less than 35 MB**, allowing hundreds of documents to remain open simultaneously without system degradation.
-3. **Rock-Solid Startup**: Cold launch in **under 200 ms**, making it the ideal tool for quick log inspection, configuration file editing, and heavy daily programming.
-4. **Zero Telemetry & 100% Offline**: NoteSciPad contains zero tracking, analytics, or background phoning home. All cryptographic operations and script evaluations execute entirely offline.
-5. **Universal Multi-Platform Support**: Natively compiled for macOS (Apple Silicon M1/M2/M3/M4 and Intel x86_64) and Linux distributions (Ubuntu, Debian, Fedora, Arch Linux).
-
----
-
-## Key Features & Capabilities Matrix
-
-| Feature                     | Capability Description                                                                            |          Shortcut           |
-| :-------------------------- | :------------------------------------------------------------------------------------------------ | :-------------------------: |
-| **AES-256-CBC Encryption**  | Military-grade document encryption with PBKDF2 (100k rounds) & HMAC-SHA256 authentication         | `Ctrl+Alt+E` / `Ctrl+Alt+D` |
-| **Live Tail Monitoring**    | Real-time disk log streaming (`tail -f`) with debounced auto-reload (500ms) and auto-scroll       |        `Ctrl+Alt+Y`         |
-| **25 Theme Families**       | 25 premier developer theme suites complying with WCAG 2.1 AA/AAA international standards          |        `Theme Menu`         |
-| **JavaScript Evaluator**    | In-app sandboxed JavaScript evaluator for math, JSON formatting, and text scripting              |       `Ctrl+Shift+J`        |
-| **Regex Testing Suite**     | Interactive regular expression tester with live group matching, multiline, and dot-all flags      |     `Ctrl+Alt+Shift+R`      |
-| **Color Preview Call-Tips** | Interactive floating color swatches and tooltips for `#HEX`, `rgb()`, `rgba()`, and `hsl()` codes |        Cursor Hover         |
-| **Window Transparency**     | Native compositor opacity slider (20%–100%) for desktop overlay reference                         |        `Ctrl+Alt+T`         |
-| **macOS System Services**   | AppKit context menu integration (`Open Selection / Path in NoteSciPad`)                           |        Context Menu         |
-| **Multi-Monitor Safety**    | `ScreenDisplayManager` guarding against off-screen restoration and multi-DPI shifts               |          Automatic          |
-| **Base64 Converter**        | One-click document or selection encoding and decoding                                             |      `Edit >> Convert`      |
-| **Unicode Inspector**       | Detailed Unicode code point inspector (`U+XXXX`), decimal, and category breakdown                 |        `Status Bar`         |
-| **Encoding Support**        | Universal detection via `uchardet` with one-click conversion (UTF-8, UTF-16, ANSI, CJK)           |        `Status Bar`         |
+1. **Perenderan Sub-Milidetik**: Integrasi langsung dengan Scintilla menjamin tampilan teks instan tanpa rekonsiliasi virtual DOM maupun perantara JavaScript IPC.
+2. **Konsumsi Memori Sangat Rendah**: Resident Set Size (RSS) saat idle **kurang dari 35 MB**, memungkinkan ratusan dokumen dibuka bersamaan tanpa menurunkan performa sistem.
+3. **Waktu Mulai Kilat**: Waktu peluncuran dingin (cold launch) **di bawah 200 milidetik**, menjadikannya solusi ideal untuk inspeksi cepat berkas log, pengubahan konfigurasi, maupun sesi pemrograman harian intensif.
+4. **Bebas Telemetri & 100% Offline**: SparkNotePad tidak memiliki pelacakan data, analisis pengguna, atau koneksi latar belakang tanpa izin. Seluruh operasi kriptografi dan evaluasi skrip berjalan sepenuhnya secara lokal.
+5. **Dukungan Multi-Platform Universal**: Terkompilasi secara native untuk macOS (Apple Silicon M1/M2/M3/M4 dan Intel x86_64) serta berbagai distribusi Linux (Ubuntu, Debian, Fedora, Arch Linux).
 
 ---
 
-## Premier 25 Developer Theme Families Engine
+## Fitur Utama & Matriks Kapabilitas
 
-NoteSciPad features a built-in theme manager ([`ThemeManager.cpp`](src/features/ThemeManager.cpp)) providing 25 premier developer theme suites:
+| Fitur                          | Deskripsi Kapabilitas                                                                                                 |     Pintasan (Shortcut)     |
+| :----------------------------- | :-------------------------------------------------------------------------------------------------------------------- | :-------------------------: |
+| **Enkripsi AES-256-CBC**       | Enkripsi dokumen berkekuatan tinggi dengan PBKDF2 (100.000 putaran) dan autentikasi integritas HMAC-SHA256            | `Ctrl+Alt+E` / `Ctrl+Alt+D` |
+| **Pemantauan Log Langsung**    | Streaming berkas log disk secara real-time (`tail -f`) dengan muat-ulang debounced (500 ms) dan auto-scroll           |        `Ctrl+Alt+Y`         |
+| **25 Rumpun Tema (75 Varian)** | 75 palet tema pengembang pilihan yang memenuhi standar kontras internasional WCAG 2.1 AA/AAA                          |        Menu `Themes`        |
+| **Evaluator JavaScript**       | Kotak pasir (sandbox) eksekusi JavaScript terisolasi untuk kalkulasi matematis, pemformatan JSON, dan manipulasi teks |       `Ctrl+Shift+J`        |
+| **Pengujian Regex Interaktif** | Penguji ekspresi reguler dengan pencocokan grup dinamis, multiline, dan penanda dot-all                               |     `Ctrl+Alt+Shift+R`      |
+| **Call-Tip Pratinjau Warna**   | Kotak pratinjau warna mengambang interaktif untuk kode format `#HEX`, `rgb()`, `rgba()`, dan `hsl()`                  |        Hover Kursor         |
+| **Transparansi Jendela**       | Pengatur opasitas jendela native (20%–100%) untuk referensi dokumen latar belakang                                    |        `Ctrl+Alt+T`         |
+| **Layanan Sistem macOS**       | Integrasi menu konteks AppKit (`Open Selection / Path in SparkNotePad`)                                               |     Menu Konteks macOS      |
+| **Keamanan Multi-Monitor**     | `ScreenDisplayManager` mencegah jendela terbuka di luar bidang layar saat perpindahan monitor multi-DPI               |          Otomatis           |
+| **Konverter Base64 & Format**  | Pengkodean dan penguraian Base64, angka biner/oktal/desimal/heksadesimal, serta transformasi casing                   |   Menu `Edit >> Convert`    |
+| **Inspektor Karakter Unicode** | Analisis detail titik kode Unicode (`U+XXXX`), nilai desimal, dan kategori karakter                                   |        Bilah Status         |
+| **Deteksi Enkripsi Otomatis**  | Pengenalan encoding universal dengan `uchardet` serta konversi instan (UTF-8, UTF-16, ANSI, CJK)                      |        Bilah Status         |
+
+---
+
+## Koleksi 25 Rumpun Tema Pengembang
+
+SparkNotePad menyertakan pengelola tema terintegrasi ([`ThemeManager.cpp`](src/features/ThemeManager.cpp)) yang menyediakan 25 rumpun tema pengembang profesional:
 
 ```text
 Catppuccin   Dracula      Tokyo Night   Nord         One Dark
@@ -132,16 +136,16 @@ SynthWave'84 Cyberpunk    Shades of Pur Poimandres   Horizon
 Andromeda    Nightfox     Cobalt2       Alabaster    Tomorrow
 ```
 
-- **Contrast Ratios**: Regular text contrast of **12.6:1** (exceeding WCAG AAA 7.0:1 requirement) and high-contrast accessibility contrast of **18.2:1**.
-- **Scintilla BGR Endianness Safety**: All color codes pass through `scColor(r, g, b)` and `scFromRgb(QRgb)` helpers, preventing inverted red/blue channels across platforms.
+- **Rasio Kontras Tinggi**: Teks reguler mencapai rasio kontras rata-rata **12.6:1** (jauh melampaui standar WCAG AAA 7.0:1) dan rasio kontras tinggi hingga **18.2:1**.
+- **Keamanan Endianness BGR Scintilla**: Seluruh kode warna diproses melalui fungsi bantu `scColor(r, g, b)` dan `scFromRgb(QRgb)` guna menghindari inversi kanal merah/biru pada lintas platform.
 
 ---
 
-## System Architecture & Component Topology
+## Arsitektur Sistem & Topologi Komponen
 
 ```text
 ┌────────────────────────────────────────────────────────────────────────┐
-│                        NoteSciPad Application                          │
+│                        SparkNotePad Application                        │
 │                                                                        │
 │  ┌───────────────────────┐  ┌───────────────────────────────────────┐  │
 │  │   UI & Dock System    │  │       ScintillaNext (Core View)       │  │
@@ -157,6 +161,7 @@ Andromeda    Nightfox     Cobalt2       Alabaster    Tomorrow
 │  │  - ScreenDisplayManager     (Multi-Monitor & Retina Geometry)    │  │
 │  │  - TransparentWindowManager (Alpha-Channel Window Compositing)   │  │
 │  │  - JsEvaluator              (Sandboxed Scripting Engine)         │  │
+│  │  - PythonScriptEngine       (Python 3.13+ Bridge Engine)         │  │
 │  │  - ReleaseManager           (Automatic Semver Update Checker)    │  │
 │  └──────────────────────────────────────────────────────────────────┘  │
 └────────────────────────────────────────────────────────────────────────┘
@@ -166,55 +171,61 @@ Andromeda    Nightfox     Cobalt2       Alabaster    Tomorrow
 
 ## Downloads & Artifact Catalogs
 
-Pre-compiled, production-ready binaries for NoteSciPad v1.2.0 are available directly from the [GitHub Releases](https://github.com/alsyundawy/NoteSciPad/releases/latest) page:
+Berkas biner resmi SparkNotePad v1.3.0 siap pakai dapat diunduh langsung melalui halaman [GitHub Releases](https://github.com/alsyundawy/SparkNotePad/releases/latest):
 
-| Platform      | Target Architecture         | Package Format | Download Link                                                                                                                                        |
-| :------------ | :-------------------------- | :------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **macOS 15+** | Apple Silicon (M1/M2/M3/M4) |     `.dmg`     | [NoteSciPad-1.2.0-macOS-arm64.dmg](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.2.0/NoteSciPad-1.2.0-macOS-arm64.dmg)               |
-| **macOS 15+** | Intel (x86_64)              |     `.dmg`     | [NoteSciPad-1.2.0-macOS-x86_64.dmg](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.2.0/NoteSciPad-1.2.0-macOS-x86_64.dmg)             |
-| **Linux**     | x86_64 (Ubuntu / Debian)    |     `.deb`     | [NoteSciPad-1.2.0-Linux-x86_64.deb](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.2.0/NoteSciPad-1.2.0-Linux-x86_64.deb)             |
-| **Linux**     | x86_64 (Fedora / RHEL)      |     `.rpm`     | [NoteSciPad-1.2.0-Linux-x86_64.rpm](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.2.0/NoteSciPad-1.2.0-Linux-x86_64.rpm)             |
-| **Linux**     | Universal Sandboxed         |    Flatpak     | [io.github.alsyundawy.NoteSciPad.flatpak](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.2.0/io.github.alsyundawy.NoteSciPad.flatpak) |
+| Platform            | Arsitektur Target           | Format Paket | Tautan Unduhan                                                                                                                                             |
+| :------------------ | :-------------------------- | :----------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **macOS 15+ / 14+** | Apple Silicon (M1/M2/M3/M4) |    `.dmg`    | [SparkNotePad-v1.3.0-arm64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/SparkNotePad-v1.3.0-arm64.dmg)                         |
+| **macOS 15+ / 14+** | Intel (x86_64)              |    `.dmg`    | [SparkNotePad-v1.3.0-x64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/SparkNotePad-v1.3.0-x64.dmg)                             |
+| **Linux**           | x86_64 (Ubuntu / Debian)    |    `.deb`    | [sparknotepad_1.3.0_amd64.deb](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/sparknotepad_1.3.0_amd64.deb)                           |
+| **Linux**           | x86_64 (Fedora / RHEL)      |    `.rpm`    | [sparknotepad-1.3.0-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/sparknotepad-1.3.0-1.x86_64.rpm)                     |
+| **Linux Universal** | Universal Sandboxed         |   Flatpak    | [io.github.alsyundawy.SparkNotePad.flatpak](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/io.github.alsyundawy.SparkNotePad.flatpak) |
 
 ---
 
 ## macOS Gatekeeper & Quarantine Removal
 
-If macOS displays a warning stating that the application cannot be opened because it is from an unidentified developer, remove the quarantine flag using Terminal:
+Apabila sistem macOS menampilkan dialog peringatan bahwa aplikasi tidak dapat dibuka karena berasal dari pengembang yang belum teridentifikasi, hapus atribut karantina melalui Terminal:
 
 ```bash
-# Remove quarantine attribute from NoteSciPad.app
-xattr -cr /Applications/NoteSciPad.app
+# Hapus atribut karantina dari SparkNotePad.app
+xattr -cr /Applications/SparkNotePad.app
+```
+
+Untuk mendaftarkan SparkNotePad sebagai penangan berkas default untuk seluruh ekstensi teks dan kode sumber pada macOS dan Linux, jalankan skrip integrasi:
+
+```bash
+bash scripts/SparkNotePad-Default-Editor.sh -f
 ```
 
 ---
 
 ## Developer Setup, Building & CI Verification
 
-### Prerequisites
+### Prasyarat Pengembangan
 
 - **macOS**: Xcode 15+, Homebrew, Qt 6.5+ (`brew install qt6 cmake ninja`)
-- **Linux**: GCC 11+ or Clang 14+, CMake 3.21+, Qt 6.5+ (`qt6-base-dev qt6-5compat-dev libuchardet-dev`)
+- **Linux**: GCC 11+ atau Clang 14+, CMake 3.21+, Qt 6.5+ (`qt6-base-dev qt6-5compat-dev libuchardet-dev ninja-build`)
 
-### Building from Source
+### Membangun dari Sumber (Build from Source)
 
 ```bash
-# 1. Clone repository
-git clone https://github.com/alsyundawy/NoteSciPad.git
-cd NoteSciPad
+# 1. Gandakan repositori
+git clone https://github.com/alsyundawy/SparkNotePad.git
+cd SparkNotePad
 
-# 2. Configure with CMake (C++20)
+# 2. Konfigurasi CMake (C++20)
 cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
 
-# 3. Compile
+# 3. Kompilasi biner
 cmake --build build -j$(nproc 2>/dev/null || sysctl -n hw.ncpu)
 
-# 4. Run automated verification suite
+# 4. Jalankan pengujian otomatis
 bash scripts/verify-engine-invariants.sh
 bash scripts/run-unit-tests.sh
 bash scripts/run-security-audit.sh
 
-# 5. Run Trunk linter safely
+# 5. Jalankan verifikasi linter Trunk
 trunk check -n -j 2
 ```
 
@@ -222,105 +233,86 @@ trunk check -n -j 2
 
 ## Changelog
 
-For the complete chronological release history, see [CHANGELOG.md](CHANGELOG.md).
+Riwayat rilis lengkap dan kronologis terdokumentasi pada berkas [CHANGELOG.md](CHANGELOG.md).
 
-### [v1.2.0] — UI/UX Polish, Apple HIG Icons, Engine Upgrades, WCAG AAA Contrast & Multi-Qt Release (2026-10-20)
+### [v1.3.0] — Transformasi Brand SparkNotePad, Logo Baru, Pengerasan 13 Pilar & Peningkatan Bahasa Indonesia (2026-10-20)
 
-- **Official Engine Upgrades**: Vendored Scintilla upgraded to **5.6.7**, Lexilla to **5.5.4**, and Lua core to **5.5.1** from official upstream source archives.
-- **Python 3.13+ Scripting Bridge**: Built-in runtime bridge with timeout safeguards (`Ctrl+Shift+P` / `Cmd+Shift+P`).
-- **Development SSL Certificate Generator (`MkcertDialog`)**: One-click local certificate generation (`Ctrl+Alt+C`) with mkcert and OpenSSL.
-- **Apple HIG Multi-Size Icons**: Redesigned official app icon with 82% squircle grid and optical padding (16x16 to 1024x1024) to eliminate oversized macOS Dock display.
-- **Modern Themed Dialogs (`ModernMessageBox`)**: Replaced plain legacy message popups with sleek vector-badged dialogs adhering to active theme colors.
-- **Strict WCAG AAA Color Contrast**: Resolved text-contrast issues across light and dark modes in `AboutDialog` and global `QLabel` rules.
-- **Universal Cross-Platform Typography**: Unified GUI fonts across macOS (`-apple-system`/`SF Pro Text`) and Linux (`Inter`/`Ubuntu`/`Roboto`).
-- **File Menu Enhancements**: Added `New Window` (`Ctrl/Cmd+Shift+N`) and native vector `Export to PDF...`.
-- **Trending Lexers**: Added Kotlin 2.x, GraphQL, WebAssembly Text (WAT), and Azure Bicep.
-- **Trunk Native C++ & Qt Linter**: Integrated custom `cppcheck-qt` (`--library=qt --language=c++`), `clang-format@20.1.0`, and `pragma-once`.
-- **Multi-Qt Build Matrix**: Full 12-target validation across Qt 6.5, Qt 6.8 LTS, Qt 6.10, and Qt 6.11 on macOS and Linux.
-
-### [v1.1.0] — Production Release (2026-10-19)
-
-- **Core Engine**: Deeply vendored Scintilla 5.5.4 and Lexilla 5.4.3 engines.
-- **Security**: AES-256-CBC document encryption with HMAC-SHA256 authenticated integrity.
-- **Streaming**: Live disk tail monitoring (`tail -f`) with debounced auto-reload (500ms).
-- **Themes**: Premier 25 developer theme families complying with WCAG 2.1 AA/AAA contrast ratios.
-- **CI/CD**: Multi-platform matrix runners compiling across 8 platform targets with 100% green exit status.
+- **Evolusi Brand Resmi**: Transformasi menyeluruh dari NoteSciPad menjadi **SparkNotePad** pada nama aplikasi, target biner, manifes Flatpak/Homebrew, skrip asosiasi sistem, dan dokumentasi.
+- **Ikonografi & Aset Visual Baru**: Pembaruan logo resmi dan kumpulan ikon beresolusi tinggi Apple HIG (16x16 hingga 1024x1024 dalam format `.icns`, multi-layer `.ico`, serta `.png`).
+- **Penyempurnaan Bahasa Indonesia**: Penyelarasan terjemahan `i18n/SparkNotePad_id.ts` menggunakan kaidah Bahasa Indonesia baku pada seluruh menu, dialog diagnostik, dan pesan peringatan.
+- **Audit Kode 13 Pilar**: Pemeriksaan komprehensif terhadap bug, memori, konkurensi, keamanan OWASP 2025 / CWE Top 25, dan dependensi sirkular.
+- **Kepatuhan Trunk & Linter**: Pembersihan peringatan ShellCheck (SC2312), kepatuhan format C++, dan validasi berkas alur kerja GitHub Actions.
 
 ---
 
 ## Upstream Credits & Attribution
 
-NoteSciPad represents dedicated software engineering honoring its foundational lineage:
+SparkNotePad menghormati dan mengapresiasi kontribusi proyek-proyek open-source pendahulunya:
 
-- **Neil Hodgson & Scintilla/Lexilla Authors**: The legendary editing engine providing deterministic performance and styling lexers.
-- **Justin Dailey (dail8859)**: Creator of NotepadNext, providing the original Qt scaffolding.
-- **Zufu Liu (zufuliu)**: Creator of Notepad4, providing invaluable architectural patterns.
-- **Rizonesoft**: Creators of Notepad3, inspiring Scintilla power-user text transformations.
-- **Lon McGregor ([LonMcGregor/NotepadPlusPlusIcons](https://github.com/LonMcGregor/NotepadPlusPlusIcons))**: Designer of the iconic icon artwork series, adapted as NoteSciPad's official application icon.
-- **The Qt Project**: Powers NoteSciPad's modern cross-platform interface.
+- **Neil Hodgson & Kontributor Scintilla/Lexilla**: Engine pengeditan teks berperforma tinggi dan pustaka lexer untuk 100+ bahasa pemrograman.
+- **Justin Dailey (dail8859)**: Pembuat NotepadNext yang menyediakan fondasi awal kerangka kerja Qt.
+- **Zufu Liu (zufuliu)**: Pembuat Notepad4 yang memberikan inspirasi arsitektur dan pola penanganan teks canggih.
+- **Rizonesoft**: Pengembang Notepad3 yang menginspirasi transformasi teks dan kenyamanan antarmuka.
+- **The Qt Project**: Kerangka kerja GUI multiplatform modern.
 - **Lead Maintainer**: **Harry Dertin Sutisna Alsyundawy** ([`@alsyundawy`](https://github.com/alsyundawy)).
 
 ---
 
-## FAQ & Troubleshooting
+## Tanya Jawab (FAQ) & Pemecahan Masalah
 
-### Why use NoteSciPad instead of an Electron-based editor?
+### Mengapa memilih SparkNotePad daripada editor berbasis Electron?
 
-NoteSciPad is a native C++20 / Qt 6 application. It consumes under 35 MB of RAM, launches in less than 200 ms, and contains zero web-browser overhead, background telemetry, or memory bloat.
+SparkNotePad adalah aplikasi native C++20 / Qt 6 murni. Membuka dokumen dalam hitungan milidetik, mengonsumsi kurang dari 35 MB RAM, dan bebas dari overhead browser web atau pelacakan telemetri latar belakang.
 
-### Can NoteSciPad safely open files larger than 100 MB?
+### Apakah SparkNotePad mampu membuka berkas besar di atas 100 MB?
 
-Yes. Thanks to native Scintilla buffer chunking and 64-bit line indexing, NoteSciPad handles multi-gigabyte log files and large source trees smoothly.
+Ya. Berkat arsitektur segmentasi buffer Scintilla dan pengindeksan baris 64-bit, SparkNotePad dapat membuka berkas teks dan log besar berukuran gigabita dengan lancar tanpa freeze.
 
-### Does NoteSciPad support macOS Dark Mode?
+### Apakah SparkNotePad mendukung Mode Gelap (Dark Mode) macOS dan Linux?
 
-Yes. NoteSciPad seamlessly synchronizes with system-wide macOS Appearance settings, including Light, Dark, and Automatic time-based transitions.
+Ya. SparkNotePad menyinkronkan tampilan dengan mode terang/gelap sistem operasi secara otomatis, serta menyediakan 75 palet tema pilihan melalui menu Themes.
 
 ---
 
 ## 📬 Maintainer & Contact
-
-For inquiries, security disclosures, or collaboration:
 
 - **Lead Maintainer**: **HARRY DERTIN SUTISNA ALSYUNDAWY** — [`ALSYUNDAWY IT SOLUTION`](https://alsyundawy.com)
 - **Official Website**: [`https://alsyundawy.com`](https://alsyundawy.com)
 - **GitHub Profile**: [`https://github.com/alsyundawy`](https://github.com/alsyundawy)
 - **Email**: [`alsyundawy@gmail.com`](mailto:alsyundawy@gmail.com)
 - **Telegram / X (Twitter)**: [`@alsyundawy`](https://t.me/alsyundawy) &nbsp;|&nbsp; [`@alsyundawy`](https://x.com/alsyundawy)
-- **Repository**: [`https://github.com/alsyundawy/NoteSciPad`](https://github.com/alsyundawy/NoteSciPad)
+- **Repository**: [`https://github.com/alsyundawy/SparkNotePad`](https://github.com/alsyundawy/SparkNotePad)
 
 ---
 
-## 💖 Support & Donation
+## 💖 Dukungan & Donasi
 
-If **NoteSciPad** accelerates your productivity, please consider supporting the project and its development:
+Jika **SparkNotePad** membantu produktivitas Anda, pertimbangkan untuk mendukung kelanjutan pengembangannya:
 
-### 💳 International Support: PayPal
+### 💳 Dukungan Internasional: PayPal
 
 [![Donate with PayPal](https://img.shields.io/badge/Donate-PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.me/alsyundawy)
 
 - **PayPal Link**: [`https://www.paypal.me/alsyundawy`](https://www.paypal.me/alsyundawy)
 
----
+### 🇮🇩 Dukungan Domestik: QRIS
 
-### 🇮🇩 Indonesian & Regional Support: QRIS
-
-Scan the QRIS barcode below using any Indonesian mobile banking application (BCA, Mandiri, BRI, BNI, BSI, CIMB Niaga, Permata) or e-wallet (GoPay, OVO, DANA, LinkAja, ShopeePay):
+Pindai kode QRIS berikut menggunakan aplikasi perbankan (BCA, Mandiri, BRI, BNI, BSI, CIMB Niaga, Permata) atau dompet digital (GoPay, OVO, DANA, LinkAja, ShopeePay):
 
 ![QRIS Donation Barcode - ALSYUNDAWY](https://github.com/user-attachments/assets/a0126f28-6dde-43da-ba14-d7c9a27de0df)
 
-- **Merchant / Account Name**: **ALSYUNDAWY**
+- **Merchant**: **ALSYUNDAWY**
 - **NMID**: **`ID1020021153676`**
 
 ---
 
 ## License
 
-This program is free software; you can redistribute it and/or modify it under the terms of the **GNU General Public License v3.0 (GPL-3.0-or-later)** as published by the Free Software Foundation. See the complete license text in [LICENSE](LICENSE).
+Program ini merupakan perangkat lunak bebas; Anda dapat menyebarluaskannya dan/atau memodifikasinya di bawah ketentuan **GNU General Public License v3.0 (GPL-3.0-or-later)** sebagaimana dipublikasikan oleh Free Software Foundation. Lihat teks lisensi lengkap pada berkas [LICENSE](LICENSE).
 
 ```text
-NoteSciPad
-Copyright (C) 2019-2026 Justin Dailey & NoteSciPad Contributors
+SparkNotePad
+Copyright (C) 2019-2026 Justin Dailey & SparkNotePad Contributors
 Lead Development, Modernization & Maintenance (C) 2026 Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 
 This program is distributed in the hope that it will be useful,

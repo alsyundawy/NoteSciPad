@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Clipboard History &amp; Monitoring - NoteSciPad</string>
+   <string>Clipboard History &amp; Monitoring - SparkNotePad</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -67,7 +67,7 @@
      <item>
       <widget class="QCheckBox" name="checkIgnoreInternal">
        <property name="text">
-        <string>Ignore internal NoteSciPad copies</string>
+        <string>Ignore internal SparkNotePad copies</string>
        </property>
        <property name="checked">
         <bool>true</bool>

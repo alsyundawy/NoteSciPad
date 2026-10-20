@@ -1,8 +1,9 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
- * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
+ * This file is part of SparkNotePad.
+ * Copyright 2026 Harry DS Alsyundawy (SparkNotePad Maintainer)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -36,8 +37,7 @@ struct DisplayInfo {
     bool isRetina = false;
 };
 
-class ScreenDisplayManager : public QObject
-{
+class ScreenDisplayManager : public QObject {
     Q_OBJECT
 
 public:
@@ -75,4 +75,4 @@ private:
     qreal m_lastDpr = 1.0;
 };
 
-#endif // SCREENDISPLAYMANAGER_H
+#endif  // SCREENDISPLAYMANAGER_H

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # SCRIPT NAME: run-security-audit.sh
-# DESCRIPTION: Static security review scanner for NoteSciPad codebase
+# DESCRIPTION: Static security review scanner for SparkNotePad codebase
 # ==============================================================================
 
 set -euo pipefail
@@ -10,7 +10,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
 echo "======================================================================"
-echo "⚡ NoteSciPad Static Security & Threat Audit"
+echo "⚡ SparkNotePad Static Security & Threat Audit"
 echo "======================================================================"
 
 VULNS=0

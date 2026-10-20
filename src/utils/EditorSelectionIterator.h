@@ -1,8 +1,9 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
- * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
+ * This file is part of SparkNotePad.
+ * Copyright 2026 Harry DS Alsyundawy (SparkNotePad Maintainer)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -18,8 +19,7 @@
 #include "ScintillaNext.h"
 #endif
 
-class EditorSelectionIterator
-{
+class EditorSelectionIterator {
 public:
 #if !defined(UNIT_TESTING)
     /**
@@ -33,8 +33,7 @@ public:
      * @return true if any text was transformed; false otherwise.
      */
     template <typename Func>
-    static bool transformSelections(ScintillaNext *editor, Func transform, bool fallbackToLine = false)
-    {
+    static bool transformSelections(ScintillaNext *editor, Func transform, bool fallbackToLine = false) {
         if (!editor) {
             return false;
         }
@@ -97,4 +96,4 @@ public:
 #endif
 };
 
-#endif // EDITORSELECTIONITERATOR_H
+#endif  // EDITORSELECTIONITERATOR_H

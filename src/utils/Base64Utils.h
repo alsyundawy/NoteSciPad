@@ -1,10 +1,11 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad4 Base64 conversion utilities.
  * Source: zufuliu/Notepad4 (src/Edit.cpp)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -20,12 +21,11 @@
 class ScintillaNext;
 #endif
 
-class Base64Utils
-{
+class Base64Utils {
 public:
     struct Result {
-        bool success {false};
-        bool wholeDocument {false};
+        bool success{false};
+        bool wholeDocument{false};
         QString errorMessage;
     };
 
@@ -42,4 +42,4 @@ public:
     static QString decodeUrlSafe(const QString &base64Text, bool *ok = nullptr);
 };
 
-#endif // BASE64UTILS_H
+#endif  // BASE64UTILS_H

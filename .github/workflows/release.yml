@@ -190,7 +190,7 @@ jobs:
         if: matrix.platform == 'linux'
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: NoteSciPad-Linux-${{ matrix.arch }}-Qt${{ matrix.qt_version }}
+          name: SparkNotePad-Linux-${{ matrix.arch }}-Qt${{ matrix.qt_version }}
           path: |
             build/*.deb
             build/*.rpm
@@ -208,17 +208,17 @@ jobs:
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
           ./scripts/codesign-and-notarize-macos.sh \
-            --app "build/install/NoteSciPad.app" \
-            --dmg "build/NoteSciPad-v*.dmg" \
-            --entitlements "deploy/macos/NoteSciPad.entitlements"
+            --app "build/install/SparkNotePad.app" \
+            --dmg "build/SparkNotePad-v*.dmg" \
+            --entitlements "deploy/macos/SparkNotePad.entitlements"
 
       # ─── Upload Artifacts ──────────────────────────────────────────────
       - name: Upload MacOS dmg
         if: matrix.platform == 'mac'
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: NoteSciPad-macOS-${{ matrix.arch }}-Qt${{ matrix.qt_version }}
-          path: build/NoteSciPad*.dmg
+          name: SparkNotePad-macOS-${{ matrix.arch }}-Qt${{ matrix.qt_version }}
+          path: build/SparkNotePad*.dmg
           if-no-files-found: warn
 
   # GitHub Release job — only runs on tag pushes
@@ -228,7 +228,7 @@ jobs:
     timeout-minutes: 20
     needs: [build]
     if: >
-      github.repository == 'alsyundawy/NoteSciPad' &&
+      github.repository == 'alsyundawy/SparkNotePad' &&
       github.event_name == 'push' &&
       github.ref_type == 'tag'
     permissions:
@@ -266,11 +266,11 @@ jobs:
           echo "=== Downloaded artifact directories ==="
           ls -la
           for arch in x64 arm64; do
-            dir="NoteSciPad-macOS-${arch}-Qt${QT_RELEASE_VER}"
+            dir="SparkNotePad-macOS-${arch}-Qt${QT_RELEASE_VER}"
             echo "Looking for canonical release dir: ${dir}"
             if [ -d "${dir}" ]; then
               # Find the single DMG produced by PackagingMac.cmake
-              dmg_file=$(find "${dir}" -maxdepth 1 \( -name 'NoteSciPad*.dmg' -o -name 'NotepadNext*.dmg' \) | head -1)
+              dmg_file=$(find "${dir}" -maxdepth 1 \( -name 'SparkNotePad*.dmg' -o -name 'NotepadNext*.dmg' \) | head -1)
               if [ -n "${dmg_file}" ]; then
                 echo "Uploading ${dmg_file} → release ${RELEASE_TAG}"
                 gh release upload "${RELEASE_TAG}" "${dmg_file}" --clobber
@@ -299,7 +299,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
-          if [ -f "scripts/NoteSciPad-Default-Editor.sh" ]; then
-            echo "Uploading scripts/NoteSciPad-Default-Editor.sh to release ${RELEASE_TAG}"
-            gh release upload "${RELEASE_TAG}" "scripts/NoteSciPad-Default-Editor.sh" --clobber
+          if [ -f "scripts/SparkNotePad-Default-Editor.sh" ]; then
+            echo "Uploading scripts/SparkNotePad-Default-Editor.sh to release ${RELEASE_TAG}"
+            gh release upload "${RELEASE_TAG}" "scripts/SparkNotePad-Default-Editor.sh" --clobber
           fi

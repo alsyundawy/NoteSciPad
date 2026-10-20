@@ -2,8 +2,8 @@
 # ==============================================================================
 # SCRIPT NAME: codesign-and-notarize-macos.sh
 # DESCRIPTION: Production-grade automated codesigning and notarization workflow
-#              for NoteSciPad on macOS (Developer ID Application & Apple Notary).
-# AUTHOR:      Harry DS Alsyundawy (NoteSciPad Maintainer)
+#              for SparkNotePad on macOS (Developer ID Application & Apple Notary).
+# AUTHOR:      Harry DS Alsyundawy (SparkNotePad Maintainer)
 # VERSION:     1.0.0
 # LICENSE:     GPL-3.0-or-later / MIT
 # ==============================================================================
@@ -15,11 +15,11 @@ export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${PA
 
 APP_BUNDLE=""
 DMG_PATH=""
-ENTITLEMENTS_PATH="deploy/macos/NoteSciPad.entitlements"
+ENTITLEMENTS_PATH="deploy/macos/SparkNotePad.entitlements"
 SIGNING_IDENTITY="${DEVELOPER_ID_APPLICATION:-}"
 AD_HOC=0
 DO_NOTARIZE=1
-KEYCHAIN_NAME="notescipad_signing.keychain"
+KEYCHAIN_NAME="sparknotepad_signing.keychain"
 KEYCHAIN_PASSWORD="temporary_keychain_password_123"
 
 if [[ -t 1 ]] && [[ -z ${NO_COLOR:-} ]]; then
@@ -55,14 +55,14 @@ trap cleanup EXIT INT TERM HUP
 
 show_help() {
 	cat <<EOF
-NoteSciPad macOS Codesign & Notarization Automation Tool
+SparkNotePad macOS Codesign & Notarization Automation Tool
 
 Usage: $(basename "$0") [OPTIONS]
 
 Options:
-  --app <path>             Path to NoteSciPad.app bundle
-  --dmg <path>             Path to NoteSciPad .dmg file
-  --entitlements <path>    Path to entitlements.plist (default: deploy/macos/NoteSciPad.entitlements)
+  --app <path>             Path to SparkNotePad.app bundle
+  --dmg <path>             Path to SparkNotePad .dmg file
+  --entitlements <path>    Path to entitlements.plist (default: deploy/macos/SparkNotePad.entitlements)
   --identity <name>        Developer ID Application identity string
   --ad-hoc                 Sign with ad-hoc signature (-) without certificates
   --no-notarize            Skip Apple notarization step

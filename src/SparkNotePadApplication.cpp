@@ -1,23 +1,24 @@
 /*
- * This file is part of Notepad Next.
+ * This file is part of SparkNotePad.
+ * Copyright 2026 Harry DS Alsyundawy (SparkNotePad Maintainer)
  * Copyright 2019 Justin Dailey
  *
- * Notepad Next is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Notepad Next is distributed in the hope that it will be useful,
+ * SparkNotePad is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
+ * along with SparkNotePad.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #include "MainWindow.h"
-#include "NoteSciPadApplication.h"
+#include "SparkNotePadApplication.h"
 #include "MacServicesHandler.h"
 #include "MarkerAppDecorator.h"
 #include "RecentFilesListManager.h"
@@ -36,7 +37,6 @@
 #include "Lexilla.h"
 
 #include <QCommandLineParser>
-
 #include <QDirIterator>
 
 #ifdef Q_OS_WIN
@@ -47,7 +47,7 @@ const SingleApplication::Options opts =
     SingleApplication::ExcludeAppPath | SingleApplication::ExcludeAppVersion | SingleApplication::SecondaryNotification;
 
 void parseCommandLine(QCommandLineParser &parser, const QStringList &args) {
-    parser.setApplicationDescription("Notepad Next");
+    parser.setApplicationDescription(QStringLiteral("SparkNotePad"));
     parser.addHelpOption();
     parser.addVersionOption();
 
@@ -66,10 +66,10 @@ static QString toLocalFileName(const QString &file) {
     return fileUrl.isValid() && fileUrl.isLocalFile() ? fileUrl.toLocalFile() : file;
 }
 
-NotepadNextApplication::NotepadNextApplication(int &argc, char **argv) : SingleApplication(argc, argv, true, opts) {
+SparkNotePadApplication::SparkNotePadApplication(int &argc, char **argv) : SingleApplication(argc, argv, true, opts) {
 #ifdef Q_OS_WIN
     // Create a system-wide mutex so the installer can detect if it is running
-    CreateMutex(NULL, false, L"NoteSciPadMutex");
+    CreateMutex(NULL, false, L"SparkNotePadMutex");
 #endif
     parseCommandLine(parser, arguments());
 
@@ -77,11 +77,11 @@ NotepadNextApplication::NotepadNextApplication(int &argc, char **argv) : SingleA
     DebugManager::pauseDebugOutput();
 }
 
-bool NotepadNextApplication::init() {
+bool SparkNotePadApplication::init() {
     qInfo(Q_FUNC_INFO);
 
 #ifndef Q_OS_MACOS
-    setWindowIcon(QIcon(QStringLiteral(":/icons/NoteSciPad.png")));
+    setWindowIcon(QIcon(QStringLiteral(":/icons/SparkNotePad.png")));
 #endif
 
     settings = new ApplicationSettings(this);
@@ -91,7 +91,7 @@ bool NotepadNextApplication::init() {
         const QString backup = original.canonicalFilePath() + QStringLiteral(".backup");
 
         qInfo("Resetting application settings");
-        qInfo("Backuping up %s to %s", qUtf8Printable(settings->fileName()), qUtf8Printable(backup));
+        qInfo("Backing up %s to %s", qUtf8Printable(settings->fileName()), qUtf8Printable(backup));
 
         QFile::remove(backup);
         QFile::rename(settings->fileName(), backup);
@@ -111,12 +111,7 @@ bool NotepadNextApplication::init() {
         translationManager->loadSystemDefaultTranslation();
     }
 
-    // This connection isn't needed since the application can not appropriately retranslate the UI at runtime
-    // connect(settings, &ApplicationSettings::translationChanged, translationManager,
-    // &TranslationManager::loadTranslationByName);
-
     luaState = new LuaState();
-
     recentFilesListManager = new RecentFilesListManager(this);
     editorManager = new EditorManager(settings, this);
     sessionManager = new SessionManager(this);
@@ -135,7 +130,7 @@ bool NotepadNextApplication::init() {
 
     loadSettings();
 
-    connect(this, &NotepadNextApplication::aboutToQuit, this, &NotepadNextApplication::saveSettings);
+    connect(this, &SparkNotePadApplication::aboutToQuit, this, &SparkNotePadApplication::saveSettings);
 
     EditorConfigAppDecorator *ecad = new EditorConfigAppDecorator(this);
     ecad->setEnabled(true);
@@ -151,9 +146,8 @@ bool NotepadNextApplication::init() {
     MacServicesHandler::instance()->initialize(this);
     MacServicesHandler::instance()->setActiveWindow(window);
 
-    // If the application is activated (e.g. user switching to another program and them back) the focus
-    // needs to be reset on whatever object previously had focus (e.g. the find dialog)
-    connect(this, &NotepadNextApplication::focusChanged, this, [&](QWidget *old, QWidget *now) {
+    // If the application is activated, restore focus
+    connect(this, &SparkNotePadApplication::focusChanged, this, [&](QWidget *old, QWidget *now) {
         Q_UNUSED(old);
         if (now) {
             currentlyFocusedWidget = now;
@@ -161,14 +155,11 @@ bool NotepadNextApplication::init() {
     });
 
     connect(this, &SingleApplication::instanceStarted, window, &MainWindow::bringWindowToForeground);
-    connect(this, &SingleApplication::receivedMessage, this, &NotepadNextApplication::receiveInfoFromSecondaryInstance,
+    connect(this, &SingleApplication::receivedMessage, this, &SparkNotePadApplication::receiveInfoFromSecondaryInstance,
             Qt::QueuedConnection);
 
-    connect(this, &NotepadNextApplication::applicationStateChanged, this, [&](Qt::ApplicationState state) {
+    connect(this, &SparkNotePadApplication::applicationStateChanged, this, [&](Qt::ApplicationState state) {
         if (state == Qt::ApplicationActive) {
-            // Make sure it is active...
-            // The application can be active without the main window being show e.g. if there is a
-            // message box that pops up before the main window
             if (window->isActiveWindow()) {
                 window->focusIn();
             }
@@ -181,7 +172,6 @@ bool NotepadNextApplication::init() {
 
     if (settings->restorePreviousSession()) {
         qInfo("Restoring previous session");
-
         sessionManager->loadSession(window);
     }
 
@@ -197,17 +187,13 @@ bool NotepadNextApplication::init() {
         }
     }
 
-    // If the window does not have any editors (meaning the no files were
-    // specified on the command line) then create a new empty file
+    // If window has no editors, create empty file
     if (window->editorCount() == 0) {
         window->newFile();
     }
 
-    // Everything should be ready at this point
-
     window->restoreWindowState();
 
-    // Check this after restoring the state, as the state contains the previous visibility state of the FAW dock
     if (parser.isSet("workspace")) {
         const QString dir = parser.value("workspace");
         qInfo("Opening folder as workspace: %s", qUtf8Printable(dir));
@@ -221,7 +207,7 @@ bool NotepadNextApplication::init() {
     return true;
 }
 
-SessionManager *NotepadNextApplication::getSessionManager() const {
+SessionManager *SparkNotePadApplication::getSessionManager() const {
     SessionManager::SessionFileTypes fileTypes;
 
     if (settings->restorePreviousSession()) {
@@ -236,22 +222,21 @@ SessionManager *NotepadNextApplication::getSessionManager() const {
         fileTypes |= SessionManager::TempFile;
     }
 
-    // Update the file types supported in case something has changed in the settings
     sessionManager->setSessionFileTypes(fileTypes);
 
     return sessionManager;
 }
 
-QString NotepadNextApplication::getFileDialogFilter() const {
+QString SparkNotePadApplication::getFileDialogFilter() const {
     return getLuaState()->executeAndReturn<QString>("return DialogFilters()");
 }
 
-QString NotepadNextApplication::getFileDialogFilterForLanguage(const QString &language) const {
+QString SparkNotePadApplication::getFileDialogFilterForLanguage(const QString &language) const {
     getLuaState()->setVariable("langForFilter", language);
     return getLuaState()->executeAndReturn<QString>("return FilterForLanguage(langForFilter)");
 }
 
-QStringList NotepadNextApplication::getLanguages() const {
+QStringList SparkNotePadApplication::getLanguages() const {
     return getLuaState()->executeAndReturn<QStringList>(
         R"(
                 local names = {}
@@ -261,7 +246,7 @@ QStringList NotepadNextApplication::getLanguages() const {
                 )");
 }
 
-void NotepadNextApplication::setEditorLanguage(ScintillaNext *editor, const QString &languageName) const {
+void SparkNotePadApplication::setEditorLanguage(ScintillaNext *editor, const QString &languageName) const {
     LuaExtension::Instance().setEditor(editor);
 
     getLuaState()->setVariable("languageName", languageName);
@@ -273,14 +258,10 @@ void NotepadNextApplication::setEditorLanguage(ScintillaNext *editor, const QStr
 
     auto lexerInstance = CreateLexer(lexer.toLatin1().constData());
     editor->setILexer((sptr_t)lexerInstance);
-    editor->clearDocumentStyle();  // Remove all previous style information, setting the lexer does not guarantee
-                                   // styling information is cleared
+    editor->clearDocumentStyle();
 
-    // Not ideal this has to be manually emitted but it works since setILexer() is not widely used
     emit editor->lexerChanged();
 
-    // Dynamic properties can be used to skip part of the default initialization. The value in the
-    // property doesn't currently matter, but may be used at a later point.
     bool skipTabs = editor->QObject::property("nn_skip_usetabs").isValid();
     bool skipTabWidth = editor->QObject::property("nn_skip_tabwidth").isValid();
 
@@ -290,12 +271,12 @@ void NotepadNextApplication::setEditorLanguage(ScintillaNext *editor, const QStr
     getLuaState()->execute("SetLanguage(languageName)");
 }
 
-QStringList NotepadNextApplication::getLanguageKeywords(const QString &languageName) const {
+QStringList SparkNotePadApplication::getLanguageKeywords(const QString &languageName) const {
     getLuaState()->setVariable("languageName", languageName);
     return getLuaState()->executeAndReturn<QStringList>("return GetLanguageKeywords(languageName)");
 }
 
-QString NotepadNextApplication::detectLanguage(ScintillaNext *editor) const {
+QString SparkNotePadApplication::detectLanguage(ScintillaNext *editor) const {
     qInfo(Q_FUNC_INFO);
 
     QString language_name = QStringLiteral("Text");
@@ -311,7 +292,7 @@ QString NotepadNextApplication::detectLanguage(ScintillaNext *editor) const {
     return language_name;
 }
 
-QString NotepadNextApplication::detectLanguageFromExtension(const QString &extension) const {
+QString SparkNotePadApplication::detectLanguageFromExtension(const QString &extension) const {
     qInfo(Q_FUNC_INFO);
 
     getLuaState()->setVariable("ext", extension);
@@ -330,7 +311,7 @@ QString NotepadNextApplication::detectLanguageFromExtension(const QString &exten
     )");
 }
 
-QString NotepadNextApplication::detectLanguageFromContents(ScintillaNext *editor) const {
+QString SparkNotePadApplication::detectLanguageFromContents(ScintillaNext *editor) const {
     qInfo(Q_FUNC_INFO);
 
     LuaExtension::Instance().setEditor(editor);
@@ -346,13 +327,12 @@ QString NotepadNextApplication::detectLanguageFromContents(ScintillaNext *editor
     )");
 }
 
-void NotepadNextApplication::sendInfoToPrimaryInstance() {
+void SparkNotePadApplication::sendInfoToPrimaryInstance() {
     qInfo(Q_FUNC_INFO);
 
     QStringList argsToSend;
     const QStringList positionalArguments = parser.positionalArguments();
 
-    // Any positional arguments need translated into an absolute file path relative to this instance
     for (const QString &arg : arguments()) {
         if (positionalArguments.contains(arg)) {
             QFileInfo fileInfo(arg);
@@ -372,7 +352,7 @@ void NotepadNextApplication::sendInfoToPrimaryInstance() {
     }
 }
 
-void NotepadNextApplication::receiveInfoFromSecondaryInstance(quint32 instanceId, QByteArray message) {
+void SparkNotePadApplication::receiveInfoFromSecondaryInstance(quint32 instanceId, QByteArray message) {
     qInfo(Q_FUNC_INFO);
 
     Q_UNUSED(instanceId)
@@ -382,25 +362,24 @@ void NotepadNextApplication::receiveInfoFromSecondaryInstance(quint32 instanceId
 
     stream >> args;
 
-    QCommandLineParser parser;
-    parseCommandLine(parser, args);
+    QCommandLineParser subParser;
+    parseCommandLine(subParser, args);
 
-    openFiles(parser.positionalArguments());
+    openFiles(subParser.positionalArguments());
 }
 
-bool NotepadNextApplication::isRunningAsAdmin() const {
+bool SparkNotePadApplication::isRunningAsAdmin() const {
+#ifdef Q_OS_WIN
     static bool initialized = false;
     static bool isAdmin = false;
 
     if (!initialized) {
         initialized = true;
 
-#ifdef Q_OS_WIN
         BOOL isMember;
         SID_IDENTIFIER_AUTHORITY ntAuthority = SECURITY_NT_AUTHORITY;
         PSID administratorsGroupSid = NULL;
 
-        // Create a SID for the Administrators group
         if (AllocateAndInitializeSid(&ntAuthority, 2, SECURITY_BUILTIN_DOMAIN_RID, DOMAIN_ALIAS_RID_ADMINS, 0, 0, 0, 0,
                                      0, 0, &administratorsGroupSid)) {
             if (CheckTokenMembership(NULL, administratorsGroupSid, &isMember)) {
@@ -408,28 +387,26 @@ bool NotepadNextApplication::isRunningAsAdmin() const {
             }
             FreeSid(administratorsGroupSid);
         }
-#endif
     }
 
     return isAdmin;
+#else
+    return false;
+#endif
 }
 
-bool NotepadNextApplication::event(QEvent *event) {
-    // Handle the QFileOpenEvent to open files on MacOS X.
-    if (event->type() == QEvent::FileOpen) {
-        QFileOpenEvent *fileOpenEvent = static_cast<QFileOpenEvent *>(event);
-
+bool SparkNotePadApplication::event(QEvent *ev) {
+    if (ev->type() == QEvent::FileOpen) {
+        QFileOpenEvent *fileOpenEvent = static_cast<QFileOpenEvent *>(ev);
         qInfo("QFileOpenEvent %s", qUtf8Printable(fileOpenEvent->file()));
-
         openFiles(QStringList() << fileOpenEvent->file());
-
         return true;
     }
 
-    return SingleApplication::event(event);
+    return SingleApplication::event(ev);
 }
 
-void NotepadNextApplication::openFiles(const QStringList &files) {
+void SparkNotePadApplication::openFiles(const QStringList &files) {
     qInfo(Q_FUNC_INFO);
 
     for (const QString &file : files) {
@@ -437,16 +414,15 @@ void NotepadNextApplication::openFiles(const QStringList &files) {
     }
 }
 
-void NotepadNextApplication::loadSettings() {
+void SparkNotePadApplication::loadSettings() {
     recentFilesListManager->setFileList(getSettings()->value("App/RecentFilesList").toStringList());
 }
 
-void NotepadNextApplication::saveSettings() {
+void SparkNotePadApplication::saveSettings() {
     getSettings()->setValue("App/RecentFilesList", recentFilesListManager->fileList());
 }
 
-void NotepadNextApplication::saveSession() {
-    // Iterate all the opened editors and add them to the recent file list
+void SparkNotePadApplication::saveSession() {
     for (const auto &editor : window->editors()) {
         if (editor->isFile()) {
             recentFilesListManager->addFile(editor->getFilePath());
@@ -457,28 +433,23 @@ void NotepadNextApplication::saveSession() {
     getSessionManager()->saveSession(window);
 }
 
-MainWindow *NotepadNextApplication::createNewWindow() {
+MainWindow *SparkNotePadApplication::createNewWindow() {
     Q_ASSERT(window == Q_NULLPTR);
 
     window = new MainWindow(this);
 
-    // Keep Lua's editor reference up to date
     connect(window, &MainWindow::editorActivated, this,
             [](ScintillaNext *editor) { LuaExtension::Instance().setEditor(editor); });
 
-    // TODO: this shouldn't be dependent on a MainWindow closing, but this works for now
-    // since the assumption is MainWindow::aboutToClose() infers the application is shutting
-    // down but the editors are still active.
-    connect(window, &MainWindow::aboutToClose, this, &NotepadNextApplication::saveSession);
+    connect(window, &MainWindow::aboutToClose, this, &SparkNotePadApplication::saveSession);
 
-    // Timer to autosave the session
-    connect(&autoSaveTimer, &QTimer::timeout, this, &NotepadNextApplication::saveSession);
+    connect(&autoSaveTimer, &QTimer::timeout, this, &SparkNotePadApplication::saveSession);
     autoSaveTimer.start(60 * 1000);
 
     return window;
 }
 
-QStringList NotepadNextApplication::debugInfo() const {
+QStringList SparkNotePadApplication::debugInfo() const {
     QStringList info;
 
     info.append(QStringLiteral("%1 v%2 %3").arg(applicationDisplayName(), applicationVersion(), APP_DISTRIBUTION));

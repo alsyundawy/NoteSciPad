@@ -2184,8 +2184,8 @@
   <context>
     <name>DisplayInfoDialog</name>
     <message>
-      <source>Display &amp; Retina Diagnostics — NoteSciPad</source>
-      <translation>Display &amp; Retina Diagnostics — NoteSciPad</translation>
+      <source>Display &amp; Retina Diagnostics — SparkNotePad</source>
+      <translation>Display &amp; Retina Diagnostics — SparkNotePad</translation>
     </message>
     <message>
       <source>Display Name</source>
@@ -2239,8 +2239,8 @@
       <translation>Update Check Failed</translation>
     </message>
     <message>
-      <source>NoteSciPad Update Available</source>
-      <translation>NoteSciPad Update Available</translation>
+      <source>SparkNotePad Update Available</source>
+      <translation>SparkNotePad Update Available</translation>
     </message>
     <message>
       <source>&amp;Download Update</source>
@@ -2251,8 +2251,8 @@
       <translation>&amp;Remind Me Later</translation>
     </message>
     <message>
-      <source>NoteSciPad Up to Date</source>
-      <translation>NoteSciPad Up to Date</translation>
+      <source>SparkNotePad Up to Date</source>
+      <translation>SparkNotePad Up to Date</translation>
     </message>
   </context>
   <context>
@@ -2262,12 +2262,12 @@
       <translation>Documentation Error</translation>
     </message>
     <message>
-      <source>NoteSciPad &amp;User Guide</source>
-      <translation>NoteSciPad &amp;User Guide</translation>
+      <source>SparkNotePad &amp;User Guide</source>
+      <translation>SparkNotePad &amp;User Guide</translation>
     </message>
     <message>
-      <source>NoteSciPad &amp;Developer Guide</source>
-      <translation>NoteSciPad &amp;Developer Guide</translation>
+      <source>SparkNotePad &amp;Developer Guide</source>
+      <translation>SparkNotePad &amp;Developer Guide</translation>
     </message>
   </context>
 </TS>

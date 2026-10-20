@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-import sys
 import base64
-import json
-import re
-import math
 import hashlib
+import json
+import math
+import re
 
-print("--- Running NoteSciPad Standalone Utility Algorithm Tests ---")
+print("--- Running SparkNotePad Standalone Utility Algorithm Tests ---")
 
 # 1. Base64 RFC 4648
 test_vectors = [
@@ -43,7 +42,7 @@ assert uuid_pattern.match(sample_uuid), f"UUID v4 invalid format: {sample_uuid}"
 print("[PASS] UUID / GUID v4 Validation")
 
 # 4. JSON Minify & Prettify
-messy_json = '{   "app":   "NoteSciPad" ,  "version": "0.9.0", "engine": ["scintilla", "lexilla"] }'
+messy_json = '{   "app":   "SparkNotePad" ,  "version": "0.9.0", "engine": ["scintilla", "lexilla"] }'
 obj = json.loads(messy_json)
 mini = json.dumps(obj, separators=(",", ":"))
 assert " " not in mini

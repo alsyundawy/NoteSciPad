@@ -3,15 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleExecutable</key>
-	<string>NoteSciPad</string>
+	<string>SparkNotePad</string>
 	<key>CFBundleName</key>
-	<string>NoteSciPad</string>
+	<string>SparkNotePad</string>
 	<key>CFBundleDisplayName</key>
-	<string>NoteSciPad</string>
+	<string>SparkNotePad</string>
 	<key>CFBundleIconFile</key>
-	<string>NoteSciPad.icns</string>
+	<string>SparkNotePad.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>io.github.alsyundawy.NoteSciPad</string>
+	<string>io.github.alsyundawy.SparkNotePad</string>
 	<key>CFBundleShortVersionString</key>
 	<string>${QMAKE_FULL_VERSION}</string>
 	<key>CFBundlePackageType</key>
@@ -114,7 +114,7 @@
 			<key>NSMenuItem</key>
 			<dict>
 				<key>default</key>
-				<string>NoteSciPad: New Document with Selection</string>
+				<string>SparkNotePad: New Document with Selection</string>
 			</dict>
 			<key>NSMessage</key>
 			<string>openSelectionService</string>
@@ -136,7 +136,7 @@
 			<key>NSMenuItem</key>
 			<dict>
 				<key>default</key>
-				<string>NoteSciPad: Append Selection to Current Document</string>
+				<string>SparkNotePad: Append Selection to Current Document</string>
 			</dict>
 			<key>NSMessage</key>
 			<string>appendSelectionService</string>
@@ -158,7 +158,7 @@
 			<key>NSMenuItem</key>
 			<dict>
 				<key>default</key>
-				<string>NoteSciPad: Open File</string>
+				<string>SparkNotePad: Open File</string>
 			</dict>
 			<key>NSMessage</key>
 			<string>openFileService</string>

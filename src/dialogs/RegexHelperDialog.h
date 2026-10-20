@@ -1,9 +1,10 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * PCRE2 Regular Expression Reference and Live Interactive Tester.
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -18,8 +19,7 @@ namespace Ui {
 class RegexHelperDialog;
 }
 
-class RegexHelperDialog : public QDialog
-{
+class RegexHelperDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -35,4 +35,4 @@ private:
     Ui::RegexHelperDialog *ui;
 };
 
-#endif // REGEXHELPERDIALOG_H
+#endif  // REGEXHELPERDIALOG_H

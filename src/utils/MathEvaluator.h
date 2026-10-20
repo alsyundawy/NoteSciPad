@@ -1,10 +1,11 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad4 (zufuliu/notepad4) Calculate Expression feature.
  * Source: zufuliu/notepad4 (src/Edit.cpp, PR #1230)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -19,17 +20,16 @@
 class ScintillaNext;
 #endif
 
-class MathEvaluator
-{
+class MathEvaluator {
 public:
     enum Action {
-        AppendResult,     // "15 * 4" -> "15 * 4 = 60"
-        ReplaceExpression // "15 * 4" -> "60"
+        AppendResult,      // "15 * 4" -> "15 * 4 = 60"
+        ReplaceExpression  // "15 * 4" -> "60"
     };
 
     struct Result {
-        bool success {false};
-        double value {0.0};
+        bool success{false};
+        double value{0.0};
         QString expression;
         QString formattedResult;
         QString errorMessage;
@@ -46,4 +46,4 @@ public:
     static QString formatValue(double val);
 };
 
-#endif // MATHEVALUATOR_H
+#endif  // MATHEVALUATOR_H

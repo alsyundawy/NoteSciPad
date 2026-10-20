@@ -1,38 +1,40 @@
-# NoteSciPad Homebrew Distribution Guide
+# SparkNotePad Homebrew Distribution Guide
 
 ## 1. Overview
 
-Homebrew is the primary package manager for macOS power users and developers. NoteSciPad is distributed via an official Homebrew tap repository: `alsyundawy/homebrew-notescipad`.
+Homebrew is the primary package manager for macOS power users and developers. SparkNotePad is distributed via an official Homebrew tap repository: `alsyundawy/homebrew-sparknotepad`.
 
 ---
 
 ## 2. Installation for End-Users
 
-Users can install NoteSciPad with a single command:
+Users can install SparkNotePad with a single command:
 
 ```bash
-# Tap the official NoteSciPad tap repository:
-brew tap alsyundawy/notescipad
+# Tap the official SparkNotePad tap repository:
+brew tap alsyundawy/sparknotepad
 
-# Install NoteSciPad:
-brew install --cask notescipad
+# Install SparkNotePad:
+brew install --cask sparknotepad
 
 # Launch from terminal:
-notescipad
+sparknotepad
 ```
 
-To update NoteSciPad via Homebrew:
+To update SparkNotePad via Homebrew:
+
 ```bash
-brew upgrade --cask notescipad
+brew upgrade --cask sparknotepad
 ```
 
 ---
 
 ## 3. Cask Structure & Artifacts
 
-The Cask recipe (`deploy/homebrew/Casks/notescipad.rb`) features:
+The Cask recipe (`deploy/homebrew/Casks/sparknotepad.rb`) features:
+
 - Dual-architecture detection (`arch arm: "arm64", intel: "x86_64"`).
-- Universal CLI binary symlink: `notescipad` linked directly to `/usr/local/bin` or `/opt/homebrew/bin`.
+- Universal CLI binary symlink: `sparknotepad` linked directly to `/usr/local/bin` or `/opt/homebrew/bin`.
 - Clean cleanup definitions in `zap trash` removing application caches and settings upon uninstallation.
 
 ---

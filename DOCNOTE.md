@@ -1,12 +1,12 @@
-# NoteSciPad Release DocNote — v1.2.0
+# SparkNotePad Release DocNote — v1.3.0
 
 ```text
 ================================================================================
-Release Version     : 1.2.0 (UI/UX Polish, Apple HIG Icons, & Multi-Qt Release)
+Release Version     : 1.3.0 (Official SparkNotePad Brand Evolution & 13-Pillar Audit)
 Release Date        : 2026-10-20
 Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
-Repository          : https://github.com/alsyundawy/NoteSciPad
+Repository          : https://github.com/alsyundawy/SparkNotePad
 Core Editing Engine : Scintilla 5.6.7 (Vendored) & Lexilla 5.5.4 (Vendored)
 Embedded Lua Core   : Lua 5.5.1 / 5.4.7 (Official Source)
 Scripting Runtime   : Python 3.13+ Engine Bridge
@@ -20,7 +20,45 @@ Static Linter       : Trunk Check (cppcheck-qt, clang-format, pragma-once)
 
 ---
 
-## 1. Executive Summary: Release v1.2.0
+## 1. Executive Summary: Release v1.3.0
+
+SparkNotePad **v1.3.0** marks the definitive brand evolution from NoteSciPad into **SparkNotePad**. This release encompasses comprehensive identifier and target renaming across all source modules, packaging manifests, and deployment pipelines. Accompanying the rename is a complete 13-pillar code quality and performance audit, new high-contrast iconsets conforming to Apple HIG and Windows multi-resolution standards, dual-format cryptographic backward compatibility (`SPKENC01` + `NSPENC01`), and refined Indonesian localization adhering strictly to standard terminology.
+
+### Key Milestones in v1.3.0
+
+1. **Brand Identity & Application Rename**:
+   - Complete project and executable rename to `SparkNotePad`.
+   - Updated application metadata, reverse-DNS identifiers (`io.github.alsyundawy.SparkNotePad`), and desktop file entries.
+   - Introduced `SparkNotePadApplication` with transparent backward-compatibility aliases for `NoteSciPadApplication` and `NotepadNextApplication`.
+
+2. **Apple HIG & Cross-Platform Icon Overhaul**:
+   - Master 1024x1024 RGBA iconography processed from high-definition assets.
+   - Compiled Apple HIG-compliant `SparkNotePad.icns` with all 10 resolution layers (16x16 up to 512x512@2x retina).
+   - Generated multi-resolution Windows `SparkNotePad.ico` (16, 24, 32, 48, 64, 128, 256 px) and high-DPI 512x512 Linux desktop PNG.
+   - Integrated `src/icons/SparkNotePad.png` directly into Qt resource bundling (`src/resources.qrc`).
+
+3. **13-Pillar Code Quality & Static Review**:
+   - Conducted deep analysis across all 13 pillars: Bug, Syntax, Runtime, Logic, Memory, Dead Code, Duplicate Code, Circular Dependency, Performance Bottleneck, Security Vulnerability, Maintainability, Scalability, and Readability.
+   - Enforced const-reference returns in `MarkOccurrences::lastQuery()` eliminating unnecessary heap copies on search loops.
+   - Added `explicit` qualifier to `TabsQuickActionsBar` constructor preventing implicit type coercion.
+   - Purged dead struct variables (`caret`, `anchor`) from `CaseConverter::SelectionRange`.
+   - Guaranteed pointer const-correctness in `EncodingDetector::detectEncoding`.
+   - Hardened return-value evaluations in shell scripts, eliminating ShellCheck SC2312 warnings.
+
+4. **Cryptographic Compatibility Layer**:
+   - Upgraded default AES-256 authenticated container header to `SPKENC01`.
+   - Implemented transparent fallback handling for legacy `NSPENC01` containers, allowing frictionless access to previously encrypted notes and documents.
+
+5. **Indonesian Localization & Documentation Polish**:
+   - Standardized README tagline: "SparkNotePad — editor teks dan kode sumber ringan berbasis Scintilla & Qt untuk Linux dan macOS".
+   - Standardized README opening paragraph: "SparkNotePad adalah editor teks dan kode sumber native yang ringan dan cepat, dibangun dengan Qt 6 dan engine Scintilla/Lexilla. Proyek ini menjadi alternatif native keluarga Notepad untuk pengguna Linux dan macOS, dengan fokus pada performa, efisiensi memori, dan fitur power-user."
+   - Refined `i18n/SparkNotePad_id.ts` for natural technical precision.
+
+---
+
+## 2. NoteSciPad Release DocNote — v1.2.0
+
+````text
 
 NoteSciPad **v1.2.0** delivers high-polish user interface enhancements, strict Apple Human Interface Guidelines (HIG) compliance, modernized vector-badged message dialogs, universal cross-platform typography, official engine upgrades to Scintilla 5.6.7 and Lexilla 5.5.4, strict WCAG AAA color contrast compliance, dedicated Trunk Qt/C++ static linting, and extended CI/CD build matrix coverage across Qt 6.5, Qt 6.8, Qt 6.10, and Qt 6.11.
 
@@ -129,7 +167,7 @@ Target Platforms    : macOS 15+ (Apple Silicon & Intel) & Linux (x86_64 / arm64)
 License             : GNU General Public License v3.0 (GPL-3.0-or-later)
 CI/CD Status        : 100% Passing across all 8 matrix targets, MegaLinter & CodeQL
 ================================================================================
-```
+````
 
 ---
 
@@ -218,21 +256,21 @@ During development and continuous integration verification across multiple compi
 
 ## 3. 13-Pillar Code Quality & Security Audit
 
-| Pillar                                |  Status  | Verification & Evidence                                                                                                           |
-| :------------------------------------ | :------: | :-------------------------------------------------------------------------------------------------------------------------------- |
-| **1. Bug Review**                     | **PASS** | Null pointer guards on all editor accesses, robust array boundary checks, zero off-by-one errors in Scintilla range calculations. |
-| **2. Syntax Review**                  | **PASS** | 100% compliant with ISO C++20 (`-std=c++20`), CMake 3.21+, and strict POSIX shell standards.                                      |
-| **3. Runtime Review**                 | **PASS** | Cross-platform file paths handled via `QDir::toNativeSeparators`; robust multibyte UTF-8 / UTF-16 encoding roundtrips.            |
-| **4. Logic Review**                   | **PASS** | Editor state transitions deterministic; debounced tail monitoring (500ms) eliminates modal reload interruption.                   |
+| Pillar                                |  Status  | Verification & Evidence                                                                                                                            |
+| :------------------------------------ | :------: | :------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **1. Bug Review**                     | **PASS** | Null pointer guards on all editor accesses, robust array boundary checks, zero off-by-one errors in Scintilla range calculations.                  |
+| **2. Syntax Review**                  | **PASS** | 100% compliant with ISO C++20 (`-std=c++20`), CMake 3.21+, and strict POSIX shell standards.                                                       |
+| **3. Runtime Review**                 | **PASS** | Cross-platform file paths handled via `QDir::toNativeSeparators`; robust multibyte UTF-8 / UTF-16 encoding roundtrips.                             |
+| **4. Logic Review**                   | **PASS** | Editor state transitions deterministic; debounced tail monitoring (500ms) eliminates modal reload interruption.                                    |
 | **5. Memory Review**                  | **PASS** | Full adherence to Qt Object Ownership Hierarchy (RAII); sensitive cryptographic keys cleared via RAII and `secureZeroMemory` volatile indirection. |
-| **6. Dead Code Review**               | **PASS** | Cleaned legacy unused declarations; all public APIs are actively referenced and tested.                                           |
-| **7. Duplicate Code Review**          | **PASS** | Unified Scintilla BGR conversion logic into `scColor` / `scFromRgb` utility helpers.                                              |
-| **8. Circular Dependency Review**     | **PASS** | Modular separation across `features/`, `dialogs/`, `docks/`, `widgets/`, and `utils/` with clean forward declarations.            |
-| **9. Performance Bottleneck Review**  | **PASS** | Chunk-based streaming for large files (>50MB); zero unnecessary heap allocations on editor hot paths.                             |
-| **10. Security Vulnerability Review** | **PASS** | Hardened against OWASP Top 10 2025; AES-256-CBC with HMAC-SHA256 authenticated encryption; 0 CodeQL alerts.                       |
-| **11. Maintainability Review**        | **PASS** | Single Responsibility Principle enforced across standalone feature controllers (`ThemeManager`, `CryptoManager`, etc.).           |
-| **12. Scalability Review**            | **PASS** | Dynamic line margin widths adjust automatically for files with >1,000,000 lines.                                                  |
-| **13. Readability Review**            | **PASS** | Clear, idiomatic modern Qt/C++ conventions with self-documenting naming and structured comments.                                  |
+| **6. Dead Code Review**               | **PASS** | Cleaned legacy unused declarations; all public APIs are actively referenced and tested.                                                            |
+| **7. Duplicate Code Review**          | **PASS** | Unified Scintilla BGR conversion logic into `scColor` / `scFromRgb` utility helpers.                                                               |
+| **8. Circular Dependency Review**     | **PASS** | Modular separation across `features/`, `dialogs/`, `docks/`, `widgets/`, and `utils/` with clean forward declarations.                             |
+| **9. Performance Bottleneck Review**  | **PASS** | Chunk-based streaming for large files (>50MB); zero unnecessary heap allocations on editor hot paths.                                              |
+| **10. Security Vulnerability Review** | **PASS** | Hardened against OWASP Top 10 2025; AES-256-CBC with HMAC-SHA256 authenticated encryption; 0 CodeQL alerts.                                        |
+| **11. Maintainability Review**        | **PASS** | Single Responsibility Principle enforced across standalone feature controllers (`ThemeManager`, `CryptoManager`, etc.).                            |
+| **12. Scalability Review**            | **PASS** | Dynamic line margin widths adjust automatically for files with >1,000,000 lines.                                                                   |
+| **13. Readability Review**            | **PASS** | Clear, idiomatic modern Qt/C++ conventions with self-documenting naming and structured comments.                                                   |
 
 ---
 

@@ -1,2 +1,2 @@
 #pragma once
-#include "NoteSciPadApplication.h"
+#include "SparkNotePadApplication.h"

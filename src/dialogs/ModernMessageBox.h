@@ -1,8 +1,9 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
- * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
+ * This file is part of SparkNotePad.
+ * Copyright 2026 Harry DS Alsyundawy (SparkNotePad Maintainer)
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -19,28 +20,16 @@ class ScintillaNext;
 class QLabel;
 class QPushButton;
 
-class ModernMessageBox : public QDialog
-{
+class ModernMessageBox : public QDialog {
     Q_OBJECT
 
 public:
-    enum class IconType {
-        Question,
-        Information,
-        Warning,
-        Critical
-    };
+    enum class IconType { Question, Information, Warning, Critical };
 
-    enum class ActionChoice {
-        SaveOrAccept,
-        Discard,
-        Cancel
-    };
+    enum class ActionChoice { SaveOrAccept, Discard, Cancel };
 
-    explicit ModernMessageBox(QWidget *parent = nullptr,
-                              IconType iconType = IconType::Question,
-                              const QString &title = QString(),
-                              const QString &message = QString(),
+    explicit ModernMessageBox(QWidget *parent = nullptr, IconType iconType = IconType::Question,
+                              const QString &title = QString(), const QString &message = QString(),
                               const QString &detail = QString());
     ~ModernMessageBox() override = default;
 
@@ -50,7 +39,8 @@ public:
     // Static Drop-in Helpers
     static ActionChoice promptForSave(QWidget *parent, const QVector<ScintillaNext *> &editors);
     static bool question(QWidget *parent, const QString &title, const QString &text, const QString &detail = QString());
-    static void information(QWidget *parent, const QString &title, const QString &text, const QString &detail = QString());
+    static void information(QWidget *parent, const QString &title, const QString &text,
+                            const QString &detail = QString());
     static void warning(QWidget *parent, const QString &title, const QString &text, const QString &detail = QString());
     static void critical(QWidget *parent, const QString &title, const QString &text, const QString &detail = QString());
 
@@ -65,4 +55,4 @@ private:
     QList<QPushButton *> m_buttons;
 };
 
-#endif // MODERNMESSAGEBOX_H
+#endif  // MODERNMESSAGEBOX_H

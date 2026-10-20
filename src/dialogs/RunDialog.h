@@ -1,9 +1,10 @@
+#pragma once
 /*
- * This file is part of NoteSciPad.
+ * This file is part of SparkNotePad.
  *
  * Adapted from Notepad++ Run dialog concept.
  *
- * NoteSciPad is free software: you can redistribute it and/or modify
+ * SparkNotePad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -21,8 +22,7 @@ namespace Ui {
 class RunDialog;
 }
 
-class RunDialog : public QDialog
-{
+class RunDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -45,4 +45,4 @@ private:
     ScintillaNext *m_editor;
 };
 
-#endif // RUNDIALOG_H
+#endif  // RUNDIALOG_H

@@ -8,16 +8,16 @@ The project needs a distinct, consistent naming scheme across macOS app bundles,
 
 ### Decision
 
-1. **Product Display Name**: `NoteSciPad`
+1. **Product Display Name**: `SparkNotePad`
 2. **CLI Executable / Command**: `notesci` (lowercase, concise, follows UNIX convention like `code`, `subl`)
 3. **Linux Package Name**: `notesci` (with aliases `notesci-pad`)
-4. **macOS App Bundle**: `NoteSciPad.app`
-5. **macOS Bundle Identifier**: `com.alsyundawy.NoteSciPad`
+4. **macOS App Bundle**: `SparkNotePad.app`
+5. **macOS Bundle Identifier**: `com.alsyundawy.SparkNotePad`
 
 ### Rationale
 
 - `notesci` provides a swift and frictionless terminal command (`notesci file.txt`).
-- `NoteSciPad.app` provides standard macOS human-friendly naming in `/Applications`.
+- `SparkNotePad.app` provides standard macOS human-friendly naming in `/Applications`.
 - Prevents trademark confusion with Notepad++.
 
 ---
@@ -71,7 +71,7 @@ Users require robust, transparent file encryption for confidential notes, source
 
 ### Decision
 
-NoteSciPad implements authenticated document encryption using the `NSPENC01` binary format:
+SparkNotePad implements authenticated document encryption using the `NSPENC01` binary format:
 
 1. **Cipher**: AES-256-CBC with PKCS#7 padding (Apple CommonCrypto on macOS, portable standard FIPS-197 AES in pure C++ on Linux).
 2. **Key Derivation**: PBKDF2-HMAC-SHA256 with 100,000 iterations and 16-byte random salt, deriving 64 bytes (32 bytes AES key + 32 bytes HMAC key).
@@ -95,11 +95,11 @@ Accepted (2026-10-19)
 
 ### Context
 
-NoteSciPad is committed to maintaining its vendored, statically compiled Scintilla 5.5.x and Lexilla 5.4.x engines (`thirdparty/scintilla`, `thirdparty/lexilla`, `src/ScintillaNext`). However, modern programming and configuration languages (such as TOML, Zig, Dart, and TypeScript) were either absent or improperly categorized in NoteSciPad's Lua language catalog. Notepad4 (by Zufu Liu) contains battle-tested lexer definitions and modern language catalogs designed specifically for Scintilla/Lexilla.
+SparkNotePad is committed to maintaining its vendored, statically compiled Scintilla 5.5.x and Lexilla 5.4.x engines (`thirdparty/scintilla`, `thirdparty/lexilla`, `src/ScintillaNext`). However, modern programming and configuration languages (such as TOML, Zig, Dart, and TypeScript) were either absent or improperly categorized in SparkNotePad's Lua language catalog. Notepad4 (by Zufu Liu) contains battle-tested lexer definitions and modern language catalogs designed specifically for Scintilla/Lexilla.
 
 ### Decision
 
-NoteSciPad selectively ports language definitions, keyword lists, and style indices from Notepad4 into NoteSciPad's native Lua language layer without modifying or replacing the underlying Lexilla C++ engine:
+SparkNotePad selectively ports language definitions, keyword lists, and style indices from Notepad4 into SparkNotePad's native Lua language layer without modifying or replacing the underlying Lexilla C++ engine:
 
 1. **New Languages**: Added full definitions for `TOML` (`LexTOML.cxx`), `Zig` (`LexZig.cxx`), `Dart` (`LexDart.cxx`), and `TypeScript` (`LexCPP.cxx` with backquoted string support).
 2. **Modern Keyword Sets**: Enhanced `cpp.lua` (C++20/C++23 coroutines and modules), `rust.lua` (Rust 2021/2024 `await`, `macro_rules`, and stdlib types), and `go.lua` (Go 1.18–1.24 generics, built-in functions, and type separation).
@@ -121,11 +121,11 @@ Accepted (2026-10-19)
 
 ### Context
 
-NoteSciPad's roadmap (Phase 3, Task 9) includes an optional JavaScript expression evaluation feature inspired by Notepad4's "Evaluate JS Expression" tool. In Notepad4, Windows Chakra/JScript was used. NoteSciPad requires a high-performance, cross-platform solution that does not introduce heavy runtime dependencies or alter the Scintilla/Lexilla engine.
+SparkNotePad's roadmap (Phase 3, Task 9) includes an optional JavaScript expression evaluation feature inspired by Notepad4's "Evaluate JS Expression" tool. In Notepad4, Windows Chakra/JScript was used. SparkNotePad requires a high-performance, cross-platform solution that does not introduce heavy runtime dependencies or alter the Scintilla/Lexilla engine.
 
 ### Decision
 
-NoteSciPad implements JavaScript expression evaluation through a modular `JsEvaluator` utility and `JsEvaluationDialog`:
+SparkNotePad implements JavaScript expression evaluation through a modular `JsEvaluator` utility and `JsEvaluationDialog`:
 
 1. **Engine Selection**:
    - On macOS: Links directly to Apple's native, system-bundled `JavaScriptCore.framework`. Requires zero package installations and delivers sub-millisecond execution.
@@ -140,7 +140,7 @@ NoteSciPad implements JavaScript expression evaluation through a modular `JsEval
 ### Rationale & Consequences
 
 - **Instant Developer Utility**: Developers can quickly calculate numbers, format JSON, manipulate text, or run snippets without switching windows or launching a browser.
-- **Zero Heavy Dependencies**: Avoids pulling in `qt6-declarative-dev` (QML), keeping NoteSciPad's build dependencies minimal and lean.
+- **Zero Heavy Dependencies**: Avoids pulling in `qt6-declarative-dev` (QML), keeping SparkNotePad's build dependencies minimal and lean.
 - **Complete Documentation**: Full architectural details recorded in `doc/JS_EVALUATOR.md`.
 
 ## ADR-007: Zero-Modal File Tail Monitoring Mode (tail -f) with Delta Appending
@@ -151,11 +151,11 @@ Accepted (2026-10-19)
 
 ### Context
 
-Text editors typically alert users to external disk modifications using modal message boxes. When inspecting live log files, this behavior causes frustrating interruptions and repetitive dialogs. Notepad++ and Notepad4 provide dedicated "Monitoring (tail -f)" modes to solve this. NoteSciPad requires an efficient, zero-modal log streaming capability that operates safely on top of Scintilla.
+Text editors typically alert users to external disk modifications using modal message boxes. When inspecting live log files, this behavior causes frustrating interruptions and repetitive dialogs. Notepad++ and Notepad4 provide dedicated "Monitoring (tail -f)" modes to solve this. SparkNotePad requires an efficient, zero-modal log streaming capability that operates safely on top of Scintilla.
 
 ### Decision
 
-NoteSciPad implements live file monitoring through `TailMonitoringManager` and `TailOptionsDialog`:
+SparkNotePad implements live file monitoring through `TailMonitoringManager` and `TailOptionsDialog`:
 
 1. **Delta Appending**: Instead of reloading the full file on disk writes, seeks to the previous file offset and appends only newly streamed bytes directly into `ScintillaNext` using `appendText()`.
 2. **Modal Bypass**: Skips modal reload prompts in `checkFileForModification` when monitoring is active.
@@ -182,7 +182,7 @@ Maintaining high responsiveness on modern hardware (Apple Silicon ARM64 and Linu
 
 ### Decision
 
-NoteSciPad implements a hardware-aware performance engine through `PerformanceProfiler` and `PerformanceDiagnosticsDialog`:
+SparkNotePad implements a hardware-aware performance engine through `PerformanceProfiler` and `PerformanceDiagnosticsDialog`:
 
 1. **Zero-Overhead Native Diagnostics**:
    - macOS: Uses Mach kernel APIs (`mach_task_basic_info`, `machdep.cpu.brand_string`) to report true process RSS and CPU architecture without child processes.
@@ -208,20 +208,20 @@ NoteSciPad implements a hardware-aware performance engine through `PerformancePr
 
 ### Context
 
-NoteSciPad targets power users on macOS and Linux. macOS users expect strict adherence to Apple Human Interface Guidelines:
+SparkNotePad targets power users on macOS and Linux. macOS users expect strict adherence to Apple Human Interface Guidelines:
 
 1. A standard **Window** menu containing window management controls (Minimize, Zoom, Full Screen), tab cycling, and a dynamic list of open documents.
 2. A functional window proxy icon in the title bar allowing files to be dragged directly into other applications, as well as `Cmd+Click` parent folder navigation.
 3. Native dirty dot indicator in the close button.
 4. Native Emoji & Symbols palette access via `Ctrl+Cmd+Space`.
-5. Integration with macOS system-wide **Services** (`NSServices`) so text selected in Safari, Mail, or Terminal can be opened or appended into NoteSciPad with one click.
+5. Integration with macOS system-wide **Services** (`NSServices`) so text selected in Safari, Mail, or Terminal can be opened or appended into SparkNotePad with one click.
 6. Modern Linux desktop environments require comprehensive MIME type associations and desktop action shortcuts.
 
 ### Decision
 
 1. **MacServicesHandler Architecture:**
    - Implemented `MacServicesHandler` with an Objective-C++ implementation (`.mm`) on macOS and a clean C++ stub (`.cpp`) on Linux.
-   - On macOS, registers `NoteSciPadServicesProvider` with `[NSApp setServicesProvider:]` and updates system dynamic services (`NSUpdateDynamicServices()`).
+   - On macOS, registers `SparkNotePadServicesProvider` with `[NSApp setServicesProvider:]` and updates system dynamic services (`NSUpdateDynamicServices()`).
    - Dispatches received service requests onto the main Qt GUI thread using `dispatch_async(dispatch_get_main_queue(), ...)`.
 2. **Native Window Menu:**
    - Implemented `MainWindow::setupWindowMenu()` inserting `menuWindow` immediately prior to `menuHelp`.
@@ -232,11 +232,11 @@ NoteSciPad targets power users on macOS and Linux. macOS users expect strict adh
    - Added `Edit > Emoji & Symbols` (`Ctrl+Cmd+Space`) invoking Cocoa `[NSApp orderFrontCharacterPalette:nil]`.
 5. **Metadata & Deployment:**
    - Updated `deploy/macos/info.plist` with comprehensive `CFBundleDocumentTypes` (Plain Text & Source Code) and `NSServices` (`openSelectionService`, `appendSelectionService`, `openFileService`).
-   - Updated `deploy/linux/NoteSciPad.desktop` with programming MIME types and actions (`NewWindow`, `NewEmptyDocument`).
+   - Updated `deploy/linux/SparkNotePad.desktop` with programming MIME types and actions (`NewWindow`, `NewEmptyDocument`).
 
 ### Consequences
 
-- **Positive:** NoteSciPad feels like a first-class citizen on macOS and Linux, matching the behavior of native macOS editors like BBEdit and TextMate.
+- **Positive:** SparkNotePad feels like a first-class citizen on macOS and Linux, matching the behavior of native macOS editors like BBEdit and TextMate.
 - **Positive:** Zero overhead on Linux; CMake conditionally compiles `.mm` or `.cpp` based on `APPLE`.
 - **Positive:** 100% compliant with ScintillaNext and Lexilla engine invariants.
 
@@ -250,12 +250,12 @@ NoteSciPad targets power users on macOS and Linux. macOS users expect strict adh
 
 ### Context
 
-A first-class text editor must be accessible to all developers, including those using assistive technologies such as Apple VoiceOver (macOS), Orca (Linux), and full keyboard navigation. Prior to this enhancement, NoteSciPad lacked screen reader announcement hooks, did not set accessible descriptions on toolbar controls, lacked a dedicated shortcut guide, and did not have an immediate return-to-editor focus command. Additionally, the user requested standardizing the application bundle and component ID to `io.github.alsyundawy.NoteSciPad`.
+A first-class text editor must be accessible to all developers, including those using assistive technologies such as Apple VoiceOver (macOS), Orca (Linux), and full keyboard navigation. Prior to this enhancement, SparkNotePad lacked screen reader announcement hooks, did not set accessible descriptions on toolbar controls, lacked a dedicated shortcut guide, and did not have an immediate return-to-editor focus command. Additionally, the user requested standardizing the application bundle and component ID to `io.github.alsyundawy.SparkNotePad`.
 
 ### Decision
 
 1. **Application Identifier Standardization:**
-   - Standardized application ID to `io.github.alsyundawy.NoteSciPad` across `info.plist`, Linux AppStream metadata (`io.github.alsyundawy.NoteSciPad.metainfo.xml`), `scripts/NoteSciPad-Default-Editor.sh`, and GitHub release automation workflows.
+   - Standardized application ID to `io.github.alsyundawy.SparkNotePad` across `info.plist`, Linux AppStream metadata (`io.github.alsyundawy.SparkNotePad.metainfo.xml`), `scripts/SparkNotePad-Default-Editor.sh`, and GitHub release automation workflows.
 2. **AccessibilityManager Architecture:**
    - Implemented `AccessibilityManager` singleton in `src/features/AccessibilityManager.h` and `.cpp`.
    - Traverses UI elements to assign accessible names, descriptions, and roles.
@@ -283,7 +283,7 @@ A first-class text editor must be accessible to all developers, including those 
 
 ### Context
 
-NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mode is widely preferred by software engineers. The legacy stylesheet hardcoded Windows 95 light gray tones for dock tabs and status bars, and the Scintilla editor initialization hardcoded white backgrounds and black text. A unified theme engine was required to provide seamless dark and light mode switching, automatic OS appearance tracking, and cohesive visual aesthetics.
+SparkNotePad is deployed across macOS and Linux desktop environments where Dark Mode is widely preferred by software engineers. The legacy stylesheet hardcoded Windows 95 light gray tones for dock tabs and status bars, and the Scintilla editor initialization hardcoded white backgrounds and black text. A unified theme engine was required to provide seamless dark and light mode switching, automatic OS appearance tracking, and cohesive visual aesthetics.
 
 ### Decision
 
@@ -302,7 +302,7 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
 
 ### Consequences
 
-- **Positive:** NoteSciPad looks stunning and native in macOS and Linux dark modes without jarring contrast mismatches.
+- **Positive:** SparkNotePad looks stunning and native in macOS and Linux dark modes without jarring contrast mismatches.
 - **Positive:** Zero modification or disruption to ScintillaNext and Lexilla engine invariants.
 - **Positive:** Instant real-time theme adaptation without needing application restarts.
 
@@ -313,7 +313,7 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
 - **Status:** Accepted
 - **Date:** 2026-10-19
 - **Context:**
-  NoteSciPad runs on diverse desktop systems ranging from Apple Liquid Retina displays (2.0x DPR) to multi-monitor mixed-DPI setups and high-resolution Linux desktop environments. Issues with window positioning across disconnected screens, integer scaling blurring, and Scintilla text rasterization across screen hops required a formalized, central management architecture.
+  SparkNotePad runs on diverse desktop systems ranging from Apple Liquid Retina displays (2.0x DPR) to multi-monitor mixed-DPI setups and high-resolution Linux desktop environments. Issues with window positioning across disconnected screens, integer scaling blurring, and Scintilla text rasterization across screen hops required a formalized, central management architecture.
 - **Decision:**
   1. Implemented `ScreenDisplayManager` as a dedicated singleton feature class in `src/features/`.
   2. Configured Qt High-DPI scaling policy to `Qt::HighDpiScaleFactorRoundingPolicy::PassThrough` in `src/main.cpp`.
@@ -332,7 +332,7 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
 - **Status:** Accepted
 - **Date:** 2026-10-19
 - **Context:**
-  NoteSciPad has evolved with a substantial suite of native capabilities (AES-256 encryption, JavaScriptCore evaluator, log tail monitoring, theme engine, Retina multi-monitor manager, VoiceOver accessibility, codesign/notarization, packaging). Users and developers required clear, exhaustive, and easily accessible documentation.
+  SparkNotePad has evolved with a substantial suite of native capabilities (AES-256 encryption, JavaScriptCore evaluator, log tail monitoring, theme engine, Retina multi-monitor manager, VoiceOver accessibility, codesign/notarization, packaging). Users and developers required clear, exhaustive, and easily accessible documentation.
 - **Decision:**
   1. Authored `doc/USER_GUIDE.md` as the comprehensive user manual covering all tools, workflows, keyboard shortcuts, and FAQs.
   2. Authored `doc/DEVELOPER_GUIDE.md` as the maintainer and contributor runbook detailing architecture invariants, directory layouts, build instructions, and release pipelines.
@@ -349,7 +349,7 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
 - **Status:** Accepted
 - **Date:** 2026-10-19
 - **Context:**
-  NoteSciPad was transitioning towards public alpha and beta releases for macOS and Linux. The previous updater architecture was hardcoded to Windows registry keys and an obsolete external URL, while update checks on macOS and Linux were completely disabled. An automated release workflow and cross-platform in-app update notification system were required.
+  SparkNotePad was transitioning towards public alpha and beta releases for macOS and Linux. The previous updater architecture was hardcoded to Windows registry keys and an obsolete external URL, while update checks on macOS and Linux were completely disabled. An automated release workflow and cross-platform in-app update notification system were required.
 - **Decision:**
   1. Implemented `ReleaseManager` in `src/features/` utilizing Qt's native `QNetworkAccessManager` to query the GitHub Releases API.
   2. Built semantic version comparison parsing major, minor, patch, and alpha/beta prerelease tags.
@@ -367,16 +367,16 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
 - **Status:** Accepted
 - **Date:** 2026-10-19
 - **Context:**
-  macOS developers and sysadmins predominantly manage GUI applications through Homebrew Casks. Distributing NoteSciPad via an official Homebrew tap (`alsyundawy/homebrew-notescipad`) simplifies installation, updates, and CLI terminal launching.
+  macOS developers and sysadmins predominantly manage GUI applications through Homebrew Casks. Distributing SparkNotePad via an official Homebrew tap (`alsyundawy/homebrew-sparknotepad`) simplifies installation, updates, and CLI terminal launching.
 - **Decision:**
-  1. Created `deploy/homebrew/Casks/notescipad.rb` supporting dual Apple Silicon (`arm64`) and Intel (`x86_64`) architecture downloads.
-  2. Defined CLI binary alias symlinking `NoteSciPad.app/Contents/MacOS/NoteSciPad` as `notescipad`.
+  1. Created `deploy/homebrew/Casks/sparknotepad.rb` supporting dual Apple Silicon (`arm64`) and Intel (`x86_64`) architecture downloads.
+  2. Defined CLI binary alias symlinking `SparkNotePad.app/Contents/MacOS/SparkNotePad` as `sparknotepad`.
   3. Added `zap trash` definitions ensuring clean uninstallation.
   4. Created `scripts/update-homebrew-cask.sh` for automated SHA256 and version tagging.
   5. Updated `.github/workflows/post_release.yml` to trigger tap updates upon release publication.
 - **Consequences:**
-  - One-line command installation for macOS users (`brew install --cask notescipad`).
-  - Terminal users can launch NoteSciPad directly from shell via `notescipad [files...]`.
+  - One-line command installation for macOS users (`brew install --cask sparknotepad`).
+  - Terminal users can launch SparkNotePad directly from shell via `sparknotepad [files...]`.
 
 ---
 
@@ -387,7 +387,7 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
 - **Context:**
   While native \`.deb\` and \`.rpm\` packages serve Debian/Ubuntu and Fedora/RHEL users, modern Linux distributions (such as Arch, Manjaro, openSUSE, and immutable OSes like Fedora Silverblue and SteamOS) benefit significantly from sandboxed Flatpaks and standalone portable AppImages.
 - **Decision:**
-  1. Authored \`deploy/linux/flatpak/io.github.alsyundawy.NoteSciPad.yml\` utilizing \`org.kde.Platform\` 6.6.
+  1. Authored \`deploy/linux/flatpak/io.github.alsyundawy.SparkNotePad.yml\` utilizing \`org.kde.Platform\` 6.6.
   2. Implemented \`deploy/linux/appimage/AppRun\` and automated AppDir bundling script \`scripts/package-flatpak-appimage.sh\`.
   3. Authored \`doc/FLATPAK_AND_APPIMAGE_PACKAGING.md\` detailing build commands and security permissions.
 - **Consequences:**
@@ -401,7 +401,7 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
 - **Status:** Accepted (Immutable Policy)
 - **Date:** 2026-10-19
 - **Context:**
-  A non-negotiable requirement of NoteSciPad is maintaining high-performance, rock-solid, and battle-tested text editing via vendored Scintilla and Lexilla engines. Replacing or externalizing the engine would destroy performance, break language lexers, and void architectural guarantees.
+  A non-negotiable requirement of SparkNotePad is maintaining high-performance, rock-solid, and battle-tested text editing via vendored Scintilla and Lexilla engines. Replacing or externalizing the engine would destroy performance, break language lexers, and void architectural guarantees.
 - **Decision:**
   1. Formalized immutable engine invariant in `doc/ENGINE_INVARIANT_POLICY.md`.
   2. Implemented automated guard script `scripts/verify-engine-invariants.sh`.
@@ -416,7 +416,7 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
 - **Status:** Accepted
 - **Date:** 2026-10-19
 - **Context:**
-  NoteSciPad includes essential text, data, and security utility engines (Base64, NumberConverter, MathEvaluator, CaseConverter, GuidTimestampUtils, CryptoManager, CodeCompressPretty). Establishing an automated unit test suite ensures zero algorithmic regression and guarantees cross-platform reliability.
+  SparkNotePad includes essential text, data, and security utility engines (Base64, NumberConverter, MathEvaluator, CaseConverter, GuidTimestampUtils, CryptoManager, CodeCompressPretty). Establishing an automated unit test suite ensures zero algorithmic regression and guarantees cross-platform reliability.
 - **Decision:**
   1. Created modular test suite under \`tests/\` linking to \`Qt6::Test\`.
   2. Implemented automated runner \`scripts/run-unit-tests.sh\` and empirical verifier \`scripts/test_utilities_standalone.py\`.
@@ -446,7 +446,7 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
 - **Status:** Accepted
 - **Date:** 2026-10-19
 - **Context:**
-  NoteSciPad was created to provide a first-class editor experience for Indonesian developers and the global open-source community. Synchronizing new features with both Indonesian and English translations prevents untranslated UI leaks.
+  SparkNotePad was created to provide a first-class editor experience for Indonesian developers and the global open-source community. Synchronizing new features with both Indonesian and English translations prevents untranslated UI leaks.
 - **Decision:**
   1. Updated `i18n/NotepadNext_id.ts` with Indonesian translations across all newly added modules (`DisplayInfoDialog`, `ReleaseManager`, `DocumentationManager`, `ThemeManager`, `AccessibilityManager`).
   2. Maintained `i18n/NotepadNext_en.ts` as the canonical English reference.
@@ -461,7 +461,7 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
 - **Status:** Accepted
 - **Date:** 2026-10-19
 - **Context:**
-  NoteSciPad was using a basic `QMessageBox::about` popup. An independent application requires clear credits acknowledging upstream foundations (NotepadNext, Notepad4, Notepad3, Scintilla, Lexilla) while providing a transparent, non-affiliation legal statement and system environment diagnostics.
+  SparkNotePad was using a basic `QMessageBox::about` popup. An independent application requires clear credits acknowledging upstream foundations (NotepadNext, Notepad4, Notepad3, Scintilla, Lexilla) while providing a transparent, non-affiliation legal statement and system environment diagnostics.
 - **Decision:**
   1. Created dedicated `AboutDialog` class in `src/dialogs/` featuring a 4-tab interface (About, Credits, License, Environment).
   2. Displayed prominent non-affiliation notice disclaiming affiliation with Notepad++, NotepadNext, Notepad4, or Notepad3.
@@ -477,7 +477,7 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
 - **Status:** Accepted
 - **Date:** 2026-10-19
 - **Context:**
-  Guaranteeing NoteSciPad's promise of speed, low resource usage, and responsiveness requires continuous empirical benchmarking across startup latency, idle/loaded RSS memory, buffer scan throughput, and cryptographic performance.
+  Guaranteeing SparkNotePad's promise of speed, low resource usage, and responsiveness requires continuous empirical benchmarking across startup latency, idle/loaded RSS memory, buffer scan throughput, and cryptographic performance.
 - **Decision:**
   1. Authored `doc/PERFORMANCE_BASELINE_REPORT.md` documenting verified performance metrics.
   2. Implemented automated benchmark script `scripts/benchmark-baseline.sh` and `scripts/benchmark-baseline.py`.
@@ -492,7 +492,7 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
 - **Status:** Accepted
 - **Date:** 2026-10-19
 - **Context:**
-  NoteSciPad handles sensitive cryptographic workflows, external file streaming, sandboxed JavaScript evaluation, and GitHub update queries. A rigorous security review and STRIDE threat model were necessary to ensure user privacy, data integrity, and vulnerability immunity.
+  SparkNotePad handles sensitive cryptographic workflows, external file streaming, sandboxed JavaScript evaluation, and GitHub update queries. A rigorous security review and STRIDE threat model were necessary to ensure user privacy, data integrity, and vulnerability immunity.
 - **Decision:**
   1. Formalized threat model in `doc/SECURITY_REVIEW_EXTERNAL_DATA.md`.
   2. Implemented automated scanner `scripts/run-security-audit.sh`.
@@ -528,7 +528,7 @@ NoteSciPad is deployed across macOS and Linux desktop environments where Dark Mo
   1. Unignored and tracked `src/languages/makefile.lua` in git, resolving the Ninja missing file error in CI checkout.
   2. Created `.mega-linter.yml` with exclusions for `thirdparty/`, `build/`, and `installer/` directories, preventing false syntax failures on vendored upstream test fixtures.
   3. Corrected Ubuntu Qt 6.8+ architecture target to `linux_gcc_64` in `build.yml` and `release.yml`.
-  4. Corrected non-existent runner typos (`macos-26` -> `macos-15`) and standardized release repository references to `alsyundawy/NoteSciPad`.
+  4. Corrected non-existent runner typos (`macos-26` -> `macos-15`) and standardized release repository references to `alsyundawy/SparkNotePad`.
   5. Configured `.trunk/trunk.yaml` with comprehensive exclusions to enable fast, zero-spike linting on macOS.
   6. Documented all findings in `doc/13_PILLARS_CODE_REVIEW_REPORT.md`.
 - **Consequences:**

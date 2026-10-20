@@ -16,7 +16,7 @@ fi
 VERSION="${VERSION#v}" # strip leading v if present
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-CASK_FILE="${REPO_ROOT}/deploy/homebrew/Casks/notescipad.rb"
+CASK_FILE="${REPO_ROOT}/deploy/homebrew/Casks/sparknotepad.rb"
 
 ARM64_DMG="${2:-}"
 INTEL_DMG="${3:-}"
