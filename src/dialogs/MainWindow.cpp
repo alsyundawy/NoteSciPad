@@ -1,13 +1,3 @@
-#include "ThemeSwitcherDialog.h"
-#include "features/ThemePaletteData.h"
-#include "AboutDialog.h"
-#include "features/ReleaseManager.h"
-#include "features/DocumentationManager.h"
-#include "features/ScreenDisplayManager.h"
-#include "ThemeManager.h"
-#include "AccessibilityManager.h"
-#include "MacServicesHandler.h"
-#include "MarkOccurrences.h"
 /*
  * This file is part of Notepad Next.
  * Copyright 2019 Justin Dailey
@@ -27,6 +17,16 @@
  */
 
 #include "MainWindow.h"
+#include "ThemeSwitcherDialog.h"
+#include "features/ThemePaletteData.h"
+#include "AboutDialog.h"
+#include "features/ReleaseManager.h"
+#include "features/DocumentationManager.h"
+#include "features/ScreenDisplayManager.h"
+#include "ThemeManager.h"
+#include "AccessibilityManager.h"
+#include "MacServicesHandler.h"
+#include "MarkOccurrences.h"
 #include "BookMarkDecorator.h"
 #include "DefaultDirectoryManager.h"
 #include "MarkerAppDecorator.h"

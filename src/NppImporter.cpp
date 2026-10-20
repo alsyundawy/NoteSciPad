@@ -49,7 +49,7 @@ static int keywordClassToIndex(const QStringView keywordClass)
     if (keywordClass == QStringLiteral("type3")) return LANG_INDEX_TYPE3;
     if (keywordClass == QStringLiteral("type4")) return LANG_INDEX_TYPE4;
     if (keywordClass == QStringLiteral("type5")) return LANG_INDEX_TYPE5;
-    return -1; // TODO: not sure what is best
+    return -1; // Unknown keyword class index; callers treat -1 as unmapped
 }
 struct LanguageName {
     QString shortName;

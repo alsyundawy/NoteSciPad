@@ -108,7 +108,7 @@ In an era where modern desktop text editors frequently consume over 500 MB of sy
 | **AES-256-CBC Encryption**  | Military-grade document encryption with PBKDF2 (100k rounds) & HMAC-SHA256 authentication         | `Ctrl+Alt+E` / `Ctrl+Alt+D` |
 | **Live Tail Monitoring**    | Real-time disk log streaming (`tail -f`) with debounced auto-reload (500ms) and auto-scroll       |        `Ctrl+Alt+Y`         |
 | **25 Theme Families**       | 25 premier developer theme suites complying with WCAG 2.1 AA/AAA international standards          |        `Theme Menu`         |
-| **JavaScript Evaluator**    | In-app sandboxed `QJSEngine` evaluator for math, JSON formatting, and text scripting              |       `Ctrl+Shift+J`        |
+| **JavaScript Evaluator**    | In-app sandboxed JavaScript evaluator for math, JSON formatting, and text scripting              |       `Ctrl+Shift+J`        |
 | **Regex Testing Suite**     | Interactive regular expression tester with live group matching, multiline, and dot-all flags      |     `Ctrl+Alt+Shift+R`      |
 | **Color Preview Call-Tips** | Interactive floating color swatches and tooltips for `#HEX`, `rgb()`, `rgba()`, and `hsl()` codes |        Cursor Hover         |
 | **Window Transparency**     | Native compositor opacity slider (20%–100%) for desktop overlay reference                         |        `Ctrl+Alt+T`         |

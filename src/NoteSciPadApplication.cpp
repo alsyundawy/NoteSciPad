@@ -1,4 +1,3 @@
-#include "MacServicesHandler.h"
 /*
  * This file is part of Notepad Next.
  * Copyright 2019 Justin Dailey
@@ -19,6 +18,7 @@
 
 #include "MainWindow.h"
 #include "NoteSciPadApplication.h"
+#include "MacServicesHandler.h"
 #include "MarkerAppDecorator.h"
 #include "RecentFilesListManager.h"
 #include "EditorManager.h"

@@ -23,6 +23,16 @@
 #include <cstring>
 #include <algorithm>
 
+// Portable secure memory zeroing: prevents compiler optimization from eliding the memset
+// (equivalent to explicit_bzero on Linux, SecureZeroMemory on Windows).
+// Uses volatile pointer indirection which compilers must not eliminate.
+static void secureZeroMemory(void *ptr, size_t len) noexcept {
+    volatile uint8_t *p = static_cast<volatile uint8_t *>(ptr);
+    for (size_t i = 0; i < len; ++i) {
+        p[i] = 0;
+    }
+}
+
 #if defined(Q_OS_MACOS)
 #include <CommonCrypto/CommonCryptor.h>
 #include <CommonCrypto/CommonKeyDerivation.h>
@@ -102,6 +112,7 @@ static void keyExpansion256(const uint8_t *key, uint8_t *roundKeys) {
             bytesGenerated++;
         }
     }
+    secureZeroMemory(temp, sizeof(temp));
 }
 
 static void encryptBlock(const uint8_t *in, uint8_t *out, const uint8_t *roundKeys) {
@@ -317,10 +328,13 @@ bool CryptoManager::deriveKeys(const QString &passphrase, const uint8_t *salt, s
         std::memcpy(derived + offset, u.data(), toCopy);
         offset += toCopy;
     }
+    secureZeroMemory(u.data(), u.size());
+    secureZeroMemory(uPrev.data(), uPrev.size());
 #endif
 
     std::memcpy(aesKey, derived, 32);
     std::memcpy(hmacKey, derived + 32, 32);
+    secureZeroMemory(derived, sizeof(derived));  // CWE-316: erase key material from stack
     return true;
 }
 
@@ -364,7 +378,11 @@ QByteArray CryptoManager::aes256CbcEncrypt(const QByteArray &plaintext, const ui
         uint8_t *dst = reinterpret_cast<uint8_t *>(ciphertext.data() + b * 16);
         PortableAes::encryptBlock(block, dst, roundKeys);
         std::memcpy(currentIv, dst, 16);
+        secureZeroMemory(block, sizeof(block));
     }
+
+    secureZeroMemory(currentIv, sizeof(currentIv));
+    secureZeroMemory(roundKeys, sizeof(roundKeys));
 
     return ciphertext;
 #endif
@@ -407,7 +425,11 @@ QByteArray CryptoManager::aes256CbcDecrypt(const QByteArray &ciphertext, const u
             dst[i] = rawBlock[i] ^ currentIv[i];
         }
         std::memcpy(currentIv, src, 16);
+        secureZeroMemory(rawBlock, sizeof(rawBlock));
     }
+
+    secureZeroMemory(currentIv, sizeof(currentIv));
+    secureZeroMemory(roundKeys, sizeof(roundKeys));
 #endif
 
     // Validate PKCS#7 padding in constant time
@@ -459,6 +481,18 @@ CryptoManager::CryptoResult CryptoManager::encrypt(const QByteArray &plaintext, 
         return res;
     }
 
+    // CWE-316: RAII scope guard guarantees keys are zeroed on ANY return path
+    struct KeyScopeGuard {
+        uint8_t *k1;
+        size_t s1;
+        uint8_t *k2;
+        size_t s2;
+        ~KeyScopeGuard() {
+            if (k1 && s1 > 0) secureZeroMemory(k1, s1);
+            if (k2 && s2 > 0) secureZeroMemory(k2, s2);
+        }
+    } keyGuard{aesKey, sizeof(aesKey), hmacKey, sizeof(hmacKey)};
+
     // 3. Encrypt AES-256-CBC
     const QByteArray cipher = aes256CbcEncrypt(plaintext, aesKey, iv);
     if (cipher.isEmpty() && !plaintext.isEmpty()) {
@@ -491,6 +525,10 @@ CryptoManager::CryptoResult CryptoManager::encrypt(const QByteArray &plaintext, 
 
     res.success = true;
     res.data = container;
+
+    // CWE-316: Securely zero all key material before return to prevent stack residue
+    secureZeroMemory(aesKey, sizeof(aesKey));
+    secureZeroMemory(hmacKey, sizeof(hmacKey));
     return res;
 }
 
@@ -542,6 +580,18 @@ CryptoManager::CryptoResult CryptoManager::decrypt(const QByteArray &ciphertext,
         return res;
     }
 
+    // CWE-316: RAII scope guard guarantees keys are zeroed on ANY return path (tamper, padding error, etc.)
+    struct KeyScopeGuard {
+        uint8_t *k1;
+        size_t s1;
+        uint8_t *k2;
+        size_t s2;
+        ~KeyScopeGuard() {
+            if (k1 && s1 > 0) secureZeroMemory(k1, s1);
+            if (k2 && s2 > 0) secureZeroMemory(k2, s2);
+        }
+    } keyGuard{aesKey, sizeof(aesKey), hmacKey, sizeof(hmacKey)};
+
     // 2. Reconstruct authenticated payload and verify HMAC
     QByteArray authenticatedPayload;
     authenticatedPayload.append(MAGIC_HEADER, static_cast<int>(MAGIC_HEADER_LEN));
@@ -564,6 +614,10 @@ CryptoManager::CryptoResult CryptoManager::decrypt(const QByteArray &ciphertext,
         res.errorMessage = QStringLiteral("Decryption failed: corrupted data padding.");
         return res;
     }
+
+    // CWE-316: Securely zero all key material before return to prevent stack residue
+    secureZeroMemory(aesKey, sizeof(aesKey));
+    secureZeroMemory(hmacKey, sizeof(hmacKey));
 
     res.success = true;
     res.data = plaintext;

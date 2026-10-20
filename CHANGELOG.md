@@ -175,7 +175,7 @@ NoteSciPad v1.0.0 marks the premier official release of an independent, ultra-li
 #### Security & Cryptography
 
 - **AES-256-CBC Document Encryption**: Native document encryption with PKCS#7 padding, PBKDF2 key derivation (100,000 iterations), 16-byte cryptographically secure random salt (`arc4random_buf` on macOS, OpenSSL / BCrypt on Linux), and HMAC-SHA256 authentication tag integrity verification.
-- **Zero-Footprint Memory Sanitization**: Sensitive passphrases and plaintext buffers sanitized immediately upon completion using `explicit_bzero` / `SecureZeroMemory`.
+- **Portable Secure Memory Sanitization**: Sensitive AES/HMAC key bytes and PBKDF2-derived key material sanitized immediately after use via `secureZeroMemory()` — a portable volatile-pointer-indirection zeroing helper (semantically equivalent to `explicit_bzero` on Linux / `SecureZeroMemory` on Windows) applied to all `aesKey[32]`, `hmacKey[32]`, and `derived[64]` stack buffers in `CryptoManager.cpp`.
 - **Decryption & Encryption UI (`CryptoManager`, `DecryptDialog`)**: Interactive modal workflows with keyboard shortcuts (`Ctrl+Alt+E` to encrypt, `Ctrl+Alt+D` to decrypt) and lock status indicators.
 
 #### File Monitoring & Streaming
@@ -203,7 +203,7 @@ NoteSciPad v1.0.0 marks the premier official release of an independent, ultra-li
 
 #### Developer Tooling & Productive Utilities
 
-- **Sandboxed JavaScript Evaluator (`JsEvaluator`, `JsEvaluationDialog`)**: Evaluate math, regex, JSON, and text transforms via `QJSEngine` with strict CPU execution timeouts (`Ctrl+Shift+J`).
+- **Sandboxed JavaScript Evaluator (`JsEvaluator`, `JsEvaluationDialog`)**: Evaluate math, regex, JSON, and text transforms. On macOS, uses the native `JavaScriptCore` framework via Objective-C++ bridge (sandboxed). On Linux, spawns an external `node`, `bun`, `deno`, or `quickjs` runtime process with strict 3-second CPU execution timeout (`Ctrl+Shift+J`).
 - **Regular Expression Tester (`RegexHelperDialog`)**: Live interactive regular expression matcher with multiline, dot-all, and case-sensitivity toggles (`Ctrl+Alt+Shift+R`).
 - **Color Call-Tip Previewer (`ColorPreviewCallTip`)**: Real-time color swatches and tooltips displayed directly above hexadecimal (`#RRGGBB`), RGB, RGBA, and HSL color codes under cursor.
 - **Base64 Converter (`Base64Utils`)**: Instant document or selection encoding and decoding.

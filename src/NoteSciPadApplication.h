@@ -17,11 +17,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef NOTESCIPADAPPLICATION_H
-#define NOTESCIPADAPPLICATION_H
-#ifndef NOTEPADNEXTAPPLICATION_H
-#define NOTEPADNEXTAPPLICATION_H
-#define NOTEPADNEXTAPPLICATION_H
 
 #include "ApplicationSettings.h"
 
@@ -104,5 +99,4 @@ private:
 
 using NoteSciPadApplication = NotepadNextApplication;
 
-#endif  // NOTEPADNEXTAPPLICATION_H
-#endif  // NOTESCIPADAPPLICATION_H
+#endif  // NOTEPADNEXTAPPLICATION_H (= NoteSciPadApplication alias)

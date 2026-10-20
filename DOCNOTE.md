@@ -224,7 +224,7 @@ During development and continuous integration verification across multiple compi
 | **2. Syntax Review**                  | **PASS** | 100% compliant with ISO C++20 (`-std=c++20`), CMake 3.21+, and strict POSIX shell standards.                                      |
 | **3. Runtime Review**                 | **PASS** | Cross-platform file paths handled via `QDir::toNativeSeparators`; robust multibyte UTF-8 / UTF-16 encoding roundtrips.            |
 | **4. Logic Review**                   | **PASS** | Editor state transitions deterministic; debounced tail monitoring (500ms) eliminates modal reload interruption.                   |
-| **5. Memory Review**                  | **PASS** | Full adherence to Qt Object Ownership Hierarchy (RAII); sensitive cryptographic keys cleared with `explicit_bzero`.               |
+| **5. Memory Review**                  | **PASS** | Full adherence to Qt Object Ownership Hierarchy (RAII); sensitive cryptographic keys cleared via RAII and `secureZeroMemory` volatile indirection. |
 | **6. Dead Code Review**               | **PASS** | Cleaned legacy unused declarations; all public APIs are actively referenced and tested.                                           |
 | **7. Duplicate Code Review**          | **PASS** | Unified Scintilla BGR conversion logic into `scColor` / `scFromRgb` utility helpers.                                              |
 | **8. Circular Dependency Review**     | **PASS** | Modular separation across `features/`, `dialogs/`, `docks/`, `widgets/`, and `utils/` with clean forward declarations.            |
@@ -257,7 +257,7 @@ Detailed metrics recorded in [`doc/COLOR_STANDARDS_AND_ACCESSIBILITY.md`](file:/
 | **ADR-004** | AES-256-CBC Document Encryption              | Standardized authenticated encryption with PBKDF2 and HMAC-SHA256.        |
 | **ADR-007** | Live Disk Tail Monitoring Architecture       | Non-modal background streaming with auto-scroll to EOF.                   |
 | **ADR-010** | Premier 25 Developer Theme Families          | Standardized theme engine with persistent switching and WCAG compliance.  |
-| **ADR-013** | Sandboxed JavaScript Evaluation              | `QJSEngine` integration with execution timeout defense.                   |
+| **ADR-013** | Sandboxed JavaScript Evaluation              | JavaScriptCore (macOS) / subprocess sandboxing (Linux) with 3s timeout.   |
 | **ADR-016** | Native macOS Services & Multi-Display Safety | AppKit `NSServices` integration and Retina multi-monitor boundary guards. |
 | **ADR-019** | Standardized Application Namespace           | Canonical transition to `io.github.alsyundawy.NoteSciPad`.                |
 | **ADR-024** | WCAG 2.1 AA/AAA Color Palette Standards      | Color token verification and Scintilla BGR endianness abstraction.        |

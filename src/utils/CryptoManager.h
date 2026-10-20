@@ -12,9 +12,6 @@
  * (at your option) any later version.
  */
 
-#ifndef CRYPTOMANAGER_H
-#define CRYPTOMANAGER_H
-
 #include <QByteArray>
 #include <QString>
 #include <cstdint>
@@ -69,5 +66,3 @@ public:
     // HMAC-SHA256
     static QByteArray hmacSha256(const QByteArray &data, const uint8_t *key, size_t keyLen);
 };
-
-#endif  // CRYPTOMANAGER_H
