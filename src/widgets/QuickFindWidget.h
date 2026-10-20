@@ -42,7 +42,7 @@ public:
     explicit QuickFindWidget(QWidget *parent = nullptr);
     ~QuickFindWidget();
 
-    void setEditor(ScintillaNext *editor);
+    void setEditor(ScintillaNext *newEditor);
 
 protected:
    bool eventFilter(QObject *obj, QEvent *event) override;

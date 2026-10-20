@@ -58,10 +58,15 @@ SparkNotePad v1.3.0 represents a landmark release featuring the official transfo
 
 - **WCAG 2.1 AAA Contrast Compliance**: Upgraded `AboutDialog` default light mode palette to Radix/Tailwind Slate (`#0f172a` primary text, `#ffffff` card, `#f8fafc` background) achieving >19:1 contrast ratio.
 - **Sharp Native Font Rendering**: Enforced system font stacks (`-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif`) with explicit font weights and antialiasing, eliminating blurry text rendering.
-- **Enhanced About Dialog Repository Card**: Redesigned GitHub repository section featuring official `🏷️ v1.3.0 Official Release` tag badge, issue tracker, release download links, and system runtime diagnostics.
+
+#### Modern Ribbon Vector Toolbar Icon Pack
+
+- **Modern Ribbon Vector Iconography**: Replaced all legacy 16x16 Silk toolbar icons with a completely new, crisp 32x32 High-DPI ribbon vector icon set across all 35 editor actions (`newfile`, `openFile`, `saved`, `unsaved`, `saveAll`, `closeFile`, `closeAll`, `cut`, `copy`, `paste`, `undo`, `redo`, `find`, `findReplace`, `zoomIn`, `zoomOut`, `wrap`, `invisibleChar`, `indentGuide`, `startRecord`, `stopRecord`, `playRecord`, `printer`, `readonly`, etc.), refined specifically for modern text editor workflows and distinct from legacy branch icons.
 
 ### 🛠️ Fixed
 
+- **Toolbar Dividing Line Restoration**: Added `border-bottom: 1px solid %3;` and refined padding to `QToolBar` in `src/features/ThemeManager.cpp`, restoring the classic horizontal separator line between the toolbar and document tabs.
+- **Active Tab Top Border Color Restoration**: Removed unrequested blue top border (`%6` / blue accent) from `ads--CDockWidgetTab[activeTab="true"]`, `ads--CDockWidgetTab[focused="true"]`, and `QTabBar::tab:selected`, restoring the classic soft peach (`rgb(255, 202, 176)`) active tab border and orange focus top border matching the original NoteSciPad/NotepadNext standard in `npp.css`.
 - **Linux GCC Incomplete Type Resolution**: Added `#include <QAbstractItemView>` in `src/dialogs/PreferencesDialog.cpp`, resolving compiler failure on Linux (`ubuntu-24.04`) where `comboBoxTheme->view()->setVerticalScrollBarPolicy(...)` required the complete definition of `QAbstractItemView`.
 - **Dark/Light Mode Toggle Functionality**: Resolved issue where toggling between Dark and Light mode did not switch active palette. `ThemeManager::setThemeMode` and `toggleTheme` now dynamically swap between default light (`defaultLight`) and dark (`catppuccinMocha`) palettes, persist settings, and emit `paletteChanged` to synchronize all GUI controls.
 - **Emoji Purge in Theme Manager**: Removed all emojis from Theme Manager actions, `Themes` menu hierarchy, `PreferencesDialog`, `ThemeSwitcherDialog`, and `AboutDialog` badges, providing clean, professional desktop typography.

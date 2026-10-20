@@ -86,6 +86,11 @@ SparkNotePad **v1.3.0** marks the definitive brand evolution from NoteSciPad int
     - Enforced strict markdownlint compliance across all documentation files (`doc/*.md`, `README.md`, `README-id.md`, `CHANGELOG.md`, `DOCNOTE.md`), adding explicit language identifiers on code fences and standardizing formatting.
     - Synchronized maintenance branch topology (`main`, `1.3.0`, `develop`, `1.2.0`, `1.1.0`, `1.0.0`) with manual workflow dispatch triggers for streamlined building across any branch.
 
+13. **Modern Ribbon Vector Icon Pack & Native Tab/Toolbar Divider Restoration**:
+    - Replaced legacy 16x16 Silk toolbar icons with a completely new, crisp 32x32 High-DPI ribbon vector icon set across all 35 editor actions in `src/icons/`.
+    - Added `border-bottom: 1px solid %3;` and refined padding to `QToolBar` in `src/features/ThemeManager.cpp`, restoring the classic horizontal separator line between the toolbar and document tabs.
+    - Stripped out unrequested blue top border (`%6` / blue accent) from `ads--CDockWidgetTab[activeTab="true"]`, `ads--CDockWidgetTab[focused="true"]`, and `QTabBar::tab:selected`, restoring the signature soft peach (`rgb(255, 202, 176)`) active tab top border and orange focus top border matching the original NoteSciPad/NotepadNext standard in `npp.css`.
+
 ---
 
 ## 2. NoteSciPad Release DocNote — v1.2.0
@@ -334,6 +339,7 @@ Detailed metrics recorded in [`doc/COLOR_STANDARDS_AND_ACCESSIBILITY.md`](file:/
 | **ADR-025** | 13-Pillar Production Code Review Engine      | Systematic verification across 13 engineering pillars for all releases.   |
 | **ADR-026** | Flat Native Toolbar Button Styling           | Preserved flat, borderless QToolBar QToolButton style across themes.      |
 | **ADR-027** | Clean Desktop Typography & Theme Sync        | Purged emojis across ThemeManager; enforced two-way Dark/Light sync.      |
+| **ADR-028** | Modern Ribbon Icons & Tab Divider/Top Border | Added ribbon icon set, toolbar divider, and restored peach tab borders.   |
 
 ---
 

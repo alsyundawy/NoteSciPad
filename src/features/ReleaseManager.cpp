@@ -42,13 +42,13 @@ QString ReleaseManager::currentVersion() const {
 #endif
 }
 
-bool ReleaseManager::isNewerVersion(const QString &latestVersion, const QString &currentVersion) const {
+bool ReleaseManager::isNewerVersion(const QString &latestVersion, const QString &currentVersionStr) const {
     // Clean versions: strip 'v' or 'V'
     QString l = latestVersion.trimmed();
     if (l.startsWith("v", Qt::CaseInsensitive)) {
         l.remove(0, 1);
     }
-    QString c = currentVersion.trimmed();
+    QString c = currentVersionStr.trimmed();
     if (c.startsWith("v", Qt::CaseInsensitive)) {
         c.remove(0, 1);
     }
@@ -143,7 +143,7 @@ void ReleaseManager::onReplyFinished(QNetworkReply *reply) {
             msgBox.setWindowTitle(tr("SparkNotePad Update Available"));
             msgBox.setText(msg);
             msgBox.setIcon(QMessageBox::Information);
-            QAbstractButton *btnDownload = msgBox.addButton(tr("&Download Update"), QMessageBox::ActionRole);
+            const QAbstractButton *btnDownload = msgBox.addButton(tr("&Download Update"), QMessageBox::ActionRole);
             QAbstractButton *btnLater = msgBox.addButton(tr("&Remind Me Later"), QMessageBox::RejectRole);
             Q_UNUSED(btnLater);
 

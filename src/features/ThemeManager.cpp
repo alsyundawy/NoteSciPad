@@ -677,7 +677,9 @@ ads--CDockWidgetTab:hover[activeTab="false"] {
 }
 ads--CDockWidgetTab[activeTab="true"] {
     background: %5;
-    border-top: 3px solid %6;
+    border-left: 1px solid %3;
+    border-right: 1px solid %3;
+    border-top: 4px solid rgb(255, 202, 176);
     padding-bottom: 3px;
     margin-top: 0px;
 }
@@ -687,7 +689,9 @@ ads--CDockWidgetTab[activeTab="true"] ads--CElidingLabel {
 }
 ads--CDockWidgetTab[focused="true"] {
     background: %5;
-    border-top: 3px solid %6;
+    border-left: 1px solid %3;
+    border-right: 1px solid %3;
+    border-top: 4px solid orange;
 }
 ads--CDockAreaTitleBar {
     background: %1;
@@ -738,7 +742,7 @@ QTabBar::tab:selected {
     background-color: %5;
     color: %2;
     font-weight: bold;
-    border-top: 2px solid %6;
+    border-top: 2px solid rgb(255, 202, 176);
 }
 QTabBar::tab:hover:!selected {
     background-color: %3;
@@ -775,9 +779,11 @@ QPushButton:disabled {
 
 /* ToolBar & Action Buttons - Flat, Borderless & Native Scintilla/Qt Style */
 QToolBar {
-    background: transparent;
+    background: %1;
     border: none;
+    border-bottom: 1px solid %3;
     spacing: 1px;
+    padding: 2px 4px;
 }
 QToolBar::separator {
     background: %3;
