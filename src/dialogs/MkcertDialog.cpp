@@ -23,6 +23,8 @@
 #include <QLineEdit>
 #include <QProcess>
 #include <QRegularExpression>
+#include <QFontDatabase>
+#include <QFont>
 #include <QPushButton>
 #include <QStandardPaths>
 #include <QTextEdit>
