@@ -31,8 +31,8 @@ RegexHelperDialog::RegexHelperDialog(QWidget *parent, const QString &initialPatt
     if (!initialPattern.isEmpty()) {
         ui->editPattern->setText(initialPattern);
     } else {
-        ui->editPattern->setText(QStringLiteral("(\w+)\s*=\s*(\d+)"));
-        ui->editReplace->setText(QStringLiteral("$1: \2"));
+        ui->editPattern->setText(QStringLiteral("(\\w+)\\s*=\\s*(\\d+)"));
+        ui->editReplace->setText(QStringLiteral("$1: \\2"));
         ui->editSampleText->setPlainText(QStringLiteral("alpha = 100\nbeta = 250\ngamma = 42\n# Unmatched comment line"));
     }
 

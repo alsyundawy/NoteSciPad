@@ -76,9 +76,9 @@ QWidget *AboutDialog::createAboutTab()
 
     QLabel *titleLabel = new QLabel(this);
     titleLabel->setText(QString("<h2>NoteSciPad v%1</h2>"
-                                "<p style=\'margin: 0; color: palette(text); font-weight: bold;\'>"
+                                "<p style='margin: 0; color: palette(text); font-weight: bold;'>"
                                 "Independent, Ultra-Lightweight &amp; High-Performance Text Editor</p>"
-                                "<p style=\'margin: 0; color: palette(mid); font-style: italic; font-size: 11px;\'>"
+                                "<p style='margin: 0; color: palette(mid); font-style: italic; font-size: 11px;'>"
                                 "Powered natively by Vendored Scintilla &amp; Lexilla with Modern Qt 6</p>")
                         .arg(APP_VERSION));
     titleLayout->addWidget(titleLabel);
@@ -109,7 +109,7 @@ QWidget *AboutDialog::createAboutTab()
     metaLabel->setOpenExternalLinks(true);
     metaLabel->setText(
         QString("<p><b>Distribution Channel:</b> %1<br/>"
-                "<b>Official Repository:</b> <a href=\'https://github.com/alsyundawy/NoteSciPad\'>https://github.com/alsyundawy/NoteSciPad</a><br/>"
+                "<b>Official Repository:</b> <a href='https://github.com/alsyundawy/NoteSciPad'>https://github.com/alsyundawy/NoteSciPad</a><br/>"
                 "<b>License:</b> GNU General Public License v3 (GPL-3.0-or-later)<br/>"
                 "<b>Engine Architecture:</b> Vendored Scintilla 5.6.x + Lexilla 5.5.x C++ Core</p>")
         .arg(APP_DISTRIBUTION)
@@ -142,17 +142,17 @@ QWidget *AboutDialog::createMaintainerTab()
         tr("<h3>Maintainer &amp; Official Support Channels</h3>"
            "<p><b>Lead Architect &amp; Maintainer:</b> HARRY DERTIN SUTISNA ALSYUNDAWY (<code>@alsyundawy</code>)<br/>"
            "<b>Organization:</b> ALSYUNDAWY IT SOLUTION<br/>"
-           "<b>Official Website:</b> <a href=\'https://alsyundawy.com\'>https://alsyundawy.com</a><br/>"
-           "<b>Official Email:</b> <a href=\'mailto:alsyundawy@gmail.com\'>alsyundawy@gmail.com</a><br/>"
-           "<b>GitHub Profile:</b> <a href=\'https://github.com/alsyundawy\'>@alsyundawy</a><br/>"
-           "<b>Telegram Channel:</b> <a href=\'https://t.me/alsyundawy\'>@alsyundawy</a></p>"
+           "<b>Official Website:</b> <a href='https://alsyundawy.com'>https://alsyundawy.com</a><br/>"
+           "<b>Official Email:</b> <a href='mailto:alsyundawy@gmail.com'>alsyundawy@gmail.com</a><br/>"
+           "<b>GitHub Profile:</b> <a href='https://github.com/alsyundawy'>@alsyundawy</a><br/>"
+           "<b>Telegram Channel:</b> <a href='https://t.me/alsyundawy'>@alsyundawy</a></p>"
            "<hr/>"
            "<h4>Sponsorship &amp; Donation Channels</h4>"
            "<p>If you find NoteSciPad useful for your development and daily workflow, consider supporting our ongoing development:</p>"
            "<ul>"
-           "<li>💳 <b>PayPal:</b> <a href=\'https://www.paypal.me/alsyundawy\'>paypal.me/alsyundawy</a></li>"
-           "<li>☕ <b>Buy Me A Coffee:</b> <a href=\'https://www.buymeacoffee.com/0TC98Sk\'>buymeacoffee.com/0TC98Sk</a></li>"
-           "<li>🇮🇩 <b>QRIS (NMID: ID1020021153676):</b> <a href=\'https://github.com/user-attachments/assets/a0126f28-6dde-43da-ba14-d7c9a27de0df\'>View Official QRIS Barcode</a></li>"
+           "<li>💳 <b>PayPal:</b> <a href='https://www.paypal.me/alsyundawy'>paypal.me/alsyundawy</a></li>"
+           "<li>☕ <b>Buy Me A Coffee:</b> <a href='https://www.buymeacoffee.com/0TC98Sk'>buymeacoffee.com/0TC98Sk</a></li>"
+           "<li>🇮🇩 <b>QRIS (NMID: ID1020021153676):</b> <a href='https://github.com/user-attachments/assets/a0126f28-6dde-43da-ba14-d7c9a27de0df'>View Official QRIS Barcode</a></li>"
            "</ul>")
     );
     layout->addWidget(browser);
@@ -180,14 +180,14 @@ QWidget *AboutDialog::createCreditsTab()
         tr("<h3>Credits &amp; Upstream Attribution</h3>"
            "<p>NoteSciPad stands on the shoulders of giants. We express our deepest gratitude to the following projects and authors:</p>"
            "<ul>"
-           "<li><b>Scintilla:</b> Created by Neil Hodgson and contributors. The legendary core editing component providing high-performance text rendering, multi-caret editing, and fold margins. (<a href=\'https://www.scintilla.org\'>scintilla.org</a>)</li>"
-           "<li><b>Lexilla:</b> Created by Neil Hodgson and contributors. Provides syntax highlighting and styling lexers for over 100 programming languages. (<a href=\'https://www.scintilla.org\'>scintilla.org/Lexilla.html</a>)</li>"
-           "<li><b>NotepadNext:</b> Created by Justin Dailey (dail8859). Provided the cross-platform Qt scaffolding and docking framework foundation. (<a href=\'https://github.com/dail8859/NotepadNext\'>github.com/dail8859/NotepadNext</a>)</li>"
-           "<li><b>Notepad4:</b> Created by Zufu Liu (zufuliu). Provided invaluable architectural ideas, lexer updates, and utility concepts. (<a href=\'https://github.com/zufuliu/notepad4\'>github.com/zufuliu/notepad4</a>)</li>"
-           "<li><b>Notepad3:</b> Created by Rizonesoft and contributors. Inspired Scintilla power-user text transformation patterns and UI polish. (<a href=\'https://www.rizonesoft.com\'>rizonesoft.com</a>)</li>"
-           "<li><b>SubnetCalc for macOS:</b> Inspired UI elegance, theme architecture, and release documentation standards. (<a href=\'https://github.com/alsyundawy/SubnetCalc-MacOS\'>github.com/alsyundawy/SubnetCalc-MacOS</a>)</li>"
-           "<li><b>Lon McGregor (NotepadPlusPlusIcons):</b> Designer of the iconic open-source editor and chameleon artwork series, adapted as NoteSciPad\'s official application icon. (<a href=\'https://github.com/LonMcGregor/NotepadPlusPlusIcons\'>github.com/LonMcGregor/NotepadPlusPlusIcons</a>)</li>"
-           "<li><b>Qt Project:</b> Developed by The Qt Company and the Qt Open Source Community. (<a href=\'https://www.qt.io\'>qt.io</a>)</li>"
+           "<li><b>Scintilla:</b> Created by Neil Hodgson and contributors. The legendary core editing component providing high-performance text rendering, multi-caret editing, and fold margins. (<a href='https://www.scintilla.org'>scintilla.org</a>)</li>"
+           "<li><b>Lexilla:</b> Created by Neil Hodgson and contributors. Provides syntax highlighting and styling lexers for over 100 programming languages. (<a href='https://www.scintilla.org'>scintilla.org/Lexilla.html</a>)</li>"
+           "<li><b>NotepadNext:</b> Created by Justin Dailey (dail8859). Provided the cross-platform Qt scaffolding and docking framework foundation. (<a href='https://github.com/dail8859/NotepadNext'>github.com/dail8859/NotepadNext</a>)</li>"
+           "<li><b>Notepad4:</b> Created by Zufu Liu (zufuliu). Provided invaluable architectural ideas, lexer updates, and utility concepts. (<a href='https://github.com/zufuliu/notepad4'>github.com/zufuliu/notepad4</a>)</li>"
+           "<li><b>Notepad3:</b> Created by Rizonesoft and contributors. Inspired Scintilla power-user text transformation patterns and UI polish. (<a href='https://www.rizonesoft.com'>rizonesoft.com</a>)</li>"
+           "<li><b>SubnetCalc for macOS:</b> Inspired UI elegance, theme architecture, and release documentation standards. (<a href='https://github.com/alsyundawy/SubnetCalc-MacOS'>github.com/alsyundawy/SubnetCalc-MacOS</a>)</li>"
+           "<li><b>Lon McGregor (NotepadPlusPlusIcons):</b> Designer of the iconic open-source editor and chameleon artwork series, adapted as NoteSciPad's official application icon. (<a href='https://github.com/LonMcGregor/NotepadPlusPlusIcons'>github.com/LonMcGregor/NotepadPlusPlusIcons</a>)</li>"
+           "<li><b>Qt Project:</b> Developed by The Qt Company and the Qt Open Source Community. (<a href='https://www.qt.io'>qt.io</a>)</li>"
            "<li><b>uchardet:</b> Maintained by Freedesktop. Enables fast universal character encoding detection.</li>"
            "<li><b>Qt Advanced Docking System (ADS):</b> Advanced dock widget management.</li>"
            "</ul>")
@@ -225,12 +225,15 @@ QWidget *AboutDialog::createEnvironmentTab()
         "<b>Display Scale Ratio:</b> %7x (Retina / High-DPI)<br/>"
         "<b>NoteSciPad Version:</b> v%8<br/>"
         "<b>Kernel Type:</b> %9"
-    ).arg(QSysInfo::prettyProductName(), QSysInfo::kernelVersion(),
-         QSysInfo::currentCpuArchitecture(), QSysInfo::buildCpuArchitecture(),
-         qVersion(), QT_VERSION_STR,
-         QString::number(dpr, \'f\', 1),
-         APP_VERSION,
-         QSysInfo::kernelType());
+    ).arg(QSysInfo::prettyProductName())
+     .arg(QSysInfo::kernelVersion())
+     .arg(QSysInfo::currentCpuArchitecture())
+     .arg(QSysInfo::buildCpuArchitecture())
+     .arg(qVersion())
+     .arg(QT_VERSION_STR)
+     .arg(QString::number(dpr, 'f', 1))
+     .arg(APP_VERSION)
+     .arg(QSysInfo::kernelType());
 
     infoLabel->setText(infoText);
     layout->addWidget(infoLabel);
@@ -271,7 +274,7 @@ QWidget *AboutDialog::createLicenseTab()
            "but WITHOUT ANY WARRANTY; without even the implied warranty of "
            "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the "
            "GNU General Public License for more details.</p>"
-           "<p>For complete license details, visit: <a href=\'https://www.gnu.org/licenses/\'>https://www.gnu.org/licenses/</a></p>")
+           "<p>For complete license details, visit: <a href='https://www.gnu.org/licenses/'>https://www.gnu.org/licenses/</a></p>")
     );
     layout->addWidget(browser);
     return tab;
@@ -289,12 +292,15 @@ void AboutDialog::copySystemInfoToClipboard()
         "CPU: %5 (Build Target: %6)\n"
         "Qt: %7 (Built with %8)\n"
         "Display Scale: %9x\n"
-    ).arg(APP_VERSION,
-         QSysInfo::prettyProductName(), QSysInfo::kernelType(),
-         QSysInfo::kernelVersion(),
-         QSysInfo::currentCpuArchitecture(), QSysInfo::buildCpuArchitecture(),
-         qVersion(), QT_VERSION_STR,
-         QString::number(dpr, \'f\', 1));
+    ).arg(APP_VERSION)
+     .arg(QSysInfo::prettyProductName())
+     .arg(QSysInfo::kernelType())
+     .arg(QSysInfo::kernelVersion())
+     .arg(QSysInfo::currentCpuArchitecture())
+     .arg(QSysInfo::buildCpuArchitecture())
+     .arg(qVersion())
+     .arg(QT_VERSION_STR)
+     .arg(QString::number(dpr, 'f', 1));
 
     QClipboard *clipboard = QGuiApplication::clipboard();
     if (clipboard) {
