@@ -22,7 +22,7 @@
 
 - [x] Create modern 5-tab dialog in `src/dialogs/AboutDialog.cpp` & `AboutDialog.h`
 - [x] Tab 1: Application Overview, version badges, Scintilla 5.6.x engine details, and legal non-affiliation statement
-- [x] Tab 2: Maintainer card (Harry Dertin Sutisna Alsyundawy, ALSYUNDAWY IT SOLUTION, Website, Email, GitHub, Telegram, PayPal, Buy Me a Coffee, QRIS Barcode) — _Strictly exclude phone & WhatsApp_
+- [x] Tab 2: Maintainer card (Harry Dertin Sutisna Alsyundawy, ALSYUNDAWY IT SOLUTION, Website, Email, GitHub, Telegram, PayPal, QRIS Barcode) — _Strictly exclude phone & WhatsApp_
 - [x] Tab 3: Upstream Heritage (Scintilla, Lexilla, NotepadNext, Notepad4, Notepad3, Notepad++, Qt)
 - [x] Tab 4: System Diagnostics with one-click "Copy Diagnostics to Clipboard"
 - [x] Tab 5: GNU General Public License v3.0 full text & links
@@ -166,3 +166,42 @@
 - [x] Validate 8-job GitHub Actions matrix (`build.yml`)
 - [x] Tag `v1.1.0` and trigger official production release workflow
 - [x] Publish release with attached DMG (ARM64 & x64), DEB, RPM, and `SHA256SUMS.txt`
+
+---
+
+## Phase 5 — v1.2.0 UI/UX Polish, Apple HIG Icons, Dialogs, PDF & Multi-Qt Matrix
+
+### 5.1 Apple HIG Multi-Resolution Icons
+
+- [x] Resample icon with 82% squircle grid (824x824 inside 1024x1024 canvas with 100px optical padding) to eliminate oversized macOS Dock display
+- [x] Generate 10-resolution macOS iconset (`NoteSciPad.iconset`: 16, 32, 128, 256, 512 + @2x) and compile `NoteSciPad.icns`
+- [x] Generate multi-resolution Windows `NoteSciPad.ico` (16, 24, 32, 48, 64, 128, 256 px)
+- [x] Update high-DPI Linux icons (`512x512` and `128x128`)
+
+### 5.2 Modern Vector-Badged Message Box (`ModernMessageBox`)
+
+- [x] Implement `ModernMessageBox.h` and `ModernMessageBox.cpp` with native sheet modal presentation
+- [x] Design vector SVG badges for Question/Save, Warning, Critical, and Information states
+- [x] Connect dialog background, border, buttons, and text dynamically to active `ThemePalette`
+- [x] Replace legacy `QMessageBox` in `MainWindow::promptForSave` with `ModernMessageBox::promptForSave`
+
+### 5.3 AboutDialog Redesign & Theme Binding
+
+- [x] Remove murky grayscale `palette(alternate-base)` cards; replace with dynamic `ThemePalette::card` + border accent
+- [x] Connect `AboutDialog` to `ThemeManager::themeChanged` signal for live repainting on theme switches
+- [x] Enrich content: 6 tabs (About, Maintainer, Credits, Diagnostics, Shortcuts, License)
+- [x] Purge "Buy Me A Coffee" references from maintainer card and throughout project
+
+### 5.4 Universal Typography & File Menu Expansions
+
+- [x] Set up universal font stacks across macOS (`-apple-system`/`SF Pro Text`) and Linux (`Inter`/`Ubuntu`/`Roboto`) in `src/main.cpp`
+- [x] Add File -> `New Window` (`actionNewWindow`, `Ctrl+Shift+N` / `Cmd+Shift+N`) spawning detached editor process
+- [x] Add File -> `Export to PDF...` (`actionExportPdf`) with native multi-page vector printing via `QPdfWriter` and `QPainter`
+
+### 5.5 Localization & Multi-Qt CI/CD
+
+- [x] Prune 21 untranslated `.ts` translation files, keeping only 100% complete English (`en`) and Indonesian (`id`)
+- [x] Support and test Qt 6.5, 6.8, and 6.10 on macOS and Linux CI matrices
+- [x] Fix DMG artifact pattern matching in `.github/workflows/release.yml` (`NoteSciPad*.dmg`)
+- [x] Bump project version to `1.2.0` in `CMakeLists.txt`, `updates.json`, `README.md`, `CHANGELOG.md`, and `DOCNOTE.md`
+

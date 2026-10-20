@@ -9,6 +9,7 @@
  */
 
 #include "AboutDialog.h"
+#include "../features/ThemeManager.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -27,22 +28,25 @@ AboutDialog::AboutDialog(QWidget *parent)
     : QDialog(parent)
 {
     setupUi();
+    connect(ThemeManager::instance(), &ThemeManager::themeChanged, this, &AboutDialog::updateThemeColors);
+    updateThemeColors();
 }
 
 void AboutDialog::setupUi()
 {
     setWindowTitle(tr("About NoteSciPad"));
-    resize(680, 520);
+    resize(720, 560);
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(16, 16, 16, 16);
-    mainLayout->setSpacing(12);
+    mainLayout->setSpacing(14);
 
     m_tabWidget = new QTabWidget(this);
     m_tabWidget->addTab(createAboutTab(), tr("&About"));
     m_tabWidget->addTab(createMaintainerTab(), tr("&Maintainer"));
     m_tabWidget->addTab(createCreditsTab(), tr("&Credits && Attribution"));
-    m_tabWidget->addTab(createEnvironmentTab(), tr("&System && Diagnostics"));
+    m_tabWidget->addTab(createEnvironmentTab(), tr("&Diagnostics"));
+    m_tabWidget->addTab(createShortcutsTab(), tr("&Shortcuts"));
     m_tabWidget->addTab(createLicenseTab(), tr("&License"));
 
     mainLayout->addWidget(m_tabWidget);
@@ -50,6 +54,34 @@ void AboutDialog::setupUi()
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close, this);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::accept);
     mainLayout->addWidget(buttonBox);
+}
+
+void AboutDialog::updateThemeColors()
+{
+    const ThemePalette *pal = ThemeManager::instance()->currentPalette();
+    bool dark = ThemeManager::instance()->isDarkActive();
+
+    QString cardBg = pal ? QString::fromLatin1(pal->card) : (dark ? QStringLiteral("#25282c") : QStringLiteral("#ffffff"));
+    QString borderCol = pal ? QString::fromLatin1(pal->border) : (dark ? QStringLiteral("#33373e") : QStringLiteral("#d0d7de"));
+    QString accentCol = pal ? QString::fromLatin1(pal->blue) : (dark ? QStringLiteral("#58a6ff") : QStringLiteral("#0969da"));
+    QString txtPri = pal ? QString::fromLatin1(pal->txtPri) : (dark ? QStringLiteral("#e0e0e0") : QStringLiteral("#24292f"));
+
+    QString cardStyle = QString(
+        "padding: 14px;"
+        "background-color: %1;"
+        "border: 1px solid %2;"
+        "border-left: 4px solid %3;"
+        "border-radius: 8px;"
+        "color: %4;"
+        "font-size: 13px;"
+    ).arg(cardBg, borderCol, accentCol, txtPri);
+
+    if (m_noticeBox) {
+        m_noticeBox->setStyleSheet(cardStyle);
+    }
+    if (m_diagnosticsCard) {
+        m_diagnosticsCard->setStyleSheet(cardStyle);
+    }
 }
 
 QWidget *AboutDialog::createAboutTab()
@@ -75,35 +107,41 @@ QWidget *AboutDialog::createAboutTab()
     titleLayout->setSpacing(4);
 
     QLabel *titleLabel = new QLabel(this);
-    titleLabel->setText(QString("<h2>NoteSciPad v%1</h2>"
-                                "<p style='margin: 0; color: palette(text); font-weight: bold;'>"
-                                "Independent, Ultra-Lightweight &amp; High-Performance Text Editor</p>"
-                                "<p style='margin: 0; color: palette(mid); font-style: italic; font-size: 11px;'>"
-                                "Powered natively by Vendored Scintilla &amp; Lexilla with Modern Qt 6</p>")
-                        .arg(APP_VERSION));
+    titleLabel->setText(QString(
+        "<h2>NoteSciPad v%1 <span style='font-size: 11px; padding: 2px 8px; background-color: #0969da; color: #ffffff; border-radius: 4px;'>STABLE</span></h2>"
+        "<p style='margin: 0; font-weight: bold; font-size: 13px;'>"
+        "Independent, Ultra-Lightweight &amp; High-Performance Text Editor</p>"
+        "<p style='margin: 0; font-style: italic; font-size: 12px;'>"
+        "Powered natively by Vendored Scintilla 5.6.x &amp; Lexilla 5.5.x with Modern Qt 6</p>"
+    ).arg(APP_VERSION));
     titleLayout->addWidget(titleLabel);
+
+    // Badges pill row
+    QLabel *badgesLabel = new QLabel(this);
+    badgesLabel->setText(
+        "<p style='margin-top: 6px; font-size: 11px;'>"
+        "<span style='background: rgba(0,122,255,0.12); color: #007aff; border: 1px solid rgba(0,122,255,0.3); border-radius: 10px; padding: 2px 8px;'>🎨 75 Themes</span> "
+        "<span style='background: rgba(16,185,129,0.12); color: #10b981; border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; padding: 2px 8px;'>📐 Math Eval</span> "
+        "<span style='background: rgba(139,92,246,0.12); color: #8b5cf6; border: 1px solid rgba(139,92,246,0.3); border-radius: 10px; padding: 2px 8px;'>🔤 100+ Lexers</span> "
+        "<span style='background: rgba(245,158,11,0.12); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); border-radius: 10px; padding: 2px 8px;'>📄 Export PDF</span> "
+        "<span style='background: rgba(236,72,153,0.12); color: #ec4899; border: 1px solid rgba(236,72,153,0.3); border-radius: 10px; padding: 2px 8px;'>⚡ Scintilla 5.6.x</span>"
+        "</p>"
+    );
+    titleLayout->addWidget(badgesLabel);
+
     headerLayout->addLayout(titleLayout);
     headerLayout->addStretch();
     layout->addLayout(headerLayout);
 
-    // Legal notice box
-    QLabel *noticeBox = new QLabel(this);
-    noticeBox->setWordWrap(true);
-    noticeBox->setStyleSheet(
-        "QLabel {"
-        "  padding: 12px;"
-        "  background-color: palette(alternate-base);"
-        "  border: 1px solid palette(mid);"
-        "  border-radius: 8px;"
-        "  font-size: 12px;"
-        "}"
-    );
-    noticeBox->setText(
+    // Legal notice box with dynamic theme card
+    m_noticeBox = new QLabel(this);
+    m_noticeBox->setWordWrap(true);
+    m_noticeBox->setText(
         tr("<b>Important Legal &amp; Non-Affiliation Statement:</b><br/>"
            "<i>NoteSciPad is an independent open-source project. It is not affiliated with, "
            "endorsed by, or associated with Notepad++, NotepadNext, Notepad4, or Notepad3.</i>")
     );
-    layout->addWidget(noticeBox);
+    layout->addWidget(m_noticeBox);
 
     QLabel *metaLabel = new QLabel(this);
     metaLabel->setOpenExternalLinks(true);
@@ -127,18 +165,9 @@ QWidget *AboutDialog::createMaintainerTab()
     layout->setContentsMargins(16, 16, 16, 16);
     layout->setSpacing(12);
 
-    QTextBrowser *browser = new QTextBrowser(this);
-    browser->setOpenExternalLinks(true);
-    browser->setStyleSheet(
-        "QTextBrowser {"
-        "  background-color: palette(base);"
-        "  border: 1px solid palette(mid);"
-        "  border-radius: 8px;"
-        "  padding: 12px;"
-        "  font-size: 13px;"
-        "}"
-    );
-    browser->setHtml(
+    m_maintainerBrowser = new QTextBrowser(this);
+    m_maintainerBrowser->setOpenExternalLinks(true);
+    m_maintainerBrowser->setHtml(
         tr("<h3>Maintainer &amp; Official Support Channels</h3>"
            "<p><b>Lead Architect &amp; Maintainer:</b> HARRY DERTIN SUTISNA ALSYUNDAWY (<code>@alsyundawy</code>)<br/>"
            "<b>Organization:</b> ALSYUNDAWY IT SOLUTION<br/>"
@@ -151,11 +180,10 @@ QWidget *AboutDialog::createMaintainerTab()
            "<p>If you find NoteSciPad useful for your development and daily workflow, consider supporting our ongoing development:</p>"
            "<ul>"
            "<li>💳 <b>PayPal:</b> <a href='https://www.paypal.me/alsyundawy'>paypal.me/alsyundawy</a></li>"
-           "<li>☕ <b>Buy Me A Coffee:</b> <a href='https://www.buymeacoffee.com/0TC98Sk'>buymeacoffee.com/0TC98Sk</a></li>"
            "<li>🇮🇩 <b>QRIS (NMID: ID1020021153676):</b> <a href='https://github.com/user-attachments/assets/a0126f28-6dde-43da-ba14-d7c9a27de0df'>View Official QRIS Barcode</a></li>"
            "</ul>")
     );
-    layout->addWidget(browser);
+    layout->addWidget(m_maintainerBrowser);
     return tab;
 }
 
@@ -165,18 +193,9 @@ QWidget *AboutDialog::createCreditsTab()
     QVBoxLayout *layout = new QVBoxLayout(tab);
     layout->setContentsMargins(16, 16, 16, 16);
 
-    QTextBrowser *browser = new QTextBrowser(this);
-    browser->setOpenExternalLinks(true);
-    browser->setStyleSheet(
-        "QTextBrowser {"
-        "  background-color: palette(base);"
-        "  border: 1px solid palette(mid);"
-        "  border-radius: 8px;"
-        "  padding: 12px;"
-        "  font-size: 12px;"
-        "}"
-    );
-    browser->setHtml(
+    m_creditsBrowser = new QTextBrowser(this);
+    m_creditsBrowser->setOpenExternalLinks(true);
+    m_creditsBrowser->setHtml(
         tr("<h3>Credits &amp; Upstream Attribution</h3>"
            "<p>NoteSciPad stands on the shoulders of giants. We express our deepest gratitude to the following projects and authors:</p>"
            "<ul>"
@@ -192,7 +211,7 @@ QWidget *AboutDialog::createCreditsTab()
            "<li><b>Qt Advanced Docking System (ADS):</b> Advanced dock widget management.</li>"
            "</ul>")
     );
-    layout->addWidget(browser);
+    layout->addWidget(m_creditsBrowser);
     return tab;
 }
 
@@ -203,17 +222,8 @@ QWidget *AboutDialog::createEnvironmentTab()
     layout->setContentsMargins(16, 16, 16, 16);
     layout->setSpacing(14);
 
-    QLabel *infoLabel = new QLabel(this);
-    infoLabel->setTextFormat(Qt::RichText);
-    infoLabel->setStyleSheet(
-        "QLabel {"
-        "  padding: 12px;"
-        "  background-color: palette(alternate-base);"
-        "  border: 1px solid palette(mid);"
-        "  border-radius: 8px;"
-        "  font-size: 13px;"
-        "}"
-    );
+    m_diagnosticsCard = new QLabel(this);
+    m_diagnosticsCard->setTextFormat(Qt::RichText);
 
     QScreen *primary = QGuiApplication::primaryScreen();
     qreal dpr = primary ? primary->devicePixelRatio() : 1.0;
@@ -235,8 +245,8 @@ QWidget *AboutDialog::createEnvironmentTab()
      .arg(APP_VERSION)
      .arg(QSysInfo::kernelType());
 
-    infoLabel->setText(infoText);
-    layout->addWidget(infoLabel);
+    m_diagnosticsCard->setText(infoText);
+    layout->addWidget(m_diagnosticsCard);
 
     QPushButton *copyBtn = new QPushButton(tr("Copy Diagnostics to Clipboard"), this);
     copyBtn->setCursor(Qt::PointingHandCursor);
@@ -247,24 +257,44 @@ QWidget *AboutDialog::createEnvironmentTab()
     return tab;
 }
 
+QWidget *AboutDialog::createShortcutsTab()
+{
+    QWidget *tab = new QWidget(this);
+    QVBoxLayout *layout = new QVBoxLayout(tab);
+    layout->setContentsMargins(16, 16, 16, 16);
+
+    m_shortcutsBrowser = new QTextBrowser(this);
+    m_shortcutsBrowser->setOpenExternalLinks(false);
+    m_shortcutsBrowser->setHtml(
+        tr("<h3>Key Productivity Shortcuts</h3>"
+           "<table border='0' cellspacing='6' cellpadding='4' width='100%'>"
+           "<tr><td><b>Ctrl / Cmd + N</b></td><td>Create New File</td></tr>"
+           "<tr><td><b>Ctrl / Cmd + Shift + N</b></td><td>Open New Window (Independent Instance)</td></tr>"
+           "<tr><td><b>Ctrl / Cmd + Shift + E</b></td><td>Evaluate Inline Math Expression</td></tr>"
+           "<tr><td><b>Ctrl / Cmd + Shift + T</b></td><td>Interactive Theme Switcher (75 Palettes)</td></tr>"
+           "<tr><td><b>Ctrl / Cmd + Shift + F</b></td><td>Find in Files / Workspace</td></tr>"
+           "<tr><td><b>Ctrl / Cmd + P</b></td><td>Print Document / Export to PDF</td></tr>"
+           "<tr><td><b>Ctrl / Cmd + D</b></td><td>Duplicate Current Line or Selection</td></tr>"
+           "<tr><td><b>Ctrl / Cmd + /</b></td><td>Toggle Single-Line Comment</td></tr>"
+           "<tr><td><b>Ctrl / Cmd + Shift + /</b></td><td>Toggle Block / Stream Comment</td></tr>"
+           "<tr><td><b>Ctrl / Cmd + Shift + U</b></td><td>Convert Selection to UPPERCASE</td></tr>"
+           "<tr><td><b>Ctrl / Cmd + U</b></td><td>Convert Selection to lowercase</td></tr>"
+           "<tr><td><b>Alt + Click &amp; Drag</b></td><td>Column / Rectangular Box Selection</td></tr>"
+           "</table>")
+    );
+    layout->addWidget(m_shortcutsBrowser);
+    return tab;
+}
+
 QWidget *AboutDialog::createLicenseTab()
 {
     QWidget *tab = new QWidget(this);
     QVBoxLayout *layout = new QVBoxLayout(tab);
     layout->setContentsMargins(16, 16, 16, 16);
 
-    QTextBrowser *browser = new QTextBrowser(this);
-    browser->setOpenExternalLinks(true);
-    browser->setStyleSheet(
-        "QTextBrowser {"
-        "  background-color: palette(base);"
-        "  border: 1px solid palette(mid);"
-        "  border-radius: 8px;"
-        "  padding: 12px;"
-        "  font-size: 12px;"
-        "}"
-    );
-    browser->setHtml(
+    m_licenseBrowser = new QTextBrowser(this);
+    m_licenseBrowser->setOpenExternalLinks(true);
+    m_licenseBrowser->setHtml(
         tr("<h3>GNU General Public License v3.0</h3>"
            "<p>NoteSciPad is free software: you can redistribute it and/or modify "
            "it under the terms of the GNU General Public License as published by "
@@ -276,7 +306,7 @@ QWidget *AboutDialog::createLicenseTab()
            "GNU General Public License for more details.</p>"
            "<p>For complete license details, visit: <a href='https://www.gnu.org/licenses/'>https://www.gnu.org/licenses/</a></p>")
     );
-    layout->addWidget(browser);
+    layout->addWidget(m_licenseBrowser);
     return tab;
 }
 

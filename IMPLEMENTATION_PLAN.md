@@ -155,7 +155,6 @@ The `ThemeManager.swift` file from [`alsyundawy/SubnetCalc-MacOS`](https://githu
      - Telegram Channel: [`@alsyundawy`](https://t.me/alsyundawy)
      - Sponsorship & Donations:
        - PayPal: [`paypal.me/alsyundawy`](https://www.paypal.me/alsyundawy)
-       - Buy Me a Coffee: [`buymeacoffee.com/0TC98Sk`](https://www.buymeacoffee.com/0TC98Sk)
        - QRIS Barcode (NMID: ID1020021153676) embedded viewer.
      - _(Note: Phone number & WhatsApp are strictly excluded per explicit instruction)._
   3. **Tab 3: Upstream Heritage & Attribution**:

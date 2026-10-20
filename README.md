@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/alsyundawy/NoteSciPad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.1.0-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.1.0"></a>
+  <a href="https://github.com/alsyundawy/NoteSciPad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.2.0-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.2.0"></a>
   <a href="https://apple.com/macos"><img src="https://img.shields.io/badge/Platform-macOS%20Sequoia%20%7C%20Sonoma%20%7C%20Linux-000000?style=for-the-badge&logo=apple&logoColor=white" alt="Supported Platforms"></a>
   <a href="https://isocpp.org"><img src="https://img.shields.io/badge/Standard-ISO%20C%2B%2B20-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="C++20 Standard"></a>
   <a href="https://qt.io"><img src="https://img.shields.io/badge/Framework-Qt%206.5%20%7C%206.8%20%7C%206.10-41CD52?style=for-the-badge&logo=qt&logoColor=white" alt="Qt Framework"></a>
@@ -27,7 +27,7 @@
 
 <p align="center">
   <a href="#downloads--artifact-catalogs">
-    <img src="https://img.shields.io/badge/🚀_Download_Artifacts-v1.1.0-238636?style=for-the-badge&logo=cloudsmith&logoColor=white" alt="Download Artifacts">
+    <img src="https://img.shields.io/badge/🚀_Download_Artifacts-v1.2.0-238636?style=for-the-badge&logo=cloudsmith&logoColor=white" alt="Download Artifacts">
   </a>
   <a href="https://github.com/alsyundawy/NoteSciPad/releases/latest">
     <img src="https://img.shields.io/badge/🪞_Releases_&_Changelog-GitHub-0284c7?style=for-the-badge&logo=github&logoColor=white" alt="Releases & Changelog">
@@ -47,12 +47,11 @@
 > Lead Developer & Maintainer:<br>
 > **[`HARRY DERTIN SUTISNA ALSYUNDAWY (@alsyundawy)`](https://github.com/alsyundawy)** — [`ALSYUNDAWY IT SOLUTION`](https://alsyundawy.com)<br>
 >
-> 🍏 **[`Latest Releases (v1.1.0)`](https://github.com/alsyundawy/NoteSciPad/releases/latest)** &nbsp;|&nbsp;
+> 🍏 **[`Latest Releases (v1.2.0)`](https://github.com/alsyundawy/NoteSciPad/releases/latest)** &nbsp;|&nbsp;
 > 📖 **[`Release DocNotes (DOCNOTE.md)`](DOCNOTE.md)** &nbsp;|&nbsp;
 > 📜 **[`Changelog (CHANGELOG.md)`](CHANGELOG.md)** &nbsp;|&nbsp;
 > 🐛 **[`Issue Tracker`](https://github.com/alsyundawy/NoteSciPad/issues)** &nbsp;|&nbsp;
-> 💖 **[`Support via PayPal`](https://www.paypal.me/alsyundawy)** &nbsp;|&nbsp;
-> ☕ **[`Buy Me A Coffee`](https://www.buymeacoffee.com/0TC98Sk)**
+> 💖 **[`Support via PayPal`](https://www.paypal.me/alsyundawy)**
 
 ---
 
@@ -167,15 +166,15 @@ Andromeda    Nightfox     Cobalt2       Alabaster    Tomorrow
 
 ## Downloads & Artifact Catalogs
 
-Pre-compiled, production-ready binaries for NoteSciPad v1.1.0 are available directly from the [GitHub Releases](https://github.com/alsyundawy/NoteSciPad/releases/latest) page:
+Pre-compiled, production-ready binaries for NoteSciPad v1.2.0 are available directly from the [GitHub Releases](https://github.com/alsyundawy/NoteSciPad/releases/latest) page:
 
 | Platform      | Target Architecture         | Package Format | Download Link                                                                                                                                        |
 | :------------ | :-------------------------- | :------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **macOS 15+** | Apple Silicon (M1/M2/M3/M4) |     `.dmg`     | [NoteSciPad-1.1.0-macOS-arm64.dmg](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.1.0/NoteSciPad-1.1.0-macOS-arm64.dmg)               |
-| **macOS 15+** | Intel (x86_64)              |     `.dmg`     | [NoteSciPad-1.1.0-macOS-x86_64.dmg](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.1.0/NoteSciPad-1.1.0-macOS-x86_64.dmg)             |
-| **Linux**     | x86_64 (Ubuntu / Debian)    |     `.deb`     | [NoteSciPad-1.1.0-Linux-x86_64.deb](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.1.0/NoteSciPad-1.1.0-Linux-x86_64.deb)             |
-| **Linux**     | x86_64 (Fedora / RHEL)      |     `.rpm`     | [NoteSciPad-1.1.0-Linux-x86_64.rpm](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.1.0/NoteSciPad-1.1.0-Linux-x86_64.rpm)             |
-| **Linux**     | Universal Sandboxed         |    Flatpak     | [io.github.alsyundawy.NoteSciPad.flatpak](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.1.0/io.github.alsyundawy.NoteSciPad.flatpak) |
+| **macOS 15+** | Apple Silicon (M1/M2/M3/M4) |     `.dmg`     | [NoteSciPad-1.2.0-macOS-arm64.dmg](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.2.0/NoteSciPad-1.2.0-macOS-arm64.dmg)               |
+| **macOS 15+** | Intel (x86_64)              |     `.dmg`     | [NoteSciPad-1.2.0-macOS-x86_64.dmg](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.2.0/NoteSciPad-1.2.0-macOS-x86_64.dmg)             |
+| **Linux**     | x86_64 (Ubuntu / Debian)    |     `.deb`     | [NoteSciPad-1.2.0-Linux-x86_64.deb](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.2.0/NoteSciPad-1.2.0-Linux-x86_64.deb)             |
+| **Linux**     | x86_64 (Fedora / RHEL)      |     `.rpm`     | [NoteSciPad-1.2.0-Linux-x86_64.rpm](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.2.0/NoteSciPad-1.2.0-Linux-x86_64.rpm)             |
+| **Linux**     | Universal Sandboxed         |    Flatpak     | [io.github.alsyundawy.NoteSciPad.flatpak](https://github.com/alsyundawy/NoteSciPad/releases/download/v1.2.0/io.github.alsyundawy.NoteSciPad.flatpak) |
 
 ---
 
@@ -225,7 +224,17 @@ trunk check -n -j 2
 
 For the complete chronological release history, see [CHANGELOG.md](CHANGELOG.md).
 
-### [v1.1.0] — Initial Production Release (2026-10-19)
+### [v1.2.0] — UI/UX Polish, Apple HIG Icons, Modern Dialogs & Multi-Qt Release (2026-10-20)
+
+- **Apple HIG Multi-Size Icons**: Redesigned official app icon with 82% squircle grid and optical padding (16x16 to 1024x1024) to eliminate oversized macOS Dock display.
+- **Modern Message Box**: Replaced plain legacy message dialogs with sleek vector-badged `ModernMessageBox` adhering to active theme colors.
+- **Universal Cross-Platform Typography**: Unified GUI fonts across macOS (`-apple-system`/`SF Pro Text`) and Linux (`Inter`/`Ubuntu`/`Roboto`).
+- **Dynamic Theme-Aware About Dialog**: Rich 6-tab About dialog adapting live to all 75 dark & light theme palettes.
+- **File Menu Enhancements**: Added `New Window` (Ctrl/Cmd+Shift+N) and native multi-page `Export to PDF...`.
+- **Streamlined Localizations**: Purged untranslated legacy `.ts` files, maintaining 100% complete English and Indonesian (`id`) translations.
+- **Multi-Qt Build Matrix**: Comprehensive support and testing for Qt 6.5, Qt 6.8, and Qt 6.10 across macOS and Linux.
+
+### [v1.1.0] — Production Release (2026-10-19)
 
 - **Core Engine**: Deeply vendored Scintilla 5.5.4 and Lexilla 5.4.3 engines.
 - **Security**: AES-256-CBC document encryption with HMAC-SHA256 authenticated integrity.
@@ -282,14 +291,6 @@ For inquiries, security disclosures, or collaboration:
 
 If **NoteSciPad** accelerates your productivity, please consider supporting the project and its development:
 
-### ☕ Support via Buy Me A Coffee
-
-[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Harry%20Alsyundawy-FF813F?style=for-the-badge&logo=buy-me-a-coffee&logoColor=white)](https://www.buymeacoffee.com/0TC98Sk)
-
-- **Direct Link**: [`https://www.buymeacoffee.com/0TC98Sk`](https://www.buymeacoffee.com/0TC98Sk)
-
----
-
 ### 💳 International Support: PayPal
 
 [![Donate with PayPal](https://img.shields.io/badge/Donate-PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.me/alsyundawy)
@@ -306,7 +307,6 @@ Scan the QRIS barcode below using any Indonesian mobile banking application (BCA
 
 - **Merchant / Account Name**: **ALSYUNDAWY**
 - **NMID**: **`ID1020021153676`**
-- **Direct WhatsApp Confirmation**: [`https://wa.me/6285658515212`](https://wa.me/6285658515212) (`+62 856-5851-5212`)
 
 ---
 

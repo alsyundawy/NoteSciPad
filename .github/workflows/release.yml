@@ -73,6 +73,13 @@ jobs:
             platform: linux
             arch: x64
             cmake_arch: x86_64
+            qt_arch: gcc_64
+            qt_version: "6.5"
+
+          - runs_on: ubuntu-24.04
+            platform: linux
+            arch: x64
+            cmake_arch: x86_64
             qt_arch: linux_gcc_64
             qt_version: "6.8"
 
@@ -233,7 +240,7 @@ jobs:
             echo "Looking for canonical release dir: ${dir}"
             if [ -d "${dir}" ]; then
               # Find the single DMG produced by PackagingMac.cmake
-              dmg_file=$(find "${dir}" -maxdepth 1 -name 'NotepadNext-v*.dmg' | head -1)
+              dmg_file=$(find "${dir}" -maxdepth 1 \( -name 'NoteSciPad*.dmg' -o -name 'NotepadNext*.dmg' \) | head -1)
               if [ -n "${dmg_file}" ]; then
                 echo "Uploading ${dmg_file} → release ${RELEASE_TAG}"
                 gh release upload "${RELEASE_TAG}" "${dmg_file}" --clobber

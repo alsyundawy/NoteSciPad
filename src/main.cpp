@@ -21,6 +21,7 @@
 #include <QSettings>
 #include <QSysInfo>
 #include <QApplication>
+#include <QFont>
 #include <QDataStream>
 
 #include "NotepadNextApplication.h"
@@ -55,6 +56,20 @@ int main(int argc, char *argv[])
     }
     qInfo("=============================");
 
+
+    // Establish universal modern GUI font fallback for cross-platform visual consistency
+    QFont defaultGuiFont;
+#if defined(Q_OS_MACOS)
+    defaultGuiFont.setFamilies({"-apple-system", "BlinkMacSystemFont", "SF Pro Text", "Helvetica Neue", "Arial", "sans-serif"});
+    defaultGuiFont.setPointSize(12);
+#elif defined(Q_OS_LINUX)
+    defaultGuiFont.setFamilies({"Inter", "Ubuntu", "Roboto", "Segoe UI", "DejaVu Sans", "Liberation Sans", "sans-serif"});
+    defaultGuiFont.setPointSize(10);
+#else
+    defaultGuiFont.setFamilies({"Segoe UI", "Arial", "sans-serif"});
+    defaultGuiFont.setPointSize(10);
+#endif
+    QApplication::setFont(defaultGuiFont);
 
     if(app.isPrimary()) {
         app.init();

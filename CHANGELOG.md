@@ -7,6 +7,59 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.2.0] - 2026-10-20
+
+### 💎 Apple HIG Multi-Resolution Icons, Modern Dialogs, Universal Fonts, and Multi-Qt CI
+
+NoteSciPad v1.2.0 brings major visual and architectural refinements: full compliance with Apple Human Interface Guidelines for application icons (eliminating oversized macOS Dock rendering), an elegant vector-badged `ModernMessageBox` replacing outdated dialogs, dynamic theme adaptation across all dialogs and cards, universal cross-platform typography for macOS and Linux, File menu enhancements (`New Window` and `Export to PDF...`), localization optimization, and comprehensive build matrix validation for Qt 6.5, Qt 6.8, and Qt 6.10.
+
+---
+
+### ✨ Added
+
+#### Apple HIG Compliant Multi-Resolution Icons
+
+- **82% Squircle Canvas Grid**: Re-engineered application icon with official Apple HIG optical padding (~100px border margins on 1024x1024 canvas), resolving the oversized appearance on macOS Dock.
+- **Full Resolution Iconset**: Generated 10 distinct standard resolutions (`16x16`, `16x16@2x`, `32x32`, `32x32@2x`, `128x128`, `128x128@2x`, `256x256`, `256x256@2x`, `512x512`, `512x512@2x`) packaged into native `NoteSciPad.icns`.
+- **Multi-Resolution Windows & Linux Icons**: Multi-layered `NoteSciPad.ico` (16, 24, 32, 48, 64, 128, 256 px) and high-DPI 512x512 Linux desktop icon.
+
+#### Modern Vector-Badged Message Box (`ModernMessageBox`)
+
+- **Custom Native Qt Sheet Dialog**: Replaced dated, plain `QMessageBox` popups (such as "Save changes to New 1?") with a sleek, rounded dialog matching the active theme palette.
+- **Custom Vector SVG Badges**: High-contrast, beautifully tinted circular badges for Save/Question, Warning, Critical, and Information states.
+- **Dynamic Theme Palette Binding**: Dialog surfaces, borders, button hover states, and typography dynamically adhere to active dark and light themes.
+
+#### Universal Cross-Platform Typography
+
+- **Operating-System Adaptive Font Stacks**:
+  - *macOS*: `-apple-system`, `SF Pro Text`, `Helvetica Neue`, `Arial`.
+  - *Linux*: `Inter`, `Ubuntu`, `Roboto`, `DejaVu Sans`, `sans-serif`.
+  - *Monospace Editor Stack*: `JetBrains Mono`, `SF Mono`, `Menlo`, `DejaVu Sans Mono`, `Liberation Mono`.
+
+#### File Menu Expansions
+
+- **New Window (`Ctrl+Shift+N` / `Cmd+Shift+N`)**: Instantly spawns a detached, independent NoteSciPad window process.
+- **Export to PDF...**: Multi-page high-resolution vector PDF export powered by `QPdfWriter` and `QPainter`, including document headers, line numbering, and page numbering.
+
+#### Theme-Aware About Dialog Refinements
+
+- **Eliminated Grayscale Alternating Boxes**: Replaced static grayscale `palette(alternate-base)` cards with dynamic `ThemePalette::card` backgrounds, matching border accents, and colored indicator bars.
+- **Live Theme Synchronization**: Bound `AboutDialog` directly to `ThemeManager::themeChanged` signal for real-time live repainting without dialog re-instantiation.
+- **Shortcuts & Documentation Tab**: Added dedicated keyboard shortcuts reference tab alongside About, Maintainer, Credits, Diagnostics, and License tabs.
+
+### 🗑️ Removed & Cleaned
+
+- **Donation Options**: Completely removed all references to "Buy Me A Coffee" across the entire codebase and documentation (maintaining only PayPal and QRIS).
+- **Localization Streamlining**: Pruned 21 incomplete translation files (`.ts`), preserving 100% verified English (`en`) and Indonesian (`id`) translations.
+- **Privacy & Safety Invariants**: Strictly omitted personal phone and WhatsApp contact numbers from all maintainer documentation.
+
+### 🛠️ Infrastructure & CI/CD
+
+- **Multi-Qt Support**: Validated building and packaging with Qt 6.5, Qt 6.8, and Qt 6.10 across macOS Intel (`macos-15-intel`), macOS Apple Silicon (`macos-15`), and Linux Ubuntu (`ubuntu-24.04`).
+- **Release DMG Packaging Fix**: Resolved artifact search globbing in `.github/workflows/release.yml` to accurately detect and publish `NoteSciPad*.dmg`.
+
+---
+
 ## [1.1.0] - 2026-10-19
 
 ### 🎨 Themes & UI Modernization, Math Evaluation, and Trending Lexers
@@ -31,7 +84,7 @@ NoteSciPad v1.1.0 introduces the complete 75-theme collection adapted from Subne
 
 - **Modern 5-Tab Interface (`AboutDialog`)**:
   - *About NoteSciPad*: High-resolution application icon, architecture overview, and legal non-affiliation statement.
-  - *Maintainer Information*: Complete contact information for Harry DS Alsyundawy (ALSYUNDAWY IT SOLUTION) including Email, Website, GitHub, Telegram, PayPal, Buy Me a Coffee, and QRIS barcode link (*strictly omitting phone number and WhatsApp*).
+  - *Maintainer Information*: Complete contact information for Harry DS Alsyundawy (ALSYUNDAWY IT SOLUTION) including Email, Website, GitHub, Telegram, PayPal, and QRIS barcode link (*strictly omitting phone number and WhatsApp*).
   - *Credits & Attribution*: Formal upstream attribution to Scintilla, Lexilla, NotepadNext, Notepad4, Notepad3, and SubnetCalc-MacOS.
   - *System & Diagnostics*: Real-time operating system, kernel version, CPU build architecture, Qt build/runtime version, display scale ratio, and one-click "Copy Diagnostics to Clipboard".
   - *License*: Complete GNU General Public License v3.0 text and FSF links.

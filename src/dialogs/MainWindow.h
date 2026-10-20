@@ -80,6 +80,8 @@ public:
 
 public slots:
     void newFile();
+    void newWindow();
+    void exportPdf();
 
     void openFileDialog();
     void openFile(const QString &filePath);

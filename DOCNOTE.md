@@ -1,23 +1,65 @@
-# NoteSciPad Release DocNote — v1.1.0
+# NoteSciPad Release DocNote — v1.2.0
 
 ```text
 ================================================================================
-Release Version     : 1.1.0 (Feature Release: Themes, Math, & Trending Lexers)
-Release Date        : 2026-10-19
+Release Version     : 1.2.0 (UI/UX Polish, Apple HIG Icons, & Multi-Qt Release)
+Release Date        : 2026-10-20
 Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repository          : https://github.com/alsyundawy/NoteSciPad
 Core Editing Engine : Scintilla 5.6.x (Vendored) & Lexilla 5.5.x (Vendored)
-GUI Framework       : Qt 6.5 / 6.8 LTS / 6.10 / 6.11 (C++20 ISO Standard)
+GUI Framework       : Qt 6.5 / 6.8 LTS / 6.10 (C++20 ISO Standard)
 Target Platforms    : macOS 11.0+ (Apple Silicon & Intel) & Linux (x86_64 / arm64)
 License             : GNU General Public License v3.0 (GPL-3.0-or-later)
-CI/CD Status        : 100% Passing across all 8 matrix targets, MegaLinter & CodeQL
+CI/CD Status        : 100% Passing across all matrix targets, MegaLinter & CodeQL
 ================================================================================
 ```
 
 ---
 
-## 1. Executive Summary: Release v1.1.0
+## 1. Executive Summary: Release v1.2.0
+
+NoteSciPad **v1.2.0** delivers high-polish user interface enhancements, strict Apple Human Interface Guidelines (HIG) compliance, modernized vector-badged message dialogs, universal cross-platform typography, and extended CI/CD build matrix coverage across Qt 6.5, Qt 6.8, and Qt 6.10.
+
+### Key Milestones in v1.2.0
+
+1. **Apple HIG Compliant Multi-Size Application Icons**:
+   - Resampled and regenerated the official iconset with Apple's standard ~82% squircle grid (824x824 icon inside 1024x1024 transparent canvas with 100px optical margins).
+   - Produced 10 macOS resolutions in `NoteSciPad.icns` (`16x16`, `16x16@2x`, `32x32`, `32x32@2x`, `128x128`, `128x128@2x`, `256x256`, `256x256@2x`, `512x512`, `512x512@2x`).
+   - Generated multi-resolution Windows ICO (`NoteSciPad.ico`: 16, 24, 32, 48, 64, 128, 256 px) and 512x512 PNG for Linux desktops.
+   - Eliminates the oversized appearance on macOS Dock.
+
+2. **Modern Vector-Badged Message Box (`ModernMessageBox`)**:
+   - Replaced plain standard `QMessageBox` modal popups (such as the legacy "Save changes to New 1?" dialog) with a custom, elegantly styled Qt dialog (`ModernMessageBox`).
+   - Embedded crisp vector SVG badges for Save/Question, Warning, Critical, and Information states with tinted background circles.
+   - Full keyboard navigation (`Esc` for Discard/Cancel, `Enter`/`Return` for default action), rounded buttons, and theme-adaptive colors.
+
+3. **Universal Cross-Platform Typography**:
+   - macOS: Native system font cascade prioritizing `-apple-system`, `SF Pro Text`, `Helvetica Neue`.
+   - Linux: Clean font cascade prioritizing `Inter`, `Ubuntu`, `Roboto`, `DejaVu Sans`.
+   - Code & Editor: High-legibility coding stack (`JetBrains Mono`, `SF Mono`, `Menlo`, `DejaVu Sans Mono`, `Liberation Mono`).
+
+4. **Dynamic Theme Adaptation for Dialogs & Cards**:
+   - Replaced murky grayscale alternating background cards in `AboutDialog` with dynamic `ThemePalette::card` backgrounds and colored left accent borders.
+   - Connected `AboutDialog` to `ThemeManager::themeChanged` signal, enabling real-time styling updates upon theme switches.
+   - Enriched AboutDialog content with 6 organized tabs (About, Maintainer, Credits & Attribution, Diagnostics, Shortcuts, and License).
+
+5. **File Menu Enhancements**:
+   - `New Window` (`Ctrl+Shift+N` / `Cmd+Shift+N`): Spawns a new, independent editor instance.
+   - `Export to PDF...`: Native multi-page vector PDF generation using `QPdfWriter` and `QPainter`, complete with document headers, line numbering, and page numbers.
+
+6. **Donation Channel & Localization Cleanup**:
+   - Removed all references to "Buy Me A Coffee" across repository and documentation (retaining PayPal and QRIS).
+   - Pruned 21 untranslated `.ts` translation files, preserving 100% verified English (`en`) and Indonesian (`id`) translations.
+   - Strictly omitted phone and WhatsApp numbers from maintainer contact info.
+
+7. **Multi-Qt Build & Release Matrix (Qt 6.5, 6.8, 6.10)**:
+   - Synchronized CI matrices in `build.yml` and `release.yml` for Qt 6.5, 6.8 LTS, and 6.10 on macOS (Intel and Apple Silicon) and Linux Ubuntu.
+   - Fixed DMG artifact search pattern in `.github/workflows/release.yml` (`NoteSciPad*.dmg`).
+
+---
+
+## 2. NoteSciPad Release DocNote — v1.1.0
 
 NoteSciPad **v1.1.0** represents a major enhancement to NoteSciPad's visual styling capabilities, scientific toolset, and syntax support.
 

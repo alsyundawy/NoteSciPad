@@ -42,6 +42,7 @@
 #include "CaseConverter.h"
 #include "SessionManager.h"
 #include "UndoAction.h"
+#include "ModernMessageBox.h"
 #include "ui_MainWindow.h"
 
 #include <QFileDialog>
@@ -56,6 +57,10 @@
 #include <QInputDialog>
 #include <QPrintPreviewDialog>
 #include <QPrinter>
+#include <QPdfWriter>
+#include <QPainter>
+#include <QPageSize>
+#include <QPageLayout>
 #include <QDirIterator>
 #include <QProcess>
 #include <QScreen>
@@ -171,6 +176,7 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
 
     // Set up the menus
     connect(ui->actionNew, &QAction::triggered, this, &MainWindow::newFile);
+    connect(ui->actionNewWindow, &QAction::triggered, this, &MainWindow::newWindow);
     connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::openFileDialog);
     connect(ui->actionReload, &QAction::triggered, this, &MainWindow::reloadFile);
     connect(ui->actionClose, &QAction::triggered, this, &MainWindow::closeCurrentFile);
@@ -226,6 +232,8 @@ MainWindow::MainWindow(NotepadNextApplication *app) :
         RtfConverter rtf(currentEditor());
         exportAsFormat(&rtf, QStringLiteral("RTF Files (*.rtf)"));
     });
+
+    connect(ui->actionExportPdf, &QAction::triggered, this, &MainWindow::exportPdf);
 
     connect(ui->actionPrint, &QAction::triggered, this, &MainWindow::print);
 
@@ -3088,27 +3096,117 @@ void MainWindow::showEditorZoomLevelIndicator()
 
 MainWindow::UserSaveAction MainWindow::promptForSave(const QVector<ScintillaNext *> &editors)
 {
-    const int count = editors.count();
-    QMessageBox msgBox(this);
-    msgBox.setWindowTitle(tr("Save File"));
-    msgBox.setIcon(QMessageBox::Question);
-
-    // Using pluralization for the main text
-    QString text = (count == 1)
-                       ? tr("Save changes to <b>%1</b>?").arg(editors.first()->getName())
-                       : tr("There are %n files with unsaved changes. Save them?", "", count);
-    msgBox.setText(text);
-
-    QPushButton *saveBtn = msgBox.addButton(count > 1 ? tr("Save All") : tr("Save"), QMessageBox::AcceptRole);
-    QPushButton *discardBtn = msgBox.addButton(count > 1 ? tr("Discard All") : tr("Discard"), QMessageBox::DestructiveRole);
-    msgBox.addButton(QMessageBox::Cancel);
-
-    msgBox.setDefaultButton(saveBtn);
-    msgBox.exec();
-
-    if (msgBox.clickedButton() == saveBtn)    return UserSaveAction::SaveAll;
-    if (msgBox.clickedButton() == discardBtn) return UserSaveAction::DiscardAll;
+    ModernMessageBox::ActionChoice choice = ModernMessageBox::promptForSave(this, editors);
+    if (choice == ModernMessageBox::ActionChoice::SaveOrAccept) return UserSaveAction::SaveAll;
+    if (choice == ModernMessageBox::ActionChoice::Discard)      return UserSaveAction::DiscardAll;
     return UserSaveAction::Cancel;
+}
+
+void MainWindow::newWindow()
+{
+    QProcess::startDetached(QCoreApplication::applicationFilePath(), QStringList());
+}
+
+void MainWindow::exportPdf()
+{
+    ScintillaNext *editor = currentEditor();
+    if (!editor) return;
+
+    QString defaultName = editor->getName();
+    if (defaultName.isEmpty()) defaultName = tr("Untitled");
+    if (!defaultName.endsWith(QStringLiteral(".pdf"), Qt::CaseInsensitive)) {
+        int dot = defaultName.lastIndexOf('.');
+        if (dot > 0) defaultName = defaultName.left(dot);
+        defaultName += QStringLiteral(".pdf");
+    }
+
+    QString savePath = QFileDialog::getSaveFileName(
+        this,
+        tr("Export to PDF"),
+        defaultName,
+        tr("PDF Documents (*.pdf);;All Files (*)")
+    );
+
+    if (savePath.isEmpty()) return;
+
+    QPdfWriter pdfWriter(savePath);
+    pdfWriter.setPageSize(QPageSize(QPageSize::A4));
+    pdfWriter.setPageMargins(QMarginsF(15, 15, 15, 15), QPageLayout::Millimeter);
+    pdfWriter.setTitle(editor->getName());
+    pdfWriter.setCreator(QStringLiteral("NoteSciPad v%1").arg(APP_VERSION));
+
+    QPainter painter(&pdfWriter);
+    if (!painter.isActive()) {
+        ModernMessageBox::warning(this, tr("Export Failed"), tr("Could not initialize PDF renderer for:\n%1").arg(savePath));
+        return;
+    }
+
+    QFont docFont(QStringLiteral("JetBrains Mono"), 10);
+#if defined(Q_OS_MACOS)
+    docFont.setFamilies({QStringLiteral("-apple-system"), QStringLiteral("SF Mono"), QStringLiteral("Menlo"), QStringLiteral("JetBrains Mono"), QStringLiteral("Courier New")});
+#elif defined(Q_OS_LINUX)
+    docFont.setFamilies({QStringLiteral("Inter"), QStringLiteral("DejaVu Sans Mono"), QStringLiteral("Liberation Mono"), QStringLiteral("JetBrains Mono"), QStringLiteral("Monospace")});
+#endif
+    painter.setFont(docFont);
+    QFontMetrics fm(docFont);
+
+    int lineHeight = fm.lineSpacing();
+    QRect pageRect = pdfWriter.pageLayout().paintRectPixels(pdfWriter.resolution());
+
+    QFont headerFont = painter.font();
+    headerFont.setBold(true);
+    headerFont.setPointSize(11);
+    painter.setFont(headerFont);
+    painter.setPen(QColor(100, 100, 100));
+    painter.drawText(pageRect.left(), pageRect.top() + 20, tr("%1 — NoteSciPad").arg(editor->getName()));
+    painter.drawLine(pageRect.left(), pageRect.top() + 28, pageRect.right(), pageRect.top() + 28);
+
+    painter.setFont(docFont);
+    painter.setPen(Qt::black);
+
+    int startY = pageRect.top() + 45;
+    int currentY = startY;
+    int pageNum = 1;
+
+    int totalLines = editor->linesOnScreen() > 0 ? editor->lineCount() : 1;
+    for (int i = 0; i < totalLines; ++i) {
+        if (currentY + lineHeight > pageRect.bottom() - 30) {
+            painter.setPen(QColor(128, 128, 128));
+            painter.drawText(pageRect.right() - 80, pageRect.bottom() - 10, tr("Page %1").arg(pageNum));
+
+            pdfWriter.newPage();
+            pageNum++;
+
+            painter.setFont(headerFont);
+            painter.setPen(QColor(100, 100, 100));
+            painter.drawText(pageRect.left(), pageRect.top() + 20, tr("%1 — NoteSciPad").arg(editor->getName()));
+            painter.drawLine(pageRect.left(), pageRect.top() + 28, pageRect.right(), pageRect.top() + 28);
+
+            painter.setFont(docFont);
+            painter.setPen(Qt::black);
+            currentY = startY;
+        }
+
+        QString lineText = editor->getLineText(i);
+        lineText.remove('\r');
+        lineText.remove('\n');
+
+        QString lineNumStr = QString::number(i + 1).rightJustified(4, ' ') + "  ";
+        painter.setPen(QColor(160, 160, 160));
+        painter.drawText(pageRect.left(), currentY, lineNumStr);
+
+        int lineNumWidth = fm.horizontalAdvance(lineNumStr);
+        painter.setPen(Qt::black);
+        painter.drawText(pageRect.left() + lineNumWidth, currentY, lineText);
+
+        currentY += lineHeight;
+    }
+
+    painter.setPen(QColor(128, 128, 128));
+    painter.drawText(pageRect.right() - 80, pageRect.bottom() - 10, tr("Page %1").arg(pageNum));
+    painter.end();
+
+    FadingIndicator::showText(editor, tr("Exported to PDF: %1").arg(QFileInfo(savePath).fileName()));
 }
 
 void MainWindow::saveSettings() const

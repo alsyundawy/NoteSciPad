@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 env:
-  QT_RELEASE_VER: "6.5"
+  QT_RELEASE_VER: "6.8"
 
 permissions:
   contents: read

@@ -266,6 +266,9 @@ QString ThemeManager::getThemeStyleSheet() const
     QString accent = pal ? QString::fromLatin1(pal->blue) : (isDarkActive() ? QStringLiteral("#58a6ff") : QStringLiteral("#0969da"));
 
     const QString templateStr = QString::fromUtf8(R"(
+QWidget {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Ubuntu", "Roboto", "Segoe UI", "DejaVu Sans", "Liberation Sans", "Helvetica Neue", Arial, sans-serif;
+}
 QStatusBar {
     background-color: %1;
     color: %2;
@@ -332,6 +335,61 @@ ads--CDockAreaTitleBar {
     border-bottom: 3px solid %6;
     background: %1;
     color: %2;
+}
+QDialog, QMessageBox {
+    background-color: %1;
+    color: %2;
+}
+QTabWidget::pane {
+    border: 1px solid %3;
+    background-color: %1;
+    border-radius: 8px;
+}
+QTabBar::tab {
+    background-color: %1;
+    color: %4;
+    padding: 7px 16px;
+    border: 1px solid %3;
+    border-bottom: none;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    margin-right: 2px;
+}
+QTabBar::tab:selected {
+    background-color: %5;
+    color: %2;
+    font-weight: bold;
+    border-top: 2px solid %6;
+}
+QTabBar::tab:hover:!selected {
+    background-color: %3;
+    color: %2;
+}
+QPushButton {
+    background-color: %5;
+    color: %2;
+    border: 1px solid %3;
+    border-radius: 6px;
+    padding: 6px 16px;
+    font-weight: 500;
+}
+QPushButton:hover {
+    border-color: %6;
+}
+QPushButton:pressed {
+    background-color: %6;
+    color: #ffffff;
+}
+QPushButton:default {
+    background-color: %6;
+    color: #ffffff;
+    border: 1px solid %6;
+}
+QTextBrowser {
+    background-color: %5;
+    color: %2;
+    border: 1px solid %3;
+    border-radius: 8px;
 }
 )");
 
