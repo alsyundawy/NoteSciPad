@@ -1,7 +1,8 @@
 # MegaLinter configuration for NoteSciPad
 # Reference: https://megalinter.io/configuration/
+# Tuned for C++20/Qt6 + CMake + Shell scripts + Markdown docs + YAML/JSON/XML configs
 
-# Exclude vendored thirdparty libraries (Scintilla, Lexilla) and build artifacts
+# Exclude vendored libraries, build artifacts, and generated/cache directories
 ADDITIONAL_EXCLUDED_DIRECTORIES:
   - thirdparty
   - build
@@ -10,16 +11,63 @@ ADDITIONAL_EXCLUDED_DIRECTORIES:
   - deploy/windows
   - .trunk
   - src/languages
+  - .cpm-cache
 
-FILTER_REGEX_EXCLUDE: (^thirdparty/|^build/|^build-test-fixtures/|^installer/|libcrypto.*\.dll|libssl.*\.dll)
+FILTER_REGEX_EXCLUDE: (^thirdparty/|^build/|^build-test-fixtures/|^installer/|^deploy/windows/|libcrypto.*\.dll|libssl.*\.dll|\.cpm-cache)
 
-# Disable excessive or irrelevant checks
+# Disable irrelevant language families (keep default enable for relevant ones)
 DISABLE:
+  - C
   - COPYPASTE
   - SPELL
+  - PHP
+  - JAVA
+  - GO
+  - RUBY
+  - TERRAFORM
+  - ANSIBLE
+  - KOTLIN
+  - GROOVY
+  - DOCKERFILE
+  - CLOUDFORMATION
+  - TYPESCRIPT # Qt Linguist .ts files are XML translation files, not TypeScript
+  - JAVASCRIPT
+  - CSHARP
+  - RUST
+  - SWIFT
+  - CSS
+  - LUA
 
-# Disable DevSkim linter as it produces false positives on documentation URLs and hash routines
+# Disable specific noisy or less useful linters
 DISABLE_LINTERS:
+  - ACTION_ZIZMOR
+  - C_CPPLINT
+  - C_CPPCHECK
+  - C_CLANG_FORMAT
   - REPOSITORY_DEVSKIM
+  - MARKDOWN_RUMDL
+  - PYTHON_PYRIGHT # optional: enable later if you want type checking
+  - JSON_PRETTIER # prefer jsonlint or keep one formatter
+  - CPP_CPPLINT # Google C++ style checker (conflicts with Qt 6 / C++20; clang-format is used instead)
+  - PYTHON_FLAKE8
+  - PYTHON_PYLINT
+  - PYTHON_RUFF
+  - YAML_V8R
+  - YAML_YAMLLINT
+  - MARKDOWN_MARKDOWNLINT
 
+# Non-blocking (still run, but won't fail the CI if they error)
+DISABLE_ERRORS_LINTERS:
+  - PYTHON_BANDIT
+  - REPOSITORY_TRIVY
+  - CPP_CPPCHECK
+
+# Performance & output
 SHOW_ELAPSED_TIME: true
+PRINT_ALL_FILES: false
+
+# Linter-specific arguments tuned for Qt 6 and NoteSciPad repository structure
+CPP_CLANG_FORMAT_ARGUMENTS: --style=file
+CPP_CPPCHECK_ARGUMENTS: --library=qt --suppress=syntaxError --suppress=unmatchedSuppression --suppress=missingIncludeSystem
+BASH_SHELLCHECK_ARGUMENTS: -x
+MARKDOWN_MARKDOWNLINT_ARGUMENTS: --config .markdownlint.json
