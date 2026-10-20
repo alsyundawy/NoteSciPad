@@ -98,5 +98,3 @@ private:
 };
 
 using NoteSciPadApplication = NotepadNextApplication;
-
-#endif  // NOTEPADNEXTAPPLICATION_H (= NoteSciPadApplication alias)
