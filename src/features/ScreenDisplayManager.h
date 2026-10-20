@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
@@ -36,8 +37,7 @@ struct DisplayInfo {
     bool isRetina = false;
 };
 
-class ScreenDisplayManager : public QObject
-{
+class ScreenDisplayManager : public QObject {
     Q_OBJECT
 
 public:
@@ -51,7 +51,7 @@ public:
     void moveToPrimaryScreen(QWidget *window);
 
     QList<DisplayInfo> getConnectedDisplaysInfo(const QWidget *window = nullptr) const;
-    void showDisplayInfoDialog(QWidget *parent);
+    static void showDisplayInfoDialog(QWidget *parent);
     qreal currentDevicePixelRatio(const QWidget *window) const;
 
 signals:
@@ -75,4 +75,4 @@ private:
     qreal m_lastDpr = 1.0;
 };
 
-#endif // SCREENDISPLAYMANAGER_H
+#endif  // SCREENDISPLAYMANAGER_H

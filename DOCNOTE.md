@@ -97,6 +97,11 @@ NoteSciPad **v1.2.0** delivers high-polish user interface enhancements, strict A
     - Zero background daemons, zero CPU spikes, and non-blocking static tooling preventing system freezes.
     - Automated invariants test (`scripts/verify-engine-invariants.sh`) passing 100%.
 
+13. **Universal Dialog Dark/Light Theme Refinement & Checklist Layout**:
+    - Restored complete tokenized CSS styling (`%1` to `%6`) in `ThemeManager.cpp` across all dialog windows (`FindReplaceDialog`, `AboutDialog`, `PreferencesDialog`, `ModernMessageBox`, `MkcertDialog`, `TailOptionsDialog`, `DisplayInfoDialog`).
+    - Standardized 6–8px layout spacing in all dialog checklist columns (`FindReplaceDialog.ui`, `PreferencesDialog.ui`, `TailOptionsDialog.ui`), eliminating squeezed or overlapping elements.
+    - Restored active dock tab peach top border (`4px solid rgb(255, 202, 176)`), orange focused tab border, and 1px toolbar bottom divider.
+
 ---
 
 ## 2. NoteSciPad Release DocNote — v1.1.0
@@ -214,25 +219,32 @@ During development and continuous integration verification across multiple compi
   3. Strict ignore filters (`thirdparty/**`, `build/**`, `installer/**`) and fast execution (~8-10s for the entire project) with zero CPU throttling and zero memory saturation.
   4. Resolved all Cppcheck Qt findings: null-pointer guards in `MainWindow`, default pointer initialization in `NoteSciPadApplication`, type-safe `reinterpret_cast` in `LuaConsoleDock`, and cleaned unread variables.
 
+### Issue 12: Dialog Color Scheme Inconsistency & Checklist Element Overlapping
+
+- **Root Cause**: Several dialog windows (`FindReplaceDialog`, `PreferencesDialog`, `TailOptionsDialog`) lacked explicit styling rules in `ThemeManager.cpp` for core Qt controls (`QGroupBox`, `QCheckBox`, `QRadioButton`, `QLineEdit`, `QComboBox`, `QSpinBox`, `QSlider`, and `QScrollBar`), resulting in OS-native fallback controls that lacked clarity in Dark mode. Additionally, `verticalLayout_6` in `FindReplaceDialog.ui` had spacing set to `0`, causing checklist items to visually collide on modern display scalings.
+- **Remediation**:
+  1. Extended `ThemeManager::getThemeStyleSheet()` with complete, tokenized Dark and Light styling rules (`%1` to `%6`) covering all dialog controls, flat toolbar actions, and tab accents (`4px solid rgb(255, 202, 176)` and orange focus border).
+  2. Adjusted layout spacing in `FindReplaceDialog.ui`, `PreferencesDialog.ui`, and `TailOptionsDialog.ui` to standard 6–8px spacing, guaranteeing neat, readable checklists across all resolutions.
+
 ---
 
 ## 3. 13-Pillar Code Quality & Security Audit
 
-| Pillar                                |  Status  | Verification & Evidence                                                                                                           |
-| :------------------------------------ | :------: | :-------------------------------------------------------------------------------------------------------------------------------- |
-| **1. Bug Review**                     | **PASS** | Null pointer guards on all editor accesses, robust array boundary checks, zero off-by-one errors in Scintilla range calculations. |
-| **2. Syntax Review**                  | **PASS** | 100% compliant with ISO C++20 (`-std=c++20`), CMake 3.21+, and strict POSIX shell standards.                                      |
-| **3. Runtime Review**                 | **PASS** | Cross-platform file paths handled via `QDir::toNativeSeparators`; robust multibyte UTF-8 / UTF-16 encoding roundtrips.            |
-| **4. Logic Review**                   | **PASS** | Editor state transitions deterministic; debounced tail monitoring (500ms) eliminates modal reload interruption.                   |
+| Pillar                                |  Status  | Verification & Evidence                                                                                                                            |
+| :------------------------------------ | :------: | :------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **1. Bug Review**                     | **PASS** | Null pointer guards on all editor accesses, robust array boundary checks, zero off-by-one errors in Scintilla range calculations.                  |
+| **2. Syntax Review**                  | **PASS** | 100% compliant with ISO C++20 (`-std=c++20`), CMake 3.21+, and strict POSIX shell standards.                                                       |
+| **3. Runtime Review**                 | **PASS** | Cross-platform file paths handled via `QDir::toNativeSeparators`; robust multibyte UTF-8 / UTF-16 encoding roundtrips.                             |
+| **4. Logic Review**                   | **PASS** | Editor state transitions deterministic; debounced tail monitoring (500ms) eliminates modal reload interruption.                                    |
 | **5. Memory Review**                  | **PASS** | Full adherence to Qt Object Ownership Hierarchy (RAII); sensitive cryptographic keys cleared via RAII and `secureZeroMemory` volatile indirection. |
-| **6. Dead Code Review**               | **PASS** | Cleaned legacy unused declarations; all public APIs are actively referenced and tested.                                           |
-| **7. Duplicate Code Review**          | **PASS** | Unified Scintilla BGR conversion logic into `scColor` / `scFromRgb` utility helpers.                                              |
-| **8. Circular Dependency Review**     | **PASS** | Modular separation across `features/`, `dialogs/`, `docks/`, `widgets/`, and `utils/` with clean forward declarations.            |
-| **9. Performance Bottleneck Review**  | **PASS** | Chunk-based streaming for large files (>50MB); zero unnecessary heap allocations on editor hot paths.                             |
-| **10. Security Vulnerability Review** | **PASS** | Hardened against OWASP Top 10 2025; AES-256-CBC with HMAC-SHA256 authenticated encryption; 0 CodeQL alerts.                       |
-| **11. Maintainability Review**        | **PASS** | Single Responsibility Principle enforced across standalone feature controllers (`ThemeManager`, `CryptoManager`, etc.).           |
-| **12. Scalability Review**            | **PASS** | Dynamic line margin widths adjust automatically for files with >1,000,000 lines.                                                  |
-| **13. Readability Review**            | **PASS** | Clear, idiomatic modern Qt/C++ conventions with self-documenting naming and structured comments.                                  |
+| **6. Dead Code Review**               | **PASS** | Cleaned legacy unused declarations; all public APIs are actively referenced and tested.                                                            |
+| **7. Duplicate Code Review**          | **PASS** | Unified Scintilla BGR conversion logic into `scColor` / `scFromRgb` utility helpers.                                                               |
+| **8. Circular Dependency Review**     | **PASS** | Modular separation across `features/`, `dialogs/`, `docks/`, `widgets/`, and `utils/` with clean forward declarations.                             |
+| **9. Performance Bottleneck Review**  | **PASS** | Chunk-based streaming for large files (>50MB); zero unnecessary heap allocations on editor hot paths.                                              |
+| **10. Security Vulnerability Review** | **PASS** | Hardened against OWASP Top 10 2025; AES-256-CBC with HMAC-SHA256 authenticated encryption; 0 CodeQL alerts.                                        |
+| **11. Maintainability Review**        | **PASS** | Single Responsibility Principle enforced across standalone feature controllers (`ThemeManager`, `CryptoManager`, etc.).                            |
+| **12. Scalability Review**            | **PASS** | Dynamic line margin widths adjust automatically for files with >1,000,000 lines.                                                                   |
+| **13. Readability Review**            | **PASS** | Clear, idiomatic modern Qt/C++ conventions with self-documenting naming and structured comments.                                                   |
 
 ---
 
@@ -251,17 +263,18 @@ Detailed metrics recorded in [`doc/COLOR_STANDARDS_AND_ACCESSIBILITY.md`](file:/
 
 ## 5. Architectural Decision Records (ADRs) Summary
 
-| ADR         | Title                                        | Decision & Impact                                                         |
-| :---------- | :------------------------------------------- | :------------------------------------------------------------------------ |
-| **ADR-001** | Strict Scintilla & Lexilla Engine Invariant  | Permanent lock on vendored Scintilla and Lexilla engines.                 |
-| **ADR-004** | AES-256-CBC Document Encryption              | Standardized authenticated encryption with PBKDF2 and HMAC-SHA256.        |
-| **ADR-007** | Live Disk Tail Monitoring Architecture       | Non-modal background streaming with auto-scroll to EOF.                   |
-| **ADR-010** | Premier 25 Developer Theme Families          | Standardized theme engine with persistent switching and WCAG compliance.  |
-| **ADR-013** | Sandboxed JavaScript Evaluation              | JavaScriptCore (macOS) / subprocess sandboxing (Linux) with 3s timeout.   |
-| **ADR-016** | Native macOS Services & Multi-Display Safety | AppKit `NSServices` integration and Retina multi-monitor boundary guards. |
-| **ADR-019** | Standardized Application Namespace           | Canonical transition to `io.github.alsyundawy.NoteSciPad`.                |
-| **ADR-024** | WCAG 2.1 AA/AAA Color Palette Standards      | Color token verification and Scintilla BGR endianness abstraction.        |
-| **ADR-025** | 13-Pillar Production Code Review Engine      | Systematic verification across 13 engineering pillars for all releases.   |
+| ADR         | Title                                        | Decision & Impact                                                          |
+| :---------- | :------------------------------------------- | :------------------------------------------------------------------------- |
+| **ADR-001** | Strict Scintilla & Lexilla Engine Invariant  | Permanent lock on vendored Scintilla and Lexilla engines.                  |
+| **ADR-004** | AES-256-CBC Document Encryption              | Standardized authenticated encryption with PBKDF2 and HMAC-SHA256.         |
+| **ADR-007** | Live Disk Tail Monitoring Architecture       | Non-modal background streaming with auto-scroll to EOF.                    |
+| **ADR-010** | Premier 25 Developer Theme Families          | Standardized theme engine with persistent switching and WCAG compliance.   |
+| **ADR-013** | Sandboxed JavaScript Evaluation              | JavaScriptCore (macOS) / subprocess sandboxing (Linux) with 3s timeout.    |
+| **ADR-016** | Native macOS Services & Multi-Display Safety | AppKit `NSServices` integration and Retina multi-monitor boundary guards.  |
+| **ADR-019** | Standardized Application Namespace           | Canonical transition to `io.github.alsyundawy.NoteSciPad`.                 |
+| **ADR-024** | WCAG 2.1 AA/AAA Color Palette Standards      | Color token verification and Scintilla BGR endianness abstraction.         |
+| **ADR-025** | 13-Pillar Production Code Review Engine      | Systematic verification across 13 engineering pillars for all releases.    |
+| **ADR-026** | Universal Dialog Styling & Checklist Columns | Centralized Qt stylesheet tokens and standardized 6-8px checklist layouts. |
 
 ---
 

@@ -101,6 +101,9 @@
       <string>Behavior &amp; Protection</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="spacing">
+       <number>8</number>
+      </property>
       <item>
        <widget class="QCheckBox" name="chkAutoScroll">
         <property name="text">

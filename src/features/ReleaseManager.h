@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
@@ -18,6 +19,7 @@ class QNetworkAccessManager;
 class QNetworkReply;
 class QWidget;
 
+// cppcheck-suppress unusedStructMember
 struct ReleaseInfo {
     QString versionTag;
     QString releaseName;
@@ -27,8 +29,7 @@ struct ReleaseInfo {
     bool isPrerelease = false;
 };
 
-class ReleaseManager : public QObject
-{
+class ReleaseManager : public QObject {
     Q_OBJECT
 
 public:
@@ -36,7 +37,7 @@ public:
 
     void checkForUpdates(QWidget *parent = nullptr, bool silent = false);
     QString currentVersion() const;
-    bool isNewerVersion(const QString &latestVersion, const QString &currentVersion) const;
+    bool isNewerVersion(const QString &latestVersion, const QString &currentVersionStr) const;
 
 signals:
     void updateCheckFinished(bool updateAvailable, const ReleaseInfo &info);
@@ -55,4 +56,4 @@ private:
     bool m_silent = false;
 };
 
-#endif // RELEASEMANAGER_H
+#endif  // RELEASEMANAGER_H

@@ -69,6 +69,12 @@ NoteSciPad v1.2.0 delivers comprehensive visual, architectural, and engine upgra
 - **Live Theme Synchronization**: Bound `AboutDialog` directly to `ThemeManager::themeChanged` signal for real-time live repainting without dialog re-instantiation.
 - **Shortcuts & Documentation Tab**: Added dedicated keyboard shortcuts reference tab alongside About, Maintainer, Credits, Diagnostics, and License tabs.
 
+#### Dialog Color Scheme Refinement & Universal Theme Synchronization
+
+- **Universal Dialog Styling in `ThemeManager.cpp`**: Refined Dark and Light theme styling across all dialog windows (`FindReplaceDialog`, `AboutDialog`, `PreferencesDialog`, `ModernMessageBox`, `MkcertDialog`, `TailOptionsDialog`, `DisplayInfoDialog`), providing uniform palette tokens (`%1` to `%6`) for `QGroupBox`, `QCheckBox`, `QRadioButton`, `QLineEdit`, `QComboBox`, `QSpinBox`, `QSlider`, `QScrollBar`, and `QMenu`.
+- **Dock Tabs & ToolBar Visual Polish**: Restored warm peach top active tab border (`4px solid rgb(255, 202, 176)`), orange focused tab border, and refined native 1px toolbar bottom divider line with seamless button hover styling.
+- **Checklist Column Layout Improvements**: Polished checklist and group layouts across all dialogs (`FindReplaceDialog.ui`, `PreferencesDialog.ui`, `TailOptionsDialog.ui`), enforcing clean 6–8px spacing to prevent overlapping controls and messy layout wrapping across different OS DPI scalings.
+
 ---
 
 ### 🔄 Changed & Refactored
@@ -102,12 +108,17 @@ NoteSciPad v1.2.0 delivers comprehensive visual, architectural, and engine upgra
   - Added `workflow_dispatch` trigger for manual on-demand execution.
 - **macOS DMG Packaging Fix (`cmake/PackagingMac.cmake`)**:
   - Added pre-cleanup (`rm -f`) and forced detach (`hdiutil detach /Volumes/NoteSciPad -force`) prior to `macdeployqt -dmg`, resolving intermittent `hdiutil: resource busy` race conditions on GitHub Actions macOS runners.
-- **C++/Qt Codebase Hardening & Null Safety**:
+- **C++/Qt Codebase Hardening & 13-Pillar Verification**:
   - `MainWindow`: Added null-pointer safeguards in `updateGui`, `updateSaveStatusBasedUi`, and `checkFileForStateChange`.
   - `NoteSciPadApplication`: Default-initialized all manager pointers (`settings`, `editorManager`, `sessionManager`, `recentFilesListManager`, `translationManager`) to `nullptr`.
   - `CryptoManager`: Initialized `StrengthResult` struct members and eliminated dead pointer increment.
   - `LuaConsoleDock`: Upgraded legacy C cast to type-safe `reinterpret_cast<const char *>`.
-  - Cleaned up unused variables in `MkcertDialog`, `ModernMessageBox`, and scoped `status` in `LuaExtension`.
+  - `ScreenDisplayManager`: Enforced `const` correctness on `QScreen` pointer loops/retrievals and promoted `showDisplayInfoDialog` to static.
+  - `TransparentWindowManager`: Eliminated parameter shadowing in `setMode(TransparencyMode targetMode)` and ensured clean signal emissions.
+  - `QuickFindWidget`: Disconnected previous editor instance (`disconnect(this->editor, ...)`) before rebinding to prevent signal leaks, and renamed parameter to `newEditor`.
+  - `CaseConverter` & `EncodingDetector`: Eliminated unused struct members (`anchor`, `caret`) and adopted `std::any_of` for 8-bit high-order byte scanning.
+  - `ReleaseManager`: Renamed parameter `currentVersion` to `currentVersionStr` to prevent member function collision and enforced const pointers on update prompt buttons.
+  - `MarkOccurrences`: Optimized `lastQuery()` to return `const QString &`.
 - **Strict Markdownlint Compliance**: Remediated all markdown formatting issues across documentation files (`doc/*.md`, `CHANGELOG.md`, `USER_GUIDE.md`, `MANUAL_TEST_CHECKLIST.md`), normalizing code fence language specifiers (`MD040`), list blank line paddings (`MD032`), heading blank lines (`MD022`), and table cell formatting.
 
 ---

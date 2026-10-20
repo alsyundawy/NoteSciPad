@@ -29,8 +29,14 @@
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
+       <property name="spacing">
+        <number>8</number>
+       </property>
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="spacing">
+          <number>6</number>
+         </property>
          <item>
           <widget class="QCheckBox" name="checkBoxMenuBar">
            <property name="text">
@@ -64,6 +70,9 @@
             <bool>false</bool>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_3">
+            <property name="spacing">
+             <number>6</number>
+            </property>
             <item>
              <widget class="QCheckBox" name="checkBoxUnsavedFiles">
               <property name="text">
@@ -290,6 +299,9 @@
           <string>Default Directory</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_5">
+          <property name="spacing">
+           <number>6</number>
+          </property>
           <item>
            <widget class="QRadioButton" name="radioFollowCurrentDirectory">
             <property name="text">

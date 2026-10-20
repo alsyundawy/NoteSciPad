@@ -18,30 +18,25 @@
 #include <QPalette>
 #include <QColor>
 
-ThemeManager *ThemeManager::instance()
-{
+ThemeManager *ThemeManager::instance() {
     static ThemeManager s_instance;
     return &s_instance;
 }
 
-ThemeManager::ThemeManager(QObject *parent)
-    : QObject(parent)
-{
+ThemeManager::ThemeManager(QObject *parent) : QObject(parent) {
     if (QGuiApplication::styleHints()) {
-        connect(QGuiApplication::styleHints(), &QStyleHints::colorSchemeChanged,
-                this, &ThemeManager::onSystemColorSchemeChanged);
+        connect(QGuiApplication::styleHints(), &QStyleHints::colorSchemeChanged, this,
+                &ThemeManager::onSystemColorSchemeChanged);
     }
 }
 
-ThemeManager::~ThemeManager()
-{
-}
+ThemeManager::~ThemeManager() {}
 
-void ThemeManager::initialize(ApplicationSettings *settings)
-{
+void ThemeManager::initialize(ApplicationSettings *settings) {
     m_settings = settings;
     if (m_settings) {
-        QString savedMode = m_settings->value(QStringLiteral("App/ThemeMode"), QStringLiteral("Light")).toString().toLower();
+        QString savedMode =
+            m_settings->value(QStringLiteral("App/ThemeMode"), QStringLiteral("Light")).toString().toLower();
         if (savedMode == QStringLiteral("dark")) {
             m_themeMode = ThemeMode::Dark;
         } else if (savedMode == QStringLiteral("auto")) {
@@ -54,13 +49,13 @@ void ThemeManager::initialize(ApplicationSettings *settings)
         if (!savedPalette.isEmpty() && findThemePaletteById(savedPalette)) {
             m_currentPaletteId = savedPalette;
         } else {
-            m_currentPaletteId = (m_themeMode == ThemeMode::Dark) ? QStringLiteral("catppuccinMocha") : QStringLiteral("defaultLight");
+            m_currentPaletteId =
+                (m_themeMode == ThemeMode::Dark) ? QStringLiteral("catppuccinMocha") : QStringLiteral("defaultLight");
         }
     }
 }
 
-bool ThemeManager::isDarkActive() const
-{
+bool ThemeManager::isDarkActive() const {
     if (m_themeMode == ThemeMode::Dark)
         return true;
     if (m_themeMode == ThemeMode::Light)
@@ -73,8 +68,7 @@ bool ThemeManager::isDarkActive() const
     return QGuiApplication::palette().color(QPalette::Window).lightness() < 128;
 }
 
-const ThemePalette *ThemeManager::currentPalette() const
-{
+const ThemePalette *ThemeManager::currentPalette() const {
     if (!m_currentPaletteId.isEmpty()) {
         const ThemePalette *p = findThemePaletteById(m_currentPaletteId);
         if (p)
@@ -84,8 +78,7 @@ const ThemePalette *ThemeManager::currentPalette() const
                           : findThemePaletteById(QStringLiteral("githubLight"));
 }
 
-void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window)
-{
+void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window) {
     m_themeMode = mode;
     if (window) {
         m_activeWindow = window;
@@ -93,8 +86,10 @@ void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window)
 
     if (m_settings) {
         QString modeStr = QStringLiteral("Auto");
-        if (mode == ThemeMode::Dark) modeStr = QStringLiteral("Dark");
-        else if (mode == ThemeMode::Light) modeStr = QStringLiteral("Light");
+        if (mode == ThemeMode::Dark)
+            modeStr = QStringLiteral("Dark");
+        else if (mode == ThemeMode::Light)
+            modeStr = QStringLiteral("Light");
         m_settings->setValue(QStringLiteral("App/ThemeMode"), modeStr);
     }
 
@@ -105,8 +100,7 @@ void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window)
     emit themeChanged(isDarkActive());
 }
 
-void ThemeManager::setPalette(const QString &paletteId, MainWindow *window)
-{
+void ThemeManager::setPalette(const QString &paletteId, MainWindow *window) {
     const ThemePalette *p = findThemePaletteById(paletteId);
     if (!p)
         return;
@@ -124,7 +118,8 @@ void ThemeManager::setPalette(const QString &paletteId, MainWindow *window)
 
     if (m_settings) {
         m_settings->setValue(QStringLiteral("App/ThemePalette"), m_currentPaletteId);
-        m_settings->setValue(QStringLiteral("App/ThemeMode"), p->isDark ? QStringLiteral("Dark") : QStringLiteral("Light"));
+        m_settings->setValue(QStringLiteral("App/ThemeMode"),
+                             p->isDark ? QStringLiteral("Dark") : QStringLiteral("Light"));
     }
 
     if (m_activeWindow) {
@@ -135,22 +130,19 @@ void ThemeManager::setPalette(const QString &paletteId, MainWindow *window)
     emit paletteChanged(m_currentPaletteId);
 }
 
-void ThemeManager::toggleTheme(MainWindow *window)
-{
+void ThemeManager::toggleTheme(MainWindow *window) {
     bool currentlyDark = isDarkActive();
     setThemeMode(currentlyDark ? ThemeMode::Light : ThemeMode::Dark, window);
 }
 
-void ThemeManager::onSystemColorSchemeChanged()
-{
+void ThemeManager::onSystemColorSchemeChanged() {
     if (m_themeMode == ThemeMode::Auto && m_activeWindow) {
         applyTheme(m_activeWindow);
         emit themeChanged(isDarkActive());
     }
 }
 
-void ThemeManager::applyTheme(MainWindow *window)
-{
+void ThemeManager::applyTheme(MainWindow *window) {
     m_activeWindow = window;
     if (!window)
         return;
@@ -162,8 +154,7 @@ void ThemeManager::applyTheme(MainWindow *window)
     }
 }
 
-void ThemeManager::applyThemeToEditor(ScintillaNext *editor)
-{
+void ThemeManager::applyThemeToEditor(ScintillaNext *editor) {
     if (!editor)
         return;
 
@@ -195,8 +186,10 @@ void ThemeManager::applyThemeToEditor(ScintillaNext *editor)
     editor->setCaretFore(scFromRgb(txtPri.rgb()));
 
     // Caret line highlight (slight blend)
-    quint32 caretLineColor = 0xFF000000 | (pal->isDark ? scColor(qMin(card.red() + 18, 255), qMin(card.green() + 18, 255), qMin(card.blue() + 22, 255))
-                                                       : scColor(qMax(card.red() - 12, 0), qMax(card.green() - 12, 0), qMax(card.blue() - 6, 0)));
+    quint32 caretLineColor =
+        0xFF000000 |
+        (pal->isDark ? scColor(qMin(card.red() + 18, 255), qMin(card.green() + 18, 255), qMin(card.blue() + 22, 255))
+                     : scColor(qMax(card.red() - 12, 0), qMax(card.green() - 12, 0), qMax(card.blue() - 6, 0)));
     editor->setElementColour(SC_ELEMENT_CARET_LINE_BACK, caretLineColor);
 
     // Selection highlight
@@ -250,25 +243,347 @@ void ThemeManager::applyThemeToEditor(ScintillaNext *editor)
     editor->styleSetFore(11, scFromRgb(blue.rgb()));
 }
 
-QString ThemeManager::getThemeStyleSheet() const
-{
+QString ThemeManager::getThemeStyleSheet() const {
     const ThemePalette *pal = currentPalette();
     if (!pal) {
         pal = isDarkActive() ? findThemePaletteById(QStringLiteral("catppuccinMocha"))
                              : findThemePaletteById(QStringLiteral("githubLight"));
     }
 
-    QString win = pal ? QString::fromLatin1(pal->win) : (isDarkActive() ? QStringLiteral("#1e1e1e") : QStringLiteral("#f6f8fa"));
-    QString card = pal ? QString::fromLatin1(pal->card) : (isDarkActive() ? QStringLiteral("#25282c") : QStringLiteral("#ffffff"));
-    QString border = pal ? QString::fromLatin1(pal->border) : (isDarkActive() ? QStringLiteral("#33373e") : QStringLiteral("#d0d7de"));
-    QString txtPri = pal ? QString::fromLatin1(pal->txtPri) : (isDarkActive() ? QStringLiteral("#e0e0e0") : QStringLiteral("#24292f"));
-    QString txtSec = pal ? QString::fromLatin1(pal->txtSec) : (isDarkActive() ? QStringLiteral("#9aa0a6") : QStringLiteral("#57606a"));
-    QString accent = pal ? QString::fromLatin1(pal->blue) : (isDarkActive() ? QStringLiteral("#58a6ff") : QStringLiteral("#0969da"));
+    QString win =
+        pal ? QString::fromLatin1(pal->win) : (isDarkActive() ? QStringLiteral("#1e1e1e") : QStringLiteral("#f6f8fa"));
+    QString card =
+        pal ? QString::fromLatin1(pal->card) : (isDarkActive() ? QStringLiteral("#25282c") : QStringLiteral("#ffffff"));
+    QString border = pal ? QString::fromLatin1(pal->border)
+                         : (isDarkActive() ? QStringLiteral("#33373e") : QStringLiteral("#d0d7de"));
+    QString txtPri = pal ? QString::fromLatin1(pal->txtPri)
+                         : (isDarkActive() ? QStringLiteral("#e0e0e0") : QStringLiteral("#24292f"));
+    QString txtSec = pal ? QString::fromLatin1(pal->txtSec)
+                         : (isDarkActive() ? QStringLiteral("#9aa0a6") : QStringLiteral("#57606a"));
+    QString accent =
+        pal ? QString::fromLatin1(pal->blue) : (isDarkActive() ? QStringLiteral("#58a6ff") : QStringLiteral("#0969da"));
 
     const QString templateStr = QString::fromUtf8(R"(
+/* Universal Base Typography & Text */
 QWidget {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Ubuntu", "Roboto", "Segoe UI", "DejaVu Sans", "Liberation Sans", "Helvetica Neue", Arial, sans-serif;
+    color: %2;
 }
+
+/* Windows, Dialogs, Message Boxes */
+QMainWindow, QDialog, QMessageBox {
+    background-color: %1;
+    color: %2;
+}
+
+/* Labels */
+QLabel {
+    color: %2;
+    background-color: transparent;
+}
+
+/* Group Boxes (Find Dialog searchMode, transparency, Preferences, etc.) */
+QGroupBox {
+    background-color: %5;
+    color: %2;
+    border: 1px solid %3;
+    border-radius: 6px;
+    margin-top: 18px;
+    padding: 14px 10px 10px 10px;
+    font-weight: 600;
+}
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    left: 10px;
+    padding: 2px 8px;
+    color: %2;
+    background-color: %1;
+    border: 1px solid %3;
+    border-radius: 4px;
+    font-weight: bold;
+}
+QGroupBox::indicator {
+    width: 15px;
+    height: 15px;
+    border: 1px solid %3;
+    background-color: %5;
+    border-radius: 3px;
+}
+QGroupBox::indicator:hover {
+    border-color: %6;
+}
+QGroupBox::indicator:checked {
+    background-color: %6;
+    border-color: %6;
+}
+QGroupBox::indicator:disabled {
+    border-color: %3;
+    background-color: %1;
+}
+
+/* Checkboxes & Radio Buttons */
+QCheckBox, QRadioButton {
+    color: %2;
+    spacing: 7px;
+    background-color: transparent;
+}
+QCheckBox:hover, QRadioButton:hover {
+    color: %6;
+}
+QCheckBox:disabled, QRadioButton:disabled {
+    color: %4;
+}
+QCheckBox::indicator, QRadioButton::indicator {
+    width: 15px;
+    height: 15px;
+    border: 1px solid %3;
+    background-color: %5;
+}
+QCheckBox::indicator {
+    border-radius: 3px;
+}
+QRadioButton::indicator {
+    border-radius: 8px;
+}
+QCheckBox::indicator:hover, QRadioButton::indicator:hover {
+    border-color: %6;
+}
+QCheckBox::indicator:checked, QRadioButton::indicator:checked {
+    background-color: %6;
+    border-color: %6;
+}
+QCheckBox::indicator:disabled, QRadioButton::indicator:disabled {
+    border-color: %3;
+    background-color: %1;
+}
+
+/* Text Inputs, Line Edits, Combo LineEdit */
+QLineEdit, QTextEdit, QPlainTextEdit {
+    background-color: %5;
+    color: %2;
+    border: 1px solid %3;
+    border-radius: 5px;
+    padding: 4px 8px;
+    selection-background-color: %6;
+    selection-color: #ffffff;
+}
+QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus {
+    border: 1px solid %6;
+}
+QLineEdit:disabled, QTextEdit:disabled, QPlainTextEdit:disabled {
+    background-color: %1;
+    color: %4;
+    border-color: %3;
+}
+
+/* Combo Boxes (Find Dialog search combo, Preferences theme combo, etc.) */
+QComboBox {
+    background-color: %5;
+    color: %2;
+    border: 1px solid %3;
+    border-radius: 5px;
+    padding: 4px 26px 4px 8px;
+    min-height: 22px;
+}
+QComboBox:focus, QComboBox:on {
+    border: 1px solid %6;
+}
+QComboBox:disabled {
+    background-color: %1;
+    color: %4;
+    border-color: %3;
+}
+QComboBox QLineEdit,
+QComboBox QLineEdit:hover,
+QComboBox QLineEdit:focus {
+    background-color: %5;
+    color: %2;
+    border: none;
+    padding: 0px;
+    selection-background-color: %6;
+    selection-color: #ffffff;
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 22px;
+    border-left: 1px solid %3;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    background-color: %1;
+}
+QComboBox::down-arrow {
+    width: 0px;
+    height: 0px;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid %2;
+    margin: 0 auto;
+}
+QComboBox::down-arrow:hover {
+    border-top-color: %6;
+}
+
+/* Item Views (ComboBox popup lists, ListViews, Tables) */
+QComboBox QAbstractItemView, QListView, QTreeView, QTableView {
+    background-color: %5;
+    color: %2;
+    border: 1px solid %3;
+    border-radius: 6px;
+    padding: 4px;
+    selection-background-color: %6;
+    selection-color: #ffffff;
+    outline: none;
+}
+QAbstractItemView::item {
+    min-height: 24px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    color: %2;
+}
+QAbstractItemView::item:selected {
+    background-color: %6;
+    color: #ffffff;
+}
+QAbstractItemView::item:hover:!selected {
+    background-color: %3;
+    color: %2;
+}
+
+/* Spin Boxes */
+QSpinBox, QDoubleSpinBox {
+    background-color: %5;
+    color: %2;
+    border: 1px solid %3;
+    border-radius: 5px;
+    padding: 4px 8px;
+}
+QSpinBox:focus, QDoubleSpinBox:focus {
+    border: 1px solid %6;
+}
+QSpinBox::up-button, QSpinBox::down-button,
+QDoubleSpinBox::up-button, QDoubleSpinBox::down-button {
+    background-color: %1;
+    border: 1px solid %3;
+    width: 16px;
+}
+
+/* Sliders (Transparency slider, etc.) */
+QSlider::groove:horizontal {
+    border: 1px solid %3;
+    height: 6px;
+    background: %1;
+    border-radius: 3px;
+}
+QSlider::sub-page:horizontal {
+    background: %6;
+    border-radius: 3px;
+}
+QSlider::handle:horizontal {
+    background: %5;
+    border: 2px solid %6;
+    width: 14px;
+    height: 14px;
+    margin-top: -5px;
+    margin-bottom: -5px;
+    border-radius: 8px;
+}
+QSlider::handle:horizontal:hover {
+    background: %6;
+}
+
+/* Scroll Bars */
+QScrollBar:vertical {
+    background: %1;
+    width: 10px;
+    margin: 0px;
+    border-radius: 5px;
+}
+QScrollBar::handle:vertical {
+    background: %3;
+    min-height: 20px;
+    border-radius: 5px;
+}
+QScrollBar::handle:vertical:hover {
+    background: %4;
+}
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical,
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+    height: 0px;
+}
+QScrollBar:horizontal {
+    background: %1;
+    height: 10px;
+    margin: 0px;
+    border-radius: 5px;
+}
+QScrollBar::handle:horizontal {
+    background: %3;
+    min-width: 20px;
+    border-radius: 5px;
+}
+QScrollBar::handle:horizontal:hover {
+    background: %4;
+}
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal,
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+    background: none;
+    width: 0px;
+}
+
+/* Menus & MenuBar */
+QMenuBar {
+    background-color: %1;
+    color: %2;
+    border-bottom: 1px solid %3;
+}
+QMenuBar::item {
+    background: transparent;
+    padding: 4px 8px;
+    color: %2;
+}
+QMenuBar::item:selected {
+    background-color: %3;
+    border-radius: 4px;
+}
+QMenu {
+    background-color: %5;
+    color: %2;
+    border: 1px solid %3;
+    border-radius: 6px;
+    padding: 4px;
+}
+QMenu::item {
+    padding: 6px 24px 6px 12px;
+    border-radius: 4px;
+    color: %2;
+}
+QMenu::item:selected {
+    background-color: %6;
+    color: #ffffff;
+}
+QMenu::item:disabled {
+    color: %4;
+}
+QMenu::separator {
+    height: 1px;
+    background: %3;
+    margin: 4px 6px;
+}
+
+/* Tooltips */
+QToolTip {
+    background-color: %5;
+    color: %2;
+    border: 1px solid %3;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+/* Status Bar */
 QStatusBar {
     background-color: %1;
     color: %2;
@@ -277,6 +592,8 @@ QStatusBar {
 QStatusBar::item {
     border: none;
 }
+
+/* Dock Manager Tabs */
 ads--CDockWidgetTab ads--CElidingLabel {
     color: %4;
 }
@@ -296,7 +613,9 @@ ads--CDockWidgetTab:hover[activeTab="false"] {
 }
 ads--CDockWidgetTab[activeTab="true"] {
     background: %5;
-    border-top: 3px solid %6;
+    border-left: 1px solid %3;
+    border-right: 1px solid %3;
+    border-top: 4px solid rgb(255, 202, 176);
     padding-bottom: 3px;
     margin-top: 0px;
 }
@@ -306,7 +625,9 @@ ads--CDockWidgetTab[activeTab="true"] ads--CElidingLabel {
 }
 ads--CDockWidgetTab[focused="true"] {
     background: %5;
-    border-top: 3px solid %6;
+    border-left: 1px solid %3;
+    border-right: 1px solid %3;
+    border-top: 4px solid orange;
 }
 ads--CDockAreaTitleBar {
     background: %1;
@@ -336,13 +657,8 @@ ads--CDockAreaTitleBar {
     background: %1;
     color: %2;
 }
-QDialog, QMessageBox {
-    background-color: %1;
-    color: %2;
-}
-QLabel {
-    color: %2;
-}
+
+/* Tabs & Tab Widget */
 QTabWidget::pane {
     border: 1px solid %3;
     background-color: %1;
@@ -362,12 +678,14 @@ QTabBar::tab:selected {
     background-color: %5;
     color: %2;
     font-weight: bold;
-    border-top: 2px solid %6;
+    border-top: 2px solid rgb(255, 202, 176);
 }
 QTabBar::tab:hover:!selected {
     background-color: %3;
     color: %2;
 }
+
+/* Buttons */
 QPushButton {
     background-color: %5;
     color: %2;
@@ -378,6 +696,7 @@ QPushButton {
 }
 QPushButton:hover {
     border-color: %6;
+    color: %6;
 }
 QPushButton:pressed {
     background-color: %6;
@@ -388,6 +707,46 @@ QPushButton:default {
     color: #ffffff;
     border: 1px solid %6;
 }
+QPushButton:disabled {
+    background-color: %1;
+    color: %4;
+    border-color: %3;
+}
+
+/* ToolBar & Action Buttons - Flat, Borderless & Native Scintilla/Qt Style */
+QToolBar {
+    background: %1;
+    border: none;
+    border-bottom: 1px solid %3;
+    spacing: 1px;
+    padding: 2px 4px;
+}
+QToolBar::separator {
+    background: %3;
+    width: 1px;
+    margin: 4px 6px;
+}
+QToolBar QToolButton {
+    background: transparent;
+    border: none;
+    border-radius: 3px;
+    padding: 3px;
+    margin: 1px;
+}
+QToolBar QToolButton:hover {
+    background-color: %3;
+    border: none;
+}
+QToolBar QToolButton:pressed {
+    background-color: %6;
+    border: none;
+}
+QToolBar QToolButton:checked {
+    background-color: %3;
+    border: none;
+}
+
+/* Text Browser */
 QTextBrowser {
     background-color: %5;
     color: %2;
