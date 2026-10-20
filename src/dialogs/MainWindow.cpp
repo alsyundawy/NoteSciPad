@@ -854,7 +854,8 @@ connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
         auto res = PythonScriptEngine::executeFile(filePath);
         ScintillaNext *editor = currentEditor();
         if (editor && !res.combinedOutput.isEmpty()) {
-            editor->appendText("\n" + res.combinedOutput);
+            QByteArray outBytes = ("\n" + res.combinedOutput).toUtf8();
+            editor->insertText(editor->length(), outBytes.constData());
         }
         ui->statusBar->showMessage(res.success ? tr("Script executed successfully.") : tr("Script finished with exit code %1").arg(res.exitCode), 4000);
     });
@@ -3209,7 +3210,7 @@ void MainWindow::exportPdf()
             yPos = startY;
         }
 
-        QString lineText = editor->getLineText(i);
+        QString lineText = QString::fromUtf8(editor->getLine(i));
         lineText.remove('\r');
         lineText.remove('\n');
 

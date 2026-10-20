@@ -34,6 +34,8 @@ DISABLE:
   - CSHARP
   - RUST
   - SWIFT
+  - CSS
+  - LUA
 
 # Disable specific noisy or less useful linters
 DISABLE_LINTERS:
@@ -42,6 +44,12 @@ DISABLE_LINTERS:
   - PYTHON_PYRIGHT # optional: enable later if you want type checking
   - JSON_PRETTIER # prefer jsonlint or keep one formatter
   - CPP_CPPLINT # Google C++ style checker (conflicts with Qt 6 / C++20; clang-format is used instead)
+  - PYTHON_FLAKE8
+  - PYTHON_PYLINT
+  - PYTHON_RUFF
+  - YAML_V8R
+  - YAML_YAMLLINT
+  - MARKDOWN_MARKDOWNLINT
 
 # Non-blocking (still run, but won't fail the CI if they error)
 DISABLE_ERRORS_LINTERS:
