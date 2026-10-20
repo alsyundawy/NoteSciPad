@@ -340,6 +340,9 @@ QDialog, QMessageBox {
     background-color: %1;
     color: %2;
 }
+QLabel {
+    color: %2;
+}
 QTabWidget::pane {
     border: 1px solid %3;
     background-color: %1;

@@ -39,6 +39,9 @@ private:
     QWidget *createLicenseTab();
 
     QTabWidget *m_tabWidget = nullptr;
+    QLabel *m_titleLabel = nullptr;
+    QLabel *m_badgesLabel = nullptr;
+    QLabel *m_metaLabel = nullptr;
     QLabel *m_noticeBox = nullptr;
     QLabel *m_diagnosticsCard = nullptr;
     QTextBrowser *m_maintainerBrowser = nullptr;
