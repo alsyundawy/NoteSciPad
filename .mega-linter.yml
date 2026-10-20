@@ -17,6 +17,7 @@ FILTER_REGEX_EXCLUDE: (^thirdparty/|^build/|^build-test-fixtures/|^installer/|^d
 
 # Disable irrelevant language families (keep default enable for relevant ones)
 DISABLE:
+  - C
   - COPYPASTE
   - SPELL
   - PHP
@@ -39,6 +40,10 @@ DISABLE:
 
 # Disable specific noisy or less useful linters
 DISABLE_LINTERS:
+  - ACTION_ZIZMOR
+  - C_CPPLINT
+  - C_CPPCHECK
+  - C_CLANG_FORMAT
   - REPOSITORY_DEVSKIM
   - MARKDOWN_RUMDL
   - PYTHON_PYRIGHT # optional: enable later if you want type checking

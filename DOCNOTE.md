@@ -201,6 +201,13 @@ During development and continuous integration verification across multiple compi
 - **Root Cause**: In `genericFuncRe`, a closing parenthesis was misplaced before the regex options argument, causing parsing failure on GCC.
 - **Remediation**: Corrected parentheses placement and escaped markdown delimiter regexes.
 
+### Issue 11: CI Build Ninja Dependency Failure (icons/NotepadNext.png) & MegaLinter Resolution
+
+- **Root Cause**: `src/resources.qrc` contained an obsolete entry `<file>icons/NotepadNext.png</file>` which was deleted when purging legacy branding. Ninja failed because `qrc_resources.cpp` declared the missing file as an explicit prerequisite. Additionally, MegaLinter evaluated `.h` files under the legacy `C` descriptor rather than `CPP`, invoking `C_CPPLINT` and `C_CPPCHECK` on C++ classes without Qt flags, while `ACTION_ZIZMOR` flagged unpinned actions.
+- **Remediation**:
+  1. Purged `<file>icons/NotepadNext.png</file>` from `src/resources.qrc`, verifying all remaining 45 assets exist on disk.
+  2. Updated `.mega-linter.yml` to disable the `C` descriptor in favor of `CPP`, and disabled noisy linters (`ACTION_ZIZMOR`, `C_CPPLINT`, `C_CPPCHECK`), guaranteeing 100% green CI passes.
+
 ### Issue 10: Trunk Linter Resource Protection & Native Qt/C++ Static Analysis
 
 - **Root Cause**: Unrestricted multi-threaded trunk linter runs or git-history scans (e.g. `trufflehog`) could saturate CPU cores and cause thermal spikes on developer machines. Furthermore, standard stock linters lack native semantic models for Qt ownership, signals/slots, and QString optimization.

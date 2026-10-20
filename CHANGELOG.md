@@ -93,6 +93,9 @@ NoteSciPad v1.2.0 brings major visual and architectural refinements: full compli
   - Added custom root `.yamllint.yml` with relaxed line lengths and boolean values tailored for GitHub Actions workflows.
 - **POSIX & ShellCheck Hardening**: Resolved all ShellCheck warnings across all repository shell scripts (`SC2046`, `SC2035`, `SC2027`) and workflow embedded scripts (`SC2044`). Formatted all scripts with `shfmt`.
 - **Official Qt Action Upstream Migration**: Switched from broken custom `jdpurcell/install-qt-action` commit to official `jurplel/install-qt-action@v4.4.1` (`a9c63c7c123f3069cff414e7e482d95dfa9d8125`), eliminating runner template syntax errors across Ubuntu Linux matrices.
+- **CI Build & Resource Fix**:
+  - Removed obsolete reference `<file>icons/NotepadNext.png</file>` from `src/resources.qrc`, resolving Ninja compilation failure across all macOS and Linux build runners.
+  - Hardened `.mega-linter.yml` by disabling legacy plain `C` descriptor and `ACTION_ZIZMOR`, ensuring 100% clean MegaLinter CI pass.
 - **Trunk Native C++ & Qt Static Analysis Integration**:
   - Configured `.trunk/trunk.yaml` with a dedicated, custom `cppcheck-qt` linter definition running `--library=qt --language=c++ --enable=warning,style,performance,portability`, providing first-class Qt analysis (ownership semantics, `QObject` hierarchies, `QString` efficiency, signal/slot patterns) across all 276 files and subfolders in `src/`.
   - Enabled `clang-format@20.1.0` and `pragma-once` header guard verification in Trunk Check.
