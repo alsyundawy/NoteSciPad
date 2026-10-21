@@ -107,6 +107,37 @@ SparkNotePad **v1.3.0** marks the definitive brand evolution from NoteSciPad int
       - Enforced `const` correctness on `SparkNotePadApplication *app` in `PreferencesDialog::populateTranslationComboBox`.
       - Initialized `m_initialPaletteId` in `ThemeSwitcherDialog` constructor initialization list.
 
+15. **Dialog Checkbox & Radio Button Layout Spacing, NotepadNext Light Workspace Calibration & 13-Pillar C++ Hardening**:
+    - Universal Checkbox & Radio Button Layout Rules:
+      - Implemented universal styling in `ThemeManager::getThemeStyleSheet()` for `QCheckBox` and `QRadioButton` with `spacing: 8px;`, `padding: 3px 4px;`, and `min-height: 20px;`, ensuring comfortable vertical and horizontal breathing room.
+      - Bundled `src/icons/checkmark.svg` via `src/resources.qrc` and integrated `image: url(:/icons/checkmark.svg);` for checked checkboxes, ensuring crisp 16x16 vector rendering across all platforms.
+      - Configured checked radio button indicator with `border: 3px solid %5; background-color: %6; border-radius: 9px;` for sharp, centered circular dot rendering.
+    - Dialog Layout Spacing & Margin Calibration:
+      - `FindReplaceDialog.ui`: Configured 8px spacing and 8/10px margins for Search Mode and Transparency group boxes; increased vertical checkbox list spacing to 8px.
+      - `PreferencesDialog.ui`: Enforced 8px vertical and horizontal spacing across all general settings checkbox and radio button rows (`verticalLayout_2`, `verticalLayout_3`, `verticalLayout_5`, `horizontalLayout_2`).
+      - `TransparencyDialog.ui`: Added 10px spacing to main layout and 8px spacing with 8/10px margins to `verticalLayoutMode` radio button group.
+      - `EncodingSelectionDialog.ui`: Added 8px spacing and 8/10px margins to character set conversion action radio buttons (`layoutAction`).
+      - `MacroRunDialog.ui`: Configured 8px vertical spacing and 8px horizontal button layout spacing.
+      - `PerformanceDiagnosticsDialog.ui`: Added 8px spacing and 8/10px margins to diagnostic toggle layout (`verticalLayout_2`).
+      - `TailOptionsDialog.ui`: Added 8/10px margins to `verticalLayout_2` for clean visual alignment.
+      - `ThemeSwitcherDialog.cpp`: Added 12px spacing and 0/2px margins to `filterLayout`, dynamically calculating theme category radio counts using `kTotalThemePaletteCount`.
+      - `ManageToolsDialog.cpp`: Configured 10px vertical spacing and 16px margins for dialog form layout.
+      - `StatusBarCustomizerDialog.cpp`: Configured 8px vertical spacing and 14/16/14/14px margins for status bar element checklist.
+      - `FocusedViewDialog.cpp`: Configured 16px horizontal spacing, 8px vertical spacing, and 14/16/14/14px margins for options grid.
+    - Default NotepadNext Light Workspace Palette & Dark Mode Contrast Calibration:
+      - Introduced dedicated `notepadNext` palette in `ThemePaletteData.h` (`#f0f2f5` window, `#fafbfc` canvas/card, `#e1e4e8` border, `#24292f` primary text, `#57606a` secondary text), avoiding harsh, eye-straining pure white backgrounds.
+      - Mapped `defaultLight` to `notepadNext` in `findThemePaletteById`, and updated fallback color tokens in `ThemeManager::applyTheme` and `getThemeStyleSheet`.
+      - Calibrated secondary text colors across dark themes (`materialDeepOcean`, `oneDarkPro`, `dracula`, `solarizedDark`, `ayuDark`, `kanagawaDragon`) to guarantee crisp, sharp text rendering exceeding WCAG AAA standards.
+      - Updated status and informative labels in `FocusedViewDialog` and `ThemeSwitcherDialog` to use `opacity: 0.8; font-style: italic;` for seamless readability across dark and light palettes.
+    - 13-Pillar C++ Hardening:
+      - Marked `PreferencesDialog` constructor `explicit` to prevent implicit conversions.
+      - Returned `const QString &` in `FileBrowserDock::currentDirectory()` to eliminate heap string allocations on directory lookups.
+      - Passed `searchTerm` and `line` parameters by `const QString &` across `ISearchResultsHandler`, `SearchResultsCollector`, and `SearchResultsDock`; eliminated shadowed variable declaration in `SearchResultsDock::newSearch`.
+      - Passed `line` by `const QString &` in `LuaConsoleDock::historyAdd`.
+      - Marked `AutoClosePairs::isWordChar` as `static`.
+      - Marked `DocumentationManager::openKeyboardShortcutsGuide` and `openOnlineRepository` as `static`.
+      - Marked `FocusedView::ensureHiddenLineStyle` as `static`.
+
 ---
 
 ## 2. NoteSciPad Release DocNote — v1.2.0

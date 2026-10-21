@@ -56,6 +56,9 @@ void FocusedViewDialog::setupUi() {
     // Options group
     auto *optionsGroup = new QGroupBox(tr("Options"), this);
     auto *optionsLayout = new QGridLayout(optionsGroup);
+    optionsLayout->setHorizontalSpacing(16);
+    optionsLayout->setVerticalSpacing(8);
+    optionsLayout->setContentsMargins(14, 16, 14, 14);
 
     m_caseSensitive = new QCheckBox(tr("Match &case"), this);
     m_wholeWord = new QCheckBox(tr("&Whole word"), this);
@@ -73,7 +76,7 @@ void FocusedViewDialog::setupUi() {
 
     // Status label
     m_statusLabel = new QLabel(tr("Ready to filter lines"), this);
-    m_statusLabel->setStyleSheet(QStringLiteral("color: #666; font-style: italic;"));
+    m_statusLabel->setStyleSheet(QStringLiteral("font-style: italic; opacity: 0.8;"));
     mainLayout->addWidget(m_statusLabel);
 
     // Action buttons

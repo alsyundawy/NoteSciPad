@@ -173,9 +173,9 @@ void ThemeManager::applyTheme(MainWindow *window) {
                    : findThemePaletteById(QStringLiteral("defaultLight"));
     }
 
-    QString win = pal ? QString::fromLatin1(pal->win) : (dark ? QStringLiteral("#1e1e1e") : QStringLiteral("#f6f8fa"));
+    QString win = pal ? QString::fromLatin1(pal->win) : (dark ? QStringLiteral("#1e1e1e") : QStringLiteral("#f0f2f5"));
     QString card =
-        pal ? QString::fromLatin1(pal->card) : (dark ? QStringLiteral("#25282c") : QStringLiteral("#ffffff"));
+        pal ? QString::fromLatin1(pal->card) : (dark ? QStringLiteral("#25282c") : QStringLiteral("#fafbfc"));
     QString txtPri =
         pal ? QString::fromLatin1(pal->txtPri) : (dark ? QStringLiteral("#e0e0e0") : QStringLiteral("#24292f"));
     QString txtSec =
@@ -315,11 +315,11 @@ QString ThemeManager::getThemeStyleSheet() const {
     }
 
     QString win =
-        pal ? QString::fromLatin1(pal->win) : (isDarkActive() ? QStringLiteral("#1e1e1e") : QStringLiteral("#f6f8fa"));
+        pal ? QString::fromLatin1(pal->win) : (isDarkActive() ? QStringLiteral("#1e1e1e") : QStringLiteral("#f0f2f5"));
     QString card =
-        pal ? QString::fromLatin1(pal->card) : (isDarkActive() ? QStringLiteral("#25282c") : QStringLiteral("#ffffff"));
+        pal ? QString::fromLatin1(pal->card) : (isDarkActive() ? QStringLiteral("#25282c") : QStringLiteral("#fafbfc"));
     QString border = pal ? QString::fromLatin1(pal->border)
-                         : (isDarkActive() ? QStringLiteral("#33373e") : QStringLiteral("#d0d7de"));
+                         : (isDarkActive() ? QStringLiteral("#33373e") : QStringLiteral("#e1e4e8"));
     QString txtPri = pal ? QString::fromLatin1(pal->txtPri)
                          : (isDarkActive() ? QStringLiteral("#e0e0e0") : QStringLiteral("#24292f"));
     QString txtSec = pal ? QString::fromLatin1(pal->txtSec)
@@ -368,11 +368,11 @@ QGroupBox::title {
     font-weight: bold;
 }
 QGroupBox::indicator {
-    width: 15px;
-    height: 15px;
+    width: 16px;
+    height: 16px;
     border: 1px solid %3;
     background-color: %5;
-    border-radius: 3px;
+    border-radius: 4px;
 }
 QGroupBox::indicator:hover {
     border-color: %6;
@@ -380,6 +380,7 @@ QGroupBox::indicator:hover {
 QGroupBox::indicator:checked {
     background-color: %6;
     border-color: %6;
+    image: url(:/icons/checkmark.svg);
 }
 QGroupBox::indicator:disabled {
     border-color: %3;
@@ -389,7 +390,9 @@ QGroupBox::indicator:disabled {
 /* Checkboxes & Radio Buttons */
 QCheckBox, QRadioButton {
     color: %2;
-    spacing: 7px;
+    spacing: 8px;
+    padding: 3px 4px;
+    min-height: 20px;
     background-color: transparent;
 }
 QCheckBox:hover, QRadioButton:hover {
@@ -399,23 +402,28 @@ QCheckBox:disabled, QRadioButton:disabled {
     color: %4;
 }
 QCheckBox::indicator, QRadioButton::indicator {
-    width: 15px;
-    height: 15px;
+    width: 16px;
+    height: 16px;
     border: 1px solid %3;
     background-color: %5;
 }
 QCheckBox::indicator {
-    border-radius: 3px;
+    border-radius: 4px;
 }
 QRadioButton::indicator {
-    border-radius: 8px;
+    border-radius: 9px;
 }
 QCheckBox::indicator:hover, QRadioButton::indicator:hover {
     border-color: %6;
 }
-QCheckBox::indicator:checked, QRadioButton::indicator:checked {
+QCheckBox::indicator:checked {
     background-color: %6;
     border-color: %6;
+    image: url(:/icons/checkmark.svg);
+}
+QRadioButton::indicator:checked {
+    background-color: %6;
+    border: 3px solid %5;
 }
 QCheckBox::indicator:disabled, QRadioButton::indicator:disabled {
     border-color: %3;

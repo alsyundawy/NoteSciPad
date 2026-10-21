@@ -73,7 +73,7 @@ signals:
     void filterCleared(ScintillaNext *editor);
 
 private:
-    void ensureHiddenLineStyle(ScintillaNext *editor);
+    static void ensureHiddenLineStyle(ScintillaNext *editor);
 
     QMap<ScintillaNext *, FilterOptions> m_editorOptions;
     FilterOptions m_lastOptions;

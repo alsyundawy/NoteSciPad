@@ -14,6 +14,9 @@
    <string>Window Transparency Options - SparkNotePad</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>10</number>
+   </property>
    <item>
     <widget class="QCheckBox" name="checkEnable">
      <property name="text">
@@ -81,6 +84,21 @@
       <string>Behavior</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayoutMode">
+      <property name="spacing">
+       <number>8</number>
+      </property>
+      <property name="leftMargin">
+       <number>10</number>
+      </property>
+      <property name="topMargin">
+       <number>8</number>
+      </property>
+      <property name="rightMargin">
+       <number>10</number>
+      </property>
+      <property name="bottomMargin">
+       <number>8</number>
+      </property>
       <item>
        <widget class="QRadioButton" name="radioAlways">
         <property name="text">

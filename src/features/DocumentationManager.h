@@ -25,8 +25,8 @@ public:
 
     void openUserGuide(QWidget *parent = nullptr);
     void openDeveloperGuide(QWidget *parent = nullptr);
-    void openOnlineRepository(QWidget *parent = nullptr);
-    void openKeyboardShortcutsGuide(QWidget *parent = nullptr);
+    static void openOnlineRepository(QWidget *parent = nullptr);
+    static void openKeyboardShortcutsGuide(QWidget *parent = nullptr);
 
     QString localDocumentationPath(const QString &docFilename) const;
     QString onlineDocumentationUrl(const QString &docFilename) const;

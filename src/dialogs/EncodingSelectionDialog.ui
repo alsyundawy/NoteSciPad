@@ -76,6 +76,21 @@
       <string>Operation Mode</string>
      </property>
      <layout class="QVBoxLayout" name="layoutAction">
+      <property name="spacing">
+       <number>8</number>
+      </property>
+      <property name="leftMargin">
+       <number>10</number>
+      </property>
+      <property name="topMargin">
+       <number>8</number>
+      </property>
+      <property name="rightMargin">
+       <number>10</number>
+      </property>
+      <property name="bottomMargin">
+       <number>8</number>
+      </property>
       <item>
        <widget class="QRadioButton" name="radioConvert">
         <property name="text">

@@ -30,6 +30,8 @@ public:
         resize(480, 220);
 
         QFormLayout *layout = new QFormLayout(this);
+        layout->setSpacing(10);
+        layout->setContentsMargins(16, 16, 16, 16);
 
         editName = new QLineEdit(tool.name, this);
         editCommand = new QLineEdit(tool.command, this);

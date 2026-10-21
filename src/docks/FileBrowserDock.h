@@ -33,7 +33,7 @@ public:
     ~FileBrowserDock() override;
 
     void setCurrentDirectory(const QString &dirPath);
-    QString currentDirectory() const;
+    const QString &currentDirectory() const;
 
 signals:
     void fileOpenRequested(const QString &filePath);

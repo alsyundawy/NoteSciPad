@@ -25,7 +25,7 @@ void AutoClosePairs::notify(const Scintilla::NotificationData *pscn) {
     Q_UNUSED(pscn)
 }
 
-bool AutoClosePairs::isWordChar(char ch) const {
+bool AutoClosePairs::isWordChar(char ch) {
     return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_';
 }
 

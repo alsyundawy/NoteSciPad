@@ -78,10 +78,10 @@ SearchResultsDock::~SearchResultsDock() {
     delete ui;
 }
 
-void SearchResultsDock::newSearch(const QString searchTerm) {
+void SearchResultsDock::newSearch(const QString &term) {
     show();
 
-    this->searchTerm = searchTerm;
+    this->searchTerm = term;
 
     for (int i = 0; i < ui->treeWidget->topLevelItemCount(); ++i) {
         const QTreeWidgetItem *topLevelItem = ui->treeWidget->topLevelItem(i);
@@ -118,7 +118,7 @@ void SearchResultsDock::newFileEntry(ScintillaNext *editor) {
     updateSearchStatus();
 }
 
-void SearchResultsDock::newResultsEntry(const QString line, int lineNumber, int startPositionFromBeginning,
+void SearchResultsDock::newResultsEntry(const QString &line, int lineNumber, int startPositionFromBeginning,
                                         int endPositionFromBeginning, int hitCount) {
     QTreeWidgetItem *item = new QTreeWidgetItem(currentFile);
 

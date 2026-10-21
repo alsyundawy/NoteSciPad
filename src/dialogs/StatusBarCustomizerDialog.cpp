@@ -37,6 +37,7 @@ void StatusBarCustomizerDialog::setupUi() {
     auto *group = new QGroupBox(tr("Status Bar Fields"), this);
     auto *groupLayout = new QVBoxLayout(group);
     groupLayout->setSpacing(8);
+    groupLayout->setContentsMargins(14, 16, 14, 14);
 
     struct FieldMeta {
         EditorInfoStatusBar::Field id;

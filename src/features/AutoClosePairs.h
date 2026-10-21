@@ -37,7 +37,7 @@ public slots:
 
 private:
     bool handleKeyPress(class QKeyEvent *keyEvent);
-    bool isWordChar(char ch) const;
+    static bool isWordChar(char ch);
 
     bool m_autoCloseBrackets{true};
     bool m_autoCloseQuotes{true};

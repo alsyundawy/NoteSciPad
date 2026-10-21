@@ -40,7 +40,7 @@ class PreferencesDialog : public QDialog {
     Q_OBJECT
 
 public:
-    PreferencesDialog(ApplicationSettings *settings, QWidget *parent = 0);
+    explicit PreferencesDialog(ApplicationSettings *settings, QWidget *parent = nullptr);
     ~PreferencesDialog();
 
     void showApplicationRestartRequired() const;

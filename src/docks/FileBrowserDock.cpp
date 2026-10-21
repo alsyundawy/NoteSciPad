@@ -76,7 +76,7 @@ void FileBrowserDock::setCurrentDirectory(const QString &dirPath) {
     }
 }
 
-QString FileBrowserDock::currentDirectory() const {
+const QString &FileBrowserDock::currentDirectory() const {
     return m_currentPath;
 }
 
@@ -126,6 +126,7 @@ void FileBrowserDock::onFilterChanged(const QString &filterText) {
     } else {
         const QStringList rawFilters = filterText.split(QLatin1Char(';'), Qt::SkipEmptyParts);
         QStringList cleanedFilters;
+        cleanedFilters.reserve(rawFilters.size());
         for (const QString &f : rawFilters) {
             cleanedFilters.append(f.trimmed());
         }

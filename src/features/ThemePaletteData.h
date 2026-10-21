@@ -34,6 +34,8 @@ struct ThemePalette {
 };
 
 inline const ThemePalette kAllThemePalettes[] = {
+    {"notepadNext", "NotepadNext Default", "NotepadNext", false, "#f0f2f5", "#fafbfc", "#e1e4e8", "#24292f", "#57606a",
+     "#0969da", "#0550ae", "#cf222e", "#0550ae", "#1a7f37", "#24292f"},
     {"catppuccinMocha", "Catppuccin Mocha", "Catppuccin", true, "#11111b", "#1e1e2e", "#313244", "#cdd6f4", "#a6adc8",
      "#74c7ec", "#89b4fa", "#74c7ec", "#cba6f7", "#a6e3a1", "#6c7086"},
     {"catppuccinMacchiato", "Catppuccin Macchiato", "Catppuccin", true, "#181926", "#24273a", "#363a4f", "#cad3f5",
@@ -42,7 +44,7 @@ inline const ThemePalette kAllThemePalettes[] = {
      "#85c1dc", "#8caaee", "#85c1dc", "#ca9ee6", "#a6d189", "#737994"},
     {"catppuccinLatte", "Catppuccin Latte", "Catppuccin", false, "#dce0e8", "#eff1f5", "#ccd0da", "#4c4f69", "#6c6f85",
      "#1e66f5", "#1e66f5", "#209fb5", "#8839ef", "#40a02b", "#9ca0b0"},
-    {"dracula", "Dracula", "Dracula", true, "#1e1f29", "#282a36", "#44475a", "#f8f8f2", "#6272a4", "#8be9fd", "#bd93f9",
+    {"dracula", "Dracula", "Dracula", true, "#1e1f29", "#282a36", "#44475a", "#f8f8f2", "#8897c6", "#8be9fd", "#bd93f9",
      "#8be9fd", "#bd93f9", "#50fa7b", "#6272a4"},
     {"draculaSoft", "Dracula Soft", "Dracula", true, "#21222d", "#282a36", "#4d5166", "#f8f8f2", "#7887b4", "#94ebfc",
      "#c39dfc", "#94ebfc", "#c39dfc", "#64fc8b", "#7887b4"},
@@ -62,7 +64,7 @@ inline const ThemePalette kAllThemePalettes[] = {
      "#5e81ac", "#88c0d0", "#b48ead", "#a3be8c", "#4c566a"},
     {"nordLight", "Nord Light", "Nord", false, "#e5e9f0", "#eceff4", "#d8dee9", "#2e3440", "#4c566a", "#5e81ac",
      "#81a1c1", "#3b626e", "#83587a", "#4c704c", "#9da6b8"},
-    {"oneDarkPro", "One Dark Pro", "One Dark", true, "#21252b", "#282c34", "#3e4451", "#abb2bf", "#5c6370", "#56b6c2",
+    {"oneDarkPro", "One Dark Pro", "One Dark", true, "#21252b", "#282c34", "#3e4451", "#dcdfe4", "#828997", "#56b6c2",
      "#61afef", "#56b6c2", "#c678dd", "#98c379", "#4b5263"},
     {"oneDarkVivid", "One Dark Vivid", "One Dark", true, "#1e2227", "#282c34", "#4b5263", "#e5e5e5", "#7f848e",
      "#4dc4d4", "#528bff", "#4dc4d4", "#d55fde", "#98c379", "#5c6370"},
@@ -74,7 +76,7 @@ inline const ThemePalette kAllThemePalettes[] = {
      "#83a598", "#458588", "#8ec07c", "#d3869b", "#b8bb26", "#928374"},
     {"gruvboxLight", "Gruvbox Light", "Gruvbox", false, "#f2e5bc", "#fbf1c7", "#ebdbb2", "#3c3836", "#7c6f64",
      "#076678", "#458588", "#427b58", "#8f3f71", "#79740e", "#928374"},
-    {"solarizedDark", "Solarized Dark", "Solarized", true, "#00212b", "#002b36", "#073642", "#839496", "#586e75",
+    {"solarizedDark", "Solarized Dark", "Solarized", true, "#00212b", "#002b36", "#073642", "#b5c2c4", "#7c9197",
      "#268bd2", "#268bd2", "#2aa198", "#6c71c4", "#859900", "#586e75"},
     {"solarizedLight", "Solarized Light", "Solarized", false, "#eee8d5", "#fdf6e3", "#e0d8c3", "#657b83", "#93a1a1",
      "#268bd2", "#268bd2", "#2aa198", "#6c71c4", "#859900", "#93a1a1"},
@@ -100,7 +102,7 @@ inline const ThemePalette kAllThemePalettes[] = {
      "#9ccfd8", "#3e8fb0", "#9ccfd8", "#c4a7e7", "#ea9a97", "#6e6a86"},
     {"rosePineDawn", "Rosé Pine Dawn", "Rosé Pine", false, "#f2e9de", "#faf4ed", "#cecacd", "#575279", "#797593",
      "#56949f", "#286983", "#56949f", "#907aa9", "#d7827e", "#9893a5"},
-    {"ayuDark", "Ayu Dark", "Ayu", true, "#0b0e14", "#0f1419", "#1e2530", "#e6e1cf", "#5c6773", "#36a3d9", "#39bae6",
+    {"ayuDark", "Ayu Dark", "Ayu", true, "#0b0e14", "#0f1419", "#1e2530", "#e6e1cf", "#828c99", "#36a3d9", "#39bae6",
      "#95e6cb", "#d4bfff", "#b8cc52", "#4b5666"},
     {"ayuMirage", "Ayu Mirage", "Ayu", true, "#171b24", "#1f2430", "#2e3646", "#cbccc6", "#707a8c", "#5ccfe6",
      "#73d0ff", "#95e6cb", "#d4bfff", "#bae67e", "#5c6773"},
@@ -108,7 +110,7 @@ inline const ThemePalette kAllThemePalettes[] = {
      "#4cbf99", "#a37acc", "#86b300", "#abb0b6"},
     {"kanagawaWave", "Kanagawa Wave", "Kanagawa", true, "#16161d", "#1f1f28", "#2a2a37", "#dcd7ba", "#727169",
      "#7aa89f", "#7e9cd8", "#6a9589", "#957fb8", "#98bb6c", "#54546d"},
-    {"kanagawaDragon", "Kanagawa Dragon", "Kanagawa", true, "#121216", "#181616", "#282727", "#c5c9c5", "#625e5a",
+    {"kanagawaDragon", "Kanagawa Dragon", "Kanagawa", true, "#121216", "#181616", "#282727", "#c5c9c5", "#8a8682",
      "#658594", "#8ba4b0", "#658594", "#8992a7", "#8a9a7b", "#504d49"},
     {"kanagawaLotus", "Kanagawa Lotus", "Kanagawa", false, "#ece7dc", "#f2ecbc", "#d5cea3", "#545464", "#716e61",
      "#597b75", "#4d699b", "#597b75", "#766b90", "#6f894e", "#8a8575"},
@@ -124,8 +126,8 @@ inline const ThemePalette kAllThemePalettes[] = {
      "#288ed7", "#0c969b", "#7f52ca", "#08916a", "#94a3b8"},
     {"materialPalenight", "Material Palenight", "Material", true, "#202330", "#292d3e", "#3b415b", "#bfc7d5", "#676e95",
      "#89ddff", "#82aaff", "#89ddff", "#c792ea", "#c3e88d", "#676e95"},
-    {"materialDeepOcean", "Material Deep Ocean", "Material", true, "#090b10", "#0f111a", "#1a1c25", "#8f93a2",
-     "#4b526d", "#80cbc4", "#82aaff", "#80cbc4", "#c792ea", "#c3e88d", "#4b526d"},
+    {"materialDeepOcean", "Material Deep Ocean", "Material", true, "#090b10", "#0f111a", "#1a1c25", "#cdd2e0",
+     "#8a95b0", "#80cbc4", "#82aaff", "#80cbc4", "#c792ea", "#c3e88d", "#4b526d"},
     {"materialLighter", "Material Lighter", "Material", false, "#eceff1", "#fafafa", "#cfd8dc", "#546e7a", "#90a4ae",
      "#39adb5", "#6182b8", "#39adb5", "#7c4dff", "#91b859", "#b0bec5"},
     {"synthWave84Glow", "SynthWave '84 Glow", "SynthWave '84", true, "#201c2d", "#262335", "#3b334e", "#f92aad",
@@ -193,7 +195,7 @@ inline const ThemePalette *findThemePaletteById(const QString &id) {
         return nullptr;
     }
     if (id.compare(QLatin1String("defaultLight"), Qt::CaseInsensitive) == 0) {
-        return findThemePaletteById(QStringLiteral("githubLight"));
+        return findThemePaletteById(QStringLiteral("notepadNext"));
     }
     if (id.compare(QLatin1String("defaultDark"), Qt::CaseInsensitive) == 0) {
         return findThemePaletteById(QStringLiteral("catppuccinMocha"));

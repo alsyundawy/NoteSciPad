@@ -84,6 +84,34 @@ SparkNotePad v1.3.0 represents a landmark release featuring the official transfo
   - `MainWindow.h` & `MainWindow.cpp`: Passed `actionNames` by `const QStringList &` in `buildMenu(const QStringList &actionNames)` rather than by-value copy, eliminating temporary heap allocations on popup menu construction; declared `checkForUpdatesFinished` as `static`.
   - `PreferencesDialog.cpp`: Enforced `const` correctness on `SparkNotePadApplication *app` in `populateTranslationComboBox`.
   - `ThemeSwitcherDialog.cpp`: Initialized `m_initialPaletteId` in the constructor member initializer list, eliminating redundant default construction and assignment.
+  - `PreferencesDialog.h`: Marked constructor `explicit` to prevent implicit conversions.
+  - `FileBrowserDock.h` & `FileBrowserDock.cpp`: Returned `const QString &` in `currentDirectory()` to eliminate heap string allocations on directory lookups.
+  - `ISearchResultsHandler.h`, `SearchResultsCollector.h`, `SearchResultsCollector.cpp`, `SearchResultsDock.h`, `SearchResultsDock.cpp`: Passed `searchTerm` and `line` parameters by `const QString &` instead of by-value copies; eliminated shadowed variable declaration in `SearchResultsDock::newSearch`.
+  - `LuaConsoleDock.h` & `LuaConsoleDock.cpp`: Passed `line` by `const QString &` in `historyAdd`.
+  - `AutoClosePairs.h` & `AutoClosePairs.cpp`: Marked `isWordChar` as `static`.
+  - `DocumentationManager.h`: Marked `openKeyboardShortcutsGuide` and `openOnlineRepository` as `static`.
+  - `FocusedView.h`: Marked `ensureHiddenLineStyle` as `static`.
+- **Universal Dialog Checkbox & Radio Button Layout & Spacing Overhaul**: Standardized layout spacing, padding, margins, and vertical breathing room across all dialog windows to eliminate squishing and overlap:
+  - `ThemeManager.cpp`: Implemented universal stylesheet rules for `QCheckBox` and `QRadioButton` with `spacing: 8px;`, `padding: 3px 4px;`, `min-height: 20px;`, and explicit 16x16 px indicator dimensions (4px border-radius for checkboxes, 9px for radio buttons).
+  - High-precision vector checkmark: Created and bundled `src/icons/checkmark.svg` via `src/resources.qrc` and `image: url(:/icons/checkmark.svg);`, restoring crisp, high-DPI vector checkmarks on checked checkboxes across all desktop platforms without reliance on platform-specific native fallbacks.
+  - Radio button indicator rendering: Enforced sharp circular indicator dot via `border: 3px solid %5; background-color: %6;` on checked state.
+  - Dialog-specific layout and margin calibration:
+    - `FindReplaceDialog.ui`: Enhanced Search Mode and Transparency group box layouts with explicit 8px spacing and 8/10px margins; increased vertical checkbox list spacing to 8px.
+    - `PreferencesDialog.ui`: Enforced 8px vertical and horizontal spacing across all general settings checkbox and radio button rows (`verticalLayout_2`, `verticalLayout_3`, `verticalLayout_5`, `horizontalLayout_2`).
+    - `TransparencyDialog.ui`: Added 10px spacing to main layout and 8px spacing with 8/10px margins to `verticalLayoutMode` radio button group.
+    - `EncodingSelectionDialog.ui`: Configured 8px spacing and 8/10px margins for character set conversion action radio buttons (`layoutAction`).
+    - `MacroRunDialog.ui`: Configured 8px vertical spacing and 8px horizontal button layout spacing.
+    - `PerformanceDiagnosticsDialog.ui`: Added 8px spacing and 8/10px margins to diagnostic toggle layout (`verticalLayout_2`).
+    - `TailOptionsDialog.ui`: Added 8/10px margins to `verticalLayout_2` for clean visual alignment.
+    - `ThemeSwitcherDialog.cpp`: Added 12px spacing and 0/2px margins to `filterLayout`, dynamically calculating theme category radio counts using `kTotalThemePaletteCount`.
+    - `ManageToolsDialog.cpp`: Configured 10px vertical spacing and 16px margins for dialog form layout.
+    - `StatusBarCustomizerDialog.cpp`: Configured 8px vertical spacing and 14/16/14/14px margins for status bar element checklist.
+    - `FocusedViewDialog.cpp`: Configured 16px horizontal spacing, 8px vertical spacing, and 14/16/14/14px margins for options grid.
+- **NotepadNext Workspace Default Light Palette & Dark Mode Contrast Calibration**:
+  - `ThemePaletteData.h`: Introduced dedicated `notepadNext` palette as the default light workspace palette (`#f0f2f5` window, `#fafbfc` canvas/card, `#e1e4e8` border, `#24292f` primary text, `#57606a` secondary text), matching the original NotepadNext comfortable workspace aesthetic and preventing harsh, eye-straining pure white glare.
+  - Default light mode mapping: Configured `defaultLight` to map directly to `notepadNext` palette in `findThemePaletteById`, and updated light fallback color tokens in `ThemeManager::applyTheme` and `getThemeStyleSheet`.
+  - Sharp dark mode contrast calibration: Calibrated secondary text colors across dark themes (`materialDeepOcean`, `oneDarkPro`, `dracula`, `solarizedDark`, `ayuDark`, `kanagawaDragon`) to guarantee crisp, sharp text rendering exceeding WCAG AAA standards (never blurry or excessively dark).
+  - Dynamic opacity status styling: Updated status and informative labels in `FocusedViewDialog` and `ThemeSwitcherDialog` to use `opacity: 0.8; font-style: italic;` for seamless readability across dark and light palettes.
 - **Release & Build Runner Branch Dispatch**: Updated `.github/workflows/build.yml` and `.github/workflows/release.yml` with empty `workflow_dispatch` triggers and branch support across `1.*`, `develop`, and `main`, adhering to Checkov `CKV_GHA_7` security standards while permitting manual branch selection.
 
 ---

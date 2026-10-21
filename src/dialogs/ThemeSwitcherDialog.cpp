@@ -38,20 +38,23 @@ void ThemeSwitcherDialog::setupUi() {
     mainLayout->setContentsMargins(18, 18, 18, 18);
     mainLayout->setSpacing(12);
 
-    QLabel *titleLabel = new QLabel(tr("<h2>Select Visual Theme</h2><p style='opacity: 0.8;'>Choose from 75 "
-                                       "professional themes across 25 curated families with real-time preview.</p>"),
+    QLabel *titleLabel = new QLabel(tr("<h2>Select Visual Theme</h2><p style='opacity: 0.8;'>Choose from %1 "
+                                       "professional themes across curated families with real-time preview.</p>")
+                                        .arg(kTotalThemePaletteCount),
                                     this);
     mainLayout->addWidget(titleLabel);
 
     // Filter bar
     QHBoxLayout *filterLayout = new QHBoxLayout();
+    filterLayout->setSpacing(12);
+    filterLayout->setContentsMargins(0, 2, 0, 2);
     m_searchEdit = new QLineEdit(this);
     m_searchEdit->setPlaceholderText(tr("Search theme by name or family (e.g. catppuccin, dracula, nord, light)..."));
     m_searchEdit->setClearButtonEnabled(true);
     filterLayout->addWidget(m_searchEdit, 1);
 
     m_filterGroup = new QButtonGroup(this);
-    m_radioAll = new QRadioButton(tr("All (75)"), this);
+    m_radioAll = new QRadioButton(tr("All (%1)").arg(kTotalThemePaletteCount), this);
     m_radioLight = new QRadioButton(tr("Light"), this);
     m_radioDark = new QRadioButton(tr("Dark"), this);
     m_radioAll->setChecked(true);
