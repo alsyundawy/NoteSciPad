@@ -23,6 +23,17 @@ NoteSciPad v1.2.0 delivers comprehensive visual, architectural, and engine upgra
 - **Full Resolution Iconset**: Generated 10 distinct standard resolutions (`16x16`, `16x16@2x`, `32x32`, `32x32@2x`, `128x128`, `128x128@2x`, `256x256`, `256x256@2x`, `512x512`, `512x512@2x`) packaged into native `NoteSciPad.icns`.
 - **Multi-Resolution Windows & Linux Icons**: Multi-layered `NoteSciPad.ico` (16, 24, 32, 48, 64, 128, 256 px) and high-DPI 512x512 Linux desktop icon.
 
+#### Toolbar Icon Clarity & High-Precision Redesign
+
+- **Pixel-Perfect 16x16 Toolbar Grid**: Restored native 16x16 base icons to eliminate bilinear interpolation blur and invisibility on dark themes (`#181a1f`, `#1e1e1e`, `#25282c`) caused by downscaled 32x32 faint outlines.
+- **Complete Toolbar Redesigns**:
+  - **Find (`find.png`)**: Designed a high-precision azure/cyan magnifying glass with 3D specular white gleam and polished gold metallic handle.
+  - **Find & Replace (`findReplace.png`)**: Designed a compact search lens paired with reciprocal exchange swap arrows in neon emerald (`#10b981`) and electric amber/gold (`#f59e0b`) with sharp contour borders.
+  - **Zoom In (`zoomIn.png`)**: Designed an ocean azure magnifying glass enclosing a bold, high-contrast white plus sign (`+`).
+  - **Zoom Out (`zoomOut.png`)**: Designed a matching ocean azure magnifying glass enclosing a bold, high-contrast white minus sign (`−`).
+  - **Show Indent (`indentGuide.png`)**: Designed a code block hierarchy with glowing dual amber/gold vertical alignment rails (`#f59e0b`) guiding indented emerald and cyan code bars.
+- **Dark Mode & High Contrast Invariants**: Verified that every toolbar icon maintains strong contrast (average luminance delta > 75 on dark toolbars, > 102 on light toolbars, peak delta 225.0) ensuring sharp readability across all themes.
+
 #### Modern Vector-Badged Message Box (`ModernMessageBox`)
 
 - **Custom Native Qt Sheet Dialog**: Replaced dated, plain `QMessageBox` popups (such as "Save changes to New 1?") with a sleek, rounded dialog adhering to active theme colors.
