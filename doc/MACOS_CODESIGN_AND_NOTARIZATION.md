@@ -40,12 +40,12 @@ The script performs an end-to-end signing and notarization workflow:
 
 To enable automated signing and notarization in GitHub Releases, configure the following GitHub Repository Secrets:
 
-| Secret Name | Description |
-| --- | --- |
-| `APPLE_CERTIFICATE_BASE64` | Base64-encoded Developer ID Application `.p12` certificate |
-| `APPLE_CERTIFICATE_PASSWORD` | Password for the `.p12` certificate file |
-| `APPLE_ID` | Apple Developer Account email |
-| `APPLE_APP_SPECIFIC_PASSWORD` | App-Specific Password generated on appleid.apple.com |
-| `APPLE_TEAM_ID` | 10-character Apple Developer Team ID (e.g. `ABC123XYZ0`) |
+| Secret Name                   | Description                                                |
+| ----------------------------- | ---------------------------------------------------------- |
+| `APPLE_CERTIFICATE_BASE64`    | Base64-encoded Developer ID Application `.p12` certificate |
+| `APPLE_CERTIFICATE_PASSWORD`  | Password for the `.p12` certificate file                   |
+| `APPLE_ID`                    | Apple Developer Account email                              |
+| `APPLE_APP_SPECIFIC_PASSWORD` | App-Specific Password generated on appleid.apple.com       |
+| `APPLE_TEAM_ID`               | 10-character Apple Developer Team ID (e.g. `ABC123XYZ0`)   |
 
 If these secrets are not configured, the GitHub Actions release workflow builds the DMG and skips signing without failing.

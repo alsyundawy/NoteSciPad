@@ -31,6 +31,30 @@ Key milestones achieved in this release:
 6. **7 Trending Language Lexers**: First-class syntax highlighting definitions for Mojo (`.mojo`), Solidity (`.sol`), Julia (`.jl`), Dockerfile (`Dockerfile`), Terraform (`.tf`), Protobuf (`.proto`), and Mermaid (`.mermaid`).
 7. **Official Thirdparty Engine Modernization**: Successfully retrieved, merged, and integrated Scintilla 5.6.7, Lexilla 5.5.4, and Lua 5.5.1 from the primary upstream branch, elevating code editing performance, syntax tokenization, and embedded Lua scripting fidelity.
 8. **Native Dark/Light Mode Streamlining & UI Polish**: Simplified ThemeManager to dedicated native Dark and Light modes without thirdparty theme catalog overhead; restored toolbar horizontal divider (`border-bottom: 1px solid %3;`), classic soft peach (`rgb(255, 202, 176)`) active tab top borders, and orange focus top borders.
+9. **Universal Dialog Checkbox & Radio Button Layout Overhaul, NotepadNext Light Workspace Calibration & 13-Pillar C++ Hardening**:
+   - Standardized universal `QCheckBox` and `QRadioButton` stylesheet rules in `ThemeManager::getThemeStyleSheet()` (`spacing: 8px;`, `padding: 3px 4px;`, `min-height: 20px;`, 16x16 indicator with 4px border-radius for checkboxes, 9px for radio buttons).
+   - Bundled `src/icons/checkmark.svg` via `src/resources.qrc` and integrated `image: url(:/icons/checkmark.svg);` for checked checkboxes, ensuring crisp vector rendering across all platforms.
+   - Configured checked radio button indicator with `border: 3px solid %5; background-color: %6; border-radius: 9px;` for sharp, centered circular dot rendering.
+   - Dialog Layout Spacing & Margin Calibration:
+     - `FindReplaceDialog.ui`: Configured 8px spacing and 8/10px margins for Search Mode and Transparency group boxes; increased vertical checkbox list spacing to 8px.
+     - `PreferencesDialog.ui`: Enforced 8px vertical and horizontal spacing across all general settings checkbox and radio button rows (`verticalLayout_2`, `verticalLayout_3`, `verticalLayout_5`, `horizontalLayout_2`).
+     - `TransparencyDialog.ui`: Added 10px spacing to main layout and 8px spacing with 8/10px margins to `verticalLayoutMode` radio button group.
+     - `EncodingSelectionDialog.ui`: Added 8px spacing and 8/10px margins to character set conversion action radio buttons (`layoutAction`).
+     - `MacroRunDialog.ui`: Configured 8px vertical spacing and 8px horizontal button layout spacing.
+     - `PerformanceDiagnosticsDialog.ui`: Added 8px spacing and 8/10px margins to diagnostic toggle layout (`verticalLayout_2`).
+     - `TailOptionsDialog.ui`: Added 8/10px margins to `verticalLayout_2` for clean visual alignment.
+     - `ManageToolsDialog.cpp`: Configured 10px vertical spacing and 16px margins for dialog form layout.
+     - `StatusBarCustomizerDialog.cpp`: Configured 8px vertical spacing and 14/16/14/14px margins for status bar element checklist.
+     - `FocusedViewDialog.cpp`: Configured 16px horizontal spacing, 8px vertical spacing, and 14/16/14/14px margins for options grid.
+   - NotepadNext Workspace Default Light Palette & Dark Mode Contrast Calibration:
+     - Calibrated `kLightPalette` to match the NotepadNext default workspace aesthetic (`#f0f2f5` window, `#fafbfc` canvas/card, `#e1e4e8` border, `#24292f` primary text, `#57606a` secondary text), avoiding harsh, eye-straining pure white backgrounds.
+     - Calibrated `kDarkPalette` text contrast (`#cdd6f4` primary text, `#a6adc8` secondary text) for sharp, crisp readability without blurriness.
+   - 13-Pillar C++ Hardening:
+     - Marked `PreferencesDialog` and `SearchResultsCollector` constructors `explicit` to prevent implicit conversions.
+     - Returned `const QString &` in `FileBrowserDock::currentDirectory()` to eliminate heap string allocations on directory lookups; reserved capacity for `cleanedFilters`.
+     - Passed `searchTerm` and `line` parameters by `const QString &` across `ISearchResultsHandler`, `SearchResultsCollector`, `SearchResultsDock`, and `LuaConsoleDock::historyAdd`; eliminated shadowed variable declaration in `SearchResultsDock::newSearch`.
+     - Replaced C-style cast with `reinterpret_cast` in `LuaConsoleDock.cpp`.
+     - Marked `AutoClosePairs::isWordChar`, `DocumentationManager::openKeyboardShortcutsGuide`, `DocumentationManager::openOnlineRepository`, and `FocusedView::ensureHiddenLineStyle` as `static`.
 
 ---
 

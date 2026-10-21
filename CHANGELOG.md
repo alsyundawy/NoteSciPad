@@ -17,6 +17,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 🛠️ Fixed
 
+- **Universal Checkbox & Radio Button Layout & Spacing Overhaul**: Standardized layout spacing, padding, margins, and vertical breathing room across all dialog windows to eliminate squishing and overlap:
+  - `ThemeManager.cpp`: Configured explicit `spacing: 8px;`, `padding: 3px 4px;`, `min-height: 20px;`, and 16x16 indicator dimensions (4px border-radius for checkboxes, 9px for radio buttons).
+  - Crisp vector checkmark: Bundled `src/icons/checkmark.svg` via `src/resources.qrc` and `image: url(:/icons/checkmark.svg);`, restoring crisp vector checkmarks on checked checkboxes without platform-specific rendering anomalies.
+  - Radio button indicator rendering: Enforced sharp circular indicator dot via `border: 3px solid %5; background-color: %6;` on checked state.
+  - Calibrated dialog layouts across Find & Replace, Preferences, Transparency, EncodingSelection, MacroRun, PerformanceDiagnostics, TailOptions, ManageToolsDialog, StatusBarCustomizerDialog, and FocusedViewDialog.
+- **NotepadNext Workspace Default Light Palette & Dark Mode Contrast Calibration**:
+  - Calibrated `kLightPalette` to match the NotepadNext default workspace aesthetic (`#f0f2f5` window, `#fafbfc` canvas/card, `#e1e4e8` border, `#24292f` primary text, `#57606a` secondary text), avoiding harsh, eye-straining pure white backgrounds.
+  - Calibrated `kDarkPalette` text contrast (`#cdd6f4` primary text, `#a6adc8` secondary text) for sharp, crisp readability without blurriness.
+- **Comprehensive 13-Pillar C++ Hardening**:
+  - Marked `PreferencesDialog` and `SearchResultsCollector` constructors `explicit` to prevent implicit conversions.
+  - Returned `const QString &` in `FileBrowserDock::currentDirectory()` to eliminate heap string allocations on directory lookups; reserved capacity for `cleanedFilters`.
+  - Passed `searchTerm` and `line` parameters by `const QString &` across `ISearchResultsHandler`, `SearchResultsCollector`, `SearchResultsDock`, and `LuaConsoleDock::historyAdd`; eliminated shadowed variable declaration in `SearchResultsDock::newSearch`.
+  - Replaced C-style cast with `reinterpret_cast` in `LuaConsoleDock.cpp`.
+  - Marked stateless helper functions as `static` in `AutoClosePairs::isWordChar`, `DocumentationManager::openKeyboardShortcutsGuide`, `DocumentationManager::openOnlineRepository`, and `FocusedView::ensureHiddenLineStyle`.
 - **Strict Markdownlint Compliance**: Remediated all markdown formatting issues across documentation files (`doc/*.md`, `CHANGELOG.md`, `USER_GUIDE.md`, `MANUAL_TEST_CHECKLIST.md`), normalizing code fence language specifiers (`MD040`), list blank line paddings (`MD032`), heading blank lines (`MD022`), and table cell formatting.
 - **CI Build & Workflow Dispatch**: Synchronized workflow triggers for seamless manual and branch builds across macOS, Linux, and Windows.
 
@@ -62,11 +76,11 @@ NoteSciPad v1.1.0 introduces the complete 75-theme collection adapted from Subne
 #### Redesigned 5-Tab About Dialog
 
 - **Modern 5-Tab Interface (`AboutDialog`)**:
-  - *About NoteSciPad*: High-resolution application icon, architecture overview, and legal non-affiliation statement.
-  - *Maintainer Information*: Complete contact information for Harry DS Alsyundawy (ALSYUNDAWY IT SOLUTION) including Email, Website, GitHub, Telegram, PayPal, Buy Me a Coffee, and QRIS barcode link (*strictly omitting phone number and WhatsApp*).
-  - *Credits & Attribution*: Formal upstream attribution to Scintilla, Lexilla, NotepadNext, Notepad4, Notepad3, and SubnetCalc-MacOS.
-  - *System & Diagnostics*: Real-time operating system, kernel version, CPU build architecture, Qt build/runtime version, display scale ratio, and one-click "Copy Diagnostics to Clipboard".
-  - *License*: Complete GNU General Public License v3.0 text and FSF links.
+  - _About NoteSciPad_: High-resolution application icon, architecture overview, and legal non-affiliation statement.
+  - _Maintainer Information_: Complete contact information for Harry DS Alsyundawy (ALSYUNDAWY IT SOLUTION) including Email, Website, GitHub, Telegram, PayPal, Buy Me a Coffee, and QRIS barcode link (_strictly omitting phone number and WhatsApp_).
+  - _Credits & Attribution_: Formal upstream attribution to Scintilla, Lexilla, NotepadNext, Notepad4, Notepad3, and SubnetCalc-MacOS.
+  - _System & Diagnostics_: Real-time operating system, kernel version, CPU build architecture, Qt build/runtime version, display scale ratio, and one-click "Copy Diagnostics to Clipboard".
+  - _License_: Complete GNU General Public License v3.0 text and FSF links.
 
 #### EditorBase Feature Synthesis & Math Evaluation
 

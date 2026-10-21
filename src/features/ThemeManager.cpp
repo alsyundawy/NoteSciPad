@@ -22,17 +22,17 @@ static const ThemePalette kLightPalette = {
     "light",
     "Light Mode",
     false,
-    "#f6f8fa", // win
-    "#ffffff", // card
-    "#d0d7de", // border
-    "#24292f", // txtPri
-    "#57606a", // txtSec
-    "#0550ae", // cyan
-    "#0969da", // blue
-    "#116329", // net
-    "#953800", // sub
-    "#0a3069", // host
-    "#57606a"  // sep
+    "#f0f2f5",  // win (NotepadNext default workspace window)
+    "#fafbfc",  // card (NotepadNext default workspace canvas)
+    "#e1e4e8",  // border
+    "#24292f",  // txtPri
+    "#57606a",  // txtSec
+    "#0550ae",  // cyan
+    "#0969da",  // blue
+    "#116329",  // net
+    "#953800",  // sub
+    "#0a3069",  // host
+    "#57606a"   // sep
 };
 
 static const ThemePalette kDarkPalette = {
@@ -245,14 +245,279 @@ QString ThemeManager::getThemeStyleSheet() const
 {
     const ThemePalette *pal = currentPalette();
 
-    QString win = pal ? QString::fromLatin1(pal->win) : (isDarkActive() ? QStringLiteral("#181825") : QStringLiteral("#f6f8fa"));
-    QString card = pal ? QString::fromLatin1(pal->card) : (isDarkActive() ? QStringLiteral("#1e1e2e") : QStringLiteral("#ffffff"));
-    QString border = pal ? QString::fromLatin1(pal->border) : (isDarkActive() ? QStringLiteral("#313244") : QStringLiteral("#d0d7de"));
+    QString win = pal ? QString::fromLatin1(pal->win) : (isDarkActive() ? QStringLiteral("#181825") : QStringLiteral("#f0f2f5"));
+    QString card = pal ? QString::fromLatin1(pal->card) : (isDarkActive() ? QStringLiteral("#1e1e2e") : QStringLiteral("#fafbfc"));
+    QString border = pal ? QString::fromLatin1(pal->border) : (isDarkActive() ? QStringLiteral("#313244") : QStringLiteral("#e1e4e8"));
     QString txtPri = pal ? QString::fromLatin1(pal->txtPri) : (isDarkActive() ? QStringLiteral("#cdd6f4") : QStringLiteral("#24292f"));
     QString txtSec = pal ? QString::fromLatin1(pal->txtSec) : (isDarkActive() ? QStringLiteral("#a6adc8") : QStringLiteral("#57606a"));
     QString accent = pal ? QString::fromLatin1(pal->blue) : (isDarkActive() ? QStringLiteral("#89b4fa") : QStringLiteral("#0969da"));
 
     const QString templateStr = QString::fromUtf8(R"(
+/* Universal Base Typography & Text */
+QWidget {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Ubuntu", "Roboto", "Segoe UI", "DejaVu Sans", "Liberation Sans", "Helvetica Neue", Arial, sans-serif;
+    color: %2;
+}
+
+/* Windows, Dialogs, Message Boxes */
+QMainWindow, QDialog, QMessageBox {
+    background-color: %1;
+    color: %2;
+}
+
+/* Labels */
+QLabel {
+    color: %2;
+    background-color: transparent;
+}
+
+/* Group Boxes (Find Dialog searchMode, transparency, Preferences, etc.) */
+QGroupBox {
+    background-color: %5;
+    color: %2;
+    border: 1px solid %3;
+    border-radius: 6px;
+    margin-top: 18px;
+    padding: 14px 10px 10px 10px;
+    font-weight: 600;
+}
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    left: 10px;
+    padding: 2px 8px;
+    color: %2;
+    background-color: %5;
+    border: 1px solid %3;
+    border-radius: 4px;
+    font-weight: bold;
+}
+QGroupBox::indicator {
+    width: 16px;
+    height: 16px;
+    border: 1px solid %3;
+    background-color: %5;
+    border-radius: 4px;
+}
+QGroupBox::indicator:hover {
+    border-color: %6;
+}
+QGroupBox::indicator:checked {
+    background-color: %6;
+    border-color: %6;
+    image: url(:/icons/checkmark.svg);
+}
+QGroupBox::indicator:disabled {
+    border-color: %3;
+    background-color: %1;
+}
+
+/* Checkboxes & Radio Buttons */
+QCheckBox, QRadioButton {
+    color: %2;
+    spacing: 8px;
+    padding: 3px 4px;
+    min-height: 20px;
+    background-color: transparent;
+}
+QCheckBox:hover, QRadioButton:hover {
+    color: %6;
+}
+QCheckBox:disabled, QRadioButton:disabled {
+    color: %4;
+}
+QCheckBox::indicator, QRadioButton::indicator {
+    width: 16px;
+    height: 16px;
+    border: 1px solid %3;
+    background-color: %5;
+}
+QCheckBox::indicator {
+    border-radius: 4px;
+}
+QRadioButton::indicator {
+    border-radius: 9px;
+}
+QCheckBox::indicator:hover, QRadioButton::indicator:hover {
+    border-color: %6;
+}
+QCheckBox::indicator:checked {
+    background-color: %6;
+    border-color: %6;
+    image: url(:/icons/checkmark.svg);
+}
+QRadioButton::indicator:checked {
+    background-color: %6;
+    border: 3px solid %5;
+}
+QCheckBox::indicator:disabled, QRadioButton::indicator:disabled {
+    border-color: %3;
+    background-color: %1;
+}
+
+/* Text Inputs, Line Edits, Combo LineEdit */
+QLineEdit, QTextEdit, QPlainTextEdit {
+    background-color: %5;
+    color: %2;
+    border: 1px solid %3;
+    border-radius: 5px;
+    padding: 4px 8px;
+    selection-background-color: %6;
+    selection-color: #ffffff;
+}
+QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus {
+    border-color: %6;
+}
+QLineEdit:disabled, QTextEdit:disabled, QPlainTextEdit:disabled {
+    background-color: %1;
+    color: %4;
+    border-color: %3;
+}
+
+/* Combo Boxes */
+QComboBox {
+    background-color: %5;
+    color: %2;
+    border: 1px solid %3;
+    border-radius: 5px;
+    padding: 4px 8px;
+    min-height: 20px;
+}
+QComboBox:hover {
+    border-color: %6;
+}
+QComboBox:disabled {
+    background-color: %1;
+    color: %4;
+    border-color: %3;
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left: 1px solid %3;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+QComboBox QAbstractItemView {
+    background-color: %5;
+    color: %2;
+    border: 1px solid %3;
+    selection-background-color: %6;
+    selection-color: #ffffff;
+}
+
+/* Spin Boxes */
+QSpinBox, QDoubleSpinBox {
+    background-color: %5;
+    color: %2;
+    border: 1px solid %3;
+    border-radius: 5px;
+    padding: 3px 6px;
+}
+QSpinBox:focus, QDoubleSpinBox:focus {
+    border-color: %6;
+}
+
+/* Push Buttons */
+QPushButton {
+    background-color: %5;
+    color: %2;
+    border: 1px solid %3;
+    border-radius: 5px;
+    padding: 5px 14px;
+    font-weight: 500;
+}
+QPushButton:hover {
+    border-color: %6;
+    color: %6;
+}
+QPushButton:pressed {
+    background-color: %3;
+}
+QPushButton:disabled {
+    color: %4;
+    border-color: %3;
+    background-color: %1;
+}
+
+/* Sliders */
+QSlider::groove:horizontal {
+    height: 6px;
+    background: %3;
+    border-radius: 3px;
+}
+QSlider::sub-page:horizontal {
+    background: %6;
+    border-radius: 3px;
+}
+QSlider::handle:horizontal {
+    background: #ffffff;
+    border: 2px solid %6;
+    width: 16px;
+    margin-top: -5px;
+    margin-bottom: -5px;
+    border-radius: 8px;
+}
+
+/* ScrollBars */
+QScrollBar:vertical {
+    background: %1;
+    width: 12px;
+    margin: 0px;
+}
+QScrollBar::handle:vertical {
+    background: %3;
+    min-height: 24px;
+    border-radius: 4px;
+    margin: 2px;
+}
+QScrollBar::handle:vertical:hover {
+    background: %4;
+}
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    height: 0px;
+}
+QScrollBar:horizontal {
+    background: %1;
+    height: 12px;
+    margin: 0px;
+}
+QScrollBar::handle:horizontal {
+    background: %3;
+    min-width: 24px;
+    border-radius: 4px;
+    margin: 2px;
+}
+QScrollBar::handle:horizontal:hover {
+    background: %4;
+}
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+    width: 0px;
+}
+
+/* Menus */
+QMenu {
+    background-color: %5;
+    color: %2;
+    border: 1px solid %3;
+    border-radius: 6px;
+    padding: 4px;
+}
+QMenu::item {
+    padding: 5px 22px 5px 12px;
+    border-radius: 4px;
+}
+QMenu::item:selected {
+    background-color: %6;
+    color: #ffffff;
+}
+QMenu::separator {
+    height: 1px;
+    background: %3;
+    margin: 4px 6px;
+}
+
 QStatusBar {
     background-color: %1;
     color: %2;

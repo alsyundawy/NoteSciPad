@@ -12,15 +12,15 @@ NoteSciPad provides native packaging support for modern Linux distributions via 
 
 ## 2. Package Specifications
 
-| Attribute | Debian (`.deb`) | RPM (`.rpm`) |
-| --- | --- | --- |
-| Package Name | `notesci-pad` | `notesci-pad` |
-| Output Filename | `notesci-pad_<version>_<arch>.deb` | `notesci-pad-<version>-1.<arch>.rpm` |
-| Section / Group | `editors` | `Applications/Editors` |
-| License | GPL-3.0-or-later | GPL-3.0-or-later |
-| Dependencies | `libc6`, `libstdc++6` (auto-detected via shlibdeps) | auto-detected via AutoReq |
-| Recommends | `xdg-utils` | `xdg-utils` |
-| Desktop Entry | `/usr/share/applications/NoteSciPad.desktop` | `/usr/share/applications/NoteSciPad.desktop` |
+| Attribute        | Debian (`.deb`)                                         | RPM (`.rpm`)                                            |
+| ---------------- | ------------------------------------------------------- | ------------------------------------------------------- |
+| Package Name     | `notesci-pad`                                           | `notesci-pad`                                           |
+| Output Filename  | `notesci-pad_<version>_<arch>.deb`                      | `notesci-pad-<version>-1.<arch>.rpm`                    |
+| Section / Group  | `editors`                                               | `Applications/Editors`                                  |
+| License          | GPL-3.0-or-later                                        | GPL-3.0-or-later                                        |
+| Dependencies     | `libc6`, `libstdc++6` (auto-detected via shlibdeps)     | auto-detected via AutoReq                               |
+| Recommends       | `xdg-utils`                                             | `xdg-utils`                                             |
+| Desktop Entry    | `/usr/share/applications/NoteSciPad.desktop`            | `/usr/share/applications/NoteSciPad.desktop`            |
 | Application Icon | `/usr/share/icons/hicolor/scalable/apps/NoteSciPad.svg` | `/usr/share/icons/hicolor/scalable/apps/NoteSciPad.svg` |
 
 ---

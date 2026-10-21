@@ -26,17 +26,13 @@
 #include <QStatusBar>
 
 FocusedViewDialog::FocusedViewDialog(FocusedView *focusedView, MainWindow *mainWindow, QWidget *parent)
-    : QDialog(parent)
-    , m_focusedView(focusedView)
-    , m_mainWindow(mainWindow)
-{
+    : QDialog(parent), m_focusedView(focusedView), m_mainWindow(mainWindow) {
     setWindowTitle(tr("Focused View — Filter Lines"));
     setMinimumWidth(420);
     setupUi();
 }
 
-void FocusedViewDialog::setupUi()
-{
+void FocusedViewDialog::setupUi() {
     auto *mainLayout = new QVBoxLayout(this);
     mainLayout->setSpacing(10);
 
@@ -60,6 +56,9 @@ void FocusedViewDialog::setupUi()
     // Options group
     auto *optionsGroup = new QGroupBox(tr("Options"), this);
     auto *optionsLayout = new QGridLayout(optionsGroup);
+    optionsLayout->setHorizontalSpacing(16);
+    optionsLayout->setVerticalSpacing(8);
+    optionsLayout->setContentsMargins(14, 16, 14, 14);
 
     m_caseSensitive = new QCheckBox(tr("Match &case"), this);
     m_wholeWord = new QCheckBox(tr("&Whole word"), this);
@@ -77,7 +76,7 @@ void FocusedViewDialog::setupUi()
 
     // Status label
     m_statusLabel = new QLabel(tr("Ready to filter lines"), this);
-    m_statusLabel->setStyleSheet(QStringLiteral("color: #666; font-style: italic;"));
+    m_statusLabel->setStyleSheet(QStringLiteral("font-style: italic; opacity: 0.8;"));
     mainLayout->addWidget(m_statusLabel);
 
     // Action buttons
@@ -102,17 +101,16 @@ void FocusedViewDialog::setupUi()
     connect(m_bookmarksOnly, &QCheckBox::toggled, this, &FocusedViewDialog::onBookmarksToggled);
 }
 
-void FocusedViewDialog::onBookmarksToggled(bool checked)
-{
+void FocusedViewDialog::onBookmarksToggled(bool checked) {
     m_queryEdit->setEnabled(!checked);
     m_caseSensitive->setEnabled(!checked);
     m_wholeWord->setEnabled(!checked);
     m_useRegex->setEnabled(!checked);
 }
 
-void FocusedViewDialog::prepareForEditor(ScintillaNext *editor)
-{
-    if (!editor) return;
+void FocusedViewDialog::prepareForEditor(ScintillaNext *editor) {
+    if (!editor)
+        return;
 
     if (m_focusedView->isFocused(editor)) {
         auto opts = m_focusedView->currentOptions(editor);
@@ -148,9 +146,9 @@ void FocusedViewDialog::prepareForEditor(ScintillaNext *editor)
     m_queryEdit->setFocus();
 }
 
-void FocusedViewDialog::onApplyClicked()
-{
-    if (!m_mainWindow || !m_focusedView) return;
+void FocusedViewDialog::onApplyClicked() {
+    if (!m_mainWindow || !m_focusedView)
+        return;
     ScintillaNext *editor = m_mainWindow->currentEditor();
     if (!editor) {
         m_statusLabel->setText(tr("No active editor"));
@@ -173,9 +171,9 @@ void FocusedViewDialog::onApplyClicked()
     }
 }
 
-void FocusedViewDialog::onClearClicked()
-{
-    if (!m_mainWindow || !m_focusedView) return;
+void FocusedViewDialog::onClearClicked() {
+    if (!m_mainWindow || !m_focusedView)
+        return;
     ScintillaNext *editor = m_mainWindow->currentEditor();
     if (!editor) {
         m_statusLabel->setText(tr("No active editor"));

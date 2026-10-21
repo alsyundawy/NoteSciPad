@@ -44,12 +44,12 @@ When an external monitor is unplugged, windows previously located on that screen
 
 ### 2.4 Multi-Monitor Navigation & Shortcuts
 
-| Action | Menu Location | Keyboard Shortcut | Function |
-| --- | --- | --- | --- |
-| **Move to Next Screen** | `Window > Move to Next Screen` | `Ctrl+Alt+Right` / `Cmd+Alt+Right` | Moves window to the next connected display preserving optimal size |
-| **Move to Previous Screen** | `Window > Move to Previous Screen` | `Ctrl+Alt+Left` / `Cmd+Alt+Left` | Moves window to previous display |
-| **Center Window on Screen** | `Window > Center Window on Screen` | `Ctrl+Alt+C` / `Cmd+Alt+C` | Centers window within active screen available geometry |
-| **Display Diagnostics** | `Window > Display & Retina Diagnostics...`<br/>`View > Display & Retina Diagnostics...` | `Ctrl+Alt+D` / `Cmd+Alt+D` | Opens the interactive display inspector and controller |
+| Action                      | Menu Location                                                                           | Keyboard Shortcut                  | Function                                                           |
+| --------------------------- | --------------------------------------------------------------------------------------- | ---------------------------------- | ------------------------------------------------------------------ |
+| **Move to Next Screen**     | `Window > Move to Next Screen`                                                          | `Ctrl+Alt+Right` / `Cmd+Alt+Right` | Moves window to the next connected display preserving optimal size |
+| **Move to Previous Screen** | `Window > Move to Previous Screen`                                                      | `Ctrl+Alt+Left` / `Cmd+Alt+Left`   | Moves window to previous display                                   |
+| **Center Window on Screen** | `Window > Center Window on Screen`                                                      | `Ctrl+Alt+C` / `Cmd+Alt+C`         | Centers window within active screen available geometry             |
+| **Display Diagnostics**     | `Window > Display & Retina Diagnostics...`<br/>`View > Display & Retina Diagnostics...` | `Ctrl+Alt+D` / `Cmd+Alt+D`         | Opens the interactive display inspector and controller             |
 
 ---
 

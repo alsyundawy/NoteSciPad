@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -20,26 +21,25 @@
 
 class ScintillaNext;
 
-class FocusedView : public QObject
-{
+class FocusedView : public QObject {
     Q_OBJECT
 
 public:
     struct FilterOptions {
         QString query;
-        bool matchCase {false};
-        bool wholeWord {false};
-        bool useRegex {false};
-        bool invert {false};          // If true, hide matching lines (keep non-matching)
-        bool bookmarksOnly {false};    // If true, filter based on bookmarked lines
-        int contextLines {0};          // Number of context lines before/after match
+        bool matchCase{false};
+        bool wholeWord{false};
+        bool useRegex{false};
+        bool invert{false};         // If true, hide matching lines (keep non-matching)
+        bool bookmarksOnly{false};  // If true, filter based on bookmarked lines
+        int contextLines{0};        // Number of context lines before/after match
     };
 
     struct FilterResult {
-        bool active {false};
-        int totalLines {0};
-        int matchedLines {0};
-        int visibleLines {0};
+        bool active{false};
+        int totalLines{0};
+        int matchedLines{0};
+        int visibleLines{0};
         QString filterQuery;
         QString message;
     };
@@ -73,10 +73,10 @@ signals:
     void filterCleared(ScintillaNext *editor);
 
 private:
-    void ensureHiddenLineStyle(ScintillaNext *editor);
+    static void ensureHiddenLineStyle(ScintillaNext *editor);
 
-    QMap<ScintillaNext*, FilterOptions> m_editorOptions;
+    QMap<ScintillaNext *, FilterOptions> m_editorOptions;
     FilterOptions m_lastOptions;
 };
 
-#endif // FOCUSEDVIEW_H
+#endif  // FOCUSEDVIEW_H

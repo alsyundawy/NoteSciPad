@@ -16,21 +16,19 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #pragma once
-
 
 #include "ISearchResultsHandler.h"
 
-class SearchResultsCollector: public ISearchResultsHandler
-{
+class SearchResultsCollector : public ISearchResultsHandler {
 public:
-    SearchResultsCollector(ISearchResultsHandler *child);
+    explicit SearchResultsCollector(ISearchResultsHandler *child);
     virtual ~SearchResultsCollector() {}
 
-    void newSearch(const QString searchTerm) override;
+    void newSearch(const QString &searchTerm) override;
     void newFileEntry(ScintillaNext *editor) override;
-    void newResultsEntry(const QString line, int lineNumber, int startPositionFromBeginning, int endPositionFromBeginning, int hitCount=1) override;
+    void newResultsEntry(const QString &line, int lineNumber, int startPositionFromBeginning,
+                         int endPositionFromBeginning, int hitCount = 1) override;
     void completeSearch() override;
 
 private:
@@ -42,4 +40,3 @@ private:
     int prevStartPositionFromBeginning = 0;
     int prevEndPositionFromBeginning = 0;
 };
-

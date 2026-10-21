@@ -2,7 +2,7 @@
 
 **Project:** NoteSciPad (Alternative Notepad for macOS & Linux)  
 **Standard:** C++20 / Qt 6.5+ / ScintillaNext  
-**Reference Document:** WORKGROUND.md  
+**Reference Document:** WORKGROUND.md
 
 ---
 
@@ -27,14 +27,14 @@
 
 ## 3. Naming Conventions
 
-| Entity | Convention | Example |
-| --- | --- | --- |
-| Classes / Structs | `PascalCase` | `MarkOccurrences`, `FileBrowserDock` |
-| Member Functions | `camelCase` | `markAll()`, `updateMatchCount()` |
-| Local Variables | `camelCase` | `matchCount`, `editorInstance` |
-| Member Variables | `camelCase` or `m_` prefix | `m_matchCount`, `editor` |
-| Constants & Enums | `PascalCase` or `kConstant` | `IndicatorMarkOccurrences`, `kDefaultLimit` |
-| Signals & Slots | `camelCase` (descriptive verbs) | `matchesCountChanged(int)` |
+| Entity            | Convention                      | Example                                     |
+| ----------------- | ------------------------------- | ------------------------------------------- |
+| Classes / Structs | `PascalCase`                    | `MarkOccurrences`, `FileBrowserDock`        |
+| Member Functions  | `camelCase`                     | `markAll()`, `updateMatchCount()`           |
+| Local Variables   | `camelCase`                     | `matchCount`, `editorInstance`              |
+| Member Variables  | `camelCase` or `m_` prefix      | `m_matchCount`, `editor`                    |
+| Constants & Enums | `PascalCase` or `kConstant`     | `IndicatorMarkOccurrences`, `kDefaultLimit` |
+| Signals & Slots   | `camelCase` (descriptive verbs) | `matchesCountChanged(int)`                  |
 
 ---
 

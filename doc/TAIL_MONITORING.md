@@ -9,7 +9,8 @@ As part of Phase 3, Task 10 of NoteSciPad's roadmap, this document details the i
 ## 1. Problem Statement & Motivation
 
 Traditional text editors monitor file modifications by comparing timestamps upon window activation. When an open file changes on disk (such as a server log, build log, or simulation output), the editor interrupts the user with a modal prompt:
-> *"File has been modified by another program. Do you want to reload it?"*
+
+> _"File has been modified by another program. Do you want to reload it?"_
 
 For active log files, this creates an unusable loop of modal dialogs that blocks editing and freezes workflow. Furthermore, reloading the entire file from the top causes visual flashing, resets the scroll position to line 1, and consumes excessive memory and CPU on large logs.
 
