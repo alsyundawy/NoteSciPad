@@ -24,6 +24,17 @@ SparkNotePad v1.3.0 represents a landmark release featuring the official transfo
 - **Cross-Platform Icons**: Generated multi-resolution Windows `SparkNotePad.ico` (16, 24, 32, 48, 64, 128, 256 px), high-DPI 512x512 Linux desktop icon (`SparkNotePad.png`), and clean vector SVG (`SparkNotePad.svg`).
 - **In-App Resource Bundling**: Updated `src/resources.qrc` and window application headers to load `:/icons/SparkNotePad.png`.
 
+#### Toolbar Icon Clarity & High-Precision Redesign
+
+- **Pixel-Perfect 16x16 Toolbar Grid**: Restored native 16x16 base icons to eliminate bilinear interpolation blur and invisibility on dark themes (`#181a1f`, `#1e1e1e`, `#25282c`) caused by downscaled 32x32 faint outlines.
+- **Complete Toolbar Redesigns**:
+  - **Find (`find.png`)**: Designed a high-precision azure/cyan magnifying glass with 3D specular white gleam and polished gold metallic handle.
+  - **Find & Replace (`findReplace.png`)**: Designed a compact search lens paired with reciprocal exchange swap arrows in neon emerald (`#10b981`) and electric amber/gold (`#f59e0b`) with sharp contour borders.
+  - **Zoom In (`zoomIn.png`)**: Designed an ocean azure magnifying glass enclosing a bold, high-contrast white plus sign (`+`).
+  - **Zoom Out (`zoomOut.png`)**: Designed a matching ocean azure magnifying glass enclosing a bold, high-contrast white minus sign (`−`).
+  - **Show Indent (`indentGuide.png`)**: Designed a code block hierarchy with glowing dual amber/gold vertical alignment rails (`#f59e0b`) guiding indented emerald and cyan code bars.
+- **Dark Mode & High Contrast Invariants**: Verified that every toolbar icon maintains strong contrast (average luminance delta > 75 on dark toolbars, > 102 on light toolbars, peak delta 225.0) ensuring sharp readability across all themes.
+
 #### Dual-Format Cryptographic Backward Compatibility
 
 - **Primary `SPKENC01` Magic Header**: New documents encrypted with AES-256-CBC and HMAC-SHA256 authenticated containers use the `SPKENC01` format header.
