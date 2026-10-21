@@ -154,12 +154,15 @@ NoteSciPad **v1.1.0** represents a major enhancement to NoteSciPad's visual styl
 
 Key milestones achieved in this release:
 
-1. **75 Curated Developer Themes across 25 Families**: Completely extracted and adapted from `SubnetCalc-MacOS` into native C++20 `ThemePaletteData.h`, with seamless WCAG 2.1 AA/AAA contrast mapping across Scintilla text, numbers, keywords, operators, and fold margins.
-2. **Dedicated Top-Level MenuBar `Themes` Menu & Switcher**: Positioned prominently on the main menu bar, featuring instant filters (Light Themes Only, Dark Themes Only), 25 family submenus, and the interactive `ThemeSwitcherDialog` (`Ctrl+Shift+T` / `Cmd+Shift+T`) with live search and real-time canvas preview.
+1. **Native Dark and Light Mode Streamlining & UI Polish**: Streamlined `ThemeManager` to dedicated native Dark and Light modes (`kLightPalette` and `kDarkPalette`) with zero thirdparty theme overhead, clean distraction-free UI without emojis, and dynamic mode synchronization with real-time status bar feedback.
+2. **Toolbar Dividing Line & Classic Peach Tab Top Border Restoration**: Restored clean horizontal separation line (`border-bottom: 1px solid %3;`), soft peach (`rgb(255, 202, 176)`) active tab top borders, and orange focus top borders matching classic Notepad styling.
 3. **Redesigned 5-Tab Modern About Dialog**: Providing a tabbed experience (About, Maintainer Card with complete contact information strictly omitting phone and WhatsApp, Credits & Attribution, Real-Time System Diagnostics with one-click clipboard copy, and Full GPL-3.0 License).
 4. **Inline Mathematical Expression Evaluation (`Ctrl+Shift+E` / `Cmd+Shift+E`)**: Instant calculation of mathematical formulas in selection or current line with append or replace options, supporting trigonometric, logarithmic, root, and power functions.
 5. **Official Application Icon & Attribution**: Adapted from the celebrated icon design by Lon McGregor ([](https://github.com/LonMcGregor/NotepadPlusPlusIcons)), honoring open-source iconography heritage.
-6. **7 Trending Language Lexers**: First-class syntax highlighting definitions for Mojo (`.mojo`), Solidity (`.sol`), Julia (`.jl`), Dockerfile (`Dockerfile`), Terraform (`.tf`), Protobuf (`.proto`), and Mermaid (`.mermaid`).
+6. **7 Trending Language Lexers**: First-class syntax highlighting definitions for Mojo (`.mojo`), Solidity (`.sol`), Julia (`.jl`), Dockerfile (`docker.lua`), Terraform (`.tf`), Protobuf (`.proto`), and Mermaid (`.mermaid`).
+7. **Official Thirdparty Engine Modernization**: Successfully retrieved, merged, and integrated Scintilla 5.6.7, Lexilla 5.5.4, and Lua 5.5.1 from the primary upstream branch, elevating code editing performance, syntax tokenization, and embedded Lua scripting fidelity.
+8. **Universal Dialog Checkbox & Radio Button Layout Overhaul**: Standardized universal checkbox and radio button spacing, vector checkmark rendering, and calibrated dialog layouts across all preferences and search windows.
+9. **Pixel-Perfect 16x16 Toolbar Iconography**: Restored native 16x16 integer grid clarity and completely redesigned Find, Find & Replace, Zoom In, Zoom Out, and Indentation Guides.
 
 ---
 
