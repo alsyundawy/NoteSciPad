@@ -124,6 +124,8 @@ Ketika editor teks desktop modern kerap menghabiskan lebih dari 500 MB RAM hanya
 | **Enkripsi AES-256-CBC**       | Enkripsi dokumen berkekuatan tinggi dengan PBKDF2 (100.000 putaran) dan autentikasi integritas HMAC-SHA256            | `Ctrl+Alt+E` / `Ctrl+Alt+D` |
 | **Pemantauan Log Langsung**    | Streaming berkas log disk secara real-time (`tail -f`) dengan muat-ulang debounced (500 ms) dan auto-scroll           |        `Ctrl+Alt+Y`         |
 | **25 Rumpun Tema (75 Varian)** | 75 palet tema pengembang pilihan yang memenuhi standar kontras internasional WCAG 2.1 AA/AAA                          |        Menu `Themes`        |
+| **Bilah Alat 16x16 Pixel-Fit** | Ikonografi tajam beresolusi tinggi untuk Cari, Ganti, Zoom, dan Indent Guide di tema Gelap & Terang                   |      Bilah Alat Utama       |
+| **Ergonomi Spasi Dialog**      | Tata letak dan jarak terstandarisasi untuk kotak centang dan tombol radio di seluruh preferensi & dialog pencarian    |       Seluruh Dialog        |
 | **Evaluator JavaScript**       | Kotak pasir (sandbox) eksekusi JavaScript terisolasi untuk kalkulasi matematis, pemformatan JSON, dan manipulasi teks |       `Ctrl+Shift+J`        |
 | **Pengujian Regex Interaktif** | Penguji ekspresi reguler dengan pencocokan grup dinamis, multiline, dan penanda dot-all                               |     `Ctrl+Alt+Shift+R`      |
 | **Call-Tip Pratinjau Warna**   | Kotak pratinjau warna mengambang interaktif untuk kode format `#HEX`, `rgb()`, `rgba()`, dan `hsl()`                  |        Hover Kursor         |
@@ -248,9 +250,12 @@ trunk check -n -j 2
 
 Riwayat rilis lengkap dan kronologis terdokumentasi pada berkas [CHANGELOG.md](CHANGELOG.md).
 
-### [v1.3.0] — Transformasi Brand SparkNotePad, Logo Baru, Pengerasan 13 Pilar & Peningkatan Bahasa Indonesia (2026-10-20)
+### [v1.3.0] — Transformasi Brand SparkNotePad, Ikonografi Berpresisi Tinggi, Ergonomi UI & Pengerasan 13 Pilar (2026-10-20)
 
 - **Evolusi Brand Resmi**: Transformasi menyeluruh dari NoteSciPad menjadi **SparkNotePad** pada nama aplikasi, target biner, manifes Flatpak/Homebrew, skrip asosiasi sistem, dan dokumentasi.
+- **Bilah Alat 16x16 & Ikon Kustom Baru**: Desain ulang menyeluruh ikon bilah alat Cari (`find.png`), Cari & Ganti (`findReplace.png`), Zoom In (`zoomIn.png`), Zoom Out (`zoomOut.png`), dan Panduan Indentasi (`indentGuide.png`) pada grid native 16x16 dengan kontras tinggi untuk tema gelap dan terang.
+- **Tata Letak & Spasi Dialog Universal**: Standardisasi bantalan (padding), margin, dan ritme vertikal seluruh kotak centang dan tombol radio di dialog Cari & Ganti, Pengaturan/Preferensi, Tentang, dan dialog interaktif lainnya.
+- **Kalibrasi Tema & Ruang Kerja**: Penanganan kestabilan gaya preferensi light mode serta kalibrasi kontras pada dialog Cari & Ganti dan Pengaturan.
 - **Ikonografi & Aset Visual Baru**: Pembaruan logo resmi dan kumpulan ikon beresolusi tinggi Apple HIG (16x16 hingga 1024x1024 dalam format `.icns`, multi-layer `.ico`, serta `.png`).
 - **Penyempurnaan Bahasa Indonesia**: Penyelarasan terjemahan `i18n/SparkNotePad_id.ts` menggunakan kaidah Bahasa Indonesia baku pada seluruh menu, dialog diagnostik, dan pesan peringatan.
 - **Audit Kode 13 Pilar**: Pemeriksaan komprehensif terhadap bug, memori, konkurensi, keamanan OWASP 2025 / CWE Top 25, dan dependensi sirkular.

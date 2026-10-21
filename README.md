@@ -124,6 +124,8 @@ Where modern desktop text editors frequently consume upwards of 500 MB of RAM si
 | **AES-256-CBC Encryption**       | High-assurance document encryption with PBKDF2 key derivation (100,000 rounds) and HMAC-SHA256 integrity auth | `Ctrl+Alt+E` / `Ctrl+Alt+D` |
 | **Real-Time Log Monitoring**     | Live disk log streaming (`tail -f`) with debounced reload intervals (500 ms) and auto-scroll                  |        `Ctrl+Alt+Y`         |
 | **25 Theme Families (75 V.)**    | 75 hand-crafted developer palettes strictly adhering to international WCAG 2.1 AA/AAA contrast standards      |        `Themes` Menu        |
+| **Pixel-Perfect 16x16 Toolbar**  | High-contrast crisp iconography for Find, Replace, Zoom, and Indent Guides across Dark & Light modes          |        Main Toolbar         |
+| **Ergonomic Dialog Spacing**     | Polished, accessible spacing for checkboxes and radio buttons across all preferences and search dialogs       |         All Dialogs         |
 | **JavaScript Evaluator**         | Isolated execution sandbox for rapid mathematical computation, JSON formatting, and string manipulation       |       `Ctrl+Shift+J`        |
 | **Interactive Regex Tester**     | Regular expression tester featuring dynamic capture group matching, multiline evaluation, and dot-all modes   |     `Ctrl+Alt+Shift+R`      |
 | **Color Preview Call-Tips**      | Floating interactive color preview boxes supporting `#HEX`, `rgb()`, `rgba()`, and `hsl()` color formats      |        Cursor Hover         |
@@ -248,9 +250,12 @@ trunk check -n -j 2
 
 Full chronological release history is documented in [CHANGELOG.md](CHANGELOG.md).
 
-### [v1.3.0] — SparkNotePad Brand Transformation, Brand New Assets, 13-Pillar Hardening & International Polish (2026-10-20)
+### [v1.3.0] — SparkNotePad Brand Transformation, High-Precision Iconography, UI Ergonomics & 13-Pillar Hardening (2026-10-20)
 
 - **Official Brand Evolution**: Comprehensive transformation from NoteSciPad to **SparkNotePad** across binary targets, desktop bundle identifiers, Flatpak/Homebrew manifests, and system association scripts.
+- **Pixel-Perfect Toolbar & Custom Iconography**: Complete redesign of toolbar action icons including Find (`find.png`), Find & Replace (`findReplace.png`), Zoom In (`zoomIn.png`), Zoom Out (`zoomOut.png`), and Show Indent (`indentGuide.png`) on native 16x16 grid with high-contrast luminance for dark and light themes.
+- **Universal Dialog Layout & Spacing**: Calibrated padding, margins, and vertical rhythm for all checkboxes and radio buttons across Find & Replace, Settings/Preferences, About, and interactive utility dialogs.
+- **Theme & Workspace Calibration**: Fixed light mode preferences styling stability and contrast calibration in Find & Replace and settings dialogs.
 - **New Iconography & Visual Assets**: Updated official logo and Apple HIG compliant high-resolution icon sets (16x16 up to 1024x1024 in `.icns`, multi-layer `.ico`, and `.png` formats).
 - **International & Indonesian Polish**: Complete alignment of `i18n/SparkNotePad_id.ts` and `i18n/SparkNotePad_en.ts` ensuring formal native standards across all diagnostic dialogs, menus, and alert notifications.
 - **13-Pillar Code Quality Audit**: Thorough audit across bug patterns, memory safety, concurrency, OWASP 2025 / CWE Top 25 security benchmarks, and circular dependency prevention.
