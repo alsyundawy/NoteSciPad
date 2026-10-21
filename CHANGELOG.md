@@ -72,8 +72,33 @@ NoteSciPad v1.2.0 delivers comprehensive visual, architectural, and engine upgra
 #### Dialog Color Scheme Refinement & Universal Theme Synchronization
 
 - **Universal Dialog Styling in `ThemeManager.cpp`**: Refined Dark and Light theme styling across all dialog windows (`FindReplaceDialog`, `AboutDialog`, `PreferencesDialog`, `ModernMessageBox`, `MkcertDialog`, `TailOptionsDialog`, `DisplayInfoDialog`), providing uniform palette tokens (`%1` to `%6`) for `QGroupBox`, `QCheckBox`, `QRadioButton`, `QLineEdit`, `QComboBox`, `QSpinBox`, `QSlider`, `QScrollBar`, and `QMenu`.
+- **Universal Checkbox & Radio Button Overhaul**:
+  - `ThemeManager.cpp`: Configured explicit `spacing: 8px;`, `padding: 3px 4px;`, `min-height: 20px;`, and 16x16 indicator dimensions (4px border-radius for checkboxes, 9px for radio buttons).
+  - Crisp vector checkmark: Bundled `src/icons/checkmark.svg` via `src/resources.qrc` and `image: url(:/icons/checkmark.svg);`, restoring crisp vector checkmarks on checked checkboxes without platform-specific rendering anomalies.
+  - Radio button indicator rendering: Enforced sharp circular indicator dot via `border: 3px solid %5; background-color: %6;` on checked state.
+- **Dialog Layout & Checklist Spacing Calibration**:
+  - `FindReplaceDialog.ui`: Enhanced Search Mode and Transparency group box layouts with explicit 8px spacing and 8/10px margins; increased vertical checkbox list spacing to 8px.
+  - `PreferencesDialog.ui`: Enforced 8px vertical and horizontal spacing across all general settings checkbox and radio button rows (`verticalLayout_2`, `verticalLayout_3`, `verticalLayout_5`, `horizontalLayout_2`).
+  - `TransparencyDialog.ui`: Added 10px spacing to main layout and 8px spacing with 8/10px margins to `verticalLayoutMode` radio button group.
+  - `EncodingSelectionDialog.ui`: Configured 8px spacing and 8/10px margins for character set conversion action radio buttons (`layoutAction`).
+  - `MacroRunDialog.ui`: Configured 8px vertical spacing and 8px horizontal button layout spacing.
+  - `PerformanceDiagnosticsDialog.ui`: Added 8px spacing and 8/10px margins to diagnostic toggle layout (`verticalLayout_2`).
+  - `TailOptionsDialog.ui`: Added 8/10px margins to `verticalLayout_2` for clean visual alignment.
+  - `ThemeSwitcherDialog.cpp`: Added 12px spacing and 0/2px margins to `filterLayout`, dynamically calculating theme category radio counts using `kTotalThemePaletteCount`.
+  - `ManageToolsDialog.cpp`: Configured 10px vertical spacing and 16px margins for dialog form layout.
+  - `StatusBarCustomizerDialog.cpp`: Configured 8px vertical spacing and 14/16/14/14px margins for status bar element checklist.
+  - `FocusedViewDialog.cpp`: Configured 16px horizontal spacing, 8px vertical spacing, and 14/16/14/14px margins for options grid; dynamic opacity status label.
+- **NotepadNext Workspace Default Light Palette & Dark Mode Contrast Calibration**:
+  - `ThemePaletteData.h`: Introduced dedicated `notepadNext` palette as the default light workspace palette (`#f0f2f5` window, `#fafbfc` canvas/card, `#e1e4e8` border, `#24292f` primary text, `#57606a` secondary text), avoiding bright eye-straining pure white backgrounds.
+  - Default light mode mapping: Configured `defaultLight` to map directly to `notepadNext` palette in `findThemePaletteById`, and updated fallback color tokens in `ThemeManager::applyTheme` and `getThemeStyleSheet`.
+  - Sharp dark mode contrast calibration: Calibrated secondary text colors across dark themes (`materialDeepOcean`, `oneDarkPro`, `dracula`, `solarizedDark`, `ayuDark`, `kanagawaDragon`) to guarantee crisp, sharp text rendering exceeding WCAG AAA standards.
+- **Comprehensive 13-Pillar C++ Hardening**:
+  - Marked `PreferencesDialog` and `SearchResultsCollector` constructors `explicit` to prevent implicit conversions.
+  - Returned `const QString &` in `FileBrowserDock::currentDirectory()` to eliminate heap string allocations on directory lookups; reserved capacity for `cleanedFilters`.
+  - Passed `searchTerm` and `line` parameters by `const QString &` across `ISearchResultsHandler`, `SearchResultsCollector`, `SearchResultsDock`, and `LuaConsoleDock::historyAdd`; eliminated shadowed variable declaration in `SearchResultsDock::newSearch`.
+  - Replaced C-style cast with `reinterpret_cast` in `LuaConsoleDock.cpp`.
+  - Marked stateless helper functions as `static` in `AutoClosePairs::isWordChar`, `DocumentationManager::openKeyboardShortcutsGuide`, `DocumentationManager::openOnlineRepository`, and `FocusedView::ensureHiddenLineStyle`.
 - **Dock Tabs & ToolBar Visual Polish**: Restored warm peach top active tab border (`4px solid rgb(255, 202, 176)`), orange focused tab border, and refined native 1px toolbar bottom divider line with seamless button hover styling.
-- **Checklist Column Layout Improvements**: Polished checklist and group layouts across all dialogs (`FindReplaceDialog.ui`, `PreferencesDialog.ui`, `TailOptionsDialog.ui`), enforcing clean 6–8px spacing to prevent overlapping controls and messy layout wrapping across different OS DPI scalings.
 
 ---
 

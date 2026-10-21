@@ -14,6 +14,9 @@
    <string>Run a Macro Multiple Times</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>8</number>
+   </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <property name="spacing">
@@ -69,6 +72,9 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <property name="spacing">
+      <number>8</number>
+     </property>
      <item>
       <spacer name="horizontalSpacer_4">
        <property name="orientation">

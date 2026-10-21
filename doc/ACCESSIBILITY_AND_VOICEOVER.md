@@ -27,7 +27,7 @@ Implemented via `AccessibilityManager` and Cocoa `MacServicesHandler`:
 
 - **Document State Announcements:**
   - When switching tabs, NoteSciPad posts an accessibility notification via `NSAccessibilityAnnouncementRequestedNotification` (macOS) and `QAccessible::Alert` (Linux).
-  - VoiceOver announces the tab position, document name, and unsaved status (e.g., *"Document 2 of 5: main.cpp (unsaved)"*).
+  - VoiceOver announces the tab position, document name, and unsaved status (e.g., _"Document 2 of 5: main.cpp (unsaved)"_).
 - **Editor Canvas Context:**
   - `ScintillaNext` is configured with accessible roles and names (`NoteSciPad Code Editor`).
   - Screen readers can inspect total line counts, cursor position (line and column), and selection ranges.

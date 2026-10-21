@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-19  
 **Release Version:** NoteSciPad v1.0.0  
-**Editor Engine:** Scintilla 5.x + Lexilla 5.x (vendored in `thirdparty/`)  
+**Editor Engine:** Scintilla 5.x + Lexilla 5.x (vendored in `thirdparty/`)
 
 ---
 
@@ -49,20 +49,20 @@
 
 While the base codebase provides a robust Scintilla foundation, power-user utilities from **Notepad4** (zufuliu) and **Notepad3** (rizonesoft) are absent:
 
-| Capability | Base NotepadNext Status | Notepad4 / Notepad3 Baseline | NoteSciPad Target Phase |
-| --- | --- | --- | --- |
-| **Mark All Occurrences + Match Count** | ❌ No count, basic highlight | ✅ Scintilla indicator marking + real-time count in status bar | **Phase 1** |
-| **Enhanced Auto-completion** | ⚠️ Keywords only | ✅ Auto-close quotes/brackets, context completion, smart indent | **Phase 1** |
-| **File Browser Dock** | ❌ None (uses standard file dialog) | ✅ Integrated file explorer dock (`matepath` style) | **Phase 1** |
-| **Base64 Encode / Decode** | ❌ None | ✅ Direct in-place selection encode/decode | **Phase 1** |
-| **Number Conversion** | ❌ None | ✅ Dec ↔ Hex ↔ Oct ↔ Bin with prefixes | **Phase 1** |
-| **Insert GUID & Timestamps** | ❌ None | ✅ Configurable GUID formats and timestamp insertion | **Phase 1** |
-| **Full-Screen Mode** | ⚠️ Partial | ✅ Native macOS + Qt full-screen toggle | **Phase 1** |
-| **Color Preview CallTip** | ❌ None | ✅ Hex/RGB hover swatch preview via Scintilla CallTip | **Phase 2** |
-| **Pretty & Compress (JSON/CSS/JS)** | ❌ None | ✅ In-place formatters without heavy external plugins | **Phase 2** |
-| **Focused View** | ❌ None | ✅ Filter editor buffer to display only matching lines | **Phase 2** |
-| **Show Character Info** | ❌ None | ✅ Code point, Unicode category, UTF-8/UTF-16 byte dump | **Phase 2** |
-| **File Time Utilities** | ❌ None | ✅ Touch file time & save preserving original timestamp | **Phase 2** |
+| Capability                             | Base NotepadNext Status             | Notepad4 / Notepad3 Baseline                                    | NoteSciPad Target Phase |
+| -------------------------------------- | ----------------------------------- | --------------------------------------------------------------- | ----------------------- |
+| **Mark All Occurrences + Match Count** | ❌ No count, basic highlight        | ✅ Scintilla indicator marking + real-time count in status bar  | **Phase 1**             |
+| **Enhanced Auto-completion**           | ⚠️ Keywords only                    | ✅ Auto-close quotes/brackets, context completion, smart indent | **Phase 1**             |
+| **File Browser Dock**                  | ❌ None (uses standard file dialog) | ✅ Integrated file explorer dock (`matepath` style)             | **Phase 1**             |
+| **Base64 Encode / Decode**             | ❌ None                             | ✅ Direct in-place selection encode/decode                      | **Phase 1**             |
+| **Number Conversion**                  | ❌ None                             | ✅ Dec ↔ Hex ↔ Oct ↔ Bin with prefixes                          | **Phase 1**             |
+| **Insert GUID & Timestamps**           | ❌ None                             | ✅ Configurable GUID formats and timestamp insertion            | **Phase 1**             |
+| **Full-Screen Mode**                   | ⚠️ Partial                          | ✅ Native macOS + Qt full-screen toggle                         | **Phase 1**             |
+| **Color Preview CallTip**              | ❌ None                             | ✅ Hex/RGB hover swatch preview via Scintilla CallTip           | **Phase 2**             |
+| **Pretty & Compress (JSON/CSS/JS)**    | ❌ None                             | ✅ In-place formatters without heavy external plugins           | **Phase 2**             |
+| **Focused View**                       | ❌ None                             | ✅ Filter editor buffer to display only matching lines          | **Phase 2**             |
+| **Show Character Info**                | ❌ None                             | ✅ Code point, Unicode category, UTF-8/UTF-16 byte dump         | **Phase 2**             |
+| **File Time Utilities**                | ❌ None                             | ✅ Touch file time & save preserving original timestamp         | **Phase 2**             |
 
 ---
 

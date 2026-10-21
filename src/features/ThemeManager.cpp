@@ -14,6 +14,7 @@
 #include "ScintillaNext.h"
 
 #include <QGuiApplication>
+#include <QApplication>
 #include <QStyleHints>
 #include <QPalette>
 #include <QColor>
@@ -71,17 +72,35 @@ bool ThemeManager::isDarkActive() const {
 const ThemePalette *ThemeManager::currentPalette() const {
     if (!m_currentPaletteId.isEmpty()) {
         const ThemePalette *p = findThemePaletteById(m_currentPaletteId);
-        if (p)
+        if (p) {
+            if (m_themeMode == ThemeMode::Dark && !p->isDark) {
+                return findThemePaletteById(QStringLiteral("catppuccinMocha"));
+            }
+            if (m_themeMode == ThemeMode::Light && p->isDark) {
+                return findThemePaletteById(QStringLiteral("defaultLight"));
+            }
             return p;
+        }
     }
     return isDarkActive() ? findThemePaletteById(QStringLiteral("catppuccinMocha"))
-                          : findThemePaletteById(QStringLiteral("githubLight"));
+                          : findThemePaletteById(QStringLiteral("defaultLight"));
 }
 
 void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window) {
     m_themeMode = mode;
     if (window) {
         m_activeWindow = window;
+    }
+
+    const ThemePalette *cur = findThemePaletteById(m_currentPaletteId);
+    if (mode == ThemeMode::Dark) {
+        if (!cur || !cur->isDark) {
+            m_currentPaletteId = QStringLiteral("catppuccinMocha");
+        }
+    } else if (mode == ThemeMode::Light) {
+        if (!cur || cur->isDark) {
+            m_currentPaletteId = QStringLiteral("defaultLight");
+        }
     }
 
     if (m_settings) {
@@ -91,6 +110,7 @@ void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window) {
         else if (mode == ThemeMode::Light)
             modeStr = QStringLiteral("Light");
         m_settings->setValue(QStringLiteral("App/ThemeMode"), modeStr);
+        m_settings->setValue(QStringLiteral("App/ThemePalette"), m_currentPaletteId);
     }
 
     if (m_activeWindow) {
@@ -98,6 +118,7 @@ void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window) {
     }
 
     emit themeChanged(isDarkActive());
+    emit paletteChanged(m_currentPaletteId);
 }
 
 void ThemeManager::setPalette(const QString &paletteId, MainWindow *window) {
@@ -144,6 +165,49 @@ void ThemeManager::onSystemColorSchemeChanged() {
 
 void ThemeManager::applyTheme(MainWindow *window) {
     m_activeWindow = window;
+
+    const ThemePalette *pal = currentPalette();
+    bool dark = isDarkActive();
+    if (!pal) {
+        pal = dark ? findThemePaletteById(QStringLiteral("catppuccinMocha"))
+                   : findThemePaletteById(QStringLiteral("defaultLight"));
+    }
+
+    QString win = pal ? QString::fromLatin1(pal->win) : (dark ? QStringLiteral("#1e1e1e") : QStringLiteral("#f0f2f5"));
+    QString card =
+        pal ? QString::fromLatin1(pal->card) : (dark ? QStringLiteral("#25282c") : QStringLiteral("#fafbfc"));
+    QString txtPri =
+        pal ? QString::fromLatin1(pal->txtPri) : (dark ? QStringLiteral("#e0e0e0") : QStringLiteral("#24292f"));
+    QString txtSec =
+        pal ? QString::fromLatin1(pal->txtSec) : (dark ? QStringLiteral("#9aa0a6") : QStringLiteral("#57606a"));
+    QString accent =
+        pal ? QString::fromLatin1(pal->blue) : (dark ? QStringLiteral("#58a6ff") : QStringLiteral("#0969da"));
+
+    QPalette appPal;
+    appPal.setColor(QPalette::Window, QColor(win));
+    appPal.setColor(QPalette::WindowText, QColor(txtPri));
+    appPal.setColor(QPalette::Base, QColor(card));
+    appPal.setColor(QPalette::AlternateBase, dark ? QColor(win).lighter(108) : QColor(win).darker(103));
+    appPal.setColor(QPalette::Text, QColor(txtPri));
+    appPal.setColor(QPalette::Button, QColor(card));
+    appPal.setColor(QPalette::ButtonText, QColor(txtPri));
+    appPal.setColor(QPalette::BrightText, Qt::white);
+    appPal.setColor(QPalette::Highlight, QColor(accent));
+    appPal.setColor(QPalette::HighlightedText, Qt::white);
+    appPal.setColor(QPalette::ToolTipBase, QColor(card));
+    appPal.setColor(QPalette::ToolTipText, QColor(txtPri));
+    appPal.setColor(QPalette::Link, QColor(accent));
+    appPal.setColor(QPalette::PlaceholderText, QColor(txtSec));
+    appPal.setColor(QPalette::Disabled, QPalette::Text, QColor(txtSec));
+    appPal.setColor(QPalette::Disabled, QPalette::WindowText, QColor(txtSec));
+    appPal.setColor(QPalette::Disabled, QPalette::ButtonText, QColor(txtSec));
+    QApplication::setPalette(appPal);
+
+    QString sheet = getThemeStyleSheet();
+    if (qApp) {
+        qApp->setStyleSheet(sheet);
+    }
+
     if (!window)
         return;
 
@@ -247,15 +311,15 @@ QString ThemeManager::getThemeStyleSheet() const {
     const ThemePalette *pal = currentPalette();
     if (!pal) {
         pal = isDarkActive() ? findThemePaletteById(QStringLiteral("catppuccinMocha"))
-                             : findThemePaletteById(QStringLiteral("githubLight"));
+                             : findThemePaletteById(QStringLiteral("defaultLight"));
     }
 
     QString win =
-        pal ? QString::fromLatin1(pal->win) : (isDarkActive() ? QStringLiteral("#1e1e1e") : QStringLiteral("#f6f8fa"));
+        pal ? QString::fromLatin1(pal->win) : (isDarkActive() ? QStringLiteral("#1e1e1e") : QStringLiteral("#f0f2f5"));
     QString card =
-        pal ? QString::fromLatin1(pal->card) : (isDarkActive() ? QStringLiteral("#25282c") : QStringLiteral("#ffffff"));
+        pal ? QString::fromLatin1(pal->card) : (isDarkActive() ? QStringLiteral("#25282c") : QStringLiteral("#fafbfc"));
     QString border = pal ? QString::fromLatin1(pal->border)
-                         : (isDarkActive() ? QStringLiteral("#33373e") : QStringLiteral("#d0d7de"));
+                         : (isDarkActive() ? QStringLiteral("#33373e") : QStringLiteral("#e1e4e8"));
     QString txtPri = pal ? QString::fromLatin1(pal->txtPri)
                          : (isDarkActive() ? QStringLiteral("#e0e0e0") : QStringLiteral("#24292f"));
     QString txtSec = pal ? QString::fromLatin1(pal->txtSec)
@@ -304,11 +368,11 @@ QGroupBox::title {
     font-weight: bold;
 }
 QGroupBox::indicator {
-    width: 15px;
-    height: 15px;
+    width: 16px;
+    height: 16px;
     border: 1px solid %3;
     background-color: %5;
-    border-radius: 3px;
+    border-radius: 4px;
 }
 QGroupBox::indicator:hover {
     border-color: %6;
@@ -316,6 +380,7 @@ QGroupBox::indicator:hover {
 QGroupBox::indicator:checked {
     background-color: %6;
     border-color: %6;
+    image: url(:/icons/checkmark.svg);
 }
 QGroupBox::indicator:disabled {
     border-color: %3;
@@ -325,7 +390,9 @@ QGroupBox::indicator:disabled {
 /* Checkboxes & Radio Buttons */
 QCheckBox, QRadioButton {
     color: %2;
-    spacing: 7px;
+    spacing: 8px;
+    padding: 3px 4px;
+    min-height: 20px;
     background-color: transparent;
 }
 QCheckBox:hover, QRadioButton:hover {
@@ -335,23 +402,28 @@ QCheckBox:disabled, QRadioButton:disabled {
     color: %4;
 }
 QCheckBox::indicator, QRadioButton::indicator {
-    width: 15px;
-    height: 15px;
+    width: 16px;
+    height: 16px;
     border: 1px solid %3;
     background-color: %5;
 }
 QCheckBox::indicator {
-    border-radius: 3px;
+    border-radius: 4px;
 }
 QRadioButton::indicator {
-    border-radius: 8px;
+    border-radius: 9px;
 }
 QCheckBox::indicator:hover, QRadioButton::indicator:hover {
     border-color: %6;
 }
-QCheckBox::indicator:checked, QRadioButton::indicator:checked {
+QCheckBox::indicator:checked {
     background-color: %6;
     border-color: %6;
+    image: url(:/icons/checkmark.svg);
+}
+QRadioButton::indicator:checked {
+    background-color: %6;
+    border: 3px solid %5;
 }
 QCheckBox::indicator:disabled, QRadioButton::indicator:disabled {
     border-color: %3;

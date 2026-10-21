@@ -21,20 +21,15 @@
 #include <QKeySequence>
 
 ThemeSwitcherDialog::ThemeSwitcherDialog(MainWindow *mainWindow, QWidget *parent)
-    : QDialog(parent ? parent : mainWindow)
-    , m_mainWindow(mainWindow)
-{
+    : QDialog(parent ? parent : mainWindow), m_mainWindow(mainWindow) {
     m_initialPaletteId = ThemeManager::instance()->currentPaletteId();
     setupUi();
     populateTable();
 }
 
-ThemeSwitcherDialog::~ThemeSwitcherDialog()
-{
-}
+ThemeSwitcherDialog::~ThemeSwitcherDialog() {}
 
-void ThemeSwitcherDialog::setupUi()
-{
+void ThemeSwitcherDialog::setupUi() {
     setWindowTitle(tr("Theme Switcher — NoteSciPad"));
     resize(720, 520);
 
@@ -42,20 +37,25 @@ void ThemeSwitcherDialog::setupUi()
     mainLayout->setContentsMargins(18, 18, 18, 18);
     mainLayout->setSpacing(12);
 
-    QLabel *titleLabel = new QLabel(tr("<h2>🎨 Select Visual Theme</h2><p style='color: gray;'>Choose from 75 professional themes across 25 curated families with real-time preview.</p>"), this);
+    QLabel *titleLabel = new QLabel(tr("<h2>Select Visual Theme</h2><p style='opacity: 0.8;'>Choose from %1 "
+                                       "professional themes across 25 curated families with real-time preview.</p>")
+                                        .arg(kTotalThemePaletteCount),
+                                    this);
     mainLayout->addWidget(titleLabel);
 
     // Filter bar
     QHBoxLayout *filterLayout = new QHBoxLayout();
+    filterLayout->setSpacing(12);
+    filterLayout->setContentsMargins(0, 2, 0, 2);
     m_searchEdit = new QLineEdit(this);
-    m_searchEdit->setPlaceholderText(tr("🔍 Search theme by name or family (e.g. catppuccin, dracula, nord, light)..."));
+    m_searchEdit->setPlaceholderText(tr("Search theme by name or family (e.g. catppuccin, dracula, nord, light)..."));
     m_searchEdit->setClearButtonEnabled(true);
     filterLayout->addWidget(m_searchEdit, 1);
 
     m_filterGroup = new QButtonGroup(this);
-    m_radioAll = new QRadioButton(tr("All (75)"), this);
-    m_radioLight = new QRadioButton(tr("☀️ Light"), this);
-    m_radioDark = new QRadioButton(tr("🌙 Dark"), this);
+    m_radioAll = new QRadioButton(tr("All (%1)").arg(kTotalThemePaletteCount), this);
+    m_radioLight = new QRadioButton(tr("Light"), this);
+    m_radioDark = new QRadioButton(tr("Dark"), this);
     m_radioAll->setChecked(true);
 
     m_filterGroup->addButton(m_radioAll, 0);
@@ -86,7 +86,8 @@ void ThemeSwitcherDialog::setupUi()
 
     // Buttons
     QHBoxLayout *btnLayout = new QHBoxLayout();
-    QLabel *shortcutHint = new QLabel(tr("<small style='color:gray;'>Tip: Press Esc to revert or Ctrl+Shift+T to open again.</small>"), this);
+    QLabel *shortcutHint = new QLabel(
+        tr("<small style='opacity: 0.8;'>Tip: Press Esc to revert or Ctrl+Shift+T to open again.</small>"), this);
     btnLayout->addWidget(shortcutHint);
     btnLayout->addStretch();
 
@@ -115,8 +116,7 @@ void ThemeSwitcherDialog::setupUi()
     connect(m_cancelBtn, &QPushButton::clicked, this, &ThemeSwitcherDialog::reject);
 }
 
-void ThemeSwitcherDialog::populateTable(const QString &filterText, int modeFilter)
-{
+void ThemeSwitcherDialog::populateTable(const QString &filterText, int modeFilter) {
     m_table->setRowCount(0);
     const ThemePalette *curPal = ThemeManager::instance()->currentPalette();
     QString activeId = curPal ? QString::fromLatin1(curPal->id) : ThemeManager::instance()->currentPaletteId();
@@ -126,8 +126,10 @@ void ThemeSwitcherDialog::populateTable(const QString &filterText, int modeFilte
         const ThemePalette &p = kAllThemePalettes[i];
 
         // Mode filter: 1 = Light only, 2 = Dark only
-        if (modeFilter == 1 && p.isDark) continue;
-        if (modeFilter == 2 && !p.isDark) continue;
+        if (modeFilter == 1 && p.isDark)
+            continue;
+        if (modeFilter == 2 && !p.isDark)
+            continue;
 
         // Text filter
         if (!filterText.isEmpty()) {
@@ -158,7 +160,7 @@ void ThemeSwitcherDialog::populateTable(const QString &filterText, int modeFilte
         QPainter painter(&pix);
         painter.setRenderHint(QPainter::Antialiasing, true);
 
-        const char *colors[] = { p.win, p.card, p.border, p.txtPri, p.blue, p.cyan };
+        const char *colors[] = {p.win, p.card, p.border, p.txtPri, p.blue, p.cyan};
         for (int c = 0; c < 6; ++c) {
             painter.setBrush(QColor(colors[c]));
             painter.setPen(Qt::NoPen);
@@ -181,24 +183,22 @@ void ThemeSwitcherDialog::populateTable(const QString &filterText, int modeFilte
     }
 }
 
-void ThemeSwitcherDialog::filterThemes()
-{
+void ThemeSwitcherDialog::filterThemes() {
     int filterId = m_filterGroup->checkedId();
     populateTable(m_searchEdit->text(), filterId);
 }
 
-void ThemeSwitcherDialog::onThemeSelected(int row, int column)
-{
+void ThemeSwitcherDialog::onThemeSelected(int row, int column) {
     Q_UNUSED(column)
     QTableWidgetItem *item = m_table->item(row, 0);
-    if (!item) return;
+    if (!item)
+        return;
 
     QString palId = item->data(Qt::UserRole).toString();
     ThemeManager::instance()->setPalette(palId, m_mainWindow);
 }
 
-void ThemeSwitcherDialog::applyAndClose()
-{
+void ThemeSwitcherDialog::applyAndClose() {
     int row = m_table->currentRow();
     if (row >= 0) {
         QTableWidgetItem *item = m_table->item(row, 0);
@@ -210,8 +210,7 @@ void ThemeSwitcherDialog::applyAndClose()
     accept();
 }
 
-void ThemeSwitcherDialog::reject()
-{
+void ThemeSwitcherDialog::reject() {
     // Revert back to the initial theme
     ThemeManager::instance()->setPalette(m_initialPaletteId, m_mainWindow);
     QDialog::reject();

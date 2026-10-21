@@ -43,6 +43,7 @@ An exhaustive, evidence-grounded engineering and architectural review of the ent
     ```
 
     Guarantees that navigating past the last display or before the first display clamps safely without index out of bounds.
+
   - `ThemeManager::applyTheme`:
 
     ```cpp

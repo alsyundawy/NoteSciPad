@@ -52,7 +52,7 @@ The feature consists of two modular components:
 
 - **Menu Path**: Under **Help -> Performance & Diagnostics...**:  
   **Shortcut: `Ctrl+Alt+P`** (`Cmd+Alt+P` on macOS).
-- **Status Tip**: *"Inspect Apple Silicon and Linux system performance, memory footprint, and Scintilla benchmarks"*.
+- **Status Tip**: _"Inspect Apple Silicon and Linux system performance, memory footprint, and Scintilla benchmarks"_.
 
 ---
 

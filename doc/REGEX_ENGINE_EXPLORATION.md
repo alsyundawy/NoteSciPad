@@ -31,19 +31,19 @@ By upgrading the Scintilla regex bridge and providing full PCRE2 token substitut
 
 ## 2. Technical Comparison Matrix
 
-| Feature / Metric | Direct PCRE2 (C) | Boost.Regex (C++) | std::regex (C++20) | Qt QRegularExpression |
-| :--- | :--- | :--- | :--- | :--- |
-| **Underlying Engine** | PCRE2 native | Boost engine | Compiler runtime | **PCRE2 (embedded)** |
-| **Binary Size Overhead** | ~450 KB | +1.5 MB to 3.0 MB | 0 KB | **0 KB (already linked)** |
-| **Build Complexity** | Moderate (CMake find/vendor) | High (Boost headers ~120MB) | None | **None** |
-| **JIT Support** | Yes (x86_64, arm64) | Optional | No | **Yes (via Qt/PCRE2)** |
-| **Unicode Properties (`\p{L}`)** | Yes | Yes | Inconsistent across OS | **Yes (`UseUnicodeProperties`)** |
-| **Lookaround (Lookahead/behind)** | Yes (Full) | Yes (Full) | Variable / ECMAScript | **Yes (Full PCRE2)** |
-| **Possessive Quantifiers (`++`)** | Yes | Yes | No | **Yes** |
-| **Atomic Groups (`(?>...)`)** | Yes | Yes | No | **Yes** |
-| **Dot Matches All (`/s`)** | Yes | Yes | Flags only | **Yes (`DotMatchesEverything`)** |
-| **Multi-line Anchors (`^`, `$`)** | Yes | Yes | Yes | **Yes (`MultilineOption`)** |
-| **Replacement Backrefs (`$1`, `\1`)** | Manual / PCRE2 replace | Native format flags | Limited | **Implemented in Bridge** |
+| Feature / Metric                      | Direct PCRE2 (C)             | Boost.Regex (C++)           | std::regex (C++20)     | Qt QRegularExpression            |
+| :------------------------------------ | :--------------------------- | :-------------------------- | :--------------------- | :------------------------------- |
+| **Underlying Engine**                 | PCRE2 native                 | Boost engine                | Compiler runtime       | **PCRE2 (embedded)**             |
+| **Binary Size Overhead**              | ~450 KB                      | +1.5 MB to 3.0 MB           | 0 KB                   | **0 KB (already linked)**        |
+| **Build Complexity**                  | Moderate (CMake find/vendor) | High (Boost headers ~120MB) | None                   | **None**                         |
+| **JIT Support**                       | Yes (x86_64, arm64)          | Optional                    | No                     | **Yes (via Qt/PCRE2)**           |
+| **Unicode Properties (`\p{L}`)**      | Yes                          | Yes                         | Inconsistent across OS | **Yes (`UseUnicodeProperties`)** |
+| **Lookaround (Lookahead/behind)**     | Yes (Full)                   | Yes (Full)                  | Variable / ECMAScript  | **Yes (Full PCRE2)**             |
+| **Possessive Quantifiers (`++`)**     | Yes                          | Yes                         | No                     | **Yes**                          |
+| **Atomic Groups (`(?>...)`)**         | Yes                          | Yes                         | No                     | **Yes**                          |
+| **Dot Matches All (`/s`)**            | Yes                          | Yes                         | Flags only             | **Yes (`DotMatchesEverything`)** |
+| **Multi-line Anchors (`^`, `$`)**     | Yes                          | Yes                         | Yes                    | **Yes (`MultilineOption`)**      |
+| **Replacement Backrefs (`$1`, `\1`)** | Manual / PCRE2 replace       | Native format flags         | Limited                | **Implemented in Bridge**        |
 
 ---
 
