@@ -2,7 +2,7 @@
 
 ```text
 ================================================================================
-Release Version     : 1.1.0 (Feature Release: Themes, Math, & Trending Lexers)
+Release Version     : 1.1.0 (Feature Release: Native Light/Dark Streamlining, Math Evaluation, & Trending Lexers)
 Release Date        : 2026-10-19
 Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
@@ -23,15 +23,14 @@ NoteSciPad **v1.1.0** represents a major enhancement to NoteSciPad's visual styl
 
 Key milestones achieved in this release:
 
-1. **75 Curated Developer Themes across 25 Families**: Completely extracted and adapted from `SubnetCalc-MacOS` into native C++20 `ThemePaletteData.h`, with seamless WCAG 2.1 AA/AAA contrast mapping across Scintilla text, numbers, keywords, operators, and fold margins.
-2. **Dedicated Top-Level MenuBar `Themes` Menu & Switcher**: Positioned prominently on the main menu bar, featuring instant filters (Light Themes Only, Dark Themes Only), 25 family submenus, and the interactive `ThemeSwitcherDialog` (`Ctrl+Shift+T` / `Cmd+Shift+T`) with live search and real-time canvas preview.
+1. **Native Dark and Light Mode Streamlining & UI Polish**: Streamlined `ThemeManager` to dedicated native Dark and Light modes (`kLightPalette` and `kDarkPalette`) with zero thirdparty theme overhead, clean distraction-free UI without emojis, and dynamic mode synchronization with real-time status bar feedback.
+2. **Toolbar Dividing Line & Classic Peach Tab Top Border Restoration**: Restored clean horizontal separation line (`border-bottom: 1px solid %3;`), soft peach (`rgb(255, 202, 176)`) active tab top borders, and orange focus top borders matching classic Notepad styling.
 3. **Redesigned 5-Tab Modern About Dialog**: Providing a tabbed experience (About, Maintainer Card with complete contact information strictly omitting phone and WhatsApp, Credits & Attribution, Real-Time System Diagnostics with one-click clipboard copy, and Full GPL-3.0 License).
 4. **Inline Mathematical Expression Evaluation (`Ctrl+Shift+E` / `Cmd+Shift+E`)**: Instant calculation of mathematical formulas in selection or current line with append or replace options, supporting trigonometric, logarithmic, root, and power functions.
 5. **Official Application Icon & Attribution**: Adapted from the celebrated icon design by Lon McGregor ([](https://github.com/LonMcGregor/NotepadPlusPlusIcons)), honoring open-source iconography heritage.
-6. **7 Trending Language Lexers**: First-class syntax highlighting definitions for Mojo (`.mojo`), Solidity (`.sol`), Julia (`.jl`), Dockerfile (`Dockerfile`), Terraform (`.tf`), Protobuf (`.proto`), and Mermaid (`.mermaid`).
+6. **7 Trending Language Lexers**: First-class syntax highlighting definitions for Mojo (`.mojo`), Solidity (`.sol`), Julia (`.jl`), Dockerfile (`docker.lua`), Terraform (`.tf`), Protobuf (`.proto`), and Mermaid (`.mermaid`).
 7. **Official Thirdparty Engine Modernization**: Successfully retrieved, merged, and integrated Scintilla 5.6.7, Lexilla 5.5.4, and Lua 5.5.1 from the primary upstream branch, elevating code editing performance, syntax tokenization, and embedded Lua scripting fidelity.
-8. **Native Dark/Light Mode Streamlining & UI Polish**: Simplified ThemeManager to dedicated native Dark and Light modes without thirdparty theme catalog overhead; restored toolbar horizontal divider (`border-bottom: 1px solid %3;`), classic soft peach (`rgb(255, 202, 176)`) active tab top borders, and orange focus top borders.
-9. **Universal Dialog Checkbox & Radio Button Layout Overhaul, NotepadNext Light Workspace Calibration & 13-Pillar C++ Hardening**:
+8. **Universal Dialog Checkbox & Radio Button Layout Overhaul, NotepadNext Light Workspace Calibration & 13-Pillar C++ Hardening**:
    - Standardized universal `QCheckBox` and `QRadioButton` stylesheet rules in `ThemeManager::getThemeStyleSheet()` (`spacing: 8px;`, `padding: 3px 4px;`, `min-height: 20px;`, 16x16 indicator with 4px border-radius for checkboxes, 9px for radio buttons).
    - Bundled `src/icons/checkmark.svg` via `src/resources.qrc` and integrated `image: url(:/icons/checkmark.svg);` for checked checkboxes, ensuring crisp vector rendering across all platforms.
    - Configured checked radio button indicator with `border: 3px solid %5; background-color: %6; border-radius: 9px;` for sharp, centered circular dot rendering.
@@ -56,18 +55,18 @@ Key milestones achieved in this release:
      - Replaced C-style cast with `reinterpret_cast` in `LuaConsoleDock.cpp`.
      - Marked `AutoClosePairs::isWordChar`, `DocumentationManager::openKeyboardShortcutsGuide`, `DocumentationManager::openOnlineRepository`, and `FocusedView::ensureHiddenLineStyle` as `static`.
 
-10. **Toolbar Iconography Clarity & High-Precision Redesign**:
-    - Resolved toolbar icon blurriness and dark mode invisibility caused by bilinear interpolation of downscaled 32x32 faint outlines. Restored native 16x16 integer-grid base icons ensuring 1:1 pixel crispness.
-    - Completely redesigned toolbar icons for:
-      - **Find (`find.png`)**: Designed a high-precision azure/cyan magnifying glass with 3D specular white gleam and polished gold metallic handle.
-      - **Find & Replace (`findReplace.png`)**: Designed a compact search lens paired with reciprocal exchange swap arrows in neon emerald (`#10b981`) and electric amber/gold (`#f59e0b`) with sharp contour borders.
-      - **Zoom In (`zoomIn.png`)**: Designed an ocean azure magnifying glass enclosing a bold, high-contrast white plus sign (`+`).
-      - **Zoom Out (`zoomOut.png`)**: Designed a matching ocean azure magnifying glass enclosing a bold, high-contrast white minus sign (`−`).
-      - **Show Indent (`indentGuide.png`)**: Designed a code block hierarchy with glowing dual amber/gold vertical alignment rails (`#f59e0b`) guiding indented emerald and cyan code bars.
-    - Contrast Invariants & Validation:
-      - Verified across both Dark Mode (`#1e1e1e`/`#181a1f`, avg contrast delta > 75, max delta 225.0) and Light Mode (`#f0f2f5`/`#ffffff`, avg contrast delta > 102).
-      - Confirmed 0 blurry artifacts, 0 faint/invisible pixels, and exact 1:1 pixel grid mapping with `iconSize` 16x16.
-    - Maintained strict scope constraint ("Do not change anything else").
+9. **Toolbar Iconography Clarity & High-Precision Redesign**:
+   - Resolved toolbar icon blurriness and dark mode invisibility caused by bilinear interpolation of downscaled 32x32 faint outlines. Restored native 16x16 integer-grid base icons ensuring 1:1 pixel crispness.
+   - Completely redesigned toolbar icons for:
+     - **Find (`find.png`)**: Designed a high-precision azure/cyan magnifying glass with 3D specular white gleam and polished gold metallic handle.
+     - **Find & Replace (`findReplace.png`)**: Designed a compact search lens paired with reciprocal exchange swap arrows in neon emerald (`#10b981`) and electric amber/gold (`#f59e0b`) with sharp contour borders.
+     - **Zoom In (`zoomIn.png`)**: Designed an ocean azure magnifying glass enclosing a bold, high-contrast white plus sign (`+`).
+     - **Zoom Out (`zoomOut.png`)**: Designed a matching ocean azure magnifying glass enclosing a bold, high-contrast white minus sign (`−`).
+     - **Show Indent (`indentGuide.png`)**: Designed a code block hierarchy with glowing dual amber/gold vertical alignment rails (`#f59e0b`) guiding indented emerald and cyan code bars.
+   - Contrast Invariants & Validation:
+     - Verified across both Dark Mode (`#1e1e1e`/`#181a1f`, avg contrast delta > 75, max delta 225.0) and Light Mode (`#f0f2f5`/`#ffffff`, avg contrast delta > 102).
+     - Confirmed 0 blurry artifacts, 0 faint/invisible pixels, and exact 1:1 pixel grid mapping with `iconSize` 16x16.
+   - Maintained strict scope constraint ("Do not change anything else").
 
 ---
 
@@ -202,13 +201,12 @@ Detailed metrics recorded in [`doc/COLOR_STANDARDS_AND_ACCESSIBILITY.md`](file:/
 | **ADR-001** | Strict Scintilla & Lexilla Engine Invariant  | Permanent lock on vendored Scintilla and Lexilla engines.                 |
 | **ADR-004** | AES-256-CBC Document Encryption              | Standardized authenticated encryption with PBKDF2 and HMAC-SHA256.        |
 | **ADR-007** | Live Disk Tail Monitoring Architecture       | Non-modal background streaming with auto-scroll to EOF.                   |
-| **ADR-010** | Premier 25 Developer Theme Families          | Standardized theme engine with persistent switching and WCAG compliance.  |
+| **ADR-010** | Native Dark and Light Mode Simplification    | Streamlined ThemeManager to dedicated Dark/Light modes with zero emojis.  |
 | **ADR-013** | Sandboxed JavaScript Evaluation              | `QJSEngine` integration with execution timeout defense.                   |
 | **ADR-016** | Native macOS Services & Multi-Display Safety | AppKit `NSServices` integration and Retina multi-monitor boundary guards. |
 | **ADR-019** | Standardized Application Namespace           | Canonical transition to `io.github.alsyundawy.NoteSciPad`.                |
 | **ADR-024** | WCAG 2.1 AA/AAA Color Palette Standards      | Color token verification and Scintilla BGR endianness abstraction.        |
 | **ADR-025** | 13-Pillar Production Code Review Engine      | Systematic verification across 13 engineering pillars for all releases.   |
-| **ADR-026** | Native Dark and Light Mode Simplification    | Streamlined ThemeManager to dedicated Dark/Light modes with zero emojis.  |
 | **ADR-027** | Upstream Thirdparty Upgrade & UI Divider     | Merged Scintilla 5.6.7/Lexilla 5.5.4, restored toolbar divider & tabs.    |
 
 ---

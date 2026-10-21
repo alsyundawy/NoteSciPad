@@ -22,7 +22,7 @@
 </p>
 
 <p align="center">
-  A production-grade, ultra-low-footprint native text and code editor built for engineers, system administrators, and developers who refuse to compromise on speed and memory efficiency. NoteSciPad delivers instantaneous line rendering, native multi-caret editing, AES-256 document encryption, live disk tail monitoring (<code>tail -f</code>), 75 curated developer themes across 25 families with dedicated Themes menu and interactive Theme Switcher (Ctrl+Shift+T) (WCAG 2.1 AA/AAA compliant), sandboxed JavaScript evaluation, live regex testing, and comprehensive packaging across macOS (Universal 2, Apple Silicon ARM64, and Intel) and Linux (DEB, RPM, Flatpak, and AppImage) — running natively with zero web-view overhead and an active memory footprint of under 35 MB.
+  A production-grade, ultra-low-footprint native text and code editor built for engineers, system administrators, and developers who refuse to compromise on speed and memory efficiency. NoteSciPad delivers instantaneous line rendering, native multi-caret editing, AES-256 document encryption, live disk tail monitoring (<code>tail -f</code>), streamlined native Dark and Light modes with pixel-perfect 16x16 toolbar iconography and universal dialog layout ergonomics, sandboxed JavaScript evaluation, live regex testing, and comprehensive packaging across macOS (Universal 2, Apple Silicon ARM64, and Intel) and Linux (DEB, RPM, Flatpak, and AppImage) — running natively with zero web-view overhead and an active memory footprint of under 35 MB.
 </p>
 
 <p align="center">
@@ -75,7 +75,7 @@
 
 - [Overview & Value Proposition](#overview--value-proposition)
 - [Key Features & Capabilities Matrix](#key-features--capabilities-matrix)
-- [Premier 25 Developer Theme Families Engine](#premier-25-developer-theme-families-engine)
+- [Streamlined Native Dark & Light Mode Engine](#streamlined-native-dark--light-mode-engine)
 - [System Architecture & Component Topology](#system-architecture--component-topology)
 - [Downloads & Artifact Catalogs](#downloads--artifact-catalogs)
 - [macOS Gatekeeper & Quarantine Removal](#macos-gatekeeper--quarantine-removal)
@@ -104,36 +104,31 @@ In an era where modern desktop text editors frequently consume over 500 MB of sy
 
 ## Key Features & Capabilities Matrix
 
-| Feature                     | Capability Description                                                                            |          Shortcut           |
-| :-------------------------- | :------------------------------------------------------------------------------------------------ | :-------------------------: |
-| **AES-256-CBC Encryption**  | Military-grade document encryption with PBKDF2 (100k rounds) & HMAC-SHA256 authentication         | `Ctrl+Alt+E` / `Ctrl+Alt+D` |
-| **Live Tail Monitoring**    | Real-time disk log streaming (`tail -f`) with debounced auto-reload (500ms) and auto-scroll       |        `Ctrl+Alt+Y`         |
-| **25 Theme Families**       | 25 premier developer theme suites complying with WCAG 2.1 AA/AAA international standards          |        `Theme Menu`         |
-| **JavaScript Evaluator**    | In-app sandboxed `QJSEngine` evaluator for math, JSON formatting, and text scripting              |       `Ctrl+Shift+J`        |
-| **Regex Testing Suite**     | Interactive regular expression tester with live group matching, multiline, and dot-all flags      |     `Ctrl+Alt+Shift+R`      |
-| **Color Preview Call-Tips** | Interactive floating color swatches and tooltips for `#HEX`, `rgb()`, `rgba()`, and `hsl()` codes |        Cursor Hover         |
-| **Window Transparency**     | Native compositor opacity slider (20%–100%) for desktop overlay reference                         |        `Ctrl+Alt+T`         |
-| **macOS System Services**   | AppKit context menu integration (`Open Selection / Path in NoteSciPad`)                           |        Context Menu         |
-| **Multi-Monitor Safety**    | `ScreenDisplayManager` guarding against off-screen restoration and multi-DPI shifts               |          Automatic          |
-| **Base64 Converter**        | One-click document or selection encoding and decoding                                             |      `Edit >> Convert`      |
-| **Unicode Inspector**       | Detailed Unicode code point inspector (`U+XXXX`), decimal, and category breakdown                 |        `Status Bar`         |
-| **Encoding Support**        | Universal detection via `uchardet` with one-click conversion (UTF-8, UTF-16, ANSI, CJK)           |        `Status Bar`         |
+| Feature                         | Capability Description                                                                            |          Shortcut           |
+| :------------------------------ | :------------------------------------------------------------------------------------------------ | :-------------------------: |
+| **AES-256-CBC Encryption**      | Military-grade document encryption with PBKDF2 (100k rounds) & HMAC-SHA256 authentication         | `Ctrl+Alt+E` / `Ctrl+Alt+D` |
+| **Live Tail Monitoring**        | Real-time disk log streaming (`tail -f`) with debounced auto-reload (500ms) and auto-scroll       |        `Ctrl+Alt+Y`         |
+| **Native Dark & Light Mode**    | Dedicated streamlined Dark and Light modes with clean distraction-free styling and WCAG contrast  |      `View >> Themes`       |
+| **Pixel-Perfect 16x16 Toolbar** | Crisp high-contrast toolbar icons for Find, Replace, Zoom In/Out, and Indent Guides               |        Main Toolbar         |
+| **Universal Dialog Spacing**    | Standardized padding, margin, and checkbox/radio layouts across all dialogs                       |         All Dialogs         |
+| **JavaScript Evaluator**        | In-app sandboxed `QJSEngine` evaluator for math, JSON formatting, and text scripting              |       `Ctrl+Shift+J`        |
+| **Regex Testing Suite**         | Interactive regular expression tester with live group matching, multiline, and dot-all flags      |     `Ctrl+Alt+Shift+R`      |
+| **Color Preview Call-Tips**     | Interactive floating color swatches and tooltips for `#HEX`, `rgb()`, `rgba()`, and `hsl()` codes |        Cursor Hover         |
+| **Window Transparency**         | Native compositor opacity slider (20%–100%) for desktop overlay reference                         |        `Ctrl+Alt+T`         |
+| **macOS System Services**       | AppKit context menu integration (`Open Selection / Path in NoteSciPad`)                           |        Context Menu         |
+| **Multi-Monitor Safety**        | `ScreenDisplayManager` guarding against off-screen restoration and multi-DPI shifts               |          Automatic          |
+| **Base64 Converter**            | One-click document or selection encoding and decoding                                             |      `Edit >> Convert`      |
+| **Unicode Inspector**           | Detailed Unicode code point inspector (`U+XXXX`), decimal, and category breakdown                 |        `Status Bar`         |
+| **Encoding Support**            | Universal detection via `uchardet` with one-click conversion (UTF-8, UTF-16, ANSI, CJK)           |        `Status Bar`         |
 
 ---
 
-## Premier 25 Developer Theme Families Engine
+## Streamlined Native Dark & Light Mode Engine
 
-NoteSciPad features a built-in theme manager ([`ThemeManager.cpp`](src/features/ThemeManager.cpp)) providing 25 premier developer theme suites:
+NoteSciPad features a streamlined built-in theme manager ([`ThemeManager.cpp`](src/features/ThemeManager.cpp)) providing dedicated native Dark and Light modes:
 
-```text
-Catppuccin   Dracula      Tokyo Night   Nord         One Dark
-Gruvbox      Solarized    GitHub        Monokai      Rosé Pine
-Ayu          Kanagawa     Everforest    Night Owl    Material
-SynthWave'84 Cyberpunk    Shades of Pur Poimandres   Horizon
-Andromeda    Nightfox     Cobalt2       Alabaster    Tomorrow
-```
-
-- **Contrast Ratios**: Regular text contrast of **12.6:1** (exceeding WCAG AAA 7.0:1 requirement) and high-contrast accessibility contrast of **18.2:1**.
+- **Calibrated Default Workspaces**: `kLightPalette` matches the classic NotepadNext default workspace aesthetic (`#f0f2f5` window, `#fafbfc` canvas/card, `#24292f` primary text) eliminating harsh glare; `kDarkPalette` delivers sharp text contrast (`#cdd6f4`) on deep dark canvases.
+- **Contrast Ratios**: Regular text contrast exceeds **12.6:1** (surpassing WCAG AAA 7.0:1 requirement) and high-contrast accessibility contrast reaches **18.2:1**.
 - **Scintilla BGR Endianness Safety**: All color codes pass through `scColor(r, g, b)` and `scFromRgb(QRgb)` helpers, preventing inverted red/blue channels across platforms.
 
 ---
@@ -152,7 +147,7 @@ Andromeda    Nightfox     Cobalt2       Alabaster    Tomorrow
 │              ▼                                  ▼                      │
 │  ┌──────────────────────────────────────────────────────────────────┐  │
 │  │                     Modular Feature Controllers                  │  │
-│  │  - ThemeManager             (25 Developer Theme Families)        │  │
+│  │  - ThemeManager             (Native Dark & Light Modes)          │  │
 │  │  - CryptoManager            (AES-256-CBC + HMAC-SHA256)          │  │
 │  │  - TailMonitoringManager    (Debounced Background tail -f)       │  │
 │  │  - ScreenDisplayManager     (Multi-Monitor & Retina Geometry)    │  │

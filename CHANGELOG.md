@@ -7,53 +7,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [Unreleased]
-
-### 🎨 Theme Simplification
-
-- **Simplified Native Dark and Light Modes**: Streamlined ThemeManager to exclusively support dedicated Dark and Light modes without external palette catalogs or ThemeSwitcherDialog.
-- **Emoji-Free GUI**: Removed all emoji icons from theme menu actions ("Light Mode", "Dark Mode", "Toggle Dark / Light Mode") ensuring a clean, distraction-free native user interface.
-- **Dynamic Mode Synchronization**: Bound action check states directly to active theme mode with real-time status bar feedback.
-
-### 🛠️ Fixed
-
-- **Toolbar Icon Clarity & High-Precision Redesign**:
-  - Restored native 16x16 pixel-grid base icons to eliminate bilinear interpolation blur and invisibility on dark themes (`#181a1f`, `#1e1e1e`, `#25282c`) caused by downscaled 32x32 faint outlines.
-  - Completely redesigned toolbar icons for:
-    - **Find (`find.png`)**: High-precision azure/cyan magnifying glass with 3D specular white gleam and polished gold metallic handle.
-    - **Find & Replace (`findReplace.png`)**: Compact search lens paired with reciprocal exchange swap arrows in neon emerald (`#10b981`) and electric amber/gold (`#f59e0b`) with sharp contour borders.
-    - **Zoom In (`zoomIn.png`)**: Ocean azure magnifying glass enclosing a bold, high-contrast white plus sign (`+`).
-    - **Zoom Out (`zoomOut.png`)**: Matching ocean azure magnifying glass enclosing a bold, high-contrast white minus sign (`−`).
-    - **Show Indent (`indentGuide.png`)**: Code block hierarchy with glowing dual amber/gold vertical alignment rails (`#f59e0b`) guiding indented emerald and cyan code bars.
-  - Verified across both Dark Mode (average luminance delta > 75 on dark toolbars, peak 225.0) and Light Mode (average luminance delta > 102).
-- **Universal Checkbox & Radio Button Layout & Spacing Overhaul**: Standardized layout spacing, padding, margins, and vertical breathing room across all dialog windows to eliminate squishing and overlap:
-  - `ThemeManager.cpp`: Configured explicit `spacing: 8px;`, `padding: 3px 4px;`, `min-height: 20px;`, and 16x16 indicator dimensions (4px border-radius for checkboxes, 9px for radio buttons).
-  - Crisp vector checkmark: Bundled `src/icons/checkmark.svg` via `src/resources.qrc` and `image: url(:/icons/checkmark.svg);`, restoring crisp vector checkmarks on checked checkboxes without platform-specific rendering anomalies.
-  - Radio button indicator rendering: Enforced sharp circular indicator dot via `border: 3px solid %5; background-color: %6;` on checked state.
-  - Calibrated dialog layouts across Find & Replace, Preferences, Transparency, EncodingSelection, MacroRun, PerformanceDiagnostics, TailOptions, ManageToolsDialog, StatusBarCustomizerDialog, and FocusedViewDialog.
-- **NotepadNext Workspace Default Light Palette & Dark Mode Contrast Calibration**:
-  - Calibrated `kLightPalette` to match the NotepadNext default workspace aesthetic (`#f0f2f5` window, `#fafbfc` canvas/card, `#e1e4e8` border, `#24292f` primary text, `#57606a` secondary text), avoiding harsh, eye-straining pure white backgrounds.
-  - Calibrated `kDarkPalette` text contrast (`#cdd6f4` primary text, `#a6adc8` secondary text) for sharp, crisp readability without blurriness.
-- **Comprehensive 13-Pillar C++ Hardening**:
-  - Marked `PreferencesDialog` and `SearchResultsCollector` constructors `explicit` to prevent implicit conversions.
-  - Returned `const QString &` in `FileBrowserDock::currentDirectory()` to eliminate heap string allocations on directory lookups; reserved capacity for `cleanedFilters`.
-  - Passed `searchTerm` and `line` parameters by `const QString &` across `ISearchResultsHandler`, `SearchResultsCollector`, `SearchResultsDock`, and `LuaConsoleDock::historyAdd`; eliminated shadowed variable declaration in `SearchResultsDock::newSearch`.
-  - Replaced C-style cast with `reinterpret_cast` in `LuaConsoleDock.cpp`.
-  - Marked stateless helper functions as `static` in `AutoClosePairs::isWordChar`, `DocumentationManager::openKeyboardShortcutsGuide`, `DocumentationManager::openOnlineRepository`, and `FocusedView::ensureHiddenLineStyle`.
-- **Strict Markdownlint Compliance**: Remediated all markdown formatting issues across documentation files (`doc/*.md`, `CHANGELOG.md`, `USER_GUIDE.md`, `MANUAL_TEST_CHECKLIST.md`), normalizing code fence language specifiers (`MD040`), list blank line paddings (`MD032`), heading blank lines (`MD022`), and table cell formatting.
-- **CI Build & Workflow Dispatch**: Synchronized workflow triggers for seamless manual and branch builds across macOS, Linux, and Windows.
-
----
-
 ## [1.1.0] - 2026-10-19
 
-### 🎨 Themes & UI Modernization, Math Evaluation, and Trending Lexers
+### 🎨 Native Light/Dark UI Streamlining, Math Evaluation, Trending Lexers & High-Precision Toolbar Iconography
 
-NoteSciPad v1.1.0 introduces the complete 75-theme collection adapted from SubnetCalc-MacOS across 25 families, a dedicated top-level MenuBar `Themes` menu, an interactive Theme Switcher with instant live preview, inline mathematical expression evaluation, 7 trending language lexers, and a redesigned 5-tab modern About dialog.
+NoteSciPad v1.1.0 delivers streamlined native Light and Dark modes without external palette overhead, restored toolbar dividing line and classic peach tab styling, Scintilla 5.6.7/Lexilla 5.5.4/Lua 5.5.1 engine upgrades, inline mathematical expression evaluation, 7 trending language lexers, redesigned 5-tab modern About dialog, universal dialog checkbox/radio layout overhaul, and pixel-perfect 16x16 toolbar iconography.
 
 ---
 
 ### ✨ Added
+
+#### Native Dark & Light Mode Streamlining
+
+- **Simplified Native Dark and Light Modes**: Streamlined ThemeManager to exclusively support dedicated Dark and Light modes (`kLightPalette` and `kDarkPalette`) without external palette catalogs or ThemeSwitcherDialog.
+- **Emoji-Free GUI**: Removed all emoji icons from theme menu actions ("Light Mode", "Dark Mode", "Toggle Dark / Light Mode") ensuring a clean, distraction-free native user interface.
+- **Dynamic Mode Synchronization**: Bound action check states directly to active theme mode with real-time status bar feedback.
+
+#### Toolbar Icon Clarity & High-Precision Redesign
+
+- **Pixel-Perfect 16x16 Integer Grid**: Restored native 16x16 pixel-grid base icons to eliminate bilinear interpolation blur and invisibility on dark themes (`#181a1f`, `#1e1e1e`, `#25282c`) caused by downscaled 32x32 faint outlines.
+- **Completely Redesigned Toolbar Icons**:
+  - **Find (`find.png`)**: High-precision azure/cyan magnifying glass with 3D specular white gleam and polished gold metallic handle.
+  - **Find & Replace (`findReplace.png`)**: Compact search lens paired with reciprocal exchange swap arrows in neon emerald (`#10b981`) and electric amber/gold (`#f59e0b`) with sharp contour borders.
+  - **Zoom In (`zoomIn.png`)**: Ocean azure magnifying glass enclosing a bold, high-contrast white plus sign (`+`).
+  - **Zoom Out (`zoomOut.png`)**: Matching ocean azure magnifying glass enclosing a bold, high-contrast white minus sign (`−`).
+  - **Show Indent (`indentGuide.png`)**: Code block hierarchy with glowing dual amber/gold vertical alignment rails (`#f59e0b`) guiding indented emerald and cyan code bars.
+- **Contrast Invariants**: Verified across both Dark Mode (average luminance delta > 75 on dark toolbars, peak 225.0) and Light Mode (average luminance delta > 102).
+
+#### Universal Checkbox & Radio Button Layout & Spacing Overhaul
+
+- **Standardized Spacing & Padding**: Configured explicit `spacing: 8px;`, `padding: 3px 4px;`, `min-height: 20px;`, and 16x16 indicator dimensions (4px border-radius for checkboxes, 9px for radio buttons).
+- **Crisp Vector Checkmark**: Bundled `src/icons/checkmark.svg` via `src/resources.qrc` and `image: url(:/icons/checkmark.svg);`, restoring crisp vector checkmarks without platform rendering anomalies.
+- **Radio Button Indicator Rendering**: Enforced sharp circular indicator dot via `border: 3px solid %5; background-color: %6;` on checked state.
+- **Dialog Layout Calibration**: Calibrated dialog layouts across Find & Replace, Preferences, Transparency, EncodingSelection, MacroRun, PerformanceDiagnostics, TailOptions, ManageToolsDialog, StatusBarCustomizerDialog, and FocusedViewDialog.
+
+#### NotepadNext Workspace Default Light Palette & Dark Mode Contrast Calibration
+
+- **Light Palette Calibration**: Calibrated `kLightPalette` to match the NotepadNext default workspace aesthetic (`#f0f2f5` window, `#fafbfc` canvas/card, `#e1e4e8` border, `#24292f` primary text, `#57606a` secondary text), avoiding harsh, eye-straining pure white backgrounds.
+- **Dark Mode Text Contrast**: Calibrated `kDarkPalette` text contrast (`#cdd6f4` primary text, `#a6adc8` secondary text) for sharp, crisp readability without blurriness.
 
 #### Official Thirdparty Engine Modernization (Scintilla 5.6.7, Lexilla 5.5.4, Lua 5.5.1)
 
@@ -71,23 +62,22 @@ NoteSciPad v1.1.0 introduces the complete 75-theme collection adapted from Subne
 - **Signal Disconnect Safety**: Fixed signal disconnect bug on editor switch in `QuickFindWidget::setEditor(ScintillaNext *newEditor)` where previously `disconnect` was invoked on the new editor instead of `this->editor`.
 - **Parameter Shadowing Elimination**: Eliminated parameter shadows in `ReleaseManager` (`currentVersionStr`), `TransparentWindowManager` (`targetMode`), and `QuickFindWidget` (`newEditor`).
 - **Const Pointer Correctness**: Enforced pointer constness on `ScreenDisplayManager` (`activeScreen`, `primary`, `scr`) and `ReleaseManager` (`btnDownload`).
+- **Explicit Constructors**: Marked `PreferencesDialog` and `SearchResultsCollector` constructors `explicit` to prevent implicit conversions.
+- **Const Reference Returns**: Returned `const QString &` in `FileBrowserDock::currentDirectory()`; reserved capacity for `cleanedFilters`.
+- **Parameter Constness**: Passed `searchTerm` and `line` parameters by `const QString &` across search handlers.
+- **Type-Safe Casts**: Replaced C-style cast with `reinterpret_cast` in `LuaConsoleDock.cpp`.
+- **Static Helpers**: Marked stateless helper functions as `static` in `AutoClosePairs`, `DocumentationManager`, and `FocusedView`.
 
 #### Official Application Icon & Attribution
 
 - **Icon Design by Lon McGregor**: NoteSciPad's official application icon has been adapted from the celebrated open-source artwork by Lon McGregor ([`LonMcGregor/NotepadPlusPlusIcons`](https://github.com/LonMcGregor/NotepadPlusPlusIcons)), honoring open-source iconography heritage across macOS (`.icns`), Windows (`.ico`), and Linux desktop environments (`.png`).
 
-#### Visual & Theme Engine (75 Themes across 25 Families)
-
-- **75 Theme Palettes**: Extracted and adapted from SubnetCalc-MacOS `ThemeManager.swift` into `ThemePaletteData.h`, providing curated color themes across 25 families (Catppuccin, Dracula, Tokyo Night, Nord, One Dark, Gruvbox, Solarized, GitHub, Monokai, Rosé Pine, Ayu, Kanagawa, Everforest, Night Owl, Material, SynthWave '84, Cyberpunk, Shades of Purple, Poimandres, Horizon, Andromeda, Nightfox, Cobalt2, Alabaster, and Tomorrow).
-- **Dedicated Top-Level `Themes` Menu**: Inserted directly into the main menu bar between View and Document/Language, providing quick filters (Light Themes Only, Dark Themes Only), 25 family submenus, and one-click reset to default Light Mode.
-- **Theme Switcher Dialog (`Ctrl+Shift+T` / `Cmd+Shift+T`)**: Interactive modal dialog featuring fuzzy search, type filtering (All/Light/Dark), 6-swatch color palette preview badges, and instant real-time canvas preview.
-
 #### Redesigned 5-Tab About Dialog
 
 - **Modern 5-Tab Interface (`AboutDialog`)**:
   - _About NoteSciPad_: High-resolution application icon, architecture overview, and legal non-affiliation statement.
-  - _Maintainer Information_: Complete contact information for Harry DS Alsyundawy (ALSYUNDAWY IT SOLUTION) including Email, Website, GitHub, Telegram, PayPal, Buy Me a Coffee, and QRIS barcode link (_strictly omitting phone number and WhatsApp_).
-  - _Credits & Attribution_: Formal upstream attribution to Scintilla, Lexilla, NotepadNext, Notepad4, Notepad3, and SubnetCalc-MacOS.
+  - _Maintainer Information_: Complete contact information for Harry DS Alsyundawy (ALSYUNDAWY IT SOLUTION) including Email, Website, GitHub, Telegram, PayPal, and QRIS barcode link (_strictly omitting phone number and WhatsApp_).
+  - _Credits & Attribution_: Formal upstream attribution to Scintilla, Lexilla, NotepadNext, Notepad4, Notepad3, and open-source contributors.
   - _System & Diagnostics_: Real-time operating system, kernel version, CPU build architecture, Qt build/runtime version, display scale ratio, and one-click "Copy Diagnostics to Clipboard".
   - _License_: Complete GNU General Public License v3.0 text and FSF links.
 
@@ -101,7 +91,7 @@ NoteSciPad v1.1.0 introduces the complete 75-theme collection adapted from Subne
 - **Mojo (`mojo.lua`)**: Modular Mojo systems programming language syntax (`.mojo`, `.🔥`).
 - **Solidity (`solidity.lua`)**: Ethereum smart contract language syntax (`.sol`).
 - **Julia (`julia.lua`)**: High-performance scientific computing language syntax (`.jl`).
-- **Dockerfile (`dockerfile.lua`)**: Multi-stage container definitions (`Dockerfile`, `Containerfile`).
+- **Dockerfile (`docker.lua`)**: Multi-stage container definitions (`Dockerfile`, `Containerfile`).
 - **Terraform (`terraform.lua`)**: HashiCorp HCL & OpenTofu infrastructure as code (`.tf`, `.tfvars`, `.tofu`).
 - **Protobuf (`protobuf.lua`)**: Google Protocol Buffers 3 & gRPC definitions (`.proto`).
 - **Mermaid (`mermaid.lua`)**: Flowcharts, sequence diagrams, and architecture diagrams (`.mermaid`, `.mmd`).
