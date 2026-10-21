@@ -605,6 +605,28 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
     width: 0px;
 }
 
+/* Scroll Area */
+QScrollArea {
+    background-color: transparent;
+    border: none;
+}
+QScrollArea > QWidget > QWidget {
+    background-color: transparent;
+}
+QScrollArea #scrollAreaWidgetContents {
+    background-color: transparent;
+}
+
+/* Preferences Dialog */
+PreferencesDialog {
+    background-color: %1;
+    color: %2;
+}
+PreferencesDialog QScrollArea,
+PreferencesDialog #scrollAreaWidgetContents {
+    background-color: transparent;
+}
+
 /* Menus & MenuBar */
 QMenuBar {
     background-color: %1;
@@ -663,6 +685,10 @@ QStatusBar {
 }
 QStatusBar::item {
     border: none;
+}
+FindReplaceDialog QStatusBar {
+    border-top: none;
+    background-color: transparent;
 }
 
 /* Dock Manager Tabs */
@@ -731,6 +757,9 @@ ads--CDockAreaTitleBar {
 }
 
 /* Tabs & Tab Widget */
+QTabBar {
+    qproperty-drawBase: 0;
+}
 QTabWidget::pane {
     border: 1px solid %3;
     background-color: %1;

@@ -257,6 +257,25 @@ During development and continuous integration verification across multiple compi
   1. Extended `ThemeManager::getThemeStyleSheet()` with complete, tokenized Dark and Light styling rules (`%1` to `%6`) covering all dialog controls, flat toolbar actions, and tab accents (`4px solid rgb(255, 202, 176)` and orange focus border).
   2. Adjusted layout spacing in `FindReplaceDialog.ui`, `PreferencesDialog.ui`, and `TailOptionsDialog.ui` to standard 6–8px spacing, guaranteeing neat, readable checklists across all resolutions.
 
+### Issue 13: Settings/Preferences Light Mode Corruption & Styling Degeneration
+
+- **Root Cause**: `PreferencesDialog` was instantiated with the `Qt::Tool` window flag (`: QDialog(parent, Qt::Tool)`). On macOS, Qt maps `Qt::Tool` to Cocoa `NSPanel` utility windows, which default to a dark HUD appearance (`NSAppearanceNameVibrantDark`). When opened while the application was in Light Mode, the dark HUD window frame collided with Light Mode text tokens (`#24292f`), creating illegible dark-on-dark contrast and messy rendering. In addition, `PreferencesDialog.ui` had a stale `-99` y-coordinate offset on `scrollAreaWidgetContents` (from saving while scrolled down in Qt Designer), clipping top preference rows, and lacked container transparency rules for `QScrollArea`.
+- **Remediation**:
+  1. Replaced `Qt::Tool` with standard `Qt::Dialog` in `PreferencesDialog.cpp` and disabled the context help button.
+  2. Reset `scrollAreaWidgetContents` geometry `y` offset from `-99` to `0` in `PreferencesDialog.ui` and set `frameShape` to `QFrame::NoFrame`.
+  3. Added explicit stylesheet rules in `ThemeManager.cpp` for `QScrollArea`, `PreferencesDialog`, and container widgets, ensuring clean transparent backgrounds bound to the window palette (`%1`).
+
+### Issue 14: Find & Replace Dialog Grayscale Divider Lines & Layout Asymmetry
+
+- **Root Cause**: `FindReplaceDialog` displayed redundant grayscale divider lines cutting across the interface:
+  1. `QTabBar` drew an unstyled base line (`drawBase = true` by default in Qt) directly below the tabs across the entire dialog width.
+  2. `QStatusBar` at the bottom drew a `1px solid %3` top border line defined in `getThemeStyleSheet()`.
+  3. `FindReplaceDialog.ui` had asymmetric nested margins (`leftMargin: 11` vs `12`, `bottomMargin: 12`) and `spacing: 0` in `gridLayout_2`, causing layout unbalance.
+- **Remediation**:
+  1. Called `tabBar->setDrawBase(false)` in `FindReplaceDialog.cpp` and configured `QTabBar { qproperty-drawBase: 0; }` in `ThemeManager.cpp`.
+  2. Applied `border-top: none; background: transparent;` to `FindReplaceDialog QStatusBar` in both C++ and stylesheet.
+  3. Re-architected `FindReplaceDialog.ui` layout: unified `gridLayout_2` to symmetrical `10px` horizontal and `6px` vertical margins with `10px` horizontal / `8px` vertical spacing, and stripped redundant inner margins from child vertical layouts.
+
 ---
 
 ## 3. 13-Pillar Code Quality & Security Audit

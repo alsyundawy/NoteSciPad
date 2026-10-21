@@ -102,6 +102,22 @@ NoteSciPad v1.2.0 delivers comprehensive visual, architectural, and engine upgra
 
 ---
 
+### 🐛 Fixed
+
+#### Settings/Preferences Theme Mode & Styling Fix
+
+- **Eliminated macOS Utility Dark HUD Inheritance (`PreferencesDialog.cpp`)**: Replaced inappropriate `Qt::Tool` window flag with standard `Qt::Dialog` in `PreferencesDialog` constructor, preventing macOS Cocoa `NSPanel` utility windows from forcing dark HUD appearance when the application is running in Light Mode.
+- **Scroll Area Alignment & Geometry Recovery (`PreferencesDialog.ui`)**: Reset `scrollAreaWidgetContents` geometry from stale `-99` vertical offset to `0`, ensuring top preferences rows (Show Menu Bar, Toolbar, Status Bar) are immediately visible without visual clipping.
+- **Universal Container Transparency (`PreferencesDialog.ui` & `ThemeManager.cpp`)**: Applied `QFrame::NoFrame` to `scrollArea` in UI definition and established explicit stylesheet rules for `QScrollArea`, `QScrollArea > QWidget > QWidget`, and `PreferencesDialog`, ensuring seamless background blending with window color (`%1`) and preventing sunken gray borders or mismatched contrast.
+
+#### Find & Replace Dialog Line Elimination & Layout Cleanup
+
+- **TabBar Base Line Removal (`FindReplaceDialog.cpp` & `ThemeManager.cpp`)**: Set `tabBar->setDrawBase(false)` and configured `QTabBar { qproperty-drawBase: 0; }` in global stylesheet, eradicating the unwanted gray horizontal base line rendered across the dialog directly under the tabs.
+- **StatusBar Top Border Removal (`FindReplaceDialog.cpp` & `ThemeManager.cpp`)**: Configured `border-top: none; background: transparent;` on `FindReplaceDialog QStatusBar`, removing the redundant grayscale border line above the status bar.
+- **Layout Margins & Spacing Symmetrization (`FindReplaceDialog.ui`)**: Established unified `10px` horizontal and `6px` vertical margins with `10px` horizontal and `8px` vertical spacing in `gridLayout_2`, and eliminated redundant nested margins in `verticalLayout_4` and `verticalLayout_5` for a clean, balanced layout.
+
+---
+
 ### 🔄 Changed & Refactored
 
 - **Core Application Renaming**: Migrated core application classes to `NoteSciPadApplication.h` and `NoteSciPadApplication.cpp` with seamless alias and include-forwarding compatibility.

@@ -27,7 +27,8 @@
 #include <QMessageBox>
 
 PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *parent)
-    : QDialog(parent, Qt::Tool), ui(new Ui::PreferencesDialog), settings(settings) {
+    : QDialog(parent, Qt::Dialog), ui(new Ui::PreferencesDialog), settings(settings) {
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
     ui->setupUi(this);
 
     QIcon icon = style()->standardIcon(QStyle::SP_MessageBoxInformation);
