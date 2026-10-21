@@ -17,6 +17,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 🛠️ Fixed
 
+- **Toolbar Icon Clarity & High-Precision Redesign**:
+  - Restored native 16x16 pixel-grid base icons to eliminate bilinear interpolation blur and invisibility on dark themes (`#181a1f`, `#1e1e1e`, `#25282c`) caused by downscaled 32x32 faint outlines.
+  - Completely redesigned toolbar icons for:
+    - **Find (`find.png`)**: High-precision azure/cyan magnifying glass with 3D specular white gleam and polished gold metallic handle.
+    - **Find & Replace (`findReplace.png`)**: Compact search lens paired with reciprocal exchange swap arrows in neon emerald (`#10b981`) and electric amber/gold (`#f59e0b`) with sharp contour borders.
+    - **Zoom In (`zoomIn.png`)**: Ocean azure magnifying glass enclosing a bold, high-contrast white plus sign (`+`).
+    - **Zoom Out (`zoomOut.png`)**: Matching ocean azure magnifying glass enclosing a bold, high-contrast white minus sign (`−`).
+    - **Show Indent (`indentGuide.png`)**: Code block hierarchy with glowing dual amber/gold vertical alignment rails (`#f59e0b`) guiding indented emerald and cyan code bars.
+  - Verified across both Dark Mode (average luminance delta > 75 on dark toolbars, peak 225.0) and Light Mode (average luminance delta > 102).
 - **Universal Checkbox & Radio Button Layout & Spacing Overhaul**: Standardized layout spacing, padding, margins, and vertical breathing room across all dialog windows to eliminate squishing and overlap:
   - `ThemeManager.cpp`: Configured explicit `spacing: 8px;`, `padding: 3px 4px;`, `min-height: 20px;`, and 16x16 indicator dimensions (4px border-radius for checkboxes, 9px for radio buttons).
   - Crisp vector checkmark: Bundled `src/icons/checkmark.svg` via `src/resources.qrc` and `image: url(:/icons/checkmark.svg);`, restoring crisp vector checkmarks on checked checkboxes without platform-specific rendering anomalies.

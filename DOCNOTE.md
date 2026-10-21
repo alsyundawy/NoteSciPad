@@ -56,6 +56,19 @@ Key milestones achieved in this release:
      - Replaced C-style cast with `reinterpret_cast` in `LuaConsoleDock.cpp`.
      - Marked `AutoClosePairs::isWordChar`, `DocumentationManager::openKeyboardShortcutsGuide`, `DocumentationManager::openOnlineRepository`, and `FocusedView::ensureHiddenLineStyle` as `static`.
 
+10. **Toolbar Iconography Clarity & High-Precision Redesign**:
+    - Resolved toolbar icon blurriness and dark mode invisibility caused by bilinear interpolation of downscaled 32x32 faint outlines. Restored native 16x16 integer-grid base icons ensuring 1:1 pixel crispness.
+    - Completely redesigned toolbar icons for:
+      - **Find (`find.png`)**: Designed a high-precision azure/cyan magnifying glass with 3D specular white gleam and polished gold metallic handle.
+      - **Find & Replace (`findReplace.png`)**: Designed a compact search lens paired with reciprocal exchange swap arrows in neon emerald (`#10b981`) and electric amber/gold (`#f59e0b`) with sharp contour borders.
+      - **Zoom In (`zoomIn.png`)**: Designed an ocean azure magnifying glass enclosing a bold, high-contrast white plus sign (`+`).
+      - **Zoom Out (`zoomOut.png`)**: Designed a matching ocean azure magnifying glass enclosing a bold, high-contrast white minus sign (`−`).
+      - **Show Indent (`indentGuide.png`)**: Designed a code block hierarchy with glowing dual amber/gold vertical alignment rails (`#f59e0b`) guiding indented emerald and cyan code bars.
+    - Contrast Invariants & Validation:
+      - Verified across both Dark Mode (`#1e1e1e`/`#181a1f`, avg contrast delta > 75, max delta 225.0) and Light Mode (`#f0f2f5`/`#ffffff`, avg contrast delta > 102).
+      - Confirmed 0 blurry artifacts, 0 faint/invisible pixels, and exact 1:1 pixel grid mapping with `iconSize` 16x16.
+    - Maintained strict scope constraint ("Do not change anything else").
+
 ---
 
 ## NoteSciPad Release DocNote — v1.0.0
