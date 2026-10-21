@@ -244,30 +244,55 @@ NoteSciPad v1.2.0 delivers comprehensive visual, architectural, and engine upgra
 
 ## [1.1.0] - 2026-10-19
 
-### 🎨 Themes & UI Modernization, Math Evaluation, and Trending Lexers
+### 🎨 Native Light/Dark UI Streamlining, Math Evaluation, Trending Lexers & High-Precision Toolbar Iconography
 
-NoteSciPad v1.1.0 introduces the complete 75-theme collection adapted from SubnetCalc-MacOS across 25 families, a dedicated top-level MenuBar `Themes` menu, an interactive Theme Switcher with instant live preview, inline mathematical expression evaluation, 7 trending language lexers, and a redesigned 5-tab modern About dialog.
+NoteSciPad v1.1.0 delivers streamlined native Light and Dark modes without external palette overhead, restored toolbar dividing line and classic peach tab styling, Scintilla 5.6.7/Lexilla 5.5.4/Lua 5.5.1 engine upgrades, inline mathematical expression evaluation, 7 trending language lexers, redesigned 5-tab modern About dialog, universal dialog checkbox/radio layout overhaul, and pixel-perfect 16x16 toolbar iconography.
 
 ---
 
 ### ✨ Added
 
-#### Official Application Icon & Attribution
+#### Native Dark & Light Mode Streamlining
 
-- **Icon Design by Lon McGregor**: NoteSciPad's official application icon has been adapted from the celebrated open-source artwork by Lon McGregor ([`LonMcGregor/NotepadPlusPlusIcons`](https://github.com/LonMcGregor/NotepadPlusPlusIcons)), honoring open-source iconography heritage across macOS (`.icns`), Windows (`.ico`), and Linux desktop environments (`.png`).
+- **Simplified Native Dark and Light Modes**: Streamlined ThemeManager to exclusively support dedicated Dark and Light modes (`kLightPalette` and `kDarkPalette`) without external palette catalogs or ThemeSwitcherDialog.
+- **Emoji-Free GUI**: Removed all emoji icons from theme menu actions ("Light Mode", "Dark Mode", "Toggle Dark / Light Mode") ensuring a clean, distraction-free native user interface.
+- **Dynamic Mode Synchronization**: Bound action check states directly to active theme mode with real-time status bar feedback.
 
-#### Visual & Theme Engine (75 Themes across 25 Families)
+#### Toolbar Icon Clarity & High-Precision Redesign
 
-- **75 Theme Palettes**: Extracted and adapted from SubnetCalc-MacOS `ThemeManager.swift` into `ThemePaletteData.h`, providing curated color themes across 25 families (Catppuccin, Dracula, Tokyo Night, Nord, One Dark, Gruvbox, Solarized, GitHub, Monokai, Rosé Pine, Ayu, Kanagawa, Everforest, Night Owl, Material, SynthWave '84, Cyberpunk, Shades of Purple, Poimandres, Horizon, Andromeda, Nightfox, Cobalt2, Alabaster, and Tomorrow).
-- **Dedicated Top-Level `Themes` Menu**: Inserted directly into the main menu bar between View and Document/Language, providing quick filters (Light Themes Only, Dark Themes Only), 25 family submenus, and one-click reset to default Light Mode.
-- **Theme Switcher Dialog (`Ctrl+Shift+T` / `Cmd+Shift+T`)**: Interactive modal dialog featuring fuzzy search, type filtering (All/Light/Dark), 6-swatch color palette preview badges, and instant real-time canvas preview.
+- **Pixel-Perfect 16x16 Integer Grid**: Restored native 16x16 pixel-grid base icons to eliminate bilinear interpolation blur and invisibility on dark themes (`#181a1f`, `#1e1e1e`, `#25282c`) caused by downscaled 32x32 faint outlines.
+- **Completely Redesigned Toolbar Icons**:
+  - **Find (`find.png`)**: High-precision azure/cyan magnifying glass with 3D specular white gleam and polished gold metallic handle.
+  - **Find & Replace (`findReplace.png`)**: Compact search lens paired with reciprocal exchange swap arrows in neon emerald (`#10b981`) and electric amber/gold (`#f59e0b`) with sharp contour borders.
+  - **Zoom In (`zoomIn.png`)**: Ocean azure magnifying glass enclosing a bold, high-contrast white plus sign (`+`).
+  - **Zoom Out (`zoomOut.png`)**: Matching ocean azure magnifying glass enclosing a bold, high-contrast white minus sign (`−`).
+  - **Show Indent (`indentGuide.png`)**: Code block hierarchy with glowing dual amber/gold vertical alignment rails (`#f59e0b`) guiding indented emerald and cyan code bars.
+- **Contrast Invariants**: Verified across both Dark Mode (average luminance delta > 75 on dark toolbars, peak 225.0) and Light Mode (average luminance delta > 102).
+
+#### Universal Checkbox & Radio Button Layout & Spacing Overhaul
+
+- **Standardized Spacing & Padding**: Configured explicit `spacing: 8px;`, `padding: 3px 4px;`, `min-height: 20px;`, and 16x16 indicator dimensions (4px border-radius for checkboxes, 9px for radio buttons).
+- **Crisp Vector Checkmark**: Bundled `src/icons/checkmark.svg` via `src/resources.qrc` and `image: url(:/icons/checkmark.svg);`, restoring crisp vector checkmarks without platform rendering anomalies.
+- **Radio Button Indicator Rendering**: Enforced sharp circular indicator dot via `border: 3px solid %5; background-color: %6;` on checked state.
+- **Dialog Layout Calibration**: Calibrated dialog layouts across Find & Replace, Preferences, Transparency, EncodingSelection, MacroRun, PerformanceDiagnostics, TailOptions, ManageToolsDialog, StatusBarCustomizerDialog, and FocusedViewDialog.
+
+#### Official Thirdparty Engine Modernization (Scintilla 5.6.7, Lexilla 5.5.4, Lua 5.5.1)
+
+- **Scintilla 5.6.7**: Integrated upstream Scintilla release from the main branch into `thirdparty/scintilla/`, providing enhanced multi-caret editing, scroll optimization, and sub-millisecond line navigation.
+- **Lexilla 5.5.4**: Integrated upstream Lexilla release into `thirdparty/lexilla/` for robust multi-language lexing.
+- **Lua 5.5.1 / 5.4.7**: Upgraded embedded Lua core in `thirdparty/lua/` directly from upstream source archives.
+
+#### Native UI Divider & Tab Border Restoration
+
+- **Toolbar Dividing Line Restoration**: Added `border-bottom: 1px solid %3;` and refined padding to `QToolBar` in `src/features/ThemeManager.cpp`, restoring the clean horizontal separation line between toolbar and editor tabs.
+- **Classic Tab Top Border Color Restoration**: Restored classic soft peach (`rgb(255, 202, 176)`) active tab top border and orange focus top border matching `npp.css`, stripping out unwanted blue accent line from `ads--CDockWidgetTab`.
 
 #### Redesigned 5-Tab About Dialog
 
 - **Modern 5-Tab Interface (`AboutDialog`)**:
   - _About NoteSciPad_: High-resolution application icon, architecture overview, and legal non-affiliation statement.
   - _Maintainer Information_: Complete contact information for Harry DS Alsyundawy (ALSYUNDAWY IT SOLUTION) including Email, Website, GitHub, Telegram, PayPal, and QRIS barcode link (_strictly omitting phone number and WhatsApp_).
-  - _Credits & Attribution_: Formal upstream attribution to Scintilla, Lexilla, NotepadNext, Notepad4, Notepad3, and SubnetCalc-MacOS.
+  - _Credits & Attribution_: Formal upstream attribution to Scintilla, Lexilla, NotepadNext, Notepad4, Notepad3, and open-source contributors.
   - _System & Diagnostics_: Real-time operating system, kernel version, CPU build architecture, Qt build/runtime version, display scale ratio, and one-click "Copy Diagnostics to Clipboard".
   - _License_: Complete GNU General Public License v3.0 text and FSF links.
 
@@ -281,7 +306,7 @@ NoteSciPad v1.1.0 introduces the complete 75-theme collection adapted from Subne
 - **Mojo (`mojo.lua`)**: Modular Mojo systems programming language syntax (`.mojo`, `.🔥`).
 - **Solidity (`solidity.lua`)**: Ethereum smart contract language syntax (`.sol`).
 - **Julia (`julia.lua`)**: High-performance scientific computing language syntax (`.jl`).
-- **Dockerfile (`dockerfile.lua`)**: Multi-stage container definitions (`Dockerfile`, `Containerfile`).
+- **Dockerfile (`docker.lua`)**: Multi-stage container definitions (`Dockerfile`, `Containerfile`).
 - **Terraform (`terraform.lua`)**: HashiCorp HCL & OpenTofu infrastructure as code (`.tf`, `.tfvars`, `.tofu`).
 - **Protobuf (`protobuf.lua`)**: Google Protocol Buffers 3 & gRPC definitions (`.proto`).
 - **Mermaid (`mermaid.lua`)**: Flowcharts, sequence diagrams, and architecture diagrams (`.mermaid`, `.mmd`).
