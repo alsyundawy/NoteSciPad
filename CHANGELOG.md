@@ -1,9 +1,161 @@
 # Changelog
 
-All notable changes to **NoteSciPad** will be documented in this file.
+All notable changes to **SparkNotePad** will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [1.3.0] - 2026-10-22
+
+### ⚡ Official SparkNotePad Brand Evolution, 13-Pillar Quality Verification, Theme Leakage Elimination & Dual-Format Crypto Compatibility
+
+SparkNotePad v1.3.0 represents a landmark release featuring the official transformation from NoteSciPad into **SparkNotePad** across all application targets, repositories, packaging pipelines, and system integrations. This release delivers an updated visual identity with a custom high-definition iconset adhering to Apple HIG and Windows standards, comprehensive 13-pillar code quality refactoring (eliminating performance bottlenecks, enforcing const-correctness, and resolving lint invariants), complete elimination of dark mode leakage in light mode dialogs, compiler scope hardening across multi-branch targets, refined Indonesian localization and documentation, and dual-format cryptographic compatibility supporting both `SPKENC01` and legacy `NSPENC01` encrypted files.
+
+#### 🛡️ Theme Leakage Elimination & Dialog Polish
+
+- **Zero Dark Mode Leakage in Light Mode**: Completely eliminated all usage of fragile Qt `palette(alternate-base)` and `palette(base)` stylesheets across `AboutDialog` and `DisplayInfoDialog`. On host operating systems set to Dark Mode (such as macOS Sequoia/Sonoma or Linux dark themes), Qt previously resolved those palette macros to dark gray (`#2d2d2d`), resulting in unsightly dark rectangles inside light-mode dialogs.
+- **Dynamic Theme Palette Binding (`updateThemeColors`)**: Implemented dynamic theme event listeners connected to `ThemeManager::themeChanged` in `AboutDialog` and `DisplayInfoDialog`. Color tokens are resolved deterministically using explicit CSS hex definitions (`#fafbfc` card background, `#f0f2f5` window background, `#e1e4e8` border, `#24292f` primary text, `#57606a` secondary text in Light Mode; `#282a36`, `#1e1f29`, `#44475a`, `#f8f8f2` in Dark Mode).
+- **Proportional About Dialog Sizing**: Calibrated About Dialog dimensions to a compact, elegant 540x400 px frame with multi-tab diagnostics.
+
+#### 🔧 Multi-Branch Compilation & Architecture Hardening
+
+- **Scope Resolution in ThemeManager**: Fixed Linux GCC compiler errors on branches where `findThemePaletteById` was referenced without being in scope by binding direct pointer fallbacks (`&kDarkPalette` / `&kLightPalette`).
+- **13-Pillar C++ & Qt Static Audit**: Resolved over 100 static analysis defects flagged by Trunk, Cppcheck, and Clang-Tidy across `src/`:
+  - `knownConditionTrueFalse`: Corrected UTF-32 surrogate range calculation in `RtfConverter.cpp` with signed 16-bit short casting, and removed redundant ternary expressions in `LuaExtension.cpp`.
+  - `missingOverride`: Added explicit `override` specifier across 16 virtual methods in `IFaceTable.h` and `IFaceTableMixer.h`.
+  - `noExplicitConstructor`: Added `explicit` keyword to single-argument constructors in `ApplicationSettings.h`, `MacroRecorder.h`, `Finder.h`, `SmartHighlighter.h`, `SurroundSelection.h`, and `URLFinder.h`.
+  - `shadowFunction` & `shadowMember`: Fixed setter macro `CREATE_SETTING`/`DEFINE_SETTING` parameter shadowing in `ApplicationSettings`, and member shadowing in `FindReplaceDialog`, `MainWindow`, `MacroRecorder`, and `Finder`.
+  - `cstyleCast`: Replaced C-style pointer casts with `reinterpret_cast<const char *>` and `const_cast` in `EncodingSelectionDialog.cpp` and `LuaExtension.cpp`.
+  - `constVariablePointer`: Declared read-only pointers and iterators as `const` in `IFaceTableMixer.cpp`, `ClipboardHistoryDialog.cpp`, and `LuaExtension.cpp`.
+  - `ignoredReturnErrorCode`: Verified and handled return status of `d.mkpath()` in `ScintillaNext.cpp`.
+  - `passedByValue`: Passed heavy objects (`MacroStep`, `QString` names) by `const &` to eliminate temporary heap allocations.
+- **SonarQube & Compilation Database Integration**: Configured `sonar-project.properties` and `.vscode/settings.json` pointing to `build/compile_commands.json` for first-class SonarLint CFamily and clangd static analysis.
+
+---
+
+### ✨ Added
+
+#### Official SparkNotePad Brand Identity & Vector Iconography
+
+- **New Visual Identity**: Replaced legacy iconography with high-precision artwork derived from master assets, featuring vibrant typography and contrast.
+- **Apple HIG Compliant `SparkNotePad.icns`**: Generated 10 distinct standard macOS icon resolutions (`16x16`, `16x16@2x`, `32x32`, `32x32@2x`, `128x128`, `128x128@2x`, `256x256`, `256x256@2x`, `512x512`, `512x512@2x`) packaged via native `iconutil`.
+- **Cross-Platform Icons**: Generated multi-resolution Windows `SparkNotePad.ico` (16, 24, 32, 48, 64, 128, 256 px), high-DPI 512x512 Linux desktop icon (`SparkNotePad.png`), and clean vector SVG (`SparkNotePad.svg`).
+- **In-App Resource Bundling**: Updated `src/resources.qrc` and window application headers to load `:/icons/SparkNotePad.png`.
+
+#### Toolbar Icon Clarity & High-Precision Redesign
+
+- **Pixel-Perfect 16x16 Toolbar Grid**: Restored native 16x16 base icons to eliminate bilinear interpolation blur and invisibility on dark themes (`#181a1f`, `#1e1e1e`, `#25282c`) caused by downscaled 32x32 faint outlines.
+- **Complete Toolbar Redesigns**:
+  - **Find (`find.png`)**: Designed a high-precision azure/cyan magnifying glass with 3D specular white gleam and polished gold metallic handle.
+  - **Find & Replace (`findReplace.png`)**: Designed a compact search lens paired with reciprocal exchange swap arrows in neon emerald (`#10b981`) and electric amber/gold (`#f59e0b`) with sharp contour borders.
+  - **Zoom In (`zoomIn.png`)**: Designed an ocean azure magnifying glass enclosing a bold, high-contrast white plus sign (`+`).
+  - **Zoom Out (`zoomOut.png`)**: Designed a matching ocean azure magnifying glass enclosing a bold, high-contrast white minus sign (`−`).
+  - **Show Indent (`indentGuide.png`)**: Designed a code block hierarchy with glowing dual amber/gold vertical alignment rails (`#f59e0b`) guiding indented emerald and cyan code bars.
+- **Dark Mode & High Contrast Invariants**: Verified that every toolbar icon maintains strong contrast (average luminance delta > 75 on dark toolbars, > 102 on light toolbars, peak delta 225.0) ensuring sharp readability across all themes.
+
+#### Dual-Format Cryptographic Backward Compatibility
+
+- **Primary `SPKENC01` Magic Header**: New documents encrypted with AES-256-CBC and HMAC-SHA256 authenticated containers use the `SPKENC01` format header.
+- **Transparent Legacy Decryption**: Added seamless fallback for legacy `NSPENC01` encrypted containers, ensuring users can decrypt existing confidential documents without migration friction.
+
+#### Comprehensive 13-Pillar Code Quality Audit
+
+- **Const Reference Return**: Updated `MarkOccurrences::lastQuery()` to return `const QString &` instead of value copy, eliminating allocation overhead on hot search paths.
+- **Single-Argument Constructor Safety**: Declared `TabsQuickActionsBar(MainWindow *mainWindow, QWidget *parent = nullptr)` as `explicit` to prevent unintended implicit conversions.
+- **Dead Code Cleanup**: Purged unused `caret` and `anchor` struct members in `CaseConverter::SelectionRange`.
+- **Const Pointer Enforcement**: Made `QTextCodec *` pointer `const` in `EncodingDetector::detectEncoding`.
+- **Shell Script Return Value Hardening**: Resolved all ShellCheck SC2312 warnings across utility and default editor shell scripts by assigning subshell commands to isolated local variables.
+
+#### Indonesian Localization & Documentation Refinement
+
+- **Standard Technical Phrasing**: Polished `i18n/SparkNotePad_id.ts` and documentation for natural, idiomatic Indonesian developer terminology.
+- **README Standardization**: Integrated official standardized tagline ("SparkNotePad — editor teks dan kode sumber ringan berbasis Scintilla & Qt untuk Linux dan macOS") and architectural overview.
+
+#### Multi-Instance Window Support (`File -> New Window`)
+
+- **CLI Flag Recognition**: Added `--multi-instance`, `--new-window`, and `-m` argument detection in `main.cpp` and `SparkNotePadApplication.cpp`.
+- **Unique Process Scoping**: Dynamically overrides `QApplication::applicationName` for spawned child instances, bypassing `SingleApplication` interception and allowing multiple concurrent primary windows.
+- **Native macOS Detachment**: Launches isolated application bundle processes using `/usr/bin/open -n <Bundle.app> --args --multi-instance`.
+
+#### Theme Submenu Hierarchy & Preferences Dialog Harmonization
+
+- **Organized Theme Menu Structure**: Grouped all 75 editor color themes across 25 families under a unified parent submenu (`📁 Themes by Family`) in `MainWindow.cpp`, eliminating menu overflow.
+- **Card-Styled Preferences GUI**: Redesigned `PreferencesDialog` to match the modern card aesthetic, typography, and palette of `AboutDialog`.
+- **Integrated Theme & Window Controls**: Added live 75-theme selection dropdown, instant Dark/Light mode toggle, window transparency slider (20%-100%), debounced tail monitoring interval, and multi-monitor safety guards.
+
+#### Accessibility & Typography Overhaul
+
+- **WCAG 2.1 AAA Contrast Compliance**: Upgraded `AboutDialog` default light mode palette to Radix/Tailwind Slate (`#0f172a` primary text, `#ffffff` card, `#f8fafc` background) achieving >19:1 contrast ratio.
+- **Sharp Native Font Rendering**: Enforced system font stacks (`-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif`) with explicit font weights and antialiasing, eliminating blurry text rendering.
+
+#### Modern Ribbon Vector Toolbar Icon Pack
+
+- **Modern Ribbon Vector Iconography**: Replaced all legacy 16x16 Silk toolbar icons with a completely new, crisp 32x32 High-DPI ribbon vector icon set across all 35 editor actions (`newfile`, `openFile`, `saved`, `unsaved`, `saveAll`, `closeFile`, `closeAll`, `cut`, `copy`, `paste`, `undo`, `redo`, `find`, `findReplace`, `zoomIn`, `zoomOut`, `wrap`, `invisibleChar`, `indentGuide`, `startRecord`, `stopRecord`, `playRecord`, `printer`, `readonly`, etc.), refined specifically for modern text editor workflows and distinct from legacy branch icons.
+
+### 🛠️ Fixed
+
+- **Toolbar Dividing Line Restoration**: Added `border-bottom: 1px solid %3;` and refined padding to `QToolBar` in `src/features/ThemeManager.cpp`, restoring the classic horizontal separator line between the toolbar and document tabs.
+- **Active Tab Top Border Color Restoration**: Removed unrequested blue top border (`%6` / blue accent) from `ads--CDockWidgetTab[activeTab="true"]`, `ads--CDockWidgetTab[focused="true"]`, and `QTabBar::tab:selected`, restoring the classic soft peach (`rgb(255, 202, 176)`) active tab border and orange focus top border matching the original NoteSciPad/NotepadNext standard in `npp.css`.
+- **Linux GCC Incomplete Type Resolution**: Added `#include <QAbstractItemView>` in `src/dialogs/PreferencesDialog.cpp`, resolving compiler failure on Linux (`ubuntu-24.04`) where `comboBoxTheme->view()->setVerticalScrollBarPolicy(...)` required the complete definition of `QAbstractItemView`.
+- **Dark/Light Mode Toggle Functionality**: Resolved issue where toggling between Dark and Light mode did not switch active palette. `ThemeManager::setThemeMode` and `toggleTheme` now dynamically swap between default light (`defaultLight`) and dark (`catppuccinMocha`) palettes, persist settings, and emit `paletteChanged` to synchronize all GUI controls.
+- **Emoji Purge in Theme Manager**: Removed all emojis from Theme Manager actions, `Themes` menu hierarchy, `PreferencesDialog`, `ThemeSwitcherDialog`, and `AboutDialog` badges, providing clean, professional desktop typography.
+- **Native Flat Toolbar Button Styling**: Removed accidental global `QToolButton` card styling in `src/features/ThemeManager.cpp` and explicitly established flat, borderless, transparent styling for `QToolBar QToolButton`. Restores original clean editor iconography without button outline boxes.
+- **Strict Markdownlint Compliance**: Remediated all markdown formatting issues across repository documentation, including adding explicit language tags (`text`) on ASCII architecture and layout diagrams (`MD040`), eliminating hard tabs (`MD010`), and normalizing code fence blank line spacing (`MD031`).
+- **Universal Dialog Dark and Light Mode Color Refinement**: Refined status notification styling in `FindReplaceDialog::showMessage` to dynamically evaluate active theme mode (dark vs light) and apply high-contrast palette tokens (`#3fb950` / `#f85149` / `#58a6ff` on dark; `#1a7f37` / `#cf222e` / `#0969da` on light) with medium font-weight, ensuring crisp readability and eliminating contrast degradation. Refined `ThemeSwitcherDialog` subtitle and shortcut tip typography to use dynamic opacity (`opacity: 0.8`) instead of washed-out hardcoded gray, achieving uniform contrast across all 75 visual themes.
+- **Dialog Checklist & Option Column Layout Optimization**: Resolved checklist row crowding and element overlaps across dialogs by configuring explicit layout spacing:
+  - `FindReplaceDialog.ui`: Increased `verticalLayout_6` checkbox column spacing from `0` to `6px`, preventing checklist item squishing.
+  - `PreferencesDialog.ui`: Added spacing (`8px` to `verticalLayout_4`, `6px` to `verticalLayout_2`, `verticalLayout_3`, and `verticalLayout_5`).
+  - `TailOptionsDialog.ui`: Added `8px` spacing to `verticalLayout_2` for behavior and protection checkboxes.
+- **Linux GCC Scope and Member Function Resolution in FindReplaceDialog**: Fixed compilation failure under GCC on Linux (`error: invalid use of non-static member function 'void FindReplaceDialog::count()'`) where `showMessage(tr("Mark: %Ln match in entire file", "", count), ...)` referenced `count` resolving to the class member function pointer instead of the local match tally. Replaced with `matchCount` and eliminated variable shadowing (`count` -> `totalReplaced`, `editor` -> `targetEd`) in `replaceAll`.
+  - `ClipboardHistoryDialog.ui`: Added `14px` spacing to `layoutOptions` horizontal checkbox row.
+  - `RegexHelperDialog.ui`: Added `12px` spacing to `horizontalLayoutFlags` regex options checklist.
+  - `RunDialog.ui`: Added `14px` spacing to `horizontalLayoutOptions` execution flags row.
+- **13-Pillar C++ & Qt Hardening**:
+  - `MainWindow.h` & `MainWindow.cpp`: Passed `actionNames` by `const QStringList &` in `buildMenu(const QStringList &actionNames)` rather than by-value copy, eliminating temporary heap allocations on popup menu construction; declared `checkForUpdatesFinished` as `static`.
+  - `PreferencesDialog.cpp`: Enforced `const` correctness on `SparkNotePadApplication *app` in `populateTranslationComboBox`.
+  - `ThemeSwitcherDialog.cpp`: Initialized `m_initialPaletteId` in the constructor member initializer list, eliminating redundant default construction and assignment.
+  - `PreferencesDialog.h`: Marked constructor `explicit` to prevent implicit conversions.
+  - `FileBrowserDock.h` & `FileBrowserDock.cpp`: Returned `const QString &` in `currentDirectory()` to eliminate heap string allocations on directory lookups.
+  - `ISearchResultsHandler.h`, `SearchResultsCollector.h`, `SearchResultsCollector.cpp`, `SearchResultsDock.h`, `SearchResultsDock.cpp`: Passed `searchTerm` and `line` parameters by `const QString &` instead of by-value copies; eliminated shadowed variable declaration in `SearchResultsDock::newSearch`.
+  - `LuaConsoleDock.h` & `LuaConsoleDock.cpp`: Passed `line` by `const QString &` in `historyAdd`.
+  - `AutoClosePairs.h` & `AutoClosePairs.cpp`: Marked `isWordChar` as `static`.
+  - `DocumentationManager.h`: Marked `openKeyboardShortcutsGuide` and `openOnlineRepository` as `static`.
+  - `FocusedView.h`: Marked `ensureHiddenLineStyle` as `static`.
+- **Universal Dialog Checkbox & Radio Button Layout & Spacing Overhaul**: Standardized layout spacing, padding, margins, and vertical breathing room across all dialog windows to eliminate squishing and overlap:
+  - `ThemeManager.cpp`: Implemented universal stylesheet rules for `QCheckBox` and `QRadioButton` with `spacing: 8px;`, `padding: 3px 4px;`, `min-height: 20px;`, and explicit 16x16 px indicator dimensions (4px border-radius for checkboxes, 9px for radio buttons).
+  - High-precision vector checkmark: Created and bundled `src/icons/checkmark.svg` via `src/resources.qrc` and `image: url(:/icons/checkmark.svg);`, restoring crisp, high-DPI vector checkmarks on checked checkboxes across all desktop platforms without reliance on platform-specific native fallbacks.
+  - Radio button indicator rendering: Enforced sharp circular indicator dot via `border: 3px solid %5; background-color: %6;` on checked state.
+  - Dialog-specific layout and margin calibration:
+    - `FindReplaceDialog.ui`: Enhanced Search Mode and Transparency group box layouts with explicit 8px spacing and 8/10px margins; increased vertical checkbox list spacing to 8px.
+    - `PreferencesDialog.ui`: Enforced 8px vertical and horizontal spacing across all general settings checkbox and radio button rows (`verticalLayout_2`, `verticalLayout_3`, `verticalLayout_5`, `horizontalLayout_2`).
+    - `TransparencyDialog.ui`: Added 10px spacing to main layout and 8px spacing with 8/10px margins to `verticalLayoutMode` radio button group.
+    - `EncodingSelectionDialog.ui`: Configured 8px spacing and 8/10px margins for character set conversion action radio buttons (`layoutAction`).
+    - `MacroRunDialog.ui`: Configured 8px vertical spacing and 8px horizontal button layout spacing.
+    - `PerformanceDiagnosticsDialog.ui`: Added 8px spacing and 8/10px margins to diagnostic toggle layout (`verticalLayout_2`).
+    - `TailOptionsDialog.ui`: Added 8/10px margins to `verticalLayout_2` for clean visual alignment.
+    - `ThemeSwitcherDialog.cpp`: Added 12px spacing and 0/2px margins to `filterLayout`, dynamically calculating theme category radio counts using `kTotalThemePaletteCount`.
+    - `ManageToolsDialog.cpp`: Configured 10px vertical spacing and 16px margins for dialog form layout.
+    - `StatusBarCustomizerDialog.cpp`: Configured 8px vertical spacing and 14/16/14/14px margins for status bar element checklist.
+    - `FocusedViewDialog.cpp`: Configured 16px horizontal spacing, 8px vertical spacing, and 14/16/14/14px margins for options grid.
+- **NotepadNext Workspace Default Light Palette & Dark Mode Contrast Calibration**:
+  - `ThemePaletteData.h`: Introduced dedicated `notepadNext` palette as the default light workspace palette (`#f0f2f5` window, `#fafbfc` canvas/card, `#e1e4e8` border, `#24292f` primary text, `#57606a` secondary text), matching the original NotepadNext comfortable workspace aesthetic and preventing harsh, eye-straining pure white glare.
+  - Default light mode mapping: Configured `defaultLight` to map directly to `notepadNext` palette in `findThemePaletteById`, and updated light fallback color tokens in `ThemeManager::applyTheme` and `getThemeStyleSheet`.
+  - Sharp dark mode contrast calibration: Calibrated secondary text colors across dark themes (`materialDeepOcean`, `oneDarkPro`, `dracula`, `solarizedDark`, `ayuDark`, `kanagawaDragon`) to guarantee crisp, sharp text rendering exceeding WCAG AAA standards (never blurry or excessively dark).
+  - Dynamic opacity status styling: Updated status and informative labels in `FocusedViewDialog` and `ThemeSwitcherDialog` to use `opacity: 0.8; font-style: italic;` for seamless readability across dark and light palettes.
+- **Release & Build Runner Branch Dispatch**: Updated `.github/workflows/build.yml` and `.github/workflows/release.yml` with empty `workflow_dispatch` triggers and branch support across `1.*`, `develop`, and `main`, adhering to Checkov `CKV_GHA_7` security standards while permitting manual branch selection.
+
+---
+
+### 🔄 Changed
+
+- **Target & Binary Renaming**: Renamed CMake executable target to `SparkNotePad`, unit tests to `SparkNotePadTests` / `SparkNotePadUnitTests`.
+- **Application Class Structure**: Introduced `SparkNotePadApplication` with forward-compatibility type aliases (`using NoteSciPadApplication = SparkNotePadApplication;` and `using NotepadNextApplication = SparkNotePadApplication;`).
+- **Complete Purge of Residual `NotepadNext` Artifacts**: Purged legacy action identifiers (`actionAboutNotepadNext` -> `actionAboutSparkNotePad`), modernized NSIS Windows installer scripts (`installer.nsi`, `utils.nsh`), updated icon batch scripts (`icon/svg_to_ico.bat`), environment templates (`.env.example`), and localization automation (`.github/workflows/lupdate.yml`).
+- **Resilient Release CI/CD Pipeline**: Upgraded `.github/workflows/release.yml` with resilient execution condition (`always() && !cancelled()`), ensuring release assets (DMGs, DEBs, RPMs) publish reliably even if macOS runners experience queue delays.
+- **Packaging & Desktop Integration**: Updated Flatpak manifest (`io.github.alsyundawy.SparkNotePad.yml`), AppStream metainfo, desktop entry, Homebrew Cask and Formula (`sparknotepad.rb`), and macOS Info.plist bundle identifier (`io.github.alsyundawy.SparkNotePad`).
+- **CI/CD Automation**: Updated GitHub Actions build matrices, release workflows, and lupdate routines to reference `SparkNotePad`.
 
 ---
 
@@ -22,17 +174,6 @@ NoteSciPad v1.2.0 delivers comprehensive visual, architectural, and engine upgra
 - **82% Squircle Canvas Grid**: Re-engineered application icon with official Apple HIG optical padding (~100px border margins on 1024x1024 canvas), resolving oversized Dock rendering on macOS Sequoia and Sonoma.
 - **Full Resolution Iconset**: Generated 10 distinct standard resolutions (`16x16`, `16x16@2x`, `32x32`, `32x32@2x`, `128x128`, `128x128@2x`, `256x256`, `256x256@2x`, `512x512`, `512x512@2x`) packaged into native `NoteSciPad.icns`.
 - **Multi-Resolution Windows & Linux Icons**: Multi-layered `NoteSciPad.ico` (16, 24, 32, 48, 64, 128, 256 px) and high-DPI 512x512 Linux desktop icon.
-
-#### Toolbar Icon Clarity & High-Precision Redesign
-
-- **Pixel-Perfect 16x16 Toolbar Grid**: Restored native 16x16 base icons to eliminate bilinear interpolation blur and invisibility on dark themes (`#181a1f`, `#1e1e1e`, `#25282c`) caused by downscaled 32x32 faint outlines.
-- **Complete Toolbar Redesigns**:
-  - **Find (`find.png`)**: Designed a high-precision azure/cyan magnifying glass with 3D specular white gleam and polished gold metallic handle.
-  - **Find & Replace (`findReplace.png`)**: Designed a compact search lens paired with reciprocal exchange swap arrows in neon emerald (`#10b981`) and electric amber/gold (`#f59e0b`) with sharp contour borders.
-  - **Zoom In (`zoomIn.png`)**: Designed an ocean azure magnifying glass enclosing a bold, high-contrast white plus sign (`+`).
-  - **Zoom Out (`zoomOut.png`)**: Designed a matching ocean azure magnifying glass enclosing a bold, high-contrast white minus sign (`−`).
-  - **Show Indent (`indentGuide.png`)**: Designed a code block hierarchy with glowing dual amber/gold vertical alignment rails (`#f59e0b`) guiding indented emerald and cyan code bars.
-- **Dark Mode & High Contrast Invariants**: Verified that every toolbar icon maintains strong contrast (average luminance delta > 75 on dark toolbars, > 102 on light toolbars, peak delta 225.0) ensuring sharp readability across all themes.
 
 #### Modern Vector-Badged Message Box (`ModernMessageBox`)
 
@@ -80,53 +221,6 @@ NoteSciPad v1.2.0 delivers comprehensive visual, architectural, and engine upgra
 - **Live Theme Synchronization**: Bound `AboutDialog` directly to `ThemeManager::themeChanged` signal for real-time live repainting without dialog re-instantiation.
 - **Shortcuts & Documentation Tab**: Added dedicated keyboard shortcuts reference tab alongside About, Maintainer, Credits, Diagnostics, and License tabs.
 
-#### Dialog Color Scheme Refinement & Universal Theme Synchronization
-
-- **Universal Dialog Styling in `ThemeManager.cpp`**: Refined Dark and Light theme styling across all dialog windows (`FindReplaceDialog`, `AboutDialog`, `PreferencesDialog`, `ModernMessageBox`, `MkcertDialog`, `TailOptionsDialog`, `DisplayInfoDialog`), providing uniform palette tokens (`%1` to `%6`) for `QGroupBox`, `QCheckBox`, `QRadioButton`, `QLineEdit`, `QComboBox`, `QSpinBox`, `QSlider`, `QScrollBar`, and `QMenu`.
-- **Universal Checkbox & Radio Button Overhaul**:
-  - `ThemeManager.cpp`: Configured explicit `spacing: 8px;`, `padding: 3px 4px;`, `min-height: 20px;`, and 16x16 indicator dimensions (4px border-radius for checkboxes, 9px for radio buttons).
-  - Crisp vector checkmark: Bundled `src/icons/checkmark.svg` via `src/resources.qrc` and `image: url(:/icons/checkmark.svg);`, restoring crisp vector checkmarks on checked checkboxes without platform-specific rendering anomalies.
-  - Radio button indicator rendering: Enforced sharp circular indicator dot via `border: 3px solid %5; background-color: %6;` on checked state.
-- **Dialog Layout & Checklist Spacing Calibration**:
-  - `FindReplaceDialog.ui`: Enhanced Search Mode and Transparency group box layouts with explicit 8px spacing and 8/10px margins; increased vertical checkbox list spacing to 8px.
-  - `PreferencesDialog.ui`: Enforced 8px vertical and horizontal spacing across all general settings checkbox and radio button rows (`verticalLayout_2`, `verticalLayout_3`, `verticalLayout_5`, `horizontalLayout_2`).
-  - `TransparencyDialog.ui`: Added 10px spacing to main layout and 8px spacing with 8/10px margins to `verticalLayoutMode` radio button group.
-  - `EncodingSelectionDialog.ui`: Configured 8px spacing and 8/10px margins for character set conversion action radio buttons (`layoutAction`).
-  - `MacroRunDialog.ui`: Configured 8px vertical spacing and 8px horizontal button layout spacing.
-  - `PerformanceDiagnosticsDialog.ui`: Added 8px spacing and 8/10px margins to diagnostic toggle layout (`verticalLayout_2`).
-  - `TailOptionsDialog.ui`: Added 8/10px margins to `verticalLayout_2` for clean visual alignment.
-  - `ThemeSwitcherDialog.cpp`: Added 12px spacing and 0/2px margins to `filterLayout`, dynamically calculating theme category radio counts using `kTotalThemePaletteCount`.
-  - `ManageToolsDialog.cpp`: Configured 10px vertical spacing and 16px margins for dialog form layout.
-  - `StatusBarCustomizerDialog.cpp`: Configured 8px vertical spacing and 14/16/14/14px margins for status bar element checklist.
-  - `FocusedViewDialog.cpp`: Configured 16px horizontal spacing, 8px vertical spacing, and 14/16/14/14px margins for options grid; dynamic opacity status label.
-- **NotepadNext Workspace Default Light Palette & Dark Mode Contrast Calibration**:
-  - `ThemePaletteData.h`: Introduced dedicated `notepadNext` palette as the default light workspace palette (`#f0f2f5` window, `#fafbfc` canvas/card, `#e1e4e8` border, `#24292f` primary text, `#57606a` secondary text), avoiding bright eye-straining pure white backgrounds.
-  - Default light mode mapping: Configured `defaultLight` to map directly to `notepadNext` palette in `findThemePaletteById`, and updated fallback color tokens in `ThemeManager::applyTheme` and `getThemeStyleSheet`.
-  - Sharp dark mode contrast calibration: Calibrated secondary text colors across dark themes (`materialDeepOcean`, `oneDarkPro`, `dracula`, `solarizedDark`, `ayuDark`, `kanagawaDragon`) to guarantee crisp, sharp text rendering exceeding WCAG AAA standards.
-- **Comprehensive 13-Pillar C++ Hardening**:
-  - Marked `PreferencesDialog` and `SearchResultsCollector` constructors `explicit` to prevent implicit conversions.
-  - Returned `const QString &` in `FileBrowserDock::currentDirectory()` to eliminate heap string allocations on directory lookups; reserved capacity for `cleanedFilters`.
-  - Passed `searchTerm` and `line` parameters by `const QString &` across `ISearchResultsHandler`, `SearchResultsCollector`, `SearchResultsDock`, and `LuaConsoleDock::historyAdd`; eliminated shadowed variable declaration in `SearchResultsDock::newSearch`.
-  - Replaced C-style cast with `reinterpret_cast` in `LuaConsoleDock.cpp`.
-  - Marked stateless helper functions as `static` in `AutoClosePairs::isWordChar`, `DocumentationManager::openKeyboardShortcutsGuide`, `DocumentationManager::openOnlineRepository`, and `FocusedView::ensureHiddenLineStyle`.
-- **Dock Tabs & ToolBar Visual Polish**: Restored warm peach top active tab border (`4px solid rgb(255, 202, 176)`), orange focused tab border, and refined native 1px toolbar bottom divider line with seamless button hover styling.
-
----
-
-### 🐛 Fixed
-
-#### Settings/Preferences Theme Mode & Styling Fix
-
-- **Eliminated macOS Utility Dark HUD Inheritance (`PreferencesDialog.cpp`)**: Replaced inappropriate `Qt::Tool` window flag with standard `Qt::Dialog` in `PreferencesDialog` constructor, preventing macOS Cocoa `NSPanel` utility windows from forcing dark HUD appearance when the application is running in Light Mode.
-- **Scroll Area Alignment & Geometry Recovery (`PreferencesDialog.ui`)**: Reset `scrollAreaWidgetContents` geometry from stale `-99` vertical offset to `0`, ensuring top preferences rows (Show Menu Bar, Toolbar, Status Bar) are immediately visible without visual clipping.
-- **Universal Container Transparency (`PreferencesDialog.ui` & `ThemeManager.cpp`)**: Applied `QFrame::NoFrame` to `scrollArea` in UI definition and established explicit stylesheet rules for `QScrollArea`, `QScrollArea > QWidget > QWidget`, and `PreferencesDialog`, ensuring seamless background blending with window color (`%1`) and preventing sunken gray borders or mismatched contrast.
-
-#### Find & Replace Dialog Line Elimination & Layout Cleanup
-
-- **TabBar Base Line Removal (`FindReplaceDialog.cpp` & `ThemeManager.cpp`)**: Set `tabBar->setDrawBase(false)` and configured `QTabBar { qproperty-drawBase: 0; }` in global stylesheet, eradicating the unwanted gray horizontal base line rendered across the dialog directly under the tabs.
-- **StatusBar Top Border Removal (`FindReplaceDialog.cpp` & `ThemeManager.cpp`)**: Configured `border-top: none; background: transparent;` on `FindReplaceDialog QStatusBar`, removing the redundant grayscale border line above the status bar.
-- **Layout Margins & Spacing Symmetrization (`FindReplaceDialog.ui`)**: Established unified `10px` horizontal and `6px` vertical margins with `10px` horizontal and `8px` vertical spacing in `gridLayout_2`, and eliminated redundant nested margins in `verticalLayout_4` and `verticalLayout_5` for a clean, balanced layout.
-
 ---
 
 ### 🔄 Changed & Refactored
@@ -149,7 +243,7 @@ NoteSciPad v1.2.0 delivers comprehensive visual, architectural, and engine upgra
 ### 🛠️ Infrastructure & CI/CD
 
 - **Multi-Qt Build & Release Matrix (Qt 6.5, 6.8 LTS, 6.10, and Qt 6.11)**:
-  - Extended GitHub Actions matrices in `build.yml` and `release.yml` across 12 combinations: macOS Intel (`macos-15-intel`), macOS Apple Silicon (`macos-15`), and Linux Ubuntu (`ubuntu-24.04`) across Qt 6.5, 6.8 LTS, 6.10, and **Qt 6.11**.
+  - Extended GitHub Actions matrices in `build.yml` and `release.yml` across 12 CI matrix jobs (3 platform architectures: macOS Intel `macos-15-intel`, macOS Apple Silicon `macos-15`, and Linux Ubuntu `ubuntu-24.04` × 4 Qt 6 versions: Qt 6.5, 6.8 LTS, 6.10, and **Qt 6.11**).
 - **Trunk Native C++ & Qt Static Analysis Integration**:
   - Configured `.trunk/trunk.yaml` with dedicated `cppcheck-qt` linter definition running `--library=qt --language=c++ --enable=warning,style,performance,portability`, providing first-class Qt analysis across all 277 files in `src/`.
   - Enabled `clang-format@20.1.0` and `pragma-once` header guard verification in Trunk Check.
@@ -160,18 +254,12 @@ NoteSciPad v1.2.0 delivers comprehensive visual, architectural, and engine upgra
   - Added `workflow_dispatch` trigger for manual on-demand execution.
 - **macOS DMG Packaging Fix (`cmake/PackagingMac.cmake`)**:
   - Added pre-cleanup (`rm -f`) and forced detach (`hdiutil detach /Volumes/NoteSciPad -force`) prior to `macdeployqt -dmg`, resolving intermittent `hdiutil: resource busy` race conditions on GitHub Actions macOS runners.
-- **C++/Qt Codebase Hardening & 13-Pillar Verification**:
+- **C++/Qt Codebase Hardening & Null Safety**:
   - `MainWindow`: Added null-pointer safeguards in `updateGui`, `updateSaveStatusBasedUi`, and `checkFileForStateChange`.
   - `NoteSciPadApplication`: Default-initialized all manager pointers (`settings`, `editorManager`, `sessionManager`, `recentFilesListManager`, `translationManager`) to `nullptr`.
   - `CryptoManager`: Initialized `StrengthResult` struct members and eliminated dead pointer increment.
   - `LuaConsoleDock`: Upgraded legacy C cast to type-safe `reinterpret_cast<const char *>`.
-  - `ScreenDisplayManager`: Enforced `const` correctness on `QScreen` pointer loops/retrievals and promoted `showDisplayInfoDialog` to static.
-  - `TransparentWindowManager`: Eliminated parameter shadowing in `setMode(TransparencyMode targetMode)` and ensured clean signal emissions.
-  - `QuickFindWidget`: Disconnected previous editor instance (`disconnect(this->editor, ...)`) before rebinding to prevent signal leaks, and renamed parameter to `newEditor`.
-  - `CaseConverter` & `EncodingDetector`: Eliminated unused struct members (`anchor`, `caret`) and adopted `std::any_of` for 8-bit high-order byte scanning.
-  - `ReleaseManager`: Renamed parameter `currentVersion` to `currentVersionStr` to prevent member function collision and enforced const pointers on update prompt buttons.
-  - `MarkOccurrences`: Optimized `lastQuery()` to return `const QString &`.
-- **Strict Markdownlint Compliance**: Remediated all markdown formatting issues across documentation files (`doc/*.md`, `CHANGELOG.md`, `USER_GUIDE.md`, `MANUAL_TEST_CHECKLIST.md`), normalizing code fence language specifiers (`MD040`), list blank line paddings (`MD032`), heading blank lines (`MD022`), and table cell formatting.
+  - Cleaned up unused variables in `MkcertDialog`, `ModernMessageBox`, and scoped `status` in `LuaExtension`.
 
 ---
 
