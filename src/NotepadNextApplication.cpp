@@ -28,6 +28,7 @@
 #include "SessionManager.h"
 #include "TranslationManager.h"
 #include "ApplicationSettings.h"
+#include "features/ThemeManager.h"
 
 #include "LuaState.h"
 #include "lua.hpp"
@@ -299,6 +300,8 @@ void NotepadNextApplication::setEditorLanguage(ScintillaNext *editor, const QStr
     getLuaState()->setVariable("skip_tabwidth", skipTabWidth);
 
     getLuaState()->execute("SetLanguage(languageName)");
+
+    ThemeManager::instance()->applyThemeToEditor(editor);
 }
 
 QStringList NotepadNextApplication::getLanguageKeywords(const QString &languageName) const
