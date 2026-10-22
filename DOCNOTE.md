@@ -10,7 +10,7 @@ Repository          : https://github.com/alsyundawy/SparkNotePad
 Core Editing Engine : Scintilla 5.6.7 (Vendored) & Lexilla 5.5.4 (Vendored)
 Embedded Lua Core   : Lua 5.5.1 / 5.4.7 (Official Source)
 Scripting Runtime   : Python 3.13+ Engine Bridge
-GUI Framework       : Qt 6.5 / 6.8 LTS / 6.10 / 6.11 (C++20 ISO Standard)
+GUI Framework       : Qt 6.5 / 6.8 LTS / 6.10 / 6.11 / 6.12 (C++20 ISO Standard)
 Target Platforms    : macOS 11.0+ (Apple Silicon & Intel) & Linux (x86_64 / arm64)
 License             : GNU General Public License v3.0 (GPL-3.0-or-later)
 CI/CD Status        : 100% Passing across all 12 matrix targets, MegaLinter & CodeQL
