@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
@@ -14,6 +15,8 @@
 #include <QDialog>
 
 class QTabWidget;
+class QLabel;
+class QTextBrowser;
 
 class AboutDialog : public QDialog
 {
@@ -25,16 +28,24 @@ public:
 
 private slots:
     void copySystemInfoToClipboard();
+    void updateThemeColors();
 
 private:
     void setupUi();
     QWidget *createAboutTab();
     QWidget *createMaintainerTab();
     QWidget *createCreditsTab();
-    QWidget *createLicenseTab();
     QWidget *createEnvironmentTab();
+    QWidget *createLicenseTab();
 
     QTabWidget *m_tabWidget = nullptr;
+    QLabel *m_titleLabel = nullptr;
+    QLabel *m_noticeBox = nullptr;
+    QLabel *m_metaLabel = nullptr;
+    QLabel *m_diagnosticsCard = nullptr;
+    QTextBrowser *m_maintainerBrowser = nullptr;
+    QTextBrowser *m_creditsBrowser = nullptr;
+    QTextBrowser *m_licenseBrowser = nullptr;
 };
 
 #endif // ABOUTDIALOG_H

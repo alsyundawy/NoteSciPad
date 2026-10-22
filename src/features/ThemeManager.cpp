@@ -160,8 +160,7 @@ void ThemeManager::applyThemeToEditor(ScintillaNext *editor)
 
     const ThemePalette *pal = currentPalette();
     if (!pal) {
-        pal = isDarkActive() ? findThemePaletteById(QStringLiteral("dracula"))
-                             : findThemePaletteById(QStringLiteral("notepadNext"));
+        pal = isDarkActive() ? &kDarkPalette : &kLightPalette;
     }
     if (!pal)
         return;
@@ -305,8 +304,7 @@ QString ThemeManager::getThemeStyleSheet() const
 {
     const ThemePalette *pal = currentPalette();
     if (!pal) {
-        pal = isDarkActive() ? findThemePaletteById(QStringLiteral("dracula"))
-                             : findThemePaletteById(QStringLiteral("notepadNext"));
+        pal = isDarkActive() ? &kDarkPalette : &kLightPalette;
     }
 
     bool darkActive = isDarkActive();
