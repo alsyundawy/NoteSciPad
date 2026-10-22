@@ -7,11 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.0.0] - 2026-10-19
+## [1.0.0] - 2026-10-22
 
-### 🚀 Initial Production Release — "Dawn of NoteSciPad"
+### 🚀 Initial Production Release — 13-Pillar Quality, Theme Leakage Elimination & "Dawn of NoteSciPad"
 
-NoteSciPad v1.0.0 marks the premier official release of an independent, ultra-lightweight, and high-performance text and source code editor engineered natively for **macOS** (Apple Silicon ARM64 & Intel x86_64) and **Linux** (Ubuntu, Debian, Fedora, Flatpak, and AppImage).
+NoteSciPad v1.0.0 marks the premier official release of an independent, ultra-lightweight, and high-performance text and source code editor engineered natively for **macOS** (Apple Silicon ARM64 & Intel x86_64) and **Linux** (Ubuntu, Debian, Fedora, Flatpak, and AppImage). This release incorporates exhaustive 13-pillar code quality verification, complete elimination of light-mode dark theme leakage across all dialogs, and native C++20 static analysis compliance.
+
+#### 🛡️ Theme Leakage Elimination & Dialog Polish
+- **Zero Dark Mode Leakage in Light Mode**: Completely eliminated all usage of fragile Qt `palette(alternate-base)` and `palette(base)` stylesheets across `AboutDialog` and `DisplayInfoDialog`. On host operating systems set to Dark Mode (such as macOS Sequoia/Sonoma or Linux dark themes), Qt previously resolved those palette macros to dark gray (`#2d2d2d`), resulting in unsightly dark rectangles inside light-mode dialogs.
+- **Dynamic Theme Palette Binding**: Color tokens are resolved deterministically using explicit CSS hex definitions (`#fafbfc` card background, `#f0f2f5` window background, `#e1e4e8` border, `#24292f` primary text, `#57606a` secondary text in Light Mode; `#282a36`, `#1e1f29`, `#44475a`, `#f8f8f2` in Dark Mode).
+
+#### 🔧 13-Pillar C++ & Qt Static Audit
+- **Trunk Check & Cppcheck Clean**: Passed all linters across all source files in `src/`. Resolved all warnings for `missingOverride`, `noExplicitConstructor`, `shadowFunction`, `shadowMember`, `cstyleCast`, `constVariablePointer`, `ignoredReturnErrorCode`, and `passedByValue`.
 
 ---
 

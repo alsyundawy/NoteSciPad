@@ -171,3 +171,34 @@ This release has been verified and certified for production deployment:
 - **Spelling**: 0 Errors on Codespell (Run ID `39216251214`).
 
 Certified by **Harry Dertin Sutisna Alsyundawy** — NoteSciPad Lead Maintainer.
+
+---
+
+## 8. Multi-Branch 13-Pillar Quality Audit, Theme Leakage Fix & Linux GCC Resilience
+
+### 8.1 Elimination of Dark Mode Leakage in Light Mode
+- **Diagnosis**: On host machines set to Dark Mode (macOS Sequoia/Sonoma or Linux desktops), `palette(alternate-base)` and `palette(base)` in `AboutDialog` and `DisplayInfoDialog` evaluated to a dark gray (`#2d2d2d`), causing dialog text boxes, legal notices, and browsers to display with dark backgrounds when the user selected Light Mode.
+- **Resolution**: Removed all `palette(...)` references in `AboutDialog.cpp` and `DisplayInfoDialog.cpp`. Introduced deterministic CSS hex colors (`#fafbfc` card background, `#f0f2f5` window, `#e1e4e8` border, `#24292f` primary text, `#57606a` secondary text in Light Mode; `#282a36`, `#1e1f29`, `#44475a`, `#f8f8f2` in Dark Mode). Zero dark leakage.
+
+### 8.2 13-Pillar C++ & Qt Static Analysis
+- **Trunk Check**: Clean across all 358+ files in `src/` (`trunk check src --no-progress -j 2` -> `✔ No issues`).
+- **Cppcheck Refactoring**:
+  - `missingOverride`: Added `override` across 16 methods in `IFaceTable.h` and `IFaceTableMixer.h`.
+  - `noExplicitConstructor`: Marked 6 single-argument constructors as `explicit`.
+  - `shadowFunction` & `shadowMember`: Fixed setter macro `CREATE_SETTING`/`DEFINE_SETTING` parameter shadowing in `ApplicationSettings`, parameter shadowing in `FindReplaceDialog`, `MainWindow`, `MacroRecorder`, and `Finder`.
+  - `cstyleCast`: Replaced C-style casts with `reinterpret_cast<const char *>`.
+  - `constVariablePointer`: Declared read-only pointers as pointer-to-const in `IFaceTableMixer.cpp`, `ClipboardHistoryDialog.cpp`, and `LuaExtension.cpp`.
+  - `ignoredReturnErrorCode`: Verified and handled return status of `d.mkpath()` in `ScintillaNext.cpp`.
+  - `passedByValue`: Passed heavy objects (`MacroStep`, `QString` names) by `const &`.
+
+### 8.3 Multi-Branch Parity Status
+
+| Branch | AboutDialog State | Build Status (CI) | Trunk Check | Status |
+| :--- | :--- | :--- | :--- | :--- |
+| **`main`** | Zero dark leakage | Building | ✔ 0 issues | Up-to-date |
+| **`1.3.0`** | Zero dark leakage | Building | ✔ 0 issues | Up-to-date |
+| **`1.2.0`** | Zero dark leakage (0 emojis) | Building | ✔ 0 issues | Up-to-date |
+| **`1.1.0`** | Zero dark leakage | **Verified Success** (Ubuntu gcc) | ✔ 0 issues | Up-to-date |
+| **`develop`** | Zero dark leakage | **Verified Success** (Ubuntu gcc) | ✔ 0 issues | Up-to-date |
+| **`1.0.0`** | Zero dark leakage | Building | ✔ 0 issues | Up-to-date |
+
