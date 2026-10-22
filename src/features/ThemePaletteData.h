@@ -198,7 +198,7 @@ inline const ThemePalette *findThemePaletteById(const QString &id) {
         return findThemePaletteById(QStringLiteral("notepadNext"));
     }
     if (id.compare(QLatin1String("defaultDark"), Qt::CaseInsensitive) == 0) {
-        return findThemePaletteById(QStringLiteral("catppuccinMocha"));
+        return findThemePaletteById(QStringLiteral("dracula"));
     }
     for (size_t i = 0; i < kTotalThemePaletteCount; ++i) {
         if (id.compare(QLatin1String(kAllThemePalettes[i].id), Qt::CaseInsensitive) == 0 ||

@@ -51,7 +51,7 @@ void ThemeManager::initialize(ApplicationSettings *settings) {
             m_currentPaletteId = savedPalette;
         } else {
             m_currentPaletteId =
-                (m_themeMode == ThemeMode::Dark) ? QStringLiteral("catppuccinMocha") : QStringLiteral("defaultLight");
+                (m_themeMode == ThemeMode::Dark) ? QStringLiteral("dracula") : QStringLiteral("defaultLight");
         }
     }
 }
@@ -74,7 +74,7 @@ const ThemePalette *ThemeManager::currentPalette() const {
         const ThemePalette *p = findThemePaletteById(m_currentPaletteId);
         if (p) {
             if (m_themeMode == ThemeMode::Dark && !p->isDark) {
-                return findThemePaletteById(QStringLiteral("catppuccinMocha"));
+                return findThemePaletteById(QStringLiteral("dracula"));
             }
             if (m_themeMode == ThemeMode::Light && p->isDark) {
                 return findThemePaletteById(QStringLiteral("defaultLight"));
@@ -82,7 +82,7 @@ const ThemePalette *ThemeManager::currentPalette() const {
             return p;
         }
     }
-    return isDarkActive() ? findThemePaletteById(QStringLiteral("catppuccinMocha"))
+    return isDarkActive() ? findThemePaletteById(QStringLiteral("dracula"))
                           : findThemePaletteById(QStringLiteral("defaultLight"));
 }
 
@@ -95,7 +95,7 @@ void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window) {
     const ThemePalette *cur = findThemePaletteById(m_currentPaletteId);
     if (mode == ThemeMode::Dark) {
         if (!cur || !cur->isDark) {
-            m_currentPaletteId = QStringLiteral("catppuccinMocha");
+            m_currentPaletteId = QStringLiteral("dracula");
         }
     } else if (mode == ThemeMode::Light) {
         if (!cur || cur->isDark) {
@@ -169,7 +169,7 @@ void ThemeManager::applyTheme(MainWindow *window) {
     const ThemePalette *pal = currentPalette();
     bool dark = isDarkActive();
     if (!pal) {
-        pal = dark ? findThemePaletteById(QStringLiteral("catppuccinMocha"))
+        pal = dark ? findThemePaletteById(QStringLiteral("dracula"))
                    : findThemePaletteById(QStringLiteral("defaultLight"));
     }
 
@@ -310,22 +310,27 @@ void ThemeManager::applyThemeToEditor(ScintillaNext *editor) {
 QString ThemeManager::getThemeStyleSheet() const {
     const ThemePalette *pal = currentPalette();
     if (!pal) {
-        pal = isDarkActive() ? findThemePaletteById(QStringLiteral("catppuccinMocha"))
+        pal = isDarkActive() ? findThemePaletteById(QStringLiteral("dracula"))
                              : findThemePaletteById(QStringLiteral("defaultLight"));
     }
 
+    bool darkActive = isDarkActive();
     QString win =
-        pal ? QString::fromLatin1(pal->win) : (isDarkActive() ? QStringLiteral("#1e1e1e") : QStringLiteral("#f0f2f5"));
+        pal ? QString::fromLatin1(pal->win) : (darkActive ? QStringLiteral("#1e1e1e") : QStringLiteral("#f0f2f5"));
     QString card =
-        pal ? QString::fromLatin1(pal->card) : (isDarkActive() ? QStringLiteral("#25282c") : QStringLiteral("#fafbfc"));
+        pal ? QString::fromLatin1(pal->card) : (darkActive ? QStringLiteral("#25282c") : QStringLiteral("#fafbfc"));
     QString border = pal ? QString::fromLatin1(pal->border)
-                         : (isDarkActive() ? QStringLiteral("#33373e") : QStringLiteral("#e1e4e8"));
+                         : (darkActive ? QStringLiteral("#33373e") : QStringLiteral("#e1e4e8"));
     QString txtPri = pal ? QString::fromLatin1(pal->txtPri)
-                         : (isDarkActive() ? QStringLiteral("#e0e0e0") : QStringLiteral("#24292f"));
+                         : (darkActive ? QStringLiteral("#e0e0e0") : QStringLiteral("#24292f"));
     QString txtSec = pal ? QString::fromLatin1(pal->txtSec)
-                         : (isDarkActive() ? QStringLiteral("#9aa0a6") : QStringLiteral("#57606a"));
+                         : (darkActive ? QStringLiteral("#9aa0a6") : QStringLiteral("#57606a"));
     QString accent =
-        pal ? QString::fromLatin1(pal->blue) : (isDarkActive() ? QStringLiteral("#58a6ff") : QStringLiteral("#0969da"));
+        pal ? QString::fromLatin1(pal->blue) : (darkActive ? QStringLiteral("#58a6ff") : QStringLiteral("#0969da"));
+
+    // User requirement: In light mode, toolbar uses dark background; in dark mode, matches window
+    QString toolbarBg = darkActive ? win : QStringLiteral("#21252b");
+    QString toolbarBorder = darkActive ? border : QStringLiteral("#181a1f");
 
     const QString templateStr = QString::fromUtf8(R"(
 /* Universal Base Typography & Text */
@@ -816,14 +821,14 @@ QPushButton:disabled {
 
 /* ToolBar & Action Buttons - Flat, Borderless & Native Scintilla/Qt Style */
 QToolBar {
-    background: %1;
+    background: %7;
     border: none;
-    border-bottom: 1px solid %3;
+    border-bottom: 1px solid %8;
     spacing: 1px;
     padding: 2px 4px;
 }
 QToolBar::separator {
-    background: %3;
+    background: %8;
     width: 1px;
     margin: 4px 6px;
 }
@@ -835,15 +840,15 @@ QToolBar QToolButton {
     margin: 1px;
 }
 QToolBar QToolButton:hover {
-    background-color: %3;
+    background-color: rgba(255, 255, 255, 0.12);
     border: none;
 }
 QToolBar QToolButton:pressed {
-    background-color: %6;
+    background-color: rgba(255, 255, 255, 0.24);
     border: none;
 }
 QToolBar QToolButton:checked {
-    background-color: %3;
+    background-color: rgba(255, 255, 255, 0.18);
     border: none;
 }
 
@@ -856,5 +861,5 @@ QTextBrowser {
 }
 )");
 
-    return templateStr.arg(win, txtPri, border, txtSec, card, accent);
+    return templateStr.arg(win, txtPri, border, txtSec, card, accent, toolbarBg, toolbarBorder);
 }

@@ -151,7 +151,7 @@ void ThemeSwitcherDialog::populateTable(const QString &filterText, int modeFilte
         QTableWidgetItem *item1 = new QTableWidgetItem(QString::fromUtf8(p.family));
         m_table->setItem(row, 1, item1);
 
-        QTableWidgetItem *item2 = new QTableWidgetItem(p.isDark ? tr("🌙 Dark") : tr("☀️ Light"));
+        QTableWidgetItem *item2 = new QTableWidgetItem(p.isDark ? tr("Dark") : tr("Light"));
         m_table->setItem(row, 2, item2);
 
         // Render preview swatches (Win, Card, TxtPri, Accent, Cyan, Net)

@@ -4075,7 +4075,7 @@ void MainWindow::setupThemeMenu() {
     menuTheme->addSeparator();
 
     // 2. Light Themes Only (Submenu)
-    QMenu *menuLightOnly = menuTheme->addMenu(tr("☀️ Light Themes Only"));
+    QMenu *menuLightOnly = menuTheme->addMenu(tr("Light Themes Only"));
     QList<const ThemePalette *> lightPalettes = getThemesByDarkMode(false);
     for (const ThemePalette *pal : lightPalettes) {
         QAction *act = menuLightOnly->addAction(QString::fromUtf8(pal->displayName));
@@ -4086,7 +4086,7 @@ void MainWindow::setupThemeMenu() {
     }
 
     // 3. Dark Themes Only (Submenu)
-    QMenu *menuDarkOnly = menuTheme->addMenu(tr("🌙 Dark Themes Only"));
+    QMenu *menuDarkOnly = menuTheme->addMenu(tr("Dark Themes Only"));
     QList<const ThemePalette *> darkPalettes = getThemesByDarkMode(true);
     for (const ThemePalette *pal : darkPalettes) {
         QAction *act = menuDarkOnly->addAction(QString::fromUtf8(pal->displayName));
@@ -4121,21 +4121,21 @@ void MainWindow::setupThemeMenu() {
     menuTheme->addSeparator();
 
     // 5. Reset and Mode Toggles
-    actionThemeLight = new QAction(tr("☀️ Reset to Default (Light Mode)"), this);
+    actionThemeLight = new QAction(tr("Reset to Default (Light Mode)"), this);
     connect(actionThemeLight, &QAction::triggered, this, [this]() {
         ThemeManager::instance()->setPalette(QStringLiteral("defaultLight"), this);
         ui->statusBar->showMessage(tr("Theme reset to default Light Mode"), 3000);
     });
     menuTheme->addAction(actionThemeLight);
 
-    actionThemeDark = new QAction(tr("🌙 Default Dark Mode"), this);
+    actionThemeDark = new QAction(tr("Default Dark Mode"), this);
     connect(actionThemeDark, &QAction::triggered, this, [this]() {
-        ThemeManager::instance()->setPalette(QStringLiteral("catppuccinMocha"), this);
-        ui->statusBar->showMessage(tr("Theme set to Dark Mode (Catppuccin Mocha)"), 3000);
+        ThemeManager::instance()->setPalette(QStringLiteral("dracula"), this);
+        ui->statusBar->showMessage(tr("Theme set to Dark Mode (Dracula)"), 3000);
     });
     menuTheme->addAction(actionThemeDark);
 
-    actionToggleTheme = new QAction(tr("🔄 Toggle Dark / Light Mode"), this);
+    actionToggleTheme = new QAction(tr("Toggle Dark / Light Mode"), this);
     actionToggleTheme->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_T));
     connect(actionToggleTheme, &QAction::triggered, this, [this]() {
         ThemeManager::instance()->toggleTheme(this);
