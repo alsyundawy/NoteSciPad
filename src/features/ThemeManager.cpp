@@ -223,6 +223,10 @@ void ThemeManager::applyThemeToEditor(ScintillaNext *editor) {
         return;
 
     const ThemePalette *pal = currentPalette();
+    if (!pal) {
+        pal = isDarkActive() ? findThemePaletteById(QStringLiteral("dracula"))
+                             : findThemePaletteById(QStringLiteral("notepadNext"));
+    }
     if (!pal)
         return;
 
@@ -237,47 +241,57 @@ void ThemeManager::applyThemeToEditor(ScintillaNext *editor) {
     QColor host(pal->host);
     QColor sep(pal->sep);
 
-    // Canvas background and primary text
+    // 1. Base canvas background and primary text
     editor->styleSetFore(STYLE_DEFAULT, scFromRgb(txtPri.rgb()));
     editor->styleSetBack(STYLE_DEFAULT, scFromRgb(card.rgb()));
     editor->styleClearAll();
 
-    // Line number margin
+    // 2. Enforce canvas background across all lexer style slots (0..127)
+    for (int i = 0; i <= 127; ++i) {
+        editor->styleSetBack(i, scFromRgb(card.rgb()));
+    }
+
+    // 3. Line number margin
     editor->styleSetFore(STYLE_LINENUMBER, scFromRgb(txtSec.rgb()));
     editor->styleSetBack(STYLE_LINENUMBER, scFromRgb(border.rgb()));
 
-    // Caret color
+    // 4. Caret color and line visibility
     editor->setCaretFore(scFromRgb(txtPri.rgb()));
+    editor->setCaretWidth(2);
 
-    // Caret line highlight (slight blend)
+    // 5. Caret line highlight (slight blend)
     quint32 caretLineColor =
         0xFF000000 |
         (pal->isDark ? scColor(qMin(card.red() + 18, 255), qMin(card.green() + 18, 255), qMin(card.blue() + 22, 255))
                      : scColor(qMax(card.red() - 12, 0), qMax(card.green() - 12, 0), qMax(card.blue() - 6, 0)));
     editor->setElementColour(SC_ELEMENT_CARET_LINE_BACK, caretLineColor);
+    editor->setCaretLineVisible(true);
 
-    // Selection highlight
+    // 6. Selection highlight
     quint32 selColor = 0xFF000000 | scFromRgb(border.rgb());
     editor->setElementColour(SC_ELEMENT_SELECTION_BACK, selColor);
     editor->setElementColour(SC_ELEMENT_SELECTION_INACTIVE_BACK, selColor);
 
-    // Fold margin colors
+    // 7. Fold margin colors
     editor->setFoldMarginColour(true, scFromRgb(card.rgb()));
     editor->setFoldMarginHiColour(true, scFromRgb(border.rgb()));
     editor->setElementColour(SC_ELEMENT_FOLD_LINE, 0xFF000000 | scFromRgb(border.rgb()));
 
-    // Matching and mismatching braces
+    // 8. Matching and mismatching braces
     editor->styleSetFore(STYLE_BRACELIGHT, scFromRgb(cyan.rgb()));
     editor->styleSetBack(STYLE_BRACELIGHT, scFromRgb(border.rgb()));
     editor->styleSetFore(STYLE_BRACEBAD, scColor(207, 34, 46));
     editor->styleSetBack(STYLE_BRACEBAD, scFromRgb(border.rgb()));
 
-    // Indentation guides and white space
+    // 9. Indentation guides and white space
     editor->styleSetFore(STYLE_INDENTGUIDE, scFromRgb(border.rgb()));
     editor->styleSetBack(STYLE_INDENTGUIDE, scFromRgb(card.rgb()));
     editor->setElementColour(SC_ELEMENT_WHITE_SPACE, 0xFF000000 | scFromRgb(border.rgb()));
 
-    // Common Lexilla tokens styling (styles 1 through 15 across Lexilla standard lexers)
+    // 10. Common Lexilla tokens styling (styles 0 through 31 across Lexilla standard lexers)
+    // 0: Default / Plain text (Critical: ensures text is high-contrast readable, NEVER black on dark!)
+    editor->styleSetFore(0, scFromRgb(txtPri.rgb()));
+
     // 1: Comment, 2: Comment line, 3: Comment doc
     editor->styleSetFore(1, scFromRgb(txtSec.rgb()));
     editor->styleSetItalic(1, true);
@@ -297,21 +311,64 @@ void ThemeManager::applyThemeToEditor(ScintillaNext *editor) {
     editor->styleSetFore(6, scFromRgb(host.rgb()));
     editor->styleSetFore(7, scFromRgb(host.rgb()));
 
+    // 8: Regex / UUID / Class name
+    editor->styleSetFore(8, scFromRgb(cyan.rgb()));
+
     // 9: Preprocessor
     editor->styleSetFore(9, scFromRgb(net.rgb()));
 
     // 10: Operator
     editor->styleSetFore(10, scFromRgb(sep.rgb()));
 
-    // 11: Identifier / Function
-    editor->styleSetFore(11, scFromRgb(blue.rgb()));
+    // 11: Identifier / Variable (Never black on dark!)
+    editor->styleSetFore(11, scFromRgb(txtPri.rgb()));
+
+    // 12: Regex / String EOL
+    editor->styleSetFore(12, scFromRgb(host.rgb()));
+
+    // 13: Verbatim string
+    editor->styleSetFore(13, scFromRgb(host.rgb()));
+
+    // 14: Escape sequence
+    editor->styleSetFore(14, scFromRgb(net.rgb()));
+
+    // 15: Keywords 2
+    editor->styleSetFore(15, scFromRgb(cyan.rgb()));
+
+    // 16: Types / Built-ins (e.g. C++ types int, float, void)
+    editor->styleSetFore(16, scFromRgb(cyan.rgb()));
+
+    // 17: User literal / Doc keyword
+    editor->styleSetFore(17, scFromRgb(sub.rgb()));
+
+    // 18: Task marker (TODO, FIXME, NOTE)
+    editor->styleSetFore(18, scFromRgb(net.rgb()));
+    editor->styleSetBold(18, true);
+
+    // 19: Character escape
+    editor->styleSetFore(19, scFromRgb(sub.rgb()));
+
+    // 20: Raw strings
+    editor->styleSetFore(20, scFromRgb(host.rgb()));
+
+    // 21: Functions / Methods
+    editor->styleSetFore(21, scFromRgb(blue.rgb()));
+
+    // 22: Attributes / Annotations
+    editor->styleSetFore(22, scFromRgb(cyan.rgb()));
+
+    // 23: Labels
+    editor->styleSetFore(23, scFromRgb(net.rgb()));
+
+    // 24: Decorators
+    editor->styleSetFore(24, scFromRgb(cyan.rgb()));
 }
 
 QString ThemeManager::getThemeStyleSheet() const {
     const ThemePalette *pal = currentPalette();
     if (!pal) {
         pal = isDarkActive() ? findThemePaletteById(QStringLiteral("dracula"))
-                             : findThemePaletteById(QStringLiteral("defaultLight"));
+                             : findThemePaletteById(QStringLiteral("notepadNext"));
     }
 
     bool darkActive = isDarkActive();
@@ -319,18 +376,14 @@ QString ThemeManager::getThemeStyleSheet() const {
         pal ? QString::fromLatin1(pal->win) : (darkActive ? QStringLiteral("#1e1e1e") : QStringLiteral("#f0f2f5"));
     QString card =
         pal ? QString::fromLatin1(pal->card) : (darkActive ? QStringLiteral("#25282c") : QStringLiteral("#fafbfc"));
-    QString border = pal ? QString::fromLatin1(pal->border)
-                         : (darkActive ? QStringLiteral("#33373e") : QStringLiteral("#e1e4e8"));
-    QString txtPri = pal ? QString::fromLatin1(pal->txtPri)
-                         : (darkActive ? QStringLiteral("#e0e0e0") : QStringLiteral("#24292f"));
-    QString txtSec = pal ? QString::fromLatin1(pal->txtSec)
-                         : (darkActive ? QStringLiteral("#9aa0a6") : QStringLiteral("#57606a"));
+    QString border =
+        pal ? QString::fromLatin1(pal->border) : (darkActive ? QStringLiteral("#33373e") : QStringLiteral("#e1e4e8"));
+    QString txtPri =
+        pal ? QString::fromLatin1(pal->txtPri) : (darkActive ? QStringLiteral("#e0e0e0") : QStringLiteral("#24292f"));
+    QString txtSec =
+        pal ? QString::fromLatin1(pal->txtSec) : (darkActive ? QStringLiteral("#9aa0a6") : QStringLiteral("#57606a"));
     QString accent =
         pal ? QString::fromLatin1(pal->blue) : (darkActive ? QStringLiteral("#58a6ff") : QStringLiteral("#0969da"));
-
-    // User requirement: In light mode, toolbar uses dark background; in dark mode, matches window
-    QString toolbarBg = darkActive ? win : QStringLiteral("#21252b");
-    QString toolbarBorder = darkActive ? border : QStringLiteral("#181a1f");
 
     const QString templateStr = QString::fromUtf8(R"(
 /* Universal Base Typography & Text */
@@ -790,39 +843,6 @@ QPushButton:disabled {
     border-color: %3;
 }
 
-/* ToolBar & Action Buttons - Flat, Borderless & Native Scintilla/Qt Style */
-QToolBar {
-    background: %7;
-    border: none;
-    border-bottom: 1px solid %8;
-    spacing: 1px;
-    padding: 2px 4px;
-}
-QToolBar::separator {
-    background: %8;
-    width: 1px;
-    margin: 4px 6px;
-}
-QToolBar QToolButton {
-    background: transparent;
-    border: none;
-    border-radius: 3px;
-    padding: 3px;
-    margin: 1px;
-}
-QToolBar QToolButton:hover {
-    background-color: rgba(255, 255, 255, 0.12);
-    border: none;
-}
-QToolBar QToolButton:pressed {
-    background-color: rgba(255, 255, 255, 0.24);
-    border: none;
-}
-QToolBar QToolButton:checked {
-    background-color: rgba(255, 255, 255, 0.18);
-    border: none;
-}
-
 /* Text Browser */
 QTextBrowser {
     background-color: %5;
@@ -832,5 +852,5 @@ QTextBrowser {
 }
 )");
 
-    return templateStr.arg(win, txtPri, border, txtSec, card, accent, toolbarBg, toolbarBorder);
+    return templateStr.arg(win, txtPri, border, txtSec, card, accent);
 }
