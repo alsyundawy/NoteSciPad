@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2019 Justin Dailey
@@ -16,21 +17,19 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef STATUSLABEL_H
 #define STATUSLABEL_H
 
 #include <QLabel>
 #include <QMouseEvent>
 
-
-class ClickableLabel : public QLabel
-{
+class ClickableLabel : public QLabel {
     Q_OBJECT
 
 public:
-    explicit ClickableLabel(QWidget *parent=Q_NULLPTR, Qt::WindowFlags f=Qt::WindowFlags()) : QLabel(parent, f) {}
-    explicit ClickableLabel(const QString &text, QWidget *parent=Q_NULLPTR, Qt::WindowFlags f=Qt::WindowFlags()) : QLabel(text, parent, f) {}
+    explicit ClickableLabel(QWidget *parent = Q_NULLPTR, Qt::WindowFlags f = Qt::WindowFlags()) : QLabel(parent, f) {}
+    explicit ClickableLabel(const QString &text, QWidget *parent = Q_NULLPTR, Qt::WindowFlags f = Qt::WindowFlags())
+        : QLabel(text, parent, f) {}
 
 signals:
     void clicked();
@@ -46,9 +45,7 @@ protected:
     void mouseDoubleClickEvent(QMouseEvent *event) override { emit customContextMenuRequested(event->pos()); }
 };
 
-
-class StatusLabel : public ClickableLabel
-{
+class StatusLabel : public ClickableLabel {
     Q_OBJECT
 
 public:
@@ -70,4 +67,4 @@ private:
     int preferredSize;
 };
 
-#endif // STATUSLABEL_H
+#endif  // STATUSLABEL_H

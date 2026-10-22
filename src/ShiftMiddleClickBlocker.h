@@ -20,8 +20,7 @@
 
 #include <QObject>
 
-class ShiftMiddleClickBlocker : public QObject
-{
+class ShiftMiddleClickBlocker : public QObject {
     Q_OBJECT
 
 public:

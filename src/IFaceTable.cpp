@@ -16,23 +16,20 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "IFaceTable.h"
 #include <string.h>
 #include <ctype.h>
 #include <algorithm>
 #include <iterator>
 
-template<typename Iter>
+template <typename Iter>
 typename std::iterator_traits<Iter>::value_type const *binary_find(Iter begin, Iter end, const char *name) {
-    auto it = std::lower_bound(begin, end, name, [](const auto &lhs, const char *rhs) {
-        return strcmp(lhs.name, rhs) < 0;
-    });
+    auto it =
+        std::lower_bound(begin, end, name, [](const auto &lhs, const char *rhs) { return strcmp(lhs.name, rhs) < 0; });
 
     if (it == end || strcmp(name, it->name) != 0) {
         return nullptr;
-    }
-    else {
+    } else {
         return &(*it);
     }
 }
@@ -131,12 +128,11 @@ IFaceFunction IFaceTable::GetPropertyFuncByMessage(int message) const {
     for (const auto &prop : properties) {
         if (prop.getter == message) {
             return prop.GetterFunction();
-        }
-        else if (prop.setter == message) {
+        } else if (prop.setter == message) {
             return prop.SetterFunction();
         }
     }
-    return { "invalid", -1, iface_void, {iface_void, iface_void} };
+    return {"invalid", -1, iface_void, {iface_void, iface_void}};
 }
 
 std::vector<std::string> IFaceTable::GetAllConstantNames() const {
@@ -145,7 +141,8 @@ std::vector<std::string> IFaceTable::GetAllConstantNames() const {
 
     kws.reserve(constants.size() + functions.size());
 
-    std::transform(constants.begin(), constants.end(), std::back_inserter(kws), [](const IFaceConstant &ifc) { return ifc.name; });
+    std::transform(constants.begin(), constants.end(), std::back_inserter(kws),
+                   [](const IFaceConstant &ifc) { return ifc.name; });
     std::transform(functions.begin(), functions.end(), std::back_inserter(kws), [&](const IFaceFunction &iff) {
         std::string s = prefix_str + std::string(iff.name);
         std::transform(s.begin(), s.end(), s.begin(), ::toupper);
@@ -160,7 +157,8 @@ std::vector<std::string> IFaceTable::GetAllFunctionNames() const {
     std::vector<std::string> kws;
 
     kws.reserve(functions.size());
-    std::transform(functions.begin(), functions.end(), std::back_inserter(kws), [](const IFaceFunction &iff) { return iff.name; });
+    std::transform(functions.begin(), functions.end(), std::back_inserter(kws),
+                   [](const IFaceFunction &iff) { return iff.name; });
 
     return kws;
 }
@@ -169,7 +167,8 @@ std::vector<std::string> IFaceTable::GetAllPropertyNames() const {
     std::vector<std::string> kws;
 
     kws.reserve(properties.size());
-    std::transform(properties.begin(), properties.end(), std::back_inserter(kws), [](const IFaceProperty &ifp) { return ifp.name; });
+    std::transform(properties.begin(), properties.end(), std::back_inserter(kws),
+                   [](const IFaceProperty &ifp) { return ifp.name; });
 
     return kws;
 }

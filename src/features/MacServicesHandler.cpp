@@ -36,13 +36,13 @@ void MacServicesHandler::postVoiceOverAnnouncement(const QString &text) {
 }
 
 void MacServicesHandler::handleOpenSelection(const QString &text) {
-    Q_UNUSED(text);
+    emit openSelectionRequested(text);
 }
 
 void MacServicesHandler::handleAppendSelection(const QString &text) {
-    Q_UNUSED(text);
+    emit appendSelectionRequested(text);
 }
 
 void MacServicesHandler::handleOpenFiles(const QStringList &filePaths) {
-    Q_UNUSED(filePaths);
+    emit openFilesRequested(filePaths);
 }

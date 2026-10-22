@@ -45,9 +45,8 @@ static void AddCharToRtf(QTextStream &stream, uint ucs4) {
         // Astral plane surrogate pair
         const uint high = 0xD800 + ((ucs4 - 0x10000) >> 10);
         const uint low = 0xDC00 + ((ucs4 - 0x10000) & 0x3FF);
-        const short val_h =
-            (high < 32768) ? static_cast<short>(high) : static_cast<short>(static_cast<int>(high) - 65536);
-        const short val_l = (low < 32768) ? static_cast<short>(low) : static_cast<short>(static_cast<int>(low) - 65536);
+        const short val_h = static_cast<short>(static_cast<int>(high) - 65536);
+        const short val_l = static_cast<short>(static_cast<int>(low) - 65536);
         stream << "\\u" << val_h << "?\\u" << val_l << '?';
     }
 }

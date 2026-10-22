@@ -116,7 +116,7 @@ public slots:
     bool saveCopyAsDialog();
     bool saveCopyAs(const QString &fileName);
     bool saveAll();
-    bool saveAllEditors(const QVector<ScintillaNext *> &editors);
+    bool saveAllEditors(const QVector<ScintillaNext *> &editorList);
 
     void exportAsFormat(Converter *converter, const QString &filter);
     void copyAsFormat(Converter *converter, const QString &mimeType);
@@ -201,13 +201,13 @@ private:
     void initUpdateCheck();
     ScintillaNext *getInitialEditor();
     void openFileList(const QStringList &fileNames);
-    bool checkEditorsBeforeClose(const QVector<ScintillaNext *> &editors);
+    bool checkEditorsBeforeClose(const QVector<ScintillaNext *> &editorList);
     bool checkFileForModification(ScintillaNext *editor);
     void showSaveErrorMessage(ScintillaNext *editor, QFileDevice::FileError error);
     void showEditorZoomLevelIndicator();
 
     enum class UserSaveAction { SaveAll, DiscardAll, Cancel };
-    UserSaveAction promptForSave(const QVector<ScintillaNext *> &editors);
+    UserSaveAction promptForSave(const QVector<ScintillaNext *> &editorList);
 
     void saveSettings() const;
     void restoreSettings();

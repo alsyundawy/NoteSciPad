@@ -21,8 +21,8 @@
 
 #include <QPainter>
 
-void SearchResultHighlighterDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
+void SearchResultHighlighterDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
+                                            const QModelIndex &index) const {
     // Only custom paint for column 1 with highlight flag set
     if (index.column() != 1 || !index.data(SearchResultData::LineNumber).isValid()) {
         QStyledItemDelegate::paint(painter, option, index);
@@ -46,7 +46,7 @@ void SearchResultHighlighterDelegate::paint(QPainter *painter, const QStyleOptio
         painter->fillRect(opt.rect, opt.backgroundBrush);
     }
 
-    QRect textRect = opt.rect.adjusted(4, 0, -4, 0); // small padding
+    QRect textRect = opt.rect.adjusted(4, 0, -4, 0);  // small padding
     QFontMetrics fm(opt.font);
     int y = textRect.top() + (textRect.height() + fm.ascent() - fm.descent()) / 2;
     int x = textRect.left();

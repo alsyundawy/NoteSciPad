@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2021 Justin Dailey
@@ -21,8 +22,7 @@
 
 #include <QStyledItemDelegate>
 
-class ColorPickerDelegate : public QStyledItemDelegate
-{
+class ColorPickerDelegate : public QStyledItemDelegate {
     Q_OBJECT
 
 public:
@@ -34,4 +34,4 @@ public:
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
 };
 
-#endif // COLORPICKERDELEGATE_H
+#endif  // COLORPICKERDELEGATE_H

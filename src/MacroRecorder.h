@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2019 Justin Dailey
@@ -16,7 +17,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef MACRORECORDER_H
 #define MACRORECORDER_H
 
@@ -25,16 +25,13 @@
 #include "ScintillaNext.h"
 #include "Macro.h"
 
-
-
-class MacroRecorder : public QObject
-{
+class MacroRecorder : public QObject {
     Q_OBJECT
 
 public:
-    MacroRecorder(QObject *parent = nullptr);
+    explicit MacroRecorder(QObject *parent = nullptr);
 
-    void startRecording(ScintillaNext *editor);
+    void startRecording(ScintillaNext *targetEditor);
     Macro *stopRecording();
 
 public slots:
@@ -45,4 +42,4 @@ private:
     Macro *macro = Q_NULLPTR;
 };
 
-#endif // MACRORECORDER_H
+#endif  // MACRORECORDER_H

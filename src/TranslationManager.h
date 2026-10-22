@@ -23,9 +23,7 @@
 #include <QObject>
 #include <QLocale>
 
-
-class TranslationManager : public QObject
-{
+class TranslationManager : public QObject {
     Q_OBJECT
 
 public:
@@ -43,5 +41,5 @@ public slots:
 private:
     const QString path;
 
-    QList<QTranslator*> translators;
+    QList<QTranslator *> translators;
 };

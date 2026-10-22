@@ -19,9 +19,7 @@
 #include "MacroManager.h"
 #include "ApplicationSettings.h"
 
-MacroManager::MacroManager(QObject *parent) :
-    QObject{parent}
-{
+MacroManager::MacroManager(QObject *parent) : QObject{parent} {
     qInfo(Q_FUNC_INFO);
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -35,13 +33,11 @@ MacroManager::MacroManager(QObject *parent) :
     loadSettings();
 }
 
-MacroManager::~MacroManager()
-{
+MacroManager::~MacroManager() {
     saveSettings();
 }
 
-void MacroManager::startRecording(ScintillaNext *editor)
-{
+void MacroManager::startRecording(ScintillaNext *editor) {
     qInfo(Q_FUNC_INFO);
     Q_ASSERT(_isRecording == false);
 
@@ -52,8 +48,7 @@ void MacroManager::startRecording(ScintillaNext *editor)
     emit recordingStarted();
 }
 
-void MacroManager::stopRecording()
-{
+void MacroManager::stopRecording() {
     qInfo(Q_FUNC_INFO);
     Q_ASSERT(_isRecording == true);
 
@@ -64,8 +59,7 @@ void MacroManager::stopRecording()
     if (m->size() == 0) {
         // If there were no actions recorded, delete it
         delete m;
-    }
-    else {
+    } else {
         if (isCurrentMacroSaved == false) {
             // The previous current macro wasn't saved and we are getting ready to point to something else, delete it
             delete currentMacro;
@@ -78,8 +72,7 @@ void MacroManager::stopRecording()
     emit recordingStopped();
 }
 
-void MacroManager::loadSettings()
-{
+void MacroManager::loadSettings() {
     qInfo(Q_FUNC_INFO);
 
     ApplicationSettings settings;
@@ -91,16 +84,14 @@ void MacroManager::loadSettings()
         if (settings.value("Macro").canConvert<Macro>()) {
             Macro *m = new Macro(settings.value("Macro").value<Macro>());
             macros.append(m);
-        }
-        else {
+        } else {
             qWarning("MacroManager: Skipping invalid Macro");
         }
     }
     settings.endArray();
 }
 
-void MacroManager::saveSettings() const
-{
+void MacroManager::saveSettings() const {
     qInfo(Q_FUNC_INFO);
 
     ApplicationSettings settings;
@@ -117,15 +108,13 @@ void MacroManager::saveSettings() const
     }
 }
 
-void MacroManager::replayCurrentMacro(ScintillaNext *editor)
-{
+void MacroManager::replayCurrentMacro(ScintillaNext *editor) {
     qInfo(Q_FUNC_INFO);
 
     currentMacro->replay(editor);
 }
 
-void MacroManager::saveCurrentMacro(const QString &macroName)
-{
+void MacroManager::saveCurrentMacro(const QString &macroName) {
     qInfo(Q_FUNC_INFO);
 
     isCurrentMacroSaved = true;
@@ -134,7 +123,6 @@ void MacroManager::saveCurrentMacro(const QString &macroName)
     macros.append(currentMacro);
 }
 
-bool MacroManager::hasCurrentUnsavedMacro() const
-{
+bool MacroManager::hasCurrentUnsavedMacro() const {
     return currentMacro != Q_NULLPTR && isCurrentMacroSaved == false;
 }

@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2021 Justin Dailey
@@ -30,8 +31,7 @@ namespace Ui {
 class LanguageInspectorDock;
 }
 
-class LanguageInspectorDock : public QDockWidget
-{
+class LanguageInspectorDock : public QDockWidget {
     Q_OBJECT
 
 public:
@@ -56,4 +56,4 @@ private:
     void updateStyleInfo(ScintillaNext *editor);
 };
 
-#endif // LANGUAGEINSPECTORDOCK_H
+#endif  // LANGUAGEINSPECTORDOCK_H

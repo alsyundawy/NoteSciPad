@@ -23,12 +23,9 @@
 
 namespace FadingIndicator {
 
-enum TextSize {
-    SmallText,
-    LargeText
-};
+enum TextSize { SmallText, LargeText };
 
 void showText(QWidget *parent, const QString &text, TextSize size = LargeText);
 void showPixmap(QWidget *parent, const QString &pixmap);
 
-}
+}  // namespace FadingIndicator

@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2022 Justin Dailey
@@ -16,14 +17,12 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef ZOOMEVENTWATCHER_H
 #define ZOOMEVENTWATCHER_H
 
 #include <QObject>
 
-class ZoomEventWatcher : public QObject
-{
+class ZoomEventWatcher : public QObject {
     Q_OBJECT
 
 public:
@@ -37,4 +36,4 @@ protected:
     bool eventFilter(QObject *obj, QEvent *event) override;
 };
 
-#endif // ZOOMEVENTWATCHER_H
+#endif  // ZOOMEVENTWATCHER_H

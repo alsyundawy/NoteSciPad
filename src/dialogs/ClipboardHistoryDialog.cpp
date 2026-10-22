@@ -73,7 +73,7 @@ void ClipboardHistoryDialog::onMonitoringStateChanged(bool active) {
 }
 
 void ClipboardHistoryDialog::updateStatusLabel() {
-    ClipboardMonitor *mon = ClipboardMonitor::instance();
+    const ClipboardMonitor *mon = ClipboardMonitor::instance();
     if (mon->isMonitoring()) {
         ui->labelStatus->setText(tr("<b>Clipboard Monitoring:</b> <font color='#5cb85c'>ACTIVE</font> (%1 captured)")
                                      .arg(mon->capturedCount()));
@@ -93,7 +93,7 @@ void ClipboardHistoryDialog::onClipCaptured(const ClipboardMonitor::CapturedClip
 }
 
 void ClipboardHistoryDialog::refreshHistoryTable() {
-    ClipboardMonitor *mon = ClipboardMonitor::instance();
+    const ClipboardMonitor *mon = ClipboardMonitor::instance();
     const auto &hist = mon->history();
 
     ui->tableHistory->setRowCount(hist.size());
@@ -121,7 +121,7 @@ void ClipboardHistoryDialog::refreshHistoryTable() {
 
 void ClipboardHistoryDialog::onSelectionChanged() {
     int row = ui->tableHistory->currentRow();
-    ClipboardMonitor *mon = ClipboardMonitor::instance();
+    const ClipboardMonitor *mon = ClipboardMonitor::instance();
     const auto &hist = mon->history();
 
     if (row >= 0 && row < hist.size()) {
@@ -137,7 +137,7 @@ void ClipboardHistoryDialog::onSelectionChanged() {
 
 void ClipboardHistoryDialog::onInsertClicked() {
     int row = ui->tableHistory->currentRow();
-    ClipboardMonitor *mon = ClipboardMonitor::instance();
+    const ClipboardMonitor *mon = ClipboardMonitor::instance();
     const auto &hist = mon->history();
 
     if (row >= 0 && row < hist.size() && m_editor) {
@@ -151,7 +151,7 @@ void ClipboardHistoryDialog::onInsertClicked() {
 
 void ClipboardHistoryDialog::onCopyClicked() {
     int row = ui->tableHistory->currentRow();
-    ClipboardMonitor *mon = ClipboardMonitor::instance();
+    const ClipboardMonitor *mon = ClipboardMonitor::instance();
     const auto &hist = mon->history();
 
     if (row >= 0 && row < hist.size()) {

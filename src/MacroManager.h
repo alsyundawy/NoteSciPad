@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2024 Justin Dailey
@@ -23,9 +24,7 @@
 
 #include <QObject>
 
-
-class MacroManager : public QObject
-{
+class MacroManager : public QObject {
     Q_OBJECT
 
 public:
@@ -60,4 +59,4 @@ private:
     bool isCurrentMacroSaved = false;
 };
 
-#endif // MACROMANAGER_H
+#endif  // MACROMANAGER_H

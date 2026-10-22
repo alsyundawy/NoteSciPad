@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2019 Justin Dailey
@@ -16,7 +17,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef LUASTATE_H
 #define LUASTATE_H
 
@@ -27,8 +27,7 @@
 
 struct lua_State;
 
-class LuaState
-{
+class LuaState {
 public:
     LuaState();
     ~LuaState();
@@ -45,13 +44,13 @@ public:
     lua_State *L = Q_NULLPTR;
 
     // Require literal char pointers
-    template<size_t N>
+    template <size_t N>
     void execute(const char (&statement)[N], bool clear = true) {
         internal_execute(statement, clear);
     }
 
     // Require literal char pointers
-    template<typename T, size_t N>
+    template <typename T, size_t N>
     T executeAndReturn(const char (&statement)[N]) {
         return internal_executeAndReturn<T>(statement);
     }
@@ -59,13 +58,12 @@ public:
 private:
     void internal_execute(const char *statement, bool clear);
 
-    template<typename T>
+    template <typename T>
     T internal_executeAndReturn(const char *statement);
 };
 
-template<>
-inline bool LuaState::internal_executeAndReturn<bool>(const char *statement)
-{
+template <>
+inline bool LuaState::internal_executeAndReturn<bool>(const char *statement) {
     internal_execute(statement, false);
     luaL_checktype(L, 1, LUA_TBOOLEAN);
 
@@ -75,9 +73,8 @@ inline bool LuaState::internal_executeAndReturn<bool>(const char *statement)
     return b;
 }
 
-template<>
-inline QString LuaState::internal_executeAndReturn<QString>(const char *statement)
-{
+template <>
+inline QString LuaState::internal_executeAndReturn<QString>(const char *statement) {
     internal_execute(statement, false);
     luaL_checktype(L, 1, LUA_TSTRING);
 
@@ -87,16 +84,15 @@ inline QString LuaState::internal_executeAndReturn<QString>(const char *statemen
     return s;
 }
 
-template<>
-inline QStringList LuaState::internal_executeAndReturn<QStringList>(const char *statement)
-{
+template <>
+inline QStringList LuaState::internal_executeAndReturn<QStringList>(const char *statement) {
     internal_execute(statement, false);
     luaL_checktype(L, 1, LUA_TTABLE);
 
     QStringList list;
 
     /* table is in the stack at index 't' */
-    lua_pushnil(L);  /* first key */
+    lua_pushnil(L); /* first key */
     while (lua_next(L, 1) != 0) {
         list << QString::fromUtf8(lua_tostring(L, -1));
         lua_pop(L, 1);
@@ -106,5 +102,4 @@ inline QStringList LuaState::internal_executeAndReturn<QStringList>(const char *
     return list;
 }
 
-
-#endif // LUASTATE_H
+#endif  // LUASTATE_H

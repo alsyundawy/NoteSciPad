@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2019 Justin Dailey
@@ -16,15 +17,13 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef RECENTFILESLISTMANAGER_H
 #define RECENTFILESLISTMANAGER_H
 
 #include <QObject>
 #include <QList>
 
-class RecentFilesListManager : public QObject
-{
+class RecentFilesListManager : public QObject {
     Q_OBJECT
 
 public:
@@ -45,4 +44,4 @@ private:
     QStringList recentFiles;
 };
 
-#endif // RECENTFILESLISTMANAGER_H
+#endif  // RECENTFILESLISTMANAGER_H

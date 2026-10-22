@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2022 Justin Dailey
@@ -16,7 +17,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef FILELISTDOCK_H
 #define FILELISTDOCK_H
 
@@ -31,8 +31,7 @@ class FileList;
 
 class MainWindow;
 
-class FileListDock : public QDockWidget
-{
+class FileListDock : public QDockWidget {
     Q_OBJECT
 
 public:
@@ -58,4 +57,4 @@ private:
     MainWindow *window;
 };
 
-#endif // FILELISTDOCK_H
+#endif  // FILELISTDOCK_H

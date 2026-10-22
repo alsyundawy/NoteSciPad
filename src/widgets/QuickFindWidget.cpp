@@ -16,7 +16,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "FocusWatcher.h"
 #include "QuickFindWidget.h"
 #include "ScintillaNext.h"
@@ -28,10 +27,7 @@
 #include <QShortcut>
 #include <QScrollBar>
 
-QuickFindWidget::QuickFindWidget(QWidget *parent) :
-    QFrame(parent),
-    ui(new Ui::QuickFindWidget)
-{
+QuickFindWidget::QuickFindWidget(QWidget *parent) : QFrame(parent), ui(new Ui::QuickFindWidget) {
     ui->setupUi(this);
 
     // Move the focus to the line edit widget
@@ -52,8 +48,7 @@ QuickFindWidget::QuickFindWidget(QWidget *parent) :
     connect(ui->buttonRegexp, &QToolButton::toggled, this, &QuickFindWidget::performNewSearch);
 }
 
-QuickFindWidget::~QuickFindWidget()
-{
+QuickFindWidget::~QuickFindWidget() {
     if (finder) {
         delete finder;
     }
@@ -61,8 +56,7 @@ QuickFindWidget::~QuickFindWidget()
     delete ui;
 }
 
-void QuickFindWidget::setEditor(ScintillaNext *newEditor)
-{
+void QuickFindWidget::setEditor(ScintillaNext *newEditor) {
     if (this->editor != Q_NULLPTR) {
         disconnect(this->editor, &ScintillaNext::resized, this, &QuickFindWidget::positionWidget);
     }
@@ -75,9 +69,8 @@ void QuickFindWidget::setEditor(ScintillaNext *newEditor)
 
     if (finder == Q_NULLPTR) {
         finder = new Finder(newEditor);
-        finder->options().wrapAround = true; // Always wrap the search
-    }
-    else {
+        finder->options().wrapAround = true;  // Always wrap the search
+    } else {
         finder->setEditor(newEditor);
     }
 
@@ -86,8 +79,7 @@ void QuickFindWidget::setEditor(ScintillaNext *newEditor)
     positionWidget();
 }
 
-bool QuickFindWidget::eventFilter(QObject *obj, QEvent *event)
-{
+bool QuickFindWidget::eventFilter(QObject *obj, QEvent *event) {
     if (event->type() == QEvent::KeyPress) {
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
 
@@ -103,18 +95,15 @@ bool QuickFindWidget::eventFilter(QObject *obj, QEvent *event)
     return QObject::eventFilter(obj, event);
 }
 
-void QuickFindWidget::setSearchContextColorBad()
-{
+void QuickFindWidget::setSearchContextColorBad() {
     setSearchContextColor(QStringLiteral("red"));
 }
 
-void QuickFindWidget::setSearchContextColorGood()
-{
+void QuickFindWidget::setSearchContextColorGood() {
     setSearchContextColor(QStringLiteral("blue"));
 }
 
-void QuickFindWidget::performNewSearch()
-{
+void QuickFindWidget::performNewSearch() {
     clearHighlights();
     clearCachedMatches();
     ui->lblInfo->hide();
@@ -133,8 +122,7 @@ void QuickFindWidget::performNewSearch()
 
     if (matches.empty()) {
         setSearchContextColorBad();
-    }
-    else {
+    } else {
         setSearchContextColorGood();
     }
 
@@ -142,8 +130,7 @@ void QuickFindWidget::performNewSearch()
     navigateToNextMatch(false);
 }
 
-void QuickFindWidget::highlightMatches()
-{
+void QuickFindWidget::highlightMatches() {
     qInfo(Q_FUNC_INFO);
 
     editor->setIndicatorCurrent(indicator);
@@ -152,13 +139,11 @@ void QuickFindWidget::highlightMatches()
     }
 }
 
-void QuickFindWidget::showWrapIndicator()
-{
+void QuickFindWidget::showWrapIndicator() {
     FadingIndicator::showPixmap(editor, QStringLiteral(":/icons/wrapindicator.png"));
 }
 
-void QuickFindWidget::navigateToNextMatch(bool skipCurrent)
-{
+void QuickFindWidget::navigateToNextMatch(bool skipCurrent) {
     qInfo(Q_FUNC_INFO);
 
     // Early out if there are no matches
@@ -172,19 +157,16 @@ void QuickFindWidget::navigateToNextMatch(bool skipCurrent)
         if (currentMatchIndex >= matches.length()) {
             currentMatchIndex = 0;
         }
-    }
-    else {
+    } else {
         int startPos = INVALID_POSITION;
         if (skipCurrent) {
             startPos = editor->selectionEnd();
-        }
-        else {
+        } else {
             startPos = editor->selectionStart();
         }
 
-        auto it = std::lower_bound(matches.begin(), matches.end(), startPos, [](const QPair<int, int>& pair, int value) {
-            return pair.first < value;
-        });
+        auto it = std::lower_bound(matches.begin(), matches.end(), startPos,
+                                   [](const QPair<int, int> &pair, int value) { return pair.first < value; });
 
         if (it != matches.end()) {
             currentMatchIndex = std::distance(matches.begin(), it);
@@ -202,8 +184,7 @@ void QuickFindWidget::navigateToNextMatch(bool skipCurrent)
     goToCurrentMatch();
 }
 
-void QuickFindWidget::navigateToPrevMatch()
-{
+void QuickFindWidget::navigateToPrevMatch() {
     qInfo(Q_FUNC_INFO);
 
     // Early out if there are no matches
@@ -217,8 +198,7 @@ void QuickFindWidget::navigateToPrevMatch()
         if (currentMatchIndex < 0) {
             currentMatchIndex = matches.length() - 1;
         }
-    }
-    else {
+    } else {
         qWarning("navigateToPrevMatch() with no valid index yet");
         return;
     }
@@ -231,8 +211,7 @@ void QuickFindWidget::navigateToPrevMatch()
     goToCurrentMatch();
 }
 
-void QuickFindWidget::goToCurrentMatch()
-{
+void QuickFindWidget::goToCurrentMatch() {
     editor->setSel(matches[currentMatchIndex].first, matches[currentMatchIndex].second);
     editor->verticalCentreCaret();
 
@@ -240,8 +219,7 @@ void QuickFindWidget::goToCurrentMatch()
     ui->lblInfo->setText(tr("%L1/%L2").arg(currentMatchIndex + 1).arg(matches.length()));
 }
 
-Scintilla::FindOption QuickFindWidget::computeSearchFlags() const
-{
+Scintilla::FindOption QuickFindWidget::computeSearchFlags() const {
     Scintilla::FindOption searchFlags = {};
 
     if (ui->buttonMatchCase->isChecked()) {
@@ -259,13 +237,11 @@ Scintilla::FindOption QuickFindWidget::computeSearchFlags() const
     return searchFlags;
 }
 
-void QuickFindWidget::setSearchContextColor(const QString &color)
-{
+void QuickFindWidget::setSearchContextColor(const QString &color) {
     ui->lineEdit->setStyleSheet(QStringLiteral("border: 1px solid %1; padding: 2px;").arg(color));
 }
 
-void QuickFindWidget::initializeEditorIndicator()
-{
+void QuickFindWidget::initializeEditorIndicator() {
     indicator = editor->allocateIndicator(QStringLiteral("quick_find"));
 
     editor->indicSetFore(indicator, 0xFF8000);
@@ -275,13 +251,11 @@ void QuickFindWidget::initializeEditorIndicator()
     editor->indicSetUnder(indicator, true);
 }
 
-QString QuickFindWidget::searchText() const
-{
+QString QuickFindWidget::searchText() const {
     return ui->lineEdit->text();
 }
 
-void QuickFindWidget::positionWidget()
-{
+void QuickFindWidget::positionWidget() {
     int usableWidth = editor->width();
 
     // Account for the scrollbar as the quick find will be underneath if the scrollbar is visible
@@ -294,44 +268,37 @@ void QuickFindWidget::positionWidget()
     move(editor->mapTo(parentWidget(), position));
 }
 
-void QuickFindWidget::prepareSearch()
-{
+void QuickFindWidget::prepareSearch() {
     finder->options().text = searchText();
     finder->options().flags = computeSearchFlags();
 }
 
-void QuickFindWidget::focusIn()
-{
+void QuickFindWidget::focusIn() {
     ui->lineEdit->selectAll();
     ui->lblInfo->hide();
     performNewSearch();
 }
 
-void QuickFindWidget::focusOut()
-{
+void QuickFindWidget::focusOut() {
     clearHighlights();
     clearCachedMatches();
     hide();
 }
 
-void QuickFindWidget::returnPressed()
-{
+void QuickFindWidget::returnPressed() {
     if (QGuiApplication::keyboardModifiers() & Qt::ShiftModifier) {
         navigateToPrevMatch();
-    }
-    else {
+    } else {
         navigateToNextMatch(true);
     }
 }
 
-void QuickFindWidget::clearHighlights()
-{
+void QuickFindWidget::clearHighlights() {
     editor->setIndicatorCurrent(indicator);
     editor->indicatorClearRange(0, editor->length());
 }
 
-void QuickFindWidget::clearCachedMatches()
-{
+void QuickFindWidget::clearCachedMatches() {
     matches.clear();
     currentMatchIndex = -1;
 }

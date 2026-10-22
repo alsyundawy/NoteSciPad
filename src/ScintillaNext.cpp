@@ -16,7 +16,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "ScintillaNext.h"
 #include "EncodingDetector.h"
 #include "FileTimeUtils.h"
@@ -32,44 +31,50 @@
 #include <QSaveFile>
 #include <QTextCodec>
 
+const int CHUNK_SIZE = 1024 * 1024 * 4;  // Not sure what is best
 
-const int CHUNK_SIZE = 1024 * 1024 * 4; // Not sure what is best
-
-inline const QByteArray BOM_UTF8    = QByteArray::fromHex("EFBBBF");
+inline const QByteArray BOM_UTF8 = QByteArray::fromHex("EFBBBF");
 inline const QByteArray BOM_UTF16LE = QByteArray::fromHex("FFFE");
 inline const QByteArray BOM_UTF16BE = QByteArray::fromHex("FEFF");
 
-ScintillaNext::BomType detectBom(const QByteArray& data)
-{
-    if (data.startsWith(BOM_UTF8))    return ScintillaNext::BomType::Utf8;
-    if (data.startsWith(BOM_UTF16LE)) return ScintillaNext::BomType::Utf16LE;
-    if (data.startsWith(BOM_UTF16BE)) return ScintillaNext::BomType::Utf16BE;
+ScintillaNext::BomType detectBom(const QByteArray &data) {
+    if (data.startsWith(BOM_UTF8))
+        return ScintillaNext::BomType::Utf8;
+    if (data.startsWith(BOM_UTF16LE))
+        return ScintillaNext::BomType::Utf16LE;
+    if (data.startsWith(BOM_UTF16BE))
+        return ScintillaNext::BomType::Utf16BE;
 
     return ScintillaNext::BomType::None;
 }
 
-QByteArray bomData(ScintillaNext::BomType bom)
-{
+QByteArray bomData(ScintillaNext::BomType bom) {
     switch (bom) {
-    case ScintillaNext::BomType::Utf8:    return BOM_UTF8;
-    case ScintillaNext::BomType::Utf16LE: return BOM_UTF16LE;
-    case ScintillaNext::BomType::Utf16BE: return BOM_UTF16BE;
-    case ScintillaNext::BomType::None:    return QByteArray();
+        case ScintillaNext::BomType::Utf8:
+            return BOM_UTF8;
+        case ScintillaNext::BomType::Utf16LE:
+            return BOM_UTF16LE;
+        case ScintillaNext::BomType::Utf16BE:
+            return BOM_UTF16BE;
+        case ScintillaNext::BomType::None:
+            return QByteArray();
     }
     return QByteArray();
 }
 
-int bomLength(ScintillaNext::BomType bom)
-{
-    if (bom == ScintillaNext::BomType::Utf8) return BOM_UTF8.length();
-    else if (bom == ScintillaNext::BomType::Utf16LE) return BOM_UTF16LE.length();
-    else if (bom == ScintillaNext::BomType::Utf16BE) return BOM_UTF16BE.length();
+int bomLength(ScintillaNext::BomType bom) {
+    if (bom == ScintillaNext::BomType::Utf8)
+        return BOM_UTF8.length();
+    else if (bom == ScintillaNext::BomType::Utf16LE)
+        return BOM_UTF16LE.length();
+    else if (bom == ScintillaNext::BomType::Utf16BE)
+        return BOM_UTF16BE.length();
 
     return 0;
 }
 
-static QFileDevice::FileError writeToDisk(const QByteArray &data, const QString &path, ScintillaNext::BomType bom, const QString &encoding)
-{
+static QFileDevice::FileError writeToDisk(const QByteArray &data, const QString &path, ScintillaNext::BomType bom,
+                                          const QString &encoding) {
     qInfo(Q_FUNC_INFO);
 
     QFile file(path);
@@ -87,35 +92,31 @@ static QFileDevice::FileError writeToDisk(const QByteArray &data, const QString 
     return file.error();
 }
 
-static bool isNewlineCharacter(char c)
-{
+static bool isNewlineCharacter(char c) {
     return c == '\n' || c == '\r';
 }
 
-ScintillaNext::ScintillaNext(QString name, QWidget *parent) :
-    ScintillaEdit(parent),
-    name(name),
-    indicatorResources(INDICATOR_MAX + 1)
-{
+ScintillaNext::ScintillaNext(QString name, QWidget *parent)
+    : ScintillaEdit(parent), name(name), indicatorResources(INDICATOR_MAX + 1) {
     // Per the scintilla documentation, some parts of the range are not generally available
     indicatorResources.disableRange(0, 7);
     indicatorResources.disableRange(INDICATOR_IME, INDICATOR_IME_MAX);
-    indicatorResources.disableRange(INDICATOR_HISTORY_REVERTED_TO_ORIGIN_INSERTION, INDICATOR_HISTORY_REVERTED_TO_MODIFIED_DELETION);
+    indicatorResources.disableRange(INDICATOR_HISTORY_REVERTED_TO_ORIGIN_INSERTION,
+                                    INDICATOR_HISTORY_REVERTED_TO_MODIFIED_DELETION);
 }
 
-ScintillaNext::~ScintillaNext()
-{
-}
+ScintillaNext::~ScintillaNext() {}
 
-ScintillaNext *ScintillaNext::fromFile(const QString &filePath, bool tryToCreate)
-{
+ScintillaNext *ScintillaNext::fromFile(const QString &filePath, bool tryToCreate) {
     QFile file(filePath);
     ScintillaNext *editor = new ScintillaNext(file.fileName());
 
-    if(tryToCreate && !file.exists()) {
+    if (tryToCreate && !file.exists()) {
         qInfo("Trying to create %s", qUtf8Printable(filePath));
         QDir d;
-        d.mkpath(QFileInfo(file).path());
+        if (!d.mkpath(QFileInfo(file).path())) {
+            qWarning("Failed to create path: %s", qUtf8Printable(QFileInfo(file).path()));
+        }
 
         QFile f(filePath);
         if (f.open(QIODevice::WriteOnly)) {
@@ -135,8 +136,7 @@ ScintillaNext *ScintillaNext::fromFile(const QString &filePath, bool tryToCreate
     return editor;
 }
 
-QString ScintillaNext::eolModeToString(int eolMode)
-{
+QString ScintillaNext::eolModeToString(int eolMode) {
     if (eolMode == SC_EOL_CRLF)
         return QStringLiteral("crlf");
     else if (eolMode == SC_EOL_CR)
@@ -144,11 +144,10 @@ QString ScintillaNext::eolModeToString(int eolMode)
     else if (eolMode == SC_EOL_LF)
         return QStringLiteral("lf");
     else
-        return QString(); // unknown
+        return QString();  // unknown
 }
 
-int ScintillaNext::stringToEolMode(QString eolMode)
-{
+int ScintillaNext::stringToEolMode(QString eolMode) {
     if (eolMode == QStringLiteral("crlf"))
         return SC_EOL_CRLF;
     else if (eolMode == QStringLiteral("cr"))
@@ -159,13 +158,11 @@ int ScintillaNext::stringToEolMode(QString eolMode)
         return -1;
 }
 
-int ScintillaNext::allocateIndicator(const QString &name)
-{
+int ScintillaNext::allocateIndicator(const QString &name) {
     return indicatorResources.requestResource(name);
 }
 
-void ScintillaNext::goToRange(const Sci_CharacterRange &range)
-{
+void ScintillaNext::goToRange(const Sci_CharacterRange &range) {
     qInfo(Q_FUNC_INFO);
 
     if (isRangeValid(range)) {
@@ -178,106 +175,95 @@ void ScintillaNext::goToRange(const Sci_CharacterRange &range)
     }
 }
 
-QByteArray ScintillaNext::eolString() const
-{
+QByteArray ScintillaNext::eolString() const {
     const int eol = eOLMode();
 
-    if (eol == SC_EOL_LF) return QByteArrayLiteral("\n");
-    else if (eol == SC_EOL_CRLF) return QByteArrayLiteral("\r\n");
-    else return QByteArrayLiteral("\r");
+    if (eol == SC_EOL_LF)
+        return QByteArrayLiteral("\n");
+    else if (eol == SC_EOL_CRLF)
+        return QByteArrayLiteral("\r\n");
+    else
+        return QByteArrayLiteral("\r");
 }
 
-bool ScintillaNext::lineIsEmpty(int line)
-{
+bool ScintillaNext::lineIsEmpty(int line) {
     return (lineEndPosition(line) - positionFromLine(line)) == 0;
 }
 
-void ScintillaNext::deleteLine(int line)
-{
+void ScintillaNext::deleteLine(int line) {
     deleteRange(positionFromLine(line), lineLength(line));
 }
 
-void ScintillaNext::cutAllowLine()
-{
+void ScintillaNext::cutAllowLine() {
     if (selectionEmpty()) {
         copyAllowLine();
         lineDelete();
-    }
-    else {
+    } else {
         cut();
     }
 }
 
-Sci_CharacterRange ScintillaNext::getContextText()
-{
+Sci_CharacterRange ScintillaNext::getContextText() {
     if (!selectionEmpty()) {
         if (selections() == 1) {
             int start = selectionStart();
             int end = selectionEnd();
 
-            if (end - start < 1024 &&
-                lineFromPosition(start) == lineFromPosition(end)) {
-                return { start, end };
+            if (end - start < 1024 && lineFromPosition(start) == lineFromPosition(end)) {
+                return {start, end};
             }
         }
 
-        return { INVALID_POSITION, INVALID_POSITION };
+        return {INVALID_POSITION, INVALID_POSITION};
     }
 
     return wordAtPosition(currentPos());
 }
 
-Sci_CharacterRange ScintillaNext::wordAtPosition(int pos)
-{
+Sci_CharacterRange ScintillaNext::wordAtPosition(int pos) {
     int start = wordStartPosition(pos, true);
     int end = wordEndPosition(pos, true);
 
     if (end > start) {
-        return { start, end };
+        return {start, end};
     }
 
-    return { INVALID_POSITION, INVALID_POSITION };
+    return {INVALID_POSITION, INVALID_POSITION};
 }
 
-void ScintillaNext::modifyFoldLevels(int level, int action)
-{
+void ScintillaNext::modifyFoldLevels(int level, int action) {
     const int totalLines = lineCount();
 
     int line = 0;
     while (line < totalLines) {
-        int foldFlags = foldLevel(line); // Even though its called fold level it contains several other flags
+        int foldFlags = foldLevel(line);  // Even though its called fold level it contains several other flags
         bool isHeader = foldFlags & SC_FOLDLEVELHEADERFLAG;
         int actualLevel = (foldFlags & SC_FOLDLEVELNUMBERMASK) - SC_FOLDLEVELBASE;
 
         if (isHeader && actualLevel == level) {
             foldLine(line, action);
             line = lastChild(line, -1) + 1;
-        }
-        else {
+        } else {
             ++line;
         }
     }
 }
 
-void ScintillaNext::foldAllLevels(int level)
-{
+void ScintillaNext::foldAllLevels(int level) {
     modifyFoldLevels(level, SC_FOLDACTION_CONTRACT);
 }
 
-void ScintillaNext::unFoldAllLevels(int level)
-{
+void ScintillaNext::unFoldAllLevels(int level) {
     modifyFoldLevels(level, SC_FOLDACTION_EXPAND);
 }
 
-void ScintillaNext::deleteLeadingEmptyLines()
-{
+void ScintillaNext::deleteLeadingEmptyLines() {
     while (lineCount() > 1 && lineIsEmpty(0)) {
         deleteLine(0);
     }
 }
 
-void ScintillaNext::deleteTrailingEmptyLines()
-{
+void ScintillaNext::deleteTrailingEmptyLines() {
     const int docLength = length();
     int position = docLength;
 
@@ -288,63 +274,59 @@ void ScintillaNext::deleteTrailingEmptyLines()
     deleteRange(position, docLength - position);
 }
 
-bool ScintillaNext::isSavedToDisk() const
-{
+bool ScintillaNext::isSavedToDisk() const {
     return !canSaveToDisk();
 }
 
-bool ScintillaNext::canSaveToDisk() const
-{
+bool ScintillaNext::canSaveToDisk() const {
     // The buffer can be saved if:
     // - It is marked as a temporary since as soon as it gets saved it is no longer a temporary buffer
     // - A modified file
     // - A missing file since as soon as it is saved it is no longer missing.
-    return temporary ||
-           (bufferType == ScintillaNext::New && modify()) ||
-           (bufferType == ScintillaNext::File && modify()) ||
-            (bufferType == ScintillaNext::FileMissing);
+    return temporary || (bufferType == ScintillaNext::New && modify()) ||
+           (bufferType == ScintillaNext::File && modify()) || (bufferType == ScintillaNext::FileMissing);
 }
 
-void ScintillaNext::setName(const QString &name)
-{
+void ScintillaNext::setName(const QString &name) {
     this->name = name;
 
     emit renamed();
 }
 
-bool ScintillaNext::isFile() const
-{
+bool ScintillaNext::isFile() const {
     return bufferType == ScintillaNext::File || bufferType == ScintillaNext::FileMissing;
 }
 
-QFileInfo ScintillaNext::getFileInfo() const
-{
+QFileInfo ScintillaNext::getFileInfo() const {
     Q_ASSERT(isFile());
 
     return fileInfo;
 }
 
-QString ScintillaNext::getPath() const
-{
+QString ScintillaNext::getPath() const {
     Q_ASSERT(isFile());
 
     return QDir::toNativeSeparators(fileInfo.canonicalPath());
 }
 
-QString ScintillaNext::getFilePath() const
-{
+QString ScintillaNext::getFilePath() const {
     Q_ASSERT(isFile());
 
     return QDir::toNativeSeparators(fileInfo.canonicalFilePath());
 }
 
-void ScintillaNext::setFoldMarkers(const QString &type)
-{
+void ScintillaNext::setFoldMarkers(const QString &type) {
     QMap<QString, QList<int>> map{
-        {"simple", {SC_MARK_MINUS, SC_MARK_PLUS, SC_MARK_EMPTY, SC_MARK_EMPTY, SC_MARK_EMPTY, SC_MARK_EMPTY, SC_MARK_EMPTY}},
-        {"arrow",  {SC_MARK_ARROWDOWN, SC_MARK_ARROW, SC_MARK_EMPTY, SC_MARK_EMPTY, SC_MARK_EMPTY, SC_MARK_EMPTY, SC_MARK_EMPTY}},
-        {"circle", {SC_MARK_CIRCLEMINUS, SC_MARK_CIRCLEPLUS, SC_MARK_VLINE, SC_MARK_LCORNERCURVE, SC_MARK_CIRCLEPLUSCONNECTED, SC_MARK_CIRCLEMINUSCONNECTED, SC_MARK_TCORNERCURVE }},
-        {"box",    {SC_MARK_BOXMINUS, SC_MARK_BOXPLUS, SC_MARK_VLINE, SC_MARK_LCORNER, SC_MARK_BOXPLUSCONNECTED, SC_MARK_BOXMINUSCONNECTED, SC_MARK_TCORNER }},
+        {"simple",
+         {SC_MARK_MINUS, SC_MARK_PLUS, SC_MARK_EMPTY, SC_MARK_EMPTY, SC_MARK_EMPTY, SC_MARK_EMPTY, SC_MARK_EMPTY}},
+        {"arrow",
+         {SC_MARK_ARROWDOWN, SC_MARK_ARROW, SC_MARK_EMPTY, SC_MARK_EMPTY, SC_MARK_EMPTY, SC_MARK_EMPTY, SC_MARK_EMPTY}},
+        {"circle",
+         {SC_MARK_CIRCLEMINUS, SC_MARK_CIRCLEPLUS, SC_MARK_VLINE, SC_MARK_LCORNERCURVE, SC_MARK_CIRCLEPLUSCONNECTED,
+          SC_MARK_CIRCLEMINUSCONNECTED, SC_MARK_TCORNERCURVE}},
+        {"box",
+         {SC_MARK_BOXMINUS, SC_MARK_BOXPLUS, SC_MARK_VLINE, SC_MARK_LCORNER, SC_MARK_BOXPLUSCONNECTED,
+          SC_MARK_BOXMINUSCONNECTED, SC_MARK_TCORNER}},
     };
 
     if (!map.contains(type))
@@ -360,15 +342,13 @@ void ScintillaNext::setFoldMarkers(const QString &type)
     markerDefine(SC_MARKNUM_FOLDERMIDTAIL, types[6]);
 }
 
-void ScintillaNext::close()
-{
+void ScintillaNext::close() {
     emit closed();
 
     deleteLater();
 }
 
-QFileDevice::FileError ScintillaNext::save(bool preserveTimestamp)
-{
+QFileDevice::FileError ScintillaNext::save(bool preserveTimestamp) {
     qInfo(Q_FUNC_INFO);
 
     Q_ASSERT(isFile());
@@ -383,7 +363,7 @@ QFileDevice::FileError ScintillaNext::save(bool preserveTimestamp)
         originalAccessTime = fileInfo.lastRead();
     }
 
-    const QByteArray data = QByteArray::fromRawData((char*)characterPointer(), textLength());
+    const QByteArray data = QByteArray::fromRawData((char *)characterPointer(), textLength());
     const QString path = fileInfo.filePath();
     QFileDevice::FileError writeSuccessful = writeToDisk(data, path, bomType, fileEncoding);
 
@@ -403,8 +383,7 @@ QFileDevice::FileError ScintillaNext::save(bool preserveTimestamp)
     return writeSuccessful;
 }
 
-void ScintillaNext::reload()
-{
+void ScintillaNext::reload() {
     Q_ASSERT(isFile());
 
     // Ensure the file still exists.
@@ -447,8 +426,7 @@ void ScintillaNext::reload()
     emit reloaded();
 }
 
-void ScintillaNext::omitModifications()
-{
+void ScintillaNext::omitModifications() {
     // If file modifications will be omitted just update file timestamp
     // so pop-up will be displayed only once per file modifications.
     updateTimestamp();
@@ -457,13 +435,12 @@ void ScintillaNext::omitModifications()
     return;
 }
 
-QFileDevice::FileError ScintillaNext::saveAs(const QString &newFilePath)
-{
+QFileDevice::FileError ScintillaNext::saveAs(const QString &newFilePath) {
     bool isRenamed = bufferType == ScintillaNext::New || fileInfo.canonicalFilePath() != newFilePath;
 
     emit aboutToSave();
 
-    const QByteArray data = QByteArray::fromRawData((char*)characterPointer(), textLength());
+    const QByteArray data = QByteArray::fromRawData((char *)characterPointer(), textLength());
     QFileDevice::FileError saveSuccessful = writeToDisk(data, newFilePath, bomType, fileEncoding);
 
     if (saveSuccessful == QFileDevice::NoError) {
@@ -483,14 +460,12 @@ QFileDevice::FileError ScintillaNext::saveAs(const QString &newFilePath)
     return saveSuccessful;
 }
 
-QFileDevice::FileError ScintillaNext::saveCopyAs(const QString &filePath)
-{
-    const QByteArray data = QByteArray::fromRawData((char*)characterPointer(), textLength());
+QFileDevice::FileError ScintillaNext::saveCopyAs(const QString &filePath) {
+    const QByteArray data = QByteArray::fromRawData((char *)characterPointer(), textLength());
     return writeToDisk(data, filePath, bomType, fileEncoding);
 }
 
-bool ScintillaNext::rename(const QString &newFilePath)
-{
+bool ScintillaNext::rename(const QString &newFilePath) {
     emit aboutToSave();
 
     // Write out the buffer to the new path
@@ -516,12 +491,10 @@ bool ScintillaNext::rename(const QString &newFilePath)
     return false;
 }
 
-ScintillaNext::FileStateChange ScintillaNext::checkFileForStateChange()
-{
+ScintillaNext::FileStateChange ScintillaNext::checkFileForStateChange() {
     if (bufferType == BufferType::New) {
         return FileStateChange::NoChange;
-    }
-    else if (bufferType == BufferType::File) {
+    } else if (bufferType == BufferType::File) {
         // refresh else exists() fails to notice missing file
         fileInfo.refresh();
 
@@ -536,12 +509,10 @@ ScintillaNext::FileStateChange ScintillaNext::checkFileForStateChange()
         // See if the timestamp changed
         if (modifiedTime != fileTimestamp()) {
             return FileStateChange::Modified;
-        }
-        else {
+        } else {
             return FileStateChange::NoChange;
         }
-    }
-    else if (bufferType == BufferType::FileMissing) {
+    } else if (bufferType == BufferType::FileMissing) {
         // See if it reappeared
         fileInfo.refresh();
 
@@ -549,8 +520,7 @@ ScintillaNext::FileStateChange ScintillaNext::checkFileForStateChange()
             bufferType = BufferType::File;
 
             return FileStateChange::Restored;
-        }
-        else {
+        } else {
             return FileStateChange::NoChange;
         }
     }
@@ -561,8 +531,7 @@ ScintillaNext::FileStateChange ScintillaNext::checkFileForStateChange()
     return FileStateChange::NoChange;
 }
 
-bool ScintillaNext::moveToTrash()
-{
+bool ScintillaNext::moveToTrash() {
     if (QFile::exists(fileInfo.canonicalFilePath())) {
         QFile f(fileInfo.canonicalFilePath());
 
@@ -572,35 +541,31 @@ bool ScintillaNext::moveToTrash()
     return false;
 }
 
-void ScintillaNext::toggleCommentSelection()
-{
+void ScintillaNext::toggleCommentSelection() {
     ScintillaCommenter sc(this);
     sc.toggleSelection();
 }
 
-void ScintillaNext::commentLineSelection()
-{
+void ScintillaNext::commentLineSelection() {
     ScintillaCommenter sc(this);
     sc.commentSelection();
 }
 
-void ScintillaNext::uncommentLineSelection()
-{
+void ScintillaNext::uncommentLineSelection() {
     ScintillaCommenter sc(this);
     sc.uncommentSelection();
 }
 
-void ScintillaNext::removeDuplicateLines()
-{
-    QByteArray data = QByteArray::fromRawData((char*) characterPointer(), textLength());
+void ScintillaNext::removeDuplicateLines() {
+    QByteArray data = QByteArray::fromRawData((char *)characterPointer(), textLength());
     const QByteArray delim = eolString();
 
     auto lines = ByteArrayUtils::split(data, delim);
     int originalLineCount = lines.length();
     ByteArrayUtils::removeDuplicates(lines);
 
-    if (originalLineCount == lines.length()){
-        return; // No lines were removed
+    if (originalLineCount == lines.length()) {
+        return;  // No lines were removed
     }
 
     QByteArray result = ByteArrayUtils::join(lines, delim);
@@ -610,9 +575,8 @@ void ScintillaNext::removeDuplicateLines()
     replaceTarget(result.length(), result.constData());
 }
 
-void ScintillaNext::removeConsecutiveDuplicateLines()
-{
-    QByteArray data = QByteArray::fromRawData((char*) characterPointer(), textLength());
+void ScintillaNext::removeConsecutiveDuplicateLines() {
+    QByteArray data = QByteArray::fromRawData((char *)characterPointer(), textLength());
     const QByteArray delim = eolString();
 
     auto lines = ByteArrayUtils::split(data, delim);
@@ -620,8 +584,8 @@ void ScintillaNext::removeConsecutiveDuplicateLines()
     ByteArrayUtils::removeConsecutiveDuplicates(lines);
     QByteArray result = ByteArrayUtils::join(lines, delim);
 
-    if (originalLineCount == lines.length()){
-        return; // No lines were removed
+    if (originalLineCount == lines.length()) {
+        return;  // No lines were removed
     }
 
     const UndoAction ua(this);
@@ -629,8 +593,7 @@ void ScintillaNext::removeConsecutiveDuplicateLines()
     replaceTarget(result.length(), result.constData());
 }
 
-void ScintillaNext::dragEnterEvent(QDragEnterEvent *event)
-{
+void ScintillaNext::dragEnterEvent(QDragEnterEvent *event) {
     // Ignore all drag and drop events with urls and let the main application handle it
     if (event->mimeData()->hasUrls()) {
         return;
@@ -639,8 +602,7 @@ void ScintillaNext::dragEnterEvent(QDragEnterEvent *event)
     ScintillaEdit::dragEnterEvent(event);
 }
 
-void ScintillaNext::dropEvent(QDropEvent *event)
-{
+void ScintillaNext::dropEvent(QDropEvent *event) {
     // Ignore all drag and drop events with urls and let the main application handle it
     if (event->mimeData()->hasUrls()) {
         return;
@@ -649,15 +611,15 @@ void ScintillaNext::dropEvent(QDropEvent *event)
     ScintillaEdit::dropEvent(event);
 }
 
-bool ScintillaNext::readFromDisk(QFile &file)
-{
+bool ScintillaNext::readFromDisk(QFile &file) {
     if (!file.exists()) {
         qWarning("Cannot read \"%s\": doesn't exist", qUtf8Printable(file.fileName()));
         return false;
     }
 
     if (!file.open(QIODevice::ReadOnly)) {
-        qWarning("QFile::open() failed when opening \"%s\" - error code %d: %s", qUtf8Printable(file.fileName()), file.error(), qUtf8Printable(file.errorString()));
+        qWarning("QFile::open() failed when opening \"%s\" - error code %d: %s", qUtf8Printable(file.fileName()),
+                 file.error(), qUtf8Printable(file.errorString()));
         return false;
     }
 
@@ -685,7 +647,8 @@ bool ScintillaNext::readFromDisk(QFile &file)
         bytesRead = file.read(chunk.data(), CHUNK_SIZE);
         chunk.resize(bytesRead);
 
-        if (bytesRead <= 0) break;
+        if (bytesRead <= 0)
+            break;
 
         int offset = 0;
         if (first_read) {
@@ -724,22 +687,20 @@ bool ScintillaNext::readFromDisk(QFile &file)
     return true;
 }
 
-QDateTime ScintillaNext::fileTimestamp()
-{
+QDateTime ScintillaNext::fileTimestamp() {
     Q_ASSERT(bufferType != ScintillaNext::New);
 
     fileInfo.refresh();
-    qInfo("%s last modified %s", qUtf8Printable(fileInfo.fileName()), qUtf8Printable(fileInfo.lastModified().toString()));
+    qInfo("%s last modified %s", qUtf8Printable(fileInfo.fileName()),
+          qUtf8Printable(fileInfo.lastModified().toString()));
     return fileInfo.lastModified();
 }
 
-void ScintillaNext::updateTimestamp()
-{
+void ScintillaNext::updateTimestamp() {
     modifiedTime = fileTimestamp();
 }
 
-void ScintillaNext::setFileInfo(const QString &filePath)
-{
+void ScintillaNext::setFileInfo(const QString &filePath) {
     fileInfo.setFile(filePath);
     fileInfo.makeAbsolute();
 
@@ -751,37 +712,34 @@ void ScintillaNext::setFileInfo(const QString &filePath)
     updateTimestamp();
 }
 
-void ScintillaNext::detachFileInfo(const QString &newName)
-{
+void ScintillaNext::detachFileInfo(const QString &newName) {
     setName(newName);
 
     bufferType = ScintillaNext::New;
 }
 
-void ScintillaNext::setTemporary(bool temp)
-{
+void ScintillaNext::setTemporary(bool temp) {
     temporary = temp;
 
     // Fake this signal
     emit savePointChanged(temporary);
 }
 
-void ScintillaNext::convertToEncoding(const QString &newEncoding, BomType newBom)
-{
+void ScintillaNext::convertToEncoding(const QString &newEncoding, BomType newBom) {
     fileEncoding = newEncoding;
     bomType = newBom;
     emit savePointChanged(false);
 }
 
-bool ScintillaNext::reloadWithEncoding(const QString &newEncoding)
-{
+bool ScintillaNext::reloadWithEncoding(const QString &newEncoding) {
     if (bufferType != BufferType::File) {
         fileEncoding = newEncoding;
         return true;
     }
 
     QFile file(fileInfo.filePath());
-    if (!file.exists()) return false;
+    if (!file.exists())
+        return false;
 
     clearAll();
     fileEncoding = newEncoding;

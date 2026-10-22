@@ -16,21 +16,15 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "RangeAllocator.h"
 
-RangeAllocator::RangeAllocator(int total) :
-    resource(total)
-{
-}
+RangeAllocator::RangeAllocator(int total) : resource(total) {}
 
-void RangeAllocator::disableRange(int start, int end)
-{
+void RangeAllocator::disableRange(int start, int end) {
     resource.fill(true, start, end + 1);
 }
 
-int RangeAllocator::requestResource(const QString name)
-{
+int RangeAllocator::requestResource(const QString &name) {
     // Check to see if this key is allocated yet
     if (allocation.contains(name)) {
         return allocation[name];
@@ -47,4 +41,3 @@ int RangeAllocator::requestResource(const QString name)
     Q_ASSERT(false);
     return -1;
 }
-

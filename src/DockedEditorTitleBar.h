@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2019 Justin Dailey
@@ -16,19 +17,16 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef DOCKEDEDITORTITLEBAR_H
 #define DOCKEDEDITORTITLEBAR_H
 
-
 #include <DockAreaTitleBar.h>
 
-class DockedEditorTitleBar : public ads::CDockAreaTitleBar
-{
+class DockedEditorTitleBar : public ads::CDockAreaTitleBar {
     Q_OBJECT
 
 public:
-    explicit DockedEditorTitleBar(ads::CDockAreaWidget* parent) : ads::CDockAreaTitleBar(parent) {}
+    explicit DockedEditorTitleBar(ads::CDockAreaWidget *parent) : ads::CDockAreaTitleBar(parent) {}
 
 signals:
     void doubleClicked();
@@ -43,4 +41,4 @@ protected:
     }
 };
 
-#endif // DOCKEDEDITORTITLEBAR_H
+#endif  // DOCKEDEDITORTITLEBAR_H

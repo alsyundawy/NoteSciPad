@@ -21,8 +21,7 @@
 #include "ScintillaNext.h"
 #include "Sorter.h"
 
-class ScintillaSorter
-{
+class ScintillaSorter {
 public:
     explicit ScintillaSorter(ScintillaNext *editor);
 
