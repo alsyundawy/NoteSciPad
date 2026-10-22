@@ -222,7 +222,7 @@ NoteSciPad v1.2.0 delivers comprehensive visual, architectural, and engine upgra
 ### 🛠️ Infrastructure & CI/CD
 
 - **Multi-Qt Build & Release Matrix (Qt 6.5, 6.8 LTS, 6.10, and Qt 6.11)**:
-  - Extended GitHub Actions matrices in `build.yml` and `release.yml` across 12 combinations: macOS Intel (`macos-15-intel`), macOS Apple Silicon (`macos-15`), and Linux Ubuntu (`ubuntu-24.04`) across Qt 6.5, 6.8 LTS, 6.10, and **Qt 6.11**.
+  - Extended GitHub Actions matrices in `build.yml` and `release.yml` across 12 CI matrix jobs (3 platform architectures: macOS Intel `macos-15-intel`, macOS Apple Silicon `macos-15`, and Linux Ubuntu `ubuntu-24.04` × 4 Qt 6 versions: Qt 6.5, 6.8 LTS, 6.10, and **Qt 6.11**).
 - **Trunk Native C++ & Qt Static Analysis Integration**:
   - Configured `.trunk/trunk.yaml` with dedicated `cppcheck-qt` linter definition running `--library=qt --language=c++ --enable=warning,style,performance,portability`, providing first-class Qt analysis across all 277 files in `src/`.
   - Enabled `clang-format@20.1.0` and `pragma-once` header guard verification in Trunk Check.

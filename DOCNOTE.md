@@ -214,7 +214,7 @@ NoteSciPad **v1.2.0** delivers high-polish user interface enhancements, strict A
    - Sub-second execution (<1s) locally with zero CPU saturation and zero background memory pegging.
 
 10. **Multi-Qt Build & Release Matrix (Qt 6.5, 6.8 LTS, 6.10, and Qt 6.11)**:
-    - Synchronized CI matrices in `build.yml` and `release.yml` across 12 combinations: macOS Intel (`macos-15-intel`), macOS Apple Silicon (`macos-15`), and Linux Ubuntu (`ubuntu-24.04`) across Qt 6.5, 6.8 LTS, 6.10, and **Qt 6.11**.
+    - Synchronized CI matrices in `build.yml` and `release.yml` across 12 CI matrix jobs (3 platform architectures: macOS Intel `macos-15-intel`, macOS Apple Silicon `macos-15`, and Linux Ubuntu `ubuntu-24.04` × 4 Qt 6 versions: Qt 6.5, 6.8 LTS, 6.10, and **Qt 6.11**).
     - Switched from broken custom action commit to official `jurplel/install-qt-action@v4.4.1`, eliminating runner template errors on Linux Ubuntu.
     - Added pre-cleaning and force detach (`hdiutil detach -force`) in `cmake/PackagingMac.cmake`, resolving runner `hdiutil: resource busy` race conditions.
     - Added `workflow_dispatch` trigger for MegaLinter and Build NoteSciPad for reliable manual verification.

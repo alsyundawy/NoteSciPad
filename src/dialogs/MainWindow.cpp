@@ -4149,8 +4149,8 @@ void MainWindow::setupThemeMenu() {
 
     actionThemeDark = new QAction(tr("Default Dark Mode"), this);
     connect(actionThemeDark, &QAction::triggered, this, [this]() {
-        ThemeManager::instance()->setPalette(QStringLiteral("catppuccinMocha"), this);
-        ui->statusBar->showMessage(tr("Theme set to Dark Mode (Catppuccin Mocha)"), 3000);
+        ThemeManager::instance()->setPalette(QStringLiteral("dracula"), this);
+        ui->statusBar->showMessage(tr("Theme set to Dark Mode (Dracula)"), 3000);
     });
     menuTheme->addAction(actionThemeDark);
 
