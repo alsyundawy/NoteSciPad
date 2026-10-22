@@ -51,7 +51,7 @@ void ThemeManager::initialize(ApplicationSettings *settings) {
             m_currentPaletteId = savedPalette;
         } else {
             m_currentPaletteId =
-                (m_themeMode == ThemeMode::Dark) ? QStringLiteral("dracula") : QStringLiteral("defaultLight");
+                (m_themeMode == ThemeMode::Dark) ? QStringLiteral("dracula") : QStringLiteral("notepadNext");
         }
     }
 }
@@ -77,13 +77,13 @@ const ThemePalette *ThemeManager::currentPalette() const {
                 return findThemePaletteById(QStringLiteral("dracula"));
             }
             if (m_themeMode == ThemeMode::Light && p->isDark) {
-                return findThemePaletteById(QStringLiteral("defaultLight"));
+                return findThemePaletteById(QStringLiteral("notepadNext"));
             }
             return p;
         }
     }
     return isDarkActive() ? findThemePaletteById(QStringLiteral("dracula"))
-                          : findThemePaletteById(QStringLiteral("defaultLight"));
+                          : findThemePaletteById(QStringLiteral("notepadNext"));
 }
 
 void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window) {
@@ -99,7 +99,7 @@ void ThemeManager::setThemeMode(ThemeMode mode, MainWindow *window) {
         }
     } else if (mode == ThemeMode::Light) {
         if (!cur || cur->isDark) {
-            m_currentPaletteId = QStringLiteral("defaultLight");
+            m_currentPaletteId = QStringLiteral("notepadNext");
         }
     }
 
@@ -170,7 +170,7 @@ void ThemeManager::applyTheme(MainWindow *window) {
     bool dark = isDarkActive();
     if (!pal) {
         pal = dark ? findThemePaletteById(QStringLiteral("dracula"))
-                   : findThemePaletteById(QStringLiteral("defaultLight"));
+                   : findThemePaletteById(QStringLiteral("notepadNext"));
     }
 
     QString win = pal ? QString::fromLatin1(pal->win) : (dark ? QStringLiteral("#1e1e1e") : QStringLiteral("#f0f2f5"));
@@ -384,6 +384,13 @@ QString ThemeManager::getThemeStyleSheet() const {
         pal ? QString::fromLatin1(pal->txtSec) : (darkActive ? QStringLiteral("#9aa0a6") : QStringLiteral("#57606a"));
     QString accent =
         pal ? QString::fromLatin1(pal->blue) : (darkActive ? QStringLiteral("#58a6ff") : QStringLiteral("#0969da"));
+
+    // User requirement: In light mode, toolbar background must be dark (charcoal/dracula),
+    // and light mode default is NotepadNext. In dark mode, toolbar background matches dark theme.
+    QString tbBg = darkActive ? win : QStringLiteral("#21252b");
+    QString tbBorder = darkActive ? border : QStringLiteral("#181a1f");
+    QString tbText = darkActive ? txtPri : QStringLiteral("#e6edf3");
+    QString tbHover = darkActive ? border : QStringLiteral("rgba(255, 255, 255, 0.12)");
 
     const QString templateStr = QString::fromUtf8(R"(
 /* Universal Base Typography & Text */
@@ -850,7 +857,37 @@ QTextBrowser {
     border: 1px solid %3;
     border-radius: 8px;
 }
+
+/* ToolBars */
+QToolBar {
+    background-color: %7;
+    border: none;
+    border-bottom: 1px solid %8;
+    spacing: 3px;
+    padding: 2px 6px;
+}
+QToolBar QToolButton {
+    background: transparent;
+    color: %9;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 3px;
+    margin: 1px;
+}
+QToolBar QToolButton:hover {
+    background-color: %10;
+    border-color: %8;
+}
+QToolBar QToolButton:pressed {
+    background-color: %6;
+    color: #ffffff;
+}
+QToolBar::separator {
+    width: 1px;
+    background-color: %8;
+    margin: 4px 6px;
+}
 )");
 
-    return templateStr.arg(win, txtPri, border, txtSec, card, accent);
+    return templateStr.arg(win, txtPri, border, txtSec, card, accent, tbBg, tbBorder, tbText).arg(tbHover);
 }

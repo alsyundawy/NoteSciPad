@@ -4140,10 +4140,10 @@ void MainWindow::setupThemeMenu() {
     menuTheme->addSeparator();
 
     // 5. Reset and Mode Toggles
-    actionThemeLight = new QAction(tr("Reset to Default (Light Mode)"), this);
+    actionThemeLight = new QAction(tr("Reset to Default (Light Mode - NotepadNext)"), this);
     connect(actionThemeLight, &QAction::triggered, this, [this]() {
-        ThemeManager::instance()->setPalette(QStringLiteral("defaultLight"), this);
-        ui->statusBar->showMessage(tr("Theme reset to default Light Mode"), 3000);
+        ThemeManager::instance()->setPalette(QStringLiteral("notepadNext"), this);
+        ui->statusBar->showMessage(tr("Theme reset to default Light Mode (NotepadNext)"), 3000);
     });
     menuTheme->addAction(actionThemeLight);
 
