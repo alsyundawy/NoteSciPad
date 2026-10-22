@@ -34,11 +34,11 @@ AboutDialog::AboutDialog(QWidget *parent) : QDialog(parent) {
 
 void AboutDialog::setupUi() {
     setWindowTitle(tr("About SparkNotePad"));
-    resize(740, 580);
+    resize(540, 400);
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->setContentsMargins(18, 18, 18, 18);
-    mainLayout->setSpacing(14);
+    mainLayout->setContentsMargins(10, 10, 10, 10);
+    mainLayout->setSpacing(8);
 
     m_tabWidget = new QTabWidget(this);
     m_tabWidget->addTab(createAboutTab(), tr("&About"));
@@ -77,15 +77,15 @@ void AboutDialog::updateThemeColors() {
     QString cardStyle =
         QString(
             "QLabel {"
-            "  padding: 14px;"
+            "  padding: 8px 10px;"
             "  background-color: %1;"
             "  border: 1px solid %2;"
-            "  border-left: 5px solid %3;"
-            "  border-radius: 8px;"
+            "  border-left: 4px solid %3;"
+            "  border-radius: 6px;"
             "  color: %4;"
             "  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;"
-            "  font-size: 13px;"
-            "  line-height: 1.6;"
+            "  font-size: 11px;"
+            "  line-height: 1.4;"
             "}")
             .arg(cardBg, borderCol, accentCol, txtPri);
 
@@ -95,29 +95,30 @@ void AboutDialog::updateThemeColors() {
             "  background-color: %1;"
             "  color: %4;"
             "  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;"
-            "  font-size: 13px;"
+            "  font-size: 12px;"
             "}"
             "QTabWidget::pane {"
             "  background-color: %2;"
             "  border: 1px solid %3;"
-            "  border-radius: 8px;"
+            "  border-radius: 6px;"
             "}"
             "QTabBar::tab {"
             "  background-color: %1;"
             "  color: %5;"
-            "  padding: 8px 18px;"
+            "  padding: 5px 12px;"
             "  border: 1px solid %3;"
             "  border-bottom: none;"
-            "  border-top-left-radius: 6px;"
-            "  border-top-right-radius: 6px;"
+            "  border-top-left-radius: 5px;"
+            "  border-top-right-radius: 5px;"
             "  margin-right: 2px;"
+            "  font-size: 11px;"
             "  font-weight: 500;"
             "}"
             "QTabBar::tab:selected {"
             "  background-color: %2;"
             "  color: %4;"
             "  font-weight: bold;"
-            "  border-top: 3px solid %6;"
+            "  border-top: 2px solid %6;"
             "}"
             "QTabBar::tab:hover:!selected {"
             "  background-color: %3;"
@@ -130,18 +131,19 @@ void AboutDialog::updateThemeColors() {
             "  background-color: %2;"
             "  color: %4;"
             "  border: 1px solid %3;"
-            "  border-radius: 8px;"
-            "  padding: 14px;"
+            "  border-radius: 6px;"
+            "  padding: 8px 10px;"
             "  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;"
-            "  font-size: 13px;"
-            "  line-height: 1.6;"
+            "  font-size: 11px;"
+            "  line-height: 1.4;"
             "}"
             "QPushButton {"
             "  background-color: %2;"
             "  color: %4;"
             "  border: 1px solid %3;"
-            "  border-radius: 6px;"
-            "  padding: 7px 18px;"
+            "  border-radius: 5px;"
+            "  padding: 5px 14px;"
+            "  font-size: 11px;"
             "  font-weight: 600;"
             "}"
             "QPushButton:hover {"
@@ -159,29 +161,31 @@ void AboutDialog::updateThemeColors() {
     if (m_titleLabel) {
         m_titleLabel->setText(
             QString(
-                "<h2 style='color: %1; margin: 0 0 4px 0;'>SparkNotePad v%2 <span style='font-size: 11px; padding: 2px "
-                "8px; background-color: %3; color: #ffffff; border-radius: 4px; font-weight: bold;'>STABLE</span></h2>"
-                "<p style='margin: 0; font-weight: 600; font-size: 13px; color: %1;'>"
+                "<h3 style='color: %1; margin: 0 0 2px 0; font-size: 15px;'>SparkNotePad v%2 <span style='font-size: "
+                "10px; padding: 1px "
+                "6px; background-color: %3; color: #ffffff; border-radius: 4px; font-weight: bold;'>STABLE</span></h3>"
+                "<p style='margin: 0; font-weight: 600; font-size: 11px; color: %1;'>"
                 "Independent, Ultra-Lightweight &amp; High-Performance Text Editor</p>"
-                "<p style='margin: 2px 0 0 0; font-style: italic; font-size: 12px; color: %4;'>"
+                "<p style='margin: 1px 0 0 0; font-style: italic; font-size: 10px; color: %4;'>"
                 "Powered natively by Vendored Scintilla 5.6.x &amp; Lexilla 5.5.x with Modern Qt 6</p>")
                 .arg(txtPri, APP_VERSION, accentCol, txtSec));
     }
 
     if (m_badgesLabel) {
-        m_badgesLabel->setText(QString("<p style='margin-top: 8px; font-size: 11px; line-height: 1.8;'>"
-                                       "<span style='background: %1; color: %2; border: 1px solid %3; border-radius: "
-                                       "10px; padding: 3px 9px; font-weight: 500;'>75 Themes</span> "
-                                       "<span style='background: %1; color: %2; border: 1px solid %3; border-radius: "
-                                       "10px; padding: 3px 9px; font-weight: 500;'>📐 Math Eval</span> "
-                                       "<span style='background: %1; color: %2; border: 1px solid %3; border-radius: "
-                                       "10px; padding: 3px 9px; font-weight: 500;'>🔤 100+ Lexers</span> "
-                                       "<span style='background: %1; color: %2; border: 1px solid %3; border-radius: "
-                                       "10px; padding: 3px 9px; font-weight: 500;'>📄 Export PDF</span> "
-                                       "<span style='background: %1; color: %2; border: 1px solid %3; border-radius: "
-                                       "10px; padding: 3px 9px; font-weight: 500;'>⚡ Scintilla 5.6.x</span>"
-                                       "</p>")
-                                   .arg(badgeBg, txtPri, borderCol));
+        m_badgesLabel->setText(
+            QString("<p style='margin-top: 4px; margin-bottom: 0; font-size: 10px; line-height: 1.5;'>"
+                    "<span style='background: %1; color: %2; border: 1px solid %3; border-radius: "
+                    "8px; padding: 2px 7px; font-weight: 500;'>75 Themes</span> "
+                    "<span style='background: %1; color: %2; border: 1px solid %3; border-radius: "
+                    "8px; padding: 2px 7px; font-weight: 500;'>📐 Math Eval</span> "
+                    "<span style='background: %1; color: %2; border: 1px solid %3; border-radius: "
+                    "8px; padding: 2px 7px; font-weight: 500;'>🔤 100+ Lexers</span> "
+                    "<span style='background: %1; color: %2; border: 1px solid %3; border-radius: "
+                    "8px; padding: 2px 7px; font-weight: 500;'>📄 Export PDF</span> "
+                    "<span style='background: %1; color: %2; border: 1px solid %3; border-radius: "
+                    "8px; padding: 2px 7px; font-weight: 500;'>⚡ Scintilla 5.6.x</span>"
+                    "</p>")
+                .arg(badgeBg, txtPri, borderCol));
     }
 
     if (m_noticeBox) {
@@ -197,11 +201,10 @@ void AboutDialog::updateThemeColors() {
         m_metaLabel->setStyleSheet(cardStyle);
         m_metaLabel->setText(
             QString(
-                "<div style='color: %1; line-height: 1.6;'>"
-                "<h4 style='margin: 0 0 6px 0; color: %1;'>Official GitHub Repository &amp; Release Channel</h4>"
-                "<table border='0' cellspacing='4' cellpadding='2' style='color: %1; font-size: 12px; width: 100%;'>"
+                "<div style='color: %1; line-height: 1.4;'>"
+                "<table border='0' cellspacing='3' cellpadding='1' style='color: %1; font-size: 11px; width: 100%;'>"
                 "<tr>"
-                "  <td style='width: 140px; font-weight: bold;'>GitHub Repository:</td>"
+                "  <td style='width: 130px; font-weight: bold;'>GitHub Repository:</td>"
                 "  <td><a style='color: %2; text-decoration: none; font-weight: 600;' "
                 "href='https://github.com/alsyundawy/SparkNotePad'>"
                 "📦 https://github.com/alsyundawy/SparkNotePad</a></td>"
@@ -210,20 +213,8 @@ void AboutDialog::updateThemeColors() {
                 "  <td style='font-weight: bold;'>Release Tag:</td>"
                 "  <td><a style='text-decoration: none;' "
                 "href='https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.3.0'>"
-                "<span style='background-color: #238636; color: #ffffff; padding: 2px 10px; border-radius: 12px; "
-                "font-weight: bold; font-size: 11px;'>🏷️ v1.3.0 Official Release</span></a></td>"
-                "</tr>"
-                "<tr>"
-                "  <td style='font-weight: bold;'>Releases &amp; Changelog:</td>"
-                "  <td><a style='color: %2; text-decoration: none;' "
-                "href='https://github.com/alsyundawy/SparkNotePad/releases/latest'>"
-                "https://github.com/alsyundawy/SparkNotePad/releases/latest</a></td>"
-                "</tr>"
-                "<tr>"
-                "  <td style='font-weight: bold;'>Issue Tracker:</td>"
-                "  <td><a style='color: %2; text-decoration: none;' "
-                "href='https://github.com/alsyundawy/SparkNotePad/issues'>"
-                "https://github.com/alsyundawy/SparkNotePad/issues</a></td>"
+                "<span style='background-color: #238636; color: #ffffff; padding: 1px 8px; border-radius: 10px; "
+                "font-weight: bold; font-size: 10px;'>🏷️ v1.3.0 Official Release</span></a></td>"
                 "</tr>"
                 "<tr>"
                 "  <td style='font-weight: bold;'>Lead Maintainer:</td>"
@@ -231,12 +222,8 @@ void AboutDialog::updateThemeColors() {
                 "href='https://github.com/alsyundawy'>@alsyundawy</a>) — <b>ALSYUNDAWY IT SOLUTION</b></td>"
                 "</tr>"
                 "<tr>"
-                "  <td style='font-weight: bold;'>License:</td>"
-                "  <td>GNU General Public License v3.0 (GPL-3.0-or-later)</td>"
-                "</tr>"
-                "<tr>"
-                "  <td style='font-weight: bold;'>Core Architecture:</td>"
-                "  <td>Native Scintilla 5.6.7 + Lexilla 5.5.4 C++ Engine &bull; Qt 6 &bull; ISO C++20</td>"
+                "  <td style='font-weight: bold;'>License &amp; Engine:</td>"
+                "  <td>GNU General Public License v3.0 &bull; Scintilla 5.6.7 + Lexilla 5.5.4 &bull; Qt 6</td>"
                 "</tr>"
                 "</table>"
                 "</div>")
@@ -249,7 +236,7 @@ void AboutDialog::updateThemeColors() {
         qreal dpr = primary ? primary->devicePixelRatio() : 1.0;
 
         QString infoText = QString(
-                               "<div style='color: %1; line-height: 1.6;'>"
+                               "<div style='color: %1; line-height: 1.5;'>"
                                "<b>Operating System:</b> %2 (%3)<br/>"
                                "<b>Architecture:</b> %4 (Build Target: %5)<br/>"
                                "<b>Qt Version:</b> %6 (Built with %7)<br/>"
@@ -273,8 +260,8 @@ void AboutDialog::updateThemeColors() {
 
     if (m_maintainerBrowser) {
         m_maintainerBrowser->setHtml(
-            tr("<div style='color: %1; line-height: 1.6;'>"
-               "<h3 style='color: %1; margin-top: 0;'>Maintainer &amp; Official Support Channels</h3>"
+            tr("<div style='color: %1; line-height: 1.4;'>"
+               "<h3 style='color: %1; margin-top: 0; font-size: 13px;'>Maintainer &amp; Official Support Channels</h3>"
                "<p><b>Lead Architect &amp; Maintainer:</b> HARRY DERTIN SUTISNA ALSYUNDAWY "
                "(<code>@alsyundawy</code>)<br/>"
                "<b>Organization:</b> ALSYUNDAWY IT SOLUTION<br/>"
@@ -284,8 +271,8 @@ void AboutDialog::updateThemeColors() {
                "href='mailto:alsyundawy@gmail.com'>alsyundawy@gmail.com</a><br/>"
                "<b>GitHub Profile:</b> <a style='color: %2;' href='https://github.com/alsyundawy'>@alsyundawy</a><br/>"
                "<b>Telegram Channel:</b> <a style='color: %2;' href='https://t.me/alsyundawy'>@alsyundawy</a></p>"
-               "<hr style='border: 0; border-top: 1px solid %3; margin: 16px 0;'/>"
-               "<h4 style='color: %1;'>Sponsorship &amp; Donation Channels</h4>"
+               "<hr style='border: 0; border-top: 1px solid %3; margin: 10px 0;'/>"
+               "<h4 style='color: %1; font-size: 12px; margin: 6px 0;'>Sponsorship &amp; Donation Channels</h4>"
                "<p>If you find SparkNotePad useful for your development and daily workflow, consider supporting our "
                "ongoing development:</p>"
                "<ul>"
@@ -301,30 +288,30 @@ void AboutDialog::updateThemeColors() {
 
     if (m_creditsBrowser) {
         m_creditsBrowser->setHtml(
-            tr("<div style='color: %1; line-height: 1.6;'>"
-               "<h3 style='color: %1; margin-top: 0;'>Credits &amp; Upstream Attribution</h3>"
+            tr("<div style='color: %1; line-height: 1.4;'>"
+               "<h3 style='color: %1; margin-top: 0; font-size: 13px;'>Credits &amp; Upstream Attribution</h3>"
                "<p>SparkNotePad stands on the shoulders of giants. We express our deepest gratitude to the following "
                "projects and authors:</p>"
                "<ul>"
-               "<li><b>Scintilla:</b> Created by Neil Hodgson and contributors. The legendary core editing component "
-               "providing high-performance text rendering, multi-caret editing, and fold margins. (<a style='color: "
-               "%2;' href='https://www.scintilla.org'>scintilla.org</a>)</li>"
-               "<li><b>Lexilla:</b> Created by Neil Hodgson and contributors. Provides syntax highlighting and styling "
+               "<li><b>Scintilla:</b> Created by Neil Hodgson and contributors. Core editing component providing "
+               "high-performance text rendering, multi-caret editing, and fold margins. (<a style='color: %2;' "
+               "href='https://www.scintilla.org'>scintilla.org</a>)</li>"
+               "<li><b>Lexilla:</b> Created by Neil Hodgson and contributors. Syntax highlighting and styling "
                "lexers for over 100 programming languages. (<a style='color: %2;' "
                "href='https://www.scintilla.org'>scintilla.org/Lexilla.html</a>)</li>"
                "<li><b>NotepadNext:</b> Created by Justin Dailey (dail8859). Provided the cross-platform Qt "
                "scaffolding and docking framework foundation. (<a style='color: %2;' "
                "href='https://github.com/dail8859/NotepadNext'>github.com/dail8859/NotepadNext</a>)</li>"
-               "<li><b>Notepad4:</b> Created by Zufu Liu (zufuliu). Provided invaluable architectural ideas, lexer "
+               "<li><b>Notepad4:</b> Created by Zufu Liu (zufuliu). Architectural ideas, lexer "
                "updates, and utility concepts. (<a style='color: %2;' "
                "href='https://github.com/zufuliu/notepad4'>github.com/zufuliu/notepad4</a>)</li>"
-               "<li><b>Notepad3:</b> Created by Rizonesoft and contributors. Inspired Scintilla power-user text "
+               "<li><b>Notepad3:</b> Created by Rizonesoft and contributors. Scintilla power-user text "
                "transformation patterns and UI polish. (<a style='color: %2;' "
                "href='https://www.rizonesoft.com'>rizonesoft.com</a>)</li>"
                "<li><b>SubnetCalc for macOS:</b> Inspired UI elegance, theme architecture, and release documentation "
                "standards. (<a style='color: %2;' "
                "href='https://github.com/alsyundawy/SubnetCalc-MacOS'>github.com/alsyundawy/SubnetCalc-MacOS</a>)</li>"
-               "<li><b>Lon McGregor (NotepadPlusPlusIcons):</b> Designer of the iconic open-source editor and "
+               "<li><b>Lon McGregor (NotepadPlusPlusIcons):</b> Designer of the open-source editor and "
                "chameleon artwork series, adapted as SparkNotePad's official application icon. (<a style='color: %2;' "
                "href='https://github.com/LonMcGregor/NotepadPlusPlusIcons'>github.com/LonMcGregor/"
                "NotepadPlusPlusIcons</a>)</li>"
@@ -340,9 +327,9 @@ void AboutDialog::updateThemeColors() {
 
     if (m_shortcutsBrowser) {
         m_shortcutsBrowser->setHtml(
-            tr("<div style='color: %1; line-height: 1.6;'>"
-               "<h3 style='color: %1; margin-top: 0;'>Key Productivity Shortcuts</h3>"
-               "<table border='0' cellspacing='6' cellpadding='4' width='100%' style='color: %1;'>"
+            tr("<div style='color: %1; line-height: 1.4;'>"
+               "<h3 style='color: %1; margin-top: 0; font-size: 13px;'>Key Productivity Shortcuts</h3>"
+               "<table border='0' cellspacing='4' cellpadding='2' width='100%' style='color: %1; font-size: 11px;'>"
                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + N</td><td>Create New File</td></tr>"
                "<tr><td style='color: %2; font-weight: bold;'>Ctrl / Cmd + Shift + N</td><td>Open New Window "
                "(Independent Instance)</td></tr>"
@@ -372,43 +359,44 @@ void AboutDialog::updateThemeColors() {
     }
 
     if (m_licenseBrowser) {
-        m_licenseBrowser->setHtml(tr("<div style='color: %1; line-height: 1.6;'>"
-                                     "<h3 style='color: %1; margin-top: 0;'>GNU General Public License v3.0</h3>"
-                                     "<p>SparkNotePad is free software: you can redistribute it and/or modify "
-                                     "it under the terms of the GNU General Public License as published by "
-                                     "the Free Software Foundation, either version 3 of the License, or "
-                                     "(at your option) any later version.</p>"
-                                     "<p>This program is distributed in the hope that it will be useful, "
-                                     "but WITHOUT ANY WARRANTY; without even the implied warranty of "
-                                     "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the "
-                                     "GNU General Public License for more details.</p>"
-                                     "<p>For complete license details, visit: <a style='color: %2;' "
-                                     "href='https://www.gnu.org/licenses/'>https://www.gnu.org/licenses/</a></p>"
-                                     "</div>")
-                                      .arg(txtPri, accentCol));
+        m_licenseBrowser->setHtml(
+            tr("<div style='color: %1; line-height: 1.4;'>"
+               "<h3 style='color: %1; margin-top: 0; font-size: 13px;'>GNU General Public License v3.0</h3>"
+               "<p>SparkNotePad is free software: you can redistribute it and/or modify "
+               "it under the terms of the GNU General Public License as published by "
+               "the Free Software Foundation, either version 3 of the License, or "
+               "(at your option) any later version.</p>"
+               "<p>This program is distributed in the hope that it will be useful, "
+               "but WITHOUT ANY WARRANTY; without even the implied warranty of "
+               "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the "
+               "GNU General Public License for more details.</p>"
+               "<p>For complete license details, visit: <a style='color: %2;' "
+               "href='https://www.gnu.org/licenses/'>https://www.gnu.org/licenses/</a></p>"
+               "</div>")
+                .arg(txtPri, accentCol));
     }
 }
 
 QWidget *AboutDialog::createAboutTab() {
     QWidget *tab = new QWidget(this);
     QVBoxLayout *layout = new QVBoxLayout(tab);
-    layout->setContentsMargins(18, 18, 18, 18);
-    layout->setSpacing(14);
+    layout->setContentsMargins(10, 10, 10, 10);
+    layout->setSpacing(8);
 
     // Header layout with icon and title
     QHBoxLayout *headerLayout = new QHBoxLayout();
-    headerLayout->setSpacing(16);
+    headerLayout->setSpacing(12);
 
     QLabel *iconLabel = new QLabel(this);
     QPixmap iconPixmap(":/icons/SparkNotePad.png");
     if (!iconPixmap.isNull()) {
-        iconLabel->setPixmap(iconPixmap.scaled(80, 80, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        iconLabel->setPixmap(iconPixmap.scaled(52, 52, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     }
-    iconLabel->setFixedSize(80, 80);
+    iconLabel->setFixedSize(52, 52);
     headerLayout->addWidget(iconLabel);
 
     QVBoxLayout *titleLayout = new QVBoxLayout();
-    titleLayout->setSpacing(4);
+    titleLayout->setSpacing(2);
 
     m_titleLabel = new QLabel(this);
     titleLayout->addWidget(m_titleLabel);
@@ -436,8 +424,8 @@ QWidget *AboutDialog::createAboutTab() {
 QWidget *AboutDialog::createMaintainerTab() {
     QWidget *tab = new QWidget(this);
     QVBoxLayout *layout = new QVBoxLayout(tab);
-    layout->setContentsMargins(16, 16, 16, 16);
-    layout->setSpacing(12);
+    layout->setContentsMargins(10, 10, 10, 10);
+    layout->setSpacing(8);
 
     m_maintainerBrowser = new QTextBrowser(this);
     m_maintainerBrowser->setOpenExternalLinks(true);
@@ -448,7 +436,7 @@ QWidget *AboutDialog::createMaintainerTab() {
 QWidget *AboutDialog::createCreditsTab() {
     QWidget *tab = new QWidget(this);
     QVBoxLayout *layout = new QVBoxLayout(tab);
-    layout->setContentsMargins(16, 16, 16, 16);
+    layout->setContentsMargins(10, 10, 10, 10);
 
     m_creditsBrowser = new QTextBrowser(this);
     m_creditsBrowser->setOpenExternalLinks(true);
@@ -459,8 +447,8 @@ QWidget *AboutDialog::createCreditsTab() {
 QWidget *AboutDialog::createEnvironmentTab() {
     QWidget *tab = new QWidget(this);
     QVBoxLayout *layout = new QVBoxLayout(tab);
-    layout->setContentsMargins(16, 16, 16, 16);
-    layout->setSpacing(14);
+    layout->setContentsMargins(10, 10, 10, 10);
+    layout->setSpacing(8);
 
     m_diagnosticsCard = new QLabel(this);
     m_diagnosticsCard->setTextFormat(Qt::RichText);
@@ -478,7 +466,7 @@ QWidget *AboutDialog::createEnvironmentTab() {
 QWidget *AboutDialog::createShortcutsTab() {
     QWidget *tab = new QWidget(this);
     QVBoxLayout *layout = new QVBoxLayout(tab);
-    layout->setContentsMargins(16, 16, 16, 16);
+    layout->setContentsMargins(10, 10, 10, 10);
 
     m_shortcutsBrowser = new QTextBrowser(this);
     m_shortcutsBrowser->setOpenExternalLinks(false);
@@ -489,7 +477,7 @@ QWidget *AboutDialog::createShortcutsTab() {
 QWidget *AboutDialog::createLicenseTab() {
     QWidget *tab = new QWidget(this);
     QVBoxLayout *layout = new QVBoxLayout(tab);
-    layout->setContentsMargins(16, 16, 16, 16);
+    layout->setContentsMargins(10, 10, 10, 10);
 
     m_licenseBrowser = new QTextBrowser(this);
     m_licenseBrowser->setOpenExternalLinks(true);
