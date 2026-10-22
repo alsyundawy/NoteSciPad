@@ -4064,7 +4064,7 @@ void MainWindow::setupThemeMenu() {
     }
 
     // 1. Open Theme Switcher... (Ctrl+Shift+T)
-    actionThemeSwitcher = new QAction(tr("🎨 Open Theme Switcher..."), this);
+    actionThemeSwitcher = new QAction(tr("Open Theme Switcher..."), this);
     actionThemeSwitcher->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T));
     connect(actionThemeSwitcher, &QAction::triggered, this, [this]() {
         ThemeSwitcherDialog dlg(this);
