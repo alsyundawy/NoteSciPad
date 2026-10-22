@@ -7,11 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.3.0] - 2026-10-20
+## [1.3.0] - 2026-10-22
 
-### ⚡ Official SparkNotePad Brand Evolution, High-Precision Iconography, 13-Pillar Code Quality & Dual-Format Crypto Compatibility
+### ⚡ Official SparkNotePad Brand Evolution, 13-Pillar Quality Verification, Theme Leakage Elimination & Dual-Format Crypto Compatibility
 
-SparkNotePad v1.3.0 represents a landmark release featuring the official transformation from NoteSciPad into **SparkNotePad** across all application targets, repositories, packaging pipelines, and system integrations. This release delivers an updated visual identity with a custom high-definition iconset adhering to Apple HIG and Windows standards, comprehensive 13-pillar code quality refactoring (eliminating performance bottlenecks, enforcing const-correctness, and resolving lint invariants), refined Indonesian localization and documentation, and dual-format cryptographic compatibility supporting both `SPKENC01` and legacy `NSPENC01` encrypted files.
+SparkNotePad v1.3.0 represents a landmark release featuring the official transformation from NoteSciPad into **SparkNotePad** across all application targets, repositories, packaging pipelines, and system integrations. This release delivers an updated visual identity with a custom high-definition iconset adhering to Apple HIG and Windows standards, comprehensive 13-pillar code quality refactoring (eliminating performance bottlenecks, enforcing const-correctness, and resolving lint invariants), complete elimination of dark mode leakage in light mode dialogs, compiler scope hardening across multi-branch targets, refined Indonesian localization and documentation, and dual-format cryptographic compatibility supporting both `SPKENC01` and legacy `NSPENC01` encrypted files.
+
+#### 🛡️ Theme Leakage Elimination & Dialog Polish
+- **Zero Dark Mode Leakage in Light Mode**: Completely eliminated all usage of fragile Qt `palette(alternate-base)` and `palette(base)` stylesheets across `AboutDialog` and `DisplayInfoDialog`. On host operating systems set to Dark Mode (such as macOS Sequoia/Sonoma or Linux dark themes), Qt previously resolved those palette macros to dark gray (`#2d2d2d`), resulting in unsightly dark rectangles inside light-mode dialogs.
+- **Dynamic Theme Palette Binding (`updateThemeColors`)**: Implemented dynamic theme event listeners connected to `ThemeManager::themeChanged` in `AboutDialog` and `DisplayInfoDialog`. Color tokens are resolved deterministically using explicit CSS hex definitions (`#fafbfc` card background, `#f0f2f5` window background, `#e1e4e8` border, `#24292f` primary text, `#57606a` secondary text in Light Mode; `#282a36`, `#1e1f29`, `#44475a`, `#f8f8f2` in Dark Mode).
+- **Proportional About Dialog Sizing**: Calibrated About Dialog dimensions to a compact, elegant 540x400 px frame with multi-tab diagnostics.
+
+#### 🔧 Multi-Branch Compilation & Architecture Hardening
+- **Scope Resolution in ThemeManager**: Fixed Linux GCC compiler errors on branches where `findThemePaletteById` was referenced without being in scope by binding direct pointer fallbacks (`&kDarkPalette` / `&kLightPalette`).
+- **13-Pillar C++ & Qt Static Audit**: Resolved over 100 static analysis defects flagged by Trunk, Cppcheck, and Clang-Tidy across `src/`:
+  - `knownConditionTrueFalse`: Corrected UTF-32 surrogate range calculation in `RtfConverter.cpp` with signed 16-bit short casting, and removed redundant ternary expressions in `LuaExtension.cpp`.
+  - `missingOverride`: Added explicit `override` specifier across 16 virtual methods in `IFaceTable.h` and `IFaceTableMixer.h`.
+  - `noExplicitConstructor`: Added `explicit` keyword to single-argument constructors in `ApplicationSettings.h`, `MacroRecorder.h`, `Finder.h`, `SmartHighlighter.h`, `SurroundSelection.h`, and `URLFinder.h`.
+  - `shadowFunction` & `shadowMember`: Fixed setter macro `CREATE_SETTING`/`DEFINE_SETTING` parameter shadowing in `ApplicationSettings`, and member shadowing in `FindReplaceDialog`, `MainWindow`, `MacroRecorder`, and `Finder`.
+  - `cstyleCast`: Replaced C-style pointer casts with `reinterpret_cast<const char *>` and `const_cast` in `EncodingSelectionDialog.cpp` and `LuaExtension.cpp`.
+  - `constVariablePointer`: Declared read-only pointers and iterators as `const` in `IFaceTableMixer.cpp`, `ClipboardHistoryDialog.cpp`, and `LuaExtension.cpp`.
+  - `ignoredReturnErrorCode`: Verified and handled return status of `d.mkpath()` in `ScintillaNext.cpp`.
+  - `passedByValue`: Passed heavy objects (`MacroStep`, `QString` names) by `const &` to eliminate temporary heap allocations.
+- **SonarQube & Compilation Database Integration**: Configured `sonar-project.properties` and `.vscode/settings.json` pointing to `build/compile_commands.json` for first-class SonarLint CFamily and clangd static analysis.
 
 ---
 
