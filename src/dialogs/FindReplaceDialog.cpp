@@ -60,11 +60,12 @@ FindReplaceDialog::FindReplaceDialog(ISearchResultsHandler *searchResults, MainW
     connect(window, &MainWindow::editorActivated, this, &FindReplaceDialog::setEditor);
 
     tabBar = new QTabBar();
+    tabBar->setDrawBase(false);
     tabBar->addTab(tr("Find"));
     tabBar->addTab(tr("Replace"));
     tabBar->addTab(tr("Mark"));
     tabBar->setExpanding(false);
-    qobject_cast<QVBoxLayout *>(layout())->insertWidget(0, tabBar);
+    qobject_cast<QVBoxLayout *>(layout())->insertWidget(0, tabBar, 0, Qt::AlignLeft);
     connect(tabBar, &QTabBar::currentChanged, this, &FindReplaceDialog::changeTab);
 
     statusBar = new QStatusBar();
