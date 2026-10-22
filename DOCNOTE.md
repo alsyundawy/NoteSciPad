@@ -445,14 +445,17 @@ Certified by **Harry Dertin Sutisna Alsyundawy** — SparkNotePad Lead Maintaine
 ## 8. Multi-Branch 13-Pillar Quality Audit, Theme Leakage Fix & Linux GCC Resilience
 
 ### 8.1 Elimination of Dark Mode Leakage in Light Mode
+
 - **Diagnosis**: On host machines set to Dark Mode (macOS Sequoia/Sonoma or Linux desktops), `palette(alternate-base)` and `palette(base)` in `AboutDialog` and `DisplayInfoDialog` evaluated to a dark gray (`#2d2d2d`), causing dialog text boxes, legal notices, and browsers to display with dark backgrounds when the user selected Light Mode.
 - **Resolution**: Removed all `palette(...)` references in `AboutDialog.cpp` and `DisplayInfoDialog.cpp`. Introduced `updateThemeColors()` slot listening to `ThemeManager::themeChanged` and setting deterministic CSS hex colors (`#fafbfc` card background, `#f0f2f5` window, `#e1e4e8` border, `#24292f` primary text, `#57606a` secondary text in Light Mode; `#282a36`, `#1e1f29`, `#44475a`, `#f8f8f2` in Dark Mode). Zero dark leakage.
 
 ### 8.2 Scope Resolution in ThemeManager
+
 - **Diagnosis**: On branch `1.1.0` and `develop`, `src/features/ThemeManager.cpp` lines 163 and 308 called `findThemePaletteById` which was not in scope because `ThemePaletteData.h` was only added in later releases. This caused Linux GCC builds to fail with `error: ‘findThemePaletteById’ was not declared in this scope`.
 - **Resolution**: Bound direct fallbacks to `&kDarkPalette` and `&kLightPalette` defined statically in `ThemeManager.cpp`. Verified compilation on `ubuntu-24.04` (gcc 6.5 & gcc 6.8) with 100% success.
 
 ### 8.3 13-Pillar C++ & Qt Static Analysis
+
 - **Trunk Check**: Clean across all 358+ files in `src/` (`trunk check src --no-progress -j 2` -> `✔ No issues`).
 - **Cppcheck Refactoring**:
   - `missingOverride`: Added `override` across 16 methods in `IFaceTable.h` and `IFaceTableMixer.h`.
@@ -463,14 +466,18 @@ Certified by **Harry Dertin Sutisna Alsyundawy** — SparkNotePad Lead Maintaine
   - `ignoredReturnErrorCode`: Verified and handled return status of `d.mkpath()` in `ScintillaNext.cpp`.
   - `passedByValue`: Passed heavy objects (`MacroStep`, `QString` names) by `const &`.
 
-### 8.4 Multi-Branch Parity Status
+### 8.4 Linux GCC Scope & Member Function Resolution
 
-| Branch | AboutDialog State | Build Status (CI) | Trunk Check | Status |
-| :--- | :--- | :--- | :--- | :--- |
-| **`main`** | Zero dark leakage | Building | ✔ 0 issues | Up-to-date |
-| **`1.3.0`** | Zero dark leakage | Building | ✔ 0 issues | Up-to-date |
-| **`1.2.0`** | Zero dark leakage (0 emojis) | Building | ✔ 0 issues | Up-to-date |
-| **`1.1.0`** | Zero dark leakage | **Verified Success** (Ubuntu gcc) | ✔ 0 issues | Up-to-date |
-| **`develop`** | Zero dark leakage | **Verified Success** (Ubuntu gcc) | ✔ 0 issues | Up-to-date |
-| **`1.0.0`** | Zero dark leakage | Building | ✔ 0 issues | Up-to-date |
+- **Diagnosis**: In `FindReplaceDialog.cpp`, `showMessage(tr("Mark: %Ln match in entire file", "", count), "green");` passed `count`. In strict ISO C++ GCC, `count` resolved to the member function pointer `void FindReplaceDialog::count()`, failing with `error: invalid use of non-static member function 'void FindReplaceDialog::count()'`.
+- **Resolution**: Updated `markAll` to pass `matchCount` instead of `count`, and renamed shadowed variables `count` to `totalReplaced` and `editor` to `targetEd` in `replaceAll`. Resolves Linux GCC compilation across all branches.
 
+### 8.5 Multi-Branch Parity Status
+
+| Branch        | AboutDialog State            | Build Status (CI)                 | Trunk Check | Status     |
+| :------------ | :--------------------------- | :-------------------------------- | :---------- | :--------- |
+| **`main`**    | Zero dark leakage            | Building                          | ✔ 0 issues  | Up-to-date |
+| **`1.3.0`**   | Zero dark leakage            | Building                          | ✔ 0 issues  | Up-to-date |
+| **`1.2.0`**   | Zero dark leakage (0 emojis) | Building                          | ✔ 0 issues  | Up-to-date |
+| **`1.1.0`**   | Zero dark leakage            | **Verified Success** (Ubuntu gcc) | ✔ 0 issues  | Up-to-date |
+| **`develop`** | Zero dark leakage            | **Verified Success** (Ubuntu gcc) | ✔ 0 issues  | Up-to-date |
+| **`1.0.0`**   | Zero dark leakage            | Building                          | ✔ 0 issues  | Up-to-date |

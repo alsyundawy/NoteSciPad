@@ -14,11 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 SparkNotePad v1.3.0 represents a landmark release featuring the official transformation from NoteSciPad into **SparkNotePad** across all application targets, repositories, packaging pipelines, and system integrations. This release delivers an updated visual identity with a custom high-definition iconset adhering to Apple HIG and Windows standards, comprehensive 13-pillar code quality refactoring (eliminating performance bottlenecks, enforcing const-correctness, and resolving lint invariants), complete elimination of dark mode leakage in light mode dialogs, compiler scope hardening across multi-branch targets, refined Indonesian localization and documentation, and dual-format cryptographic compatibility supporting both `SPKENC01` and legacy `NSPENC01` encrypted files.
 
 #### 🛡️ Theme Leakage Elimination & Dialog Polish
+
 - **Zero Dark Mode Leakage in Light Mode**: Completely eliminated all usage of fragile Qt `palette(alternate-base)` and `palette(base)` stylesheets across `AboutDialog` and `DisplayInfoDialog`. On host operating systems set to Dark Mode (such as macOS Sequoia/Sonoma or Linux dark themes), Qt previously resolved those palette macros to dark gray (`#2d2d2d`), resulting in unsightly dark rectangles inside light-mode dialogs.
 - **Dynamic Theme Palette Binding (`updateThemeColors`)**: Implemented dynamic theme event listeners connected to `ThemeManager::themeChanged` in `AboutDialog` and `DisplayInfoDialog`. Color tokens are resolved deterministically using explicit CSS hex definitions (`#fafbfc` card background, `#f0f2f5` window background, `#e1e4e8` border, `#24292f` primary text, `#57606a` secondary text in Light Mode; `#282a36`, `#1e1f29`, `#44475a`, `#f8f8f2` in Dark Mode).
 - **Proportional About Dialog Sizing**: Calibrated About Dialog dimensions to a compact, elegant 540x400 px frame with multi-tab diagnostics.
 
 #### 🔧 Multi-Branch Compilation & Architecture Hardening
+
 - **Scope Resolution in ThemeManager**: Fixed Linux GCC compiler errors on branches where `findThemePaletteById` was referenced without being in scope by binding direct pointer fallbacks (`&kDarkPalette` / `&kLightPalette`).
 - **13-Pillar C++ & Qt Static Audit**: Resolved over 100 static analysis defects flagged by Trunk, Cppcheck, and Clang-Tidy across `src/`:
   - `knownConditionTrueFalse`: Corrected UTF-32 surrogate range calculation in `RtfConverter.cpp` with signed 16-bit short casting, and removed redundant ternary expressions in `LuaExtension.cpp`.
@@ -106,6 +108,7 @@ SparkNotePad v1.3.0 represents a landmark release featuring the official transfo
   - `FindReplaceDialog.ui`: Increased `verticalLayout_6` checkbox column spacing from `0` to `6px`, preventing checklist item squishing.
   - `PreferencesDialog.ui`: Added spacing (`8px` to `verticalLayout_4`, `6px` to `verticalLayout_2`, `verticalLayout_3`, and `verticalLayout_5`).
   - `TailOptionsDialog.ui`: Added `8px` spacing to `verticalLayout_2` for behavior and protection checkboxes.
+- **Linux GCC Scope and Member Function Resolution in FindReplaceDialog**: Fixed compilation failure under GCC on Linux (`error: invalid use of non-static member function 'void FindReplaceDialog::count()'`) where `showMessage(tr("Mark: %Ln match in entire file", "", count), ...)` referenced `count` resolving to the class member function pointer instead of the local match tally. Replaced with `matchCount` and eliminated variable shadowing (`count` -> `totalReplaced`, `editor` -> `targetEd`) in `replaceAll`.
   - `ClipboardHistoryDialog.ui`: Added `14px` spacing to `layoutOptions` horizontal checkbox row.
   - `RegexHelperDialog.ui`: Added `12px` spacing to `horizontalLayoutFlags` regex options checklist.
   - `RunDialog.ui`: Added `14px` spacing to `horizontalLayoutOptions` execution flags row.
