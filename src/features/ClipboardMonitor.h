@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -23,8 +24,7 @@
 
 class ScintillaNext;
 
-class ClipboardMonitor : public QObject
-{
+class ClipboardMonitor : public QObject {
     Q_OBJECT
 
 public:
@@ -87,4 +87,4 @@ private:
     QPointer<ScintillaNext> m_targetEditor;
 };
 
-#endif // CLIPBOARDMONITOR_H
+#endif  // CLIPBOARDMONITOR_H

@@ -95,7 +95,7 @@ private:
         skipWhitespace();
         if (m_pos < m_len && m_text[m_pos] == '^') {
             m_pos++;
-            double exp = parsePower(); // right-associative
+            double exp = parsePower();  // right-associative
             val = std::pow(val, exp);
         }
         return val;
@@ -200,10 +200,14 @@ private:
             }
 
             // Constants
-            if (ident == QStringLiteral("pi")) return M_PI;
-            if (ident == QStringLiteral("e")) return M_E;
-            if (ident == QStringLiteral("tau")) return 2.0 * M_PI;
-            if (ident == QStringLiteral("phi")) return (1.0 + std::sqrt(5.0)) / 2.0;
+            if (ident == QStringLiteral("pi"))
+                return M_PI;
+            if (ident == QStringLiteral("e"))
+                return M_E;
+            if (ident == QStringLiteral("tau"))
+                return 2.0 * M_PI;
+            if (ident == QStringLiteral("phi"))
+                return (1.0 + std::sqrt(5.0)) / 2.0;
 
             throw QStringLiteral("Unknown constant: %1").arg(ident);
         }
@@ -216,39 +220,62 @@ private:
             throw QStringLiteral("Function %1() requires arguments").arg(fn);
         }
 
-        if (fn == QStringLiteral("sqrt")) return std::sqrt(args[0]);
-        if (fn == QStringLiteral("cbrt")) return std::cbrt(args[0]);
-        if (fn == QStringLiteral("abs")) return std::fabs(args[0]);
-        if (fn == QStringLiteral("sin")) return std::sin(args[0]);
-        if (fn == QStringLiteral("cos")) return std::cos(args[0]);
-        if (fn == QStringLiteral("tan")) return std::tan(args[0]);
-        if (fn == QStringLiteral("asin")) return std::asin(args[0]);
-        if (fn == QStringLiteral("acos")) return std::acos(args[0]);
-        if (fn == QStringLiteral("atan")) return std::atan(args[0]);
-        if (fn == QStringLiteral("sinh")) return std::sinh(args[0]);
-        if (fn == QStringLiteral("cosh")) return std::cosh(args[0]);
-        if (fn == QStringLiteral("tanh")) return std::tanh(args[0]);
-        if (fn == QStringLiteral("log") || fn == QStringLiteral("ln")) return std::log(args[0]);
-        if (fn == QStringLiteral("log10")) return std::log10(args[0]);
-        if (fn == QStringLiteral("log2")) return std::log2(args[0]);
-        if (fn == QStringLiteral("exp")) return std::exp(args[0]);
-        if (fn == QStringLiteral("floor")) return std::floor(args[0]);
-        if (fn == QStringLiteral("ceil")) return std::ceil(args[0]);
-        if (fn == QStringLiteral("round")) return std::round(args[0]);
-        if (fn == QStringLiteral("trunc")) return std::trunc(args[0]);
+        if (fn == QStringLiteral("sqrt"))
+            return std::sqrt(args[0]);
+        if (fn == QStringLiteral("cbrt"))
+            return std::cbrt(args[0]);
+        if (fn == QStringLiteral("abs"))
+            return std::fabs(args[0]);
+        if (fn == QStringLiteral("sin"))
+            return std::sin(args[0]);
+        if (fn == QStringLiteral("cos"))
+            return std::cos(args[0]);
+        if (fn == QStringLiteral("tan"))
+            return std::tan(args[0]);
+        if (fn == QStringLiteral("asin"))
+            return std::asin(args[0]);
+        if (fn == QStringLiteral("acos"))
+            return std::acos(args[0]);
+        if (fn == QStringLiteral("atan"))
+            return std::atan(args[0]);
+        if (fn == QStringLiteral("sinh"))
+            return std::sinh(args[0]);
+        if (fn == QStringLiteral("cosh"))
+            return std::cosh(args[0]);
+        if (fn == QStringLiteral("tanh"))
+            return std::tanh(args[0]);
+        if (fn == QStringLiteral("log") || fn == QStringLiteral("ln"))
+            return std::log(args[0]);
+        if (fn == QStringLiteral("log10"))
+            return std::log10(args[0]);
+        if (fn == QStringLiteral("log2"))
+            return std::log2(args[0]);
+        if (fn == QStringLiteral("exp"))
+            return std::exp(args[0]);
+        if (fn == QStringLiteral("floor"))
+            return std::floor(args[0]);
+        if (fn == QStringLiteral("ceil"))
+            return std::ceil(args[0]);
+        if (fn == QStringLiteral("round"))
+            return std::round(args[0]);
+        if (fn == QStringLiteral("trunc"))
+            return std::trunc(args[0]);
 
         if (fn == QStringLiteral("pow")) {
-            if (args.size() < 2) throw QStringLiteral("pow(base, exp) requires 2 arguments");
+            if (args.size() < 2)
+                throw QStringLiteral("pow(base, exp) requires 2 arguments");
             return std::pow(args[0], args[1]);
         }
         if (fn == QStringLiteral("min")) {
             double m = args[0];
-            for (int i = 1; i < args.size(); ++i) m = std::min(m, args[i]);
+            for (int i = 1; i < args.size(); ++i)
+                m = std::min(m, args[i]);
             return m;
         }
         if (fn == QStringLiteral("max")) {
             double m = args[0];
-            for (int i = 1; i < args.size(); ++i) m = std::max(m, args[i]);
+            for (int i = 1; i < args.size(); ++i)
+                m = std::max(m, args[i]);
             return m;
         }
 
@@ -260,12 +287,13 @@ private:
     const int m_len;
 };
 
-} // namespace
+}  // namespace
 
-QString MathEvaluator::formatValue(double val)
-{
-    if (std::isnan(val)) return QStringLiteral("NaN");
-    if (std::isinf(val)) return (val > 0) ? QStringLiteral("Infinity") : QStringLiteral("-Infinity");
+QString MathEvaluator::formatValue(double val) {
+    if (std::isnan(val))
+        return QStringLiteral("NaN");
+    if (std::isinf(val))
+        return (val > 0) ? QStringLiteral("Infinity") : QStringLiteral("-Infinity");
 
     // Clean integer check
     if (val == std::floor(val) && std::fabs(val) < 1e15) {
@@ -277,8 +305,7 @@ QString MathEvaluator::formatValue(double val)
     return str;
 }
 
-MathEvaluator::Result MathEvaluator::evaluateString(const QString &expr)
-{
+MathEvaluator::Result MathEvaluator::evaluateString(const QString &expr) {
     QString cleaned = expr.trimmed();
     // Strip trailing = if present
     if (cleaned.endsWith('=')) {
@@ -303,8 +330,7 @@ MathEvaluator::Result MathEvaluator::evaluateString(const QString &expr)
 }
 
 #if !defined(UNIT_TESTING)
-MathEvaluator::Result MathEvaluator::evaluateInEditor(ScintillaNext *editor, Action action)
-{
+MathEvaluator::Result MathEvaluator::evaluateInEditor(ScintillaNext *editor, Action action) {
     if (!editor) {
         return {false, 0.0, QString(), QString(), QStringLiteral("No active editor")};
     }

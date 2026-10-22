@@ -20,33 +20,24 @@
 #include <QMessageBox>
 #include <QDebug>
 
-DocumentationManager &DocumentationManager::instance()
-{
+DocumentationManager &DocumentationManager::instance() {
     static DocumentationManager inst;
     return inst;
 }
 
-DocumentationManager::DocumentationManager(QObject *parent)
-    : QObject(parent)
-{
-}
+DocumentationManager::DocumentationManager(QObject *parent) : QObject(parent) {}
 
-QString DocumentationManager::localDocumentationPath(const QString &docFilename) const
-{
+QString DocumentationManager::localDocumentationPath(const QString &docFilename) const {
     QString appDir = QCoreApplication::applicationDirPath();
-    
+
     // Check possible local doc paths:
     // 1. Inside macOS app bundle: <App.app>/Contents/Resources/doc/
     // 2. Relative to build dir: <build>/doc/ or <build>/../doc/
     // 3. System shared path: /usr/share/doc/NoteSciPad/
     QStringList candidates = {
-        appDir + "/../Resources/doc/" + docFilename,
-        appDir + "/doc/" + docFilename,
-        appDir + "/../doc/" + docFilename,
-        appDir + "/../../doc/" + docFilename,
-        "/usr/share/doc/NoteSciPad/" + docFilename,
-        "/usr/local/share/doc/NoteSciPad/" + docFilename
-    };
+        appDir + "/../Resources/doc/" + docFilename, appDir + "/doc/" + docFilename,
+        appDir + "/../doc/" + docFilename,           appDir + "/../../doc/" + docFilename,
+        "/usr/share/doc/NoteSciPad/" + docFilename,  "/usr/local/share/doc/NoteSciPad/" + docFilename};
 
     for (const QString &path : candidates) {
         if (QFile::exists(path)) {
@@ -57,13 +48,11 @@ QString DocumentationManager::localDocumentationPath(const QString &docFilename)
     return QString();
 }
 
-QString DocumentationManager::onlineDocumentationUrl(const QString &docFilename) const
-{
+QString DocumentationManager::onlineDocumentationUrl(const QString &docFilename) const {
     return QString("https://github.com/alsyundawy/NoteSciPad/blob/main/doc/%1").arg(docFilename);
 }
 
-void DocumentationManager::openUrlOrFile(const QString &filePath, const QString &fallbackUrl, QWidget *parent)
-{
+void DocumentationManager::openUrlOrFile(const QString &filePath, const QString &fallbackUrl, QWidget *parent) {
     bool opened = false;
     if (!filePath.isEmpty() && QFile::exists(filePath)) {
         opened = QDesktopServices::openUrl(QUrl::fromLocalFile(filePath));
@@ -74,33 +63,29 @@ void DocumentationManager::openUrlOrFile(const QString &filePath, const QString 
     }
 
     if (!opened && parent) {
-        QMessageBox::warning(parent, tr("Documentation Error"),
-                             tr("Unable to open documentation at:\n%1\n\nOr fallback online URL:\n%2")
-                             .arg(filePath, fallbackUrl));
+        QMessageBox::warning(
+            parent, tr("Documentation Error"),
+            tr("Unable to open documentation at:\n%1\n\nOr fallback online URL:\n%2").arg(filePath, fallbackUrl));
     }
 }
 
-void DocumentationManager::openUserGuide(QWidget *parent)
-{
+void DocumentationManager::openUserGuide(QWidget *parent) {
     QString local = localDocumentationPath("USER_GUIDE.md");
     QString online = onlineDocumentationUrl("USER_GUIDE.md");
     openUrlOrFile(local, online, parent);
 }
 
-void DocumentationManager::openDeveloperGuide(QWidget *parent)
-{
+void DocumentationManager::openDeveloperGuide(QWidget *parent) {
     QString local = localDocumentationPath("DEVELOPER_GUIDE.md");
     QString online = onlineDocumentationUrl("DEVELOPER_GUIDE.md");
     openUrlOrFile(local, online, parent);
 }
 
-void DocumentationManager::openOnlineRepository(QWidget *parent)
-{
+void DocumentationManager::openOnlineRepository(QWidget *parent) {
     Q_UNUSED(parent);
     QDesktopServices::openUrl(QUrl("https://github.com/alsyundawy/NoteSciPad"));
 }
 
-void DocumentationManager::openKeyboardShortcutsGuide(QWidget *parent)
-{
+void DocumentationManager::openKeyboardShortcutsGuide(QWidget *parent) {
     AccessibilityManager::instance()->openAccessibilityHelp(parent);
 }

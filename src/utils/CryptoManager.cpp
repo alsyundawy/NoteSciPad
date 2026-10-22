@@ -488,8 +488,10 @@ CryptoManager::CryptoResult CryptoManager::encrypt(const QByteArray &plaintext, 
         uint8_t *k2;
         size_t s2;
         ~KeyScopeGuard() {
-            if (k1 && s1 > 0) secureZeroMemory(k1, s1);
-            if (k2 && s2 > 0) secureZeroMemory(k2, s2);
+            if (k1 && s1 > 0)
+                secureZeroMemory(k1, s1);
+            if (k2 && s2 > 0)
+                secureZeroMemory(k2, s2);
         }
     } keyGuard{aesKey, sizeof(aesKey), hmacKey, sizeof(hmacKey)};
 
@@ -587,8 +589,10 @@ CryptoManager::CryptoResult CryptoManager::decrypt(const QByteArray &ciphertext,
         uint8_t *k2;
         size_t s2;
         ~KeyScopeGuard() {
-            if (k1 && s1 > 0) secureZeroMemory(k1, s1);
-            if (k2 && s2 > 0) secureZeroMemory(k2, s2);
+            if (k1 && s1 > 0)
+                secureZeroMemory(k1, s1);
+            if (k2 && s2 > 0)
+                secureZeroMemory(k2, s2);
         }
     } keyGuard{aesKey, sizeof(aesKey), hmacKey, sizeof(hmacKey)};
 

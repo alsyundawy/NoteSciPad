@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  * Copyright 2026 Harry DS Alsyundawy (NoteSciPad Maintainer)
@@ -21,8 +22,7 @@
 class MainWindow;
 struct ThemePalette;
 
-class ThemeSwitcherDialog : public QDialog
-{
+class ThemeSwitcherDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -51,4 +51,4 @@ private:
     QPushButton *m_cancelBtn = nullptr;
 };
 
-#endif // THEMESWITCHERDIALOG_H
+#endif  // THEMESWITCHERDIALOG_H

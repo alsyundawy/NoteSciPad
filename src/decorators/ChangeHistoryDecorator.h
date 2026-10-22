@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -15,8 +16,7 @@
 
 #include "EditorDecorator.h"
 
-class ChangeHistoryDecorator : public EditorDecorator
-{
+class ChangeHistoryDecorator : public EditorDecorator {
     Q_OBJECT
 
 public:
@@ -38,4 +38,4 @@ private:
     void setupMarkers();
 };
 
-#endif // CHANGEHISTORYDECORATOR_H
+#endif  // CHANGEHISTORYDECORATOR_H

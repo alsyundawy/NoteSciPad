@@ -17,24 +17,18 @@
 #include <QClipboard>
 #include <QDateTime>
 
-ClipboardMonitor *ClipboardMonitor::instance()
-{
+ClipboardMonitor *ClipboardMonitor::instance() {
     static ClipboardMonitor s_instance;
     return &s_instance;
 }
 
-ClipboardMonitor::ClipboardMonitor(QObject *parent) :
-    QObject(parent)
-{
-}
+ClipboardMonitor::ClipboardMonitor(QObject *parent) : QObject(parent) {}
 
-bool ClipboardMonitor::isMonitoring() const
-{
+bool ClipboardMonitor::isMonitoring() const {
     return m_isMonitoring;
 }
 
-void ClipboardMonitor::startMonitoring(ScintillaNext *targetEditor)
-{
+void ClipboardMonitor::startMonitoring(ScintillaNext *targetEditor) {
     if (targetEditor) {
         m_targetEditor = targetEditor;
     }
@@ -47,17 +41,16 @@ void ClipboardMonitor::startMonitoring(ScintillaNext *targetEditor)
     }
 }
 
-void ClipboardMonitor::stopMonitoring()
-{
+void ClipboardMonitor::stopMonitoring() {
     if (m_isMonitoring) {
         m_isMonitoring = false;
-        disconnect(QApplication::clipboard(), &QClipboard::dataChanged, this, &ClipboardMonitor::onClipboardDataChanged);
+        disconnect(QApplication::clipboard(), &QClipboard::dataChanged, this,
+                   &ClipboardMonitor::onClipboardDataChanged);
         emit monitoringStateChanged(false);
     }
 }
 
-void ClipboardMonitor::toggleMonitoring(ScintillaNext *targetEditor)
-{
+void ClipboardMonitor::toggleMonitoring(ScintillaNext *targetEditor) {
     if (m_isMonitoring) {
         stopMonitoring();
     } else {
@@ -65,80 +58,69 @@ void ClipboardMonitor::toggleMonitoring(ScintillaNext *targetEditor)
     }
 }
 
-void ClipboardMonitor::setTargetEditor(ScintillaNext *editor)
-{
+void ClipboardMonitor::setTargetEditor(ScintillaNext *editor) {
     m_targetEditor = editor;
 }
 
-ScintillaNext *ClipboardMonitor::targetEditor() const
-{
+ScintillaNext *ClipboardMonitor::targetEditor() const {
     return m_targetEditor;
 }
 
-bool ClipboardMonitor::appendToDocument() const
-{
+bool ClipboardMonitor::appendToDocument() const {
     return m_appendToDocument;
 }
 
-void ClipboardMonitor::setAppendToDocument(bool append)
-{
+void ClipboardMonitor::setAppendToDocument(bool append) {
     m_appendToDocument = append;
 }
 
-bool ClipboardMonitor::addTimestamp() const
-{
+bool ClipboardMonitor::addTimestamp() const {
     return m_addTimestamp;
 }
 
-void ClipboardMonitor::setAddTimestamp(bool add)
-{
+void ClipboardMonitor::setAddTimestamp(bool add) {
     m_addTimestamp = add;
 }
 
-bool ClipboardMonitor::addSeparator() const
-{
+bool ClipboardMonitor::addSeparator() const {
     return m_addSeparator;
 }
 
-void ClipboardMonitor::setAddSeparator(bool add)
-{
+void ClipboardMonitor::setAddSeparator(bool add) {
     m_addSeparator = add;
 }
 
-bool ClipboardMonitor::ignoreInternalCopy() const
-{
+bool ClipboardMonitor::ignoreInternalCopy() const {
     return m_ignoreInternalCopy;
 }
 
-void ClipboardMonitor::setIgnoreInternalCopy(bool ignore)
-{
+void ClipboardMonitor::setIgnoreInternalCopy(bool ignore) {
     m_ignoreInternalCopy = ignore;
 }
 
-int ClipboardMonitor::capturedCount() const
-{
+int ClipboardMonitor::capturedCount() const {
     return m_capturedCount;
 }
 
-const QList<ClipboardMonitor::CapturedClip> &ClipboardMonitor::history() const
-{
+const QList<ClipboardMonitor::CapturedClip> &ClipboardMonitor::history() const {
     return m_history;
 }
 
-void ClipboardMonitor::clearHistory()
-{
+void ClipboardMonitor::clearHistory() {
     m_history.clear();
     m_capturedCount = 0;
 }
 
-void ClipboardMonitor::onClipboardDataChanged()
-{
-    if (!m_isMonitoring) return;
+void ClipboardMonitor::onClipboardDataChanged() {
+    if (!m_isMonitoring)
+        return;
 
     const QString text = QApplication::clipboard()->text();
-    if (text.isEmpty()) return;
+    if (text.isEmpty())
+        return;
 
-    if (text == m_lastCapturedText) return;
+    if (text == m_lastCapturedText)
+        return;
     m_lastCapturedText = text;
 
     bool isInternal = (QApplication::activeWindow() != nullptr);
@@ -163,9 +145,9 @@ void ClipboardMonitor::onClipboardDataChanged()
     emit clipCaptured(clip, m_capturedCount);
 }
 
-void ClipboardMonitor::appendClipToEditor(ScintillaNext *editor, const CapturedClip &clip)
-{
-    if (!editor) return;
+void ClipboardMonitor::appendClipToEditor(ScintillaNext *editor, const CapturedClip &clip) {
+    if (!editor)
+        return;
 
     int docLen = editor->length();
     QString toAppend;

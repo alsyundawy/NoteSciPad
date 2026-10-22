@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -25,17 +26,16 @@
 
 class ScintillaNext;
 
-class TailMonitoringManager : public QObject
-{
+class TailMonitoringManager : public QObject {
     Q_OBJECT
 
 public:
     struct MonitoredDocState {
         QString filePath;
-        qint64 lastSize {0};
+        qint64 lastSize{0};
         QDateTime lastModified;
-        bool wasReadOnly {false};
-        bool autoScrollToEnd {true};
+        bool wasReadOnly{false};
+        bool autoScrollToEnd{true};
     };
 
     static TailMonitoringManager *instance();
@@ -81,9 +81,9 @@ private:
     QFileSystemWatcher *m_fileWatcher;
     QTimer *m_timer;
 
-    int m_pollIntervalMs {750};
-    bool m_readOnlyLock {true};
-    qint64 m_maxChunkBytes {10 * 1024 * 1024};
+    int m_pollIntervalMs{750};
+    bool m_readOnlyLock{true};
+    qint64 m_maxChunkBytes{10 * 1024 * 1024};
 };
 
-#endif // TAILMONITORINGMANAGER_H
+#endif  // TAILMONITORINGMANAGER_H

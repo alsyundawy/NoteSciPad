@@ -15,11 +15,8 @@
 #include <QListWidgetItem>
 #include <QMessageBox>
 
-EncodingSelectionDialog::EncodingSelectionDialog(ScintillaNext *editor, QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::EncodingSelectionDialog),
-    m_editor(editor)
-{
+EncodingSelectionDialog::EncodingSelectionDialog(ScintillaNext *editor, QWidget *parent)
+    : QDialog(parent), ui(new Ui::EncodingSelectionDialog), m_editor(editor) {
     ui->setupUi(this);
 
     m_allEncodings = EncodingDetector::supportedEncodings();
@@ -31,45 +28,45 @@ EncodingSelectionDialog::EncodingSelectionDialog(ScintillaNext *editor, QWidget 
     connect(ui->btnQuickUtf8Bom, &QPushButton::clicked, this, &EncodingSelectionDialog::selectQuickUtf8Bom);
     connect(ui->btnQuickAnsi, &QPushButton::clicked, this, &EncodingSelectionDialog::selectQuickAnsi);
 
-    connect(ui->buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked, this, &EncodingSelectionDialog::onApply);
+    connect(ui->buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked, this,
+            &EncodingSelectionDialog::onApply);
 }
 
-EncodingSelectionDialog::~EncodingSelectionDialog()
-{
+EncodingSelectionDialog::~EncodingSelectionDialog() {
     delete ui;
 }
 
-void EncodingSelectionDialog::updateCurrentDocInfo()
-{
-    if (!m_editor) return;
+void EncodingSelectionDialog::updateCurrentDocInfo() {
+    if (!m_editor)
+        return;
 
     ui->labelActiveEncoding->setText(m_editor->encodingName());
 
     switch (m_editor->bom()) {
-    case ScintillaNext::BomType::Utf8:
-        ui->labelBomStatus->setText(tr("Present (UTF-8 BOM, 3 bytes)"));
-        break;
-    case ScintillaNext::BomType::Utf16LE:
-        ui->labelBomStatus->setText(tr("Present (UTF-16LE BOM, 2 bytes)"));
-        break;
-    case ScintillaNext::BomType::Utf16BE:
-        ui->labelBomStatus->setText(tr("Present (UTF-16BE BOM, 2 bytes)"));
-        break;
-    case ScintillaNext::BomType::None:
-    default:
-        ui->labelBomStatus->setText(tr("None"));
-        break;
+        case ScintillaNext::BomType::Utf8:
+            ui->labelBomStatus->setText(tr("Present (UTF-8 BOM, 3 bytes)"));
+            break;
+        case ScintillaNext::BomType::Utf16LE:
+            ui->labelBomStatus->setText(tr("Present (UTF-16LE BOM, 2 bytes)"));
+            break;
+        case ScintillaNext::BomType::Utf16BE:
+            ui->labelBomStatus->setText(tr("Present (UTF-16BE BOM, 2 bytes)"));
+            break;
+        case ScintillaNext::BomType::None:
+        default:
+            ui->labelBomStatus->setText(tr("None"));
+            break;
     }
 
     // Run quick detection on sample to show detection method and confidence
     const QByteArray sample = QByteArray::fromRawData(reinterpret_cast<const char *>(m_editor->characterPointer()),
                                                       qMin(m_editor->textLength(), 4096));
     auto res = EncodingDetector::detect(sample);
-    ui->labelDetectionMethod->setText(QStringLiteral("%1 (Confidence: %2%)").arg(res.detectionMethod).arg(res.confidence));
+    ui->labelDetectionMethod->setText(
+        QStringLiteral("%1 (Confidence: %2%)").arg(res.detectionMethod).arg(res.confidence));
 }
 
-void EncodingSelectionDialog::populateList()
-{
+void EncodingSelectionDialog::populateList() {
     ui->listEncodings->clear();
     const QString currentEnc = m_editor ? m_editor->encodingName() : QStringLiteral("UTF-8");
 
@@ -95,8 +92,7 @@ void EncodingSelectionDialog::populateList()
     }
 }
 
-void EncodingSelectionDialog::onFilterChanged(const QString &text)
-{
+void EncodingSelectionDialog::onFilterChanged(const QString &text) {
     const QString filter = text.trimmed().toLower();
     for (int i = 0; i < ui->listEncodings->count(); ++i) {
         QListWidgetItem *item = ui->listEncodings->item(i);
@@ -111,8 +107,7 @@ void EncodingSelectionDialog::onFilterChanged(const QString &text)
     }
 }
 
-QString EncodingSelectionDialog::selectedEncoding() const
-{
+QString EncodingSelectionDialog::selectedEncoding() const {
     QListWidgetItem *item = ui->listEncodings->currentItem();
     if (item && (item->flags() & Qt::ItemIsEnabled)) {
         return item->data(Qt::UserRole).toString();
@@ -120,24 +115,24 @@ QString EncodingSelectionDialog::selectedEncoding() const
     return QStringLiteral("UTF-8");
 }
 
-ScintillaNext::BomType EncodingSelectionDialog::selectedBom() const
-{
+ScintillaNext::BomType EncodingSelectionDialog::selectedBom() const {
     const QString enc = selectedEncoding().toUpper();
     if (enc == QStringLiteral("UTF-8")) {
-        return (m_editor && m_editor->bom() == ScintillaNext::BomType::Utf8) ? ScintillaNext::BomType::Utf8 : ScintillaNext::BomType::None;
+        return (m_editor && m_editor->bom() == ScintillaNext::BomType::Utf8) ? ScintillaNext::BomType::Utf8
+                                                                             : ScintillaNext::BomType::None;
     }
-    if (enc == QStringLiteral("UTF-16LE")) return ScintillaNext::BomType::Utf16LE;
-    if (enc == QStringLiteral("UTF-16BE")) return ScintillaNext::BomType::Utf16BE;
+    if (enc == QStringLiteral("UTF-16LE"))
+        return ScintillaNext::BomType::Utf16LE;
+    if (enc == QStringLiteral("UTF-16BE"))
+        return ScintillaNext::BomType::Utf16BE;
     return ScintillaNext::BomType::None;
 }
 
-bool EncodingSelectionDialog::isReopenMode() const
-{
+bool EncodingSelectionDialog::isReopenMode() const {
     return ui->radioReopen->isChecked();
 }
 
-void EncodingSelectionDialog::selectQuickUtf8()
-{
+void EncodingSelectionDialog::selectQuickUtf8() {
     for (int i = 0; i < ui->listEncodings->count(); ++i) {
         QListWidgetItem *item = ui->listEncodings->item(i);
         if (item->data(Qt::UserRole).toString().compare(QLatin1String("UTF-8"), Qt::CaseInsensitive) == 0) {
@@ -147,13 +142,11 @@ void EncodingSelectionDialog::selectQuickUtf8()
     }
 }
 
-void EncodingSelectionDialog::selectQuickUtf8Bom()
-{
+void EncodingSelectionDialog::selectQuickUtf8Bom() {
     selectQuickUtf8();
 }
 
-void EncodingSelectionDialog::selectQuickAnsi()
-{
+void EncodingSelectionDialog::selectQuickAnsi() {
     for (int i = 0; i < ui->listEncodings->count(); ++i) {
         QListWidgetItem *item = ui->listEncodings->item(i);
         if (item->data(Qt::UserRole).toString().compare(QLatin1String("windows-1252"), Qt::CaseInsensitive) == 0) {
@@ -163,9 +156,9 @@ void EncodingSelectionDialog::selectQuickAnsi()
     }
 }
 
-void EncodingSelectionDialog::onApply()
-{
-    if (!m_editor) return;
+void EncodingSelectionDialog::onApply() {
+    if (!m_editor)
+        return;
 
     const QString enc = selectedEncoding();
     const bool reopen = isReopenMode();

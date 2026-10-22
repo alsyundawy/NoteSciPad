@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -15,8 +16,7 @@
 
 #include "EditorDecorator.h"
 
-class URLFinder : public EditorDecorator
-{
+class URLFinder : public EditorDecorator {
     Q_OBJECT
 
 public:
@@ -38,7 +38,7 @@ public slots:
 private:
     QTimer *timer;
     int indicator;
-    int m_urlThresholdMB {5};
+    int m_urlThresholdMB{5};
 };
 
-#endif // URLFINDER_H
+#endif  // URLFINDER_H

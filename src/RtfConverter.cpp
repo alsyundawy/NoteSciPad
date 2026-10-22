@@ -17,13 +17,11 @@
 #include <QTextStream>
 #include <QVector>
 
-static inline QColor ScintillaColorToQColor(int color)
-{
+static inline QColor ScintillaColorToQColor(int color) {
     return QColor::fromRgb(color & 0xFF, (color >> 8) & 0xFF, (color >> 16) & 0xFF);
 }
 
-static void AddCharToRtf(QTextStream &stream, uint ucs4)
-{
+static void AddCharToRtf(QTextStream &stream, uint ucs4) {
     if (ucs4 == '\\') {
         stream << "\\\\";
     } else if (ucs4 == '{') {
@@ -40,7 +38,8 @@ static void AddCharToRtf(QTextStream &stream, uint ucs4)
         stream << static_cast<char>(ucs4);
     } else if (ucs4 <= 0xFFFF) {
         // RTF signed 16-bit integer for unicode
-        const short val = (ucs4 < 32768) ? static_cast<short>(ucs4) : static_cast<short>(static_cast<int>(ucs4) - 65536);
+        const short val =
+            (ucs4 < 32768) ? static_cast<short>(ucs4) : static_cast<short>(static_cast<int>(ucs4) - 65536);
         stream << "\\u" << val << '?';
     } else if (ucs4 <= 0x10FFFF) {
         // Astral plane surrogate pair
@@ -52,8 +51,7 @@ static void AddCharToRtf(QTextStream &stream, uint ucs4)
     }
 }
 
-void RtfConverter::convertRange(QTextStream &stream, int start, int end)
-{
+void RtfConverter::convertRange(QTextStream &stream, int start, int end) {
     if (!editor || start >= end) {
         return;
     }
@@ -78,7 +76,7 @@ void RtfConverter::convertRange(QTextStream &stream, int start, int end)
             if (!styleColors.contains(foreColor)) {
                 styleColors.append(foreColor);
             }
-            const int colorIndex = styleColors.indexOf(foreColor) + 1; // 1-based index in RTF colortbl
+            const int colorIndex = styleColors.indexOf(foreColor) + 1;  // 1-based index in RTF colortbl
 
             // Font weight (bold)
             const bool bold = editor->styleBold(style);
@@ -120,9 +118,12 @@ void RtfConverter::convertRange(QTextStream &stream, int start, int end)
     }
 
     // Reset styles at the end
-    if (prevBold) rtf_stream << "\\b0 ";
-    if (prevItalic) rtf_stream << "\\i0 ";
-    if (prevUnderline) rtf_stream << "\\ulnone ";
+    if (prevBold)
+        rtf_stream << "\\b0 ";
+    if (prevItalic)
+        rtf_stream << "\\i0 ";
+    if (prevUnderline)
+        rtf_stream << "\\ulnone ";
 
     rtf_stream.flush();
 

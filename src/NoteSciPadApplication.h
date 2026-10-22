@@ -17,7 +17,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "ApplicationSettings.h"
 
 #include "SingleApplication"

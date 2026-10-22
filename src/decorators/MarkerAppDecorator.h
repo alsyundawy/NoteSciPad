@@ -20,8 +20,7 @@
 
 #include "ApplicationDecorator.h"
 
-class MarkerAppDecorator : public ApplicationDecorator
-{
+class MarkerAppDecorator : public ApplicationDecorator {
     Q_OBJECT
 
 public:

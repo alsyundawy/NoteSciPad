@@ -10,38 +10,28 @@
 
 #include "MacServicesHandler.h"
 
-MacServicesHandler *MacServicesHandler::instance()
-{
+MacServicesHandler *MacServicesHandler::instance() {
     static MacServicesHandler s_instance;
     return &s_instance;
 }
 
-MacServicesHandler::MacServicesHandler(QObject *parent)
-    : QObject(parent)
-{
-}
+MacServicesHandler::MacServicesHandler(QObject *parent) : QObject(parent) {}
 
-MacServicesHandler::~MacServicesHandler()
-{
-}
+MacServicesHandler::~MacServicesHandler() {}
 
-void MacServicesHandler::initialize(NotepadNextApplication *app)
-{
+void MacServicesHandler::initialize(NotepadNextApplication *app) {
     m_app = app;
 }
 
-void MacServicesHandler::setActiveWindow(MainWindow *window)
-{
+void MacServicesHandler::setActiveWindow(MainWindow *window) {
     m_activeWindow = window;
 }
 
-void MacServicesHandler::showEmojiAndSymbolsPalette()
-{
+void MacServicesHandler::showEmojiAndSymbolsPalette() {
     // Native macOS character palette is handled by Cocoa; Linux uses standard Compose/IBus
 }
 
-void MacServicesHandler::postVoiceOverAnnouncement(const QString &text)
-{
+void MacServicesHandler::postVoiceOverAnnouncement(const QString &text) {
     Q_UNUSED(text);
 }
 

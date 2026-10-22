@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of NoteSciPad.
  *
@@ -21,8 +22,7 @@ class QLabel;
 class QMainWindow;
 class ScintillaNext;
 
-class EditorInfoStatusBar : public QStatusBar
-{
+class EditorInfoStatusBar : public QStatusBar {
     Q_OBJECT
 
 public:
@@ -76,14 +76,14 @@ private:
     void saveSettings();
     QLabel *labelForField(Field field) const;
 
-    QLabel *docType {nullptr};
-    QLabel *docSize {nullptr};
-    QLabel *docPos {nullptr};
-    QLabel *unicodeChar {nullptr};
-    QLabel *occurrences {nullptr};
-    QLabel *eolFormat {nullptr};
-    QLabel *unicodeType {nullptr};
-    QLabel *overType {nullptr};
+    QLabel *docType{nullptr};
+    QLabel *docSize{nullptr};
+    QLabel *docPos{nullptr};
+    QLabel *unicodeChar{nullptr};
+    QLabel *occurrences{nullptr};
+    QLabel *eolFormat{nullptr};
+    QLabel *unicodeType{nullptr};
+    QLabel *overType{nullptr};
 
     QMap<Field, bool> m_fieldVisibility;
 
@@ -91,4 +91,4 @@ private:
     QMetaObject::Connection documentLexerChanged;
 };
 
-#endif // EDITORINFOSTATUSBAR_H
+#endif  // EDITORINFOSTATUSBAR_H

@@ -17,8 +17,8 @@
 
 #include <QByteArray>
 
-NumberConverter::Result NumberConverter::convertString(const QString &input, TargetBase targetBase, bool uppercaseHex, bool addPrefix)
-{
+NumberConverter::Result NumberConverter::convertString(const QString &input, TargetBase targetBase, bool uppercaseHex,
+                                                       bool addPrefix) {
     const QString text = input.trimmed();
     if (text.isEmpty()) {
         return {false, input, QString(), QStringLiteral("Empty number string")};
@@ -59,36 +59,36 @@ NumberConverter::Result NumberConverter::convertString(const QString &input, Tar
 
     QString formatted;
     switch (targetBase) {
-    case ToHex: {
-        QString hex = QString::number(value, 16);
-        if (uppercaseHex) {
-            hex = hex.toUpper();
+        case ToHex: {
+            QString hex = QString::number(value, 16);
+            if (uppercaseHex) {
+                hex = hex.toUpper();
+            }
+            formatted = addPrefix ? (QStringLiteral("0x") + hex) : hex;
+            break;
         }
-        formatted = addPrefix ? (QStringLiteral("0x") + hex) : hex;
-        break;
-    }
-    case ToDec: {
-        formatted = QString::number(value, 10);
-        break;
-    }
-    case ToBin: {
-        QString bin = QString::number(value, 2);
-        formatted = addPrefix ? (QStringLiteral("0b") + bin) : bin;
-        break;
-    }
-    case ToOct: {
-        QString oct = QString::number(value, 8);
-        formatted = addPrefix ? (QStringLiteral("0o") + oct) : oct;
-        break;
-    }
+        case ToDec: {
+            formatted = QString::number(value, 10);
+            break;
+        }
+        case ToBin: {
+            QString bin = QString::number(value, 2);
+            formatted = addPrefix ? (QStringLiteral("0b") + bin) : bin;
+            break;
+        }
+        case ToOct: {
+            QString oct = QString::number(value, 8);
+            formatted = addPrefix ? (QStringLiteral("0o") + oct) : oct;
+            break;
+        }
     }
 
     return {true, text, formatted, QString()};
 }
 
 #if !defined(UNIT_TESTING)
-NumberConverter::Result NumberConverter::convert(ScintillaNext *editor, TargetBase targetBase, bool uppercaseHex, bool addPrefix)
-{
+NumberConverter::Result NumberConverter::convert(ScintillaNext *editor, TargetBase targetBase, bool uppercaseHex,
+                                                 bool addPrefix) {
     if (!editor) {
         return {false, QString(), QString(), QStringLiteral("No active editor")};
     }
@@ -105,7 +105,8 @@ NumberConverter::Result NumberConverter::convert(ScintillaNext *editor, TargetBa
         startPos = curPos;
         while (startPos > 0) {
             const char ch = editor->charAt(startPos - 1);
-            if ((ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch == 'x' || ch == 'X' || ch == 'b' || ch == 'B' || ch == 'o' || ch == 'O') {
+            if ((ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch == 'x' ||
+                ch == 'X' || ch == 'b' || ch == 'B' || ch == 'o' || ch == 'O') {
                 startPos--;
             } else {
                 break;
