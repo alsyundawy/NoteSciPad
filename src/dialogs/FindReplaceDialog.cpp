@@ -138,18 +138,18 @@ FindReplaceDialog::FindReplaceDialog(ISearchResultsHandler *searchResults, MainW
             convertToExtended(replaceText);
         }
 
-        int count = 0;
+        int totalReplaced = 0;
         ScintillaNext *current_editor = editor;
         MainWindow *window = qobject_cast<MainWindow *>(parent());
 
-        for(ScintillaNext *editor : window->editors()) {
-            setEditor(editor);
-            count += finder->replaceAll(replaceText);
+        for (ScintillaNext *targetEd : window->editors()) {
+            setEditor(targetEd);
+            totalReplaced += finder->replaceAll(replaceText);
         }
 
         setEditor(current_editor);
 
-        showMessage(tr("Replaced %Ln matches", "", count), "green");
+        showMessage(tr("Replaced %Ln matches", "", totalReplaced), "green");
     });
     connect(ui->buttonClose, &QPushButton::clicked, this, &FindReplaceDialog::close);
     connect(ui->buttonMarkAll, &QPushButton::clicked, this, &FindReplaceDialog::markAll);
@@ -765,10 +765,10 @@ void FindReplaceDialog::markAll()
         bookMarkDecorator = this->bookMarkDecorator();
     }
 
-    int count = 0;
+    int matchCount = 0;
     finder->forEachMatch([&](int start, int end) {
         editor->indicatorFillRange(start, end - start);
-        count++;
+        matchCount++;
 
         if (bookMarkDecorator) {
             const int line = editor->lineFromPosition(start);
@@ -780,7 +780,7 @@ void FindReplaceDialog::markAll()
         return end;
     });
 
-    showMessage(tr("Mark: %Ln match in entire file", "", count), "green");
+    showMessage(tr("Mark: %Ln match in entire file", "", matchCount), "green");
 }
 
 void FindReplaceDialog::clearAllMarks()
