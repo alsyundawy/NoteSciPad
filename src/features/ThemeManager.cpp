@@ -37,19 +37,19 @@ static const ThemePalette kLightPalette = {
 
 static const ThemePalette kDarkPalette = {
     "dark",
-    "Dark Mode",
+    "Dracula Dark Mode",
     true,
-    "#181825", // win
-    "#1e1e2e", // card
-    "#313244", // border
-    "#cdd6f4", // txtPri
-    "#a6adc8", // txtSec
-    "#89dceb", // cyan
-    "#89b4fa", // blue
-    "#a6e3a1", // net
-    "#fab387", // sub
-    "#f9e2af", // host
-    "#6c7086"  // sep
+    "#1e1f29", // win (Dracula window background)
+    "#282a36", // card (Dracula editor background)
+    "#44475a", // border
+    "#f8f8f2", // txtPri (Dracula foreground)
+    "#6272a4", // txtSec (Dracula comment)
+    "#8be9fd", // cyan (Dracula cyan)
+    "#bd93f9", // blue / purple (Dracula purple)
+    "#ff79c6", // net / pink (Dracula pink)
+    "#ffb86c", // sub / orange (Dracula orange)
+    "#f1fa8c", // host / yellow (Dracula yellow)
+    "#50fa7b"  // sep / green (Dracula green)
 };
 
 ThemeManager *ThemeManager::instance()
@@ -245,12 +245,17 @@ QString ThemeManager::getThemeStyleSheet() const
 {
     const ThemePalette *pal = currentPalette();
 
-    QString win = pal ? QString::fromLatin1(pal->win) : (isDarkActive() ? QStringLiteral("#181825") : QStringLiteral("#f0f2f5"));
-    QString card = pal ? QString::fromLatin1(pal->card) : (isDarkActive() ? QStringLiteral("#1e1e2e") : QStringLiteral("#fafbfc"));
-    QString border = pal ? QString::fromLatin1(pal->border) : (isDarkActive() ? QStringLiteral("#313244") : QStringLiteral("#e1e4e8"));
-    QString txtPri = pal ? QString::fromLatin1(pal->txtPri) : (isDarkActive() ? QStringLiteral("#cdd6f4") : QStringLiteral("#24292f"));
-    QString txtSec = pal ? QString::fromLatin1(pal->txtSec) : (isDarkActive() ? QStringLiteral("#a6adc8") : QStringLiteral("#57606a"));
-    QString accent = pal ? QString::fromLatin1(pal->blue) : (isDarkActive() ? QStringLiteral("#89b4fa") : QStringLiteral("#0969da"));
+    bool darkActive = isDarkActive();
+    QString win = pal ? QString::fromLatin1(pal->win) : (darkActive ? QStringLiteral("#1e1f29") : QStringLiteral("#f0f2f5"));
+    QString card = pal ? QString::fromLatin1(pal->card) : (darkActive ? QStringLiteral("#282a36") : QStringLiteral("#fafbfc"));
+    QString border = pal ? QString::fromLatin1(pal->border) : (darkActive ? QStringLiteral("#44475a") : QStringLiteral("#e1e4e8"));
+    QString txtPri = pal ? QString::fromLatin1(pal->txtPri) : (darkActive ? QStringLiteral("#f8f8f2") : QStringLiteral("#24292f"));
+    QString txtSec = pal ? QString::fromLatin1(pal->txtSec) : (darkActive ? QStringLiteral("#6272a4") : QStringLiteral("#57606a"));
+    QString accent = pal ? QString::fromLatin1(pal->blue) : (darkActive ? QStringLiteral("#bd93f9") : QStringLiteral("#0969da"));
+
+    // User requirement: In light mode, toolbar uses dark background; in dark mode, matches window
+    QString toolbarBg = darkActive ? win : QStringLiteral("#21252b");
+    QString toolbarBorder = darkActive ? border : QStringLiteral("#181a1f");
 
     const QString templateStr = QString::fromUtf8(R"(
 /* Universal Base Typography & Text */
@@ -590,14 +595,14 @@ ads--CDockAreaTitleBar {
     color: %2;
 }
 QToolBar {
-    background: %1;
+    background: %7;
     border: none;
-    border-bottom: 1px solid %3;
+    border-bottom: 1px solid %8;
     spacing: 1px;
     padding: 2px 4px;
 }
 QToolBar::separator {
-    background: %3;
+    background: %8;
     width: 1px;
     margin: 4px 2px;
 }
@@ -609,12 +614,14 @@ QToolBar QToolButton {
     margin: 1px;
 }
 QToolBar QToolButton:hover {
-    background-color: rgba(128, 128, 128, 0.2);
+    background-color: rgba(255, 255, 255, 0.12);
+    border: none;
 }
 QToolBar QToolButton:pressed {
-    background-color: rgba(128, 128, 128, 0.35);
+    background-color: rgba(255, 255, 255, 0.24);
+    border: none;
 }
 )");
 
-    return templateStr.arg(win, txtPri, border, txtSec, card, accent);
+    return templateStr.arg(win, txtPri, border, txtSec, card, accent, toolbarBg, toolbarBorder);
 }
