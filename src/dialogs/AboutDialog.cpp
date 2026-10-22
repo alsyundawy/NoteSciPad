@@ -9,6 +9,7 @@
  */
 
 #include "AboutDialog.h"
+#include "features/ThemeManager.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -65,14 +66,21 @@ QWidget *AboutDialog::createAboutTab()
 
     QLabel *noticeBox = new QLabel(this);
     noticeBox->setWordWrap(true);
+    bool dark = ThemeManager::instance()->isDarkActive();
+    QString cardBg = dark ? QStringLiteral("#282a36") : QStringLiteral("#fafbfc");
+    QString borderCol = dark ? QStringLiteral("#44475a") : QStringLiteral("#e1e4e8");
+    QString txtPri = dark ? QStringLiteral("#f8f8f2") : QStringLiteral("#24292f");
     noticeBox->setStyleSheet(
-        "QLabel {"
-        "  padding: 10px;"
-        "  background-color: palette(alternate-base);"
-        "  border: 1px solid palette(mid);"
-        "  border-radius: 6px;"
-        "  font-size: 12px;"
-        "}"
+        QString(
+            "QLabel {"
+            "  padding: 10px;"
+            "  background-color: %1;"
+            "  border: 1px solid %2;"
+            "  border-radius: 6px;"
+            "  font-size: 12px;"
+            "  color: %3;"
+            "}"
+        ).arg(cardBg, borderCol, txtPri)
     );
     noticeBox->setText(
         tr("<b>Important Legal & Non-Affiliation Statement:</b><br/>"
