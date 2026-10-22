@@ -292,8 +292,8 @@ void FindReplaceDialog::findAllInDocuments() {
     ScintillaNext *current_editor = editor;
     MainWindow *window = qobject_cast<MainWindow *>(parent());
 
-    for (ScintillaNext *editor : window->editors()) {
-        setEditor(editor);
+    for (ScintillaNext *ed : window->editors()) {
+        setEditor(ed);
         findAllInCurrentDocument();
     }
 
@@ -337,8 +337,8 @@ void FindReplaceDialog::replaceAll() {
         convertToExtended(replaceText);
     }
 
-    int count = finder->replaceAll(replaceText);
-    showMessage(tr("Replaced %Ln matches", "", count), "green");
+    int replacedCount = finder->replaceAll(replaceText);
+    showMessage(tr("Replaced %Ln matches", "", replacedCount), "green");
 }
 
 void FindReplaceDialog::count() {
@@ -351,10 +351,10 @@ void FindReplaceDialog::count() {
     showMessage(tr("Found %Ln matches", "", total), "green");
 }
 
-void FindReplaceDialog::setEditor(ScintillaNext *editor) {
-    this->editor = editor;
+void FindReplaceDialog::setEditor(ScintillaNext *edit) {
+    this->editor = edit;
 
-    finder->setEditor(editor);
+    finder->setEditor(edit);
 }
 
 void FindReplaceDialog::performNextSearch() {
@@ -509,13 +509,13 @@ void FindReplaceDialog::setSearchResultsHandler(ISearchResultsHandler *searchRes
     this->searchResultsHandler = searchResults;
 }
 
-void FindReplaceDialog::prepareToPerformSearch(bool replace) {
+void FindReplaceDialog::prepareToPerformSearch(bool isReplace) {
     qInfo(Q_FUNC_INFO);
 
     QString findText = findString();
 
     updateFindList(findText);
-    if (replace) {
+    if (isReplace) {
         QString replaceText = replaceString();
         updateReplaceList(replaceText);
     }
@@ -710,20 +710,20 @@ void FindReplaceDialog::markAll() {
         clearAllBookmarks();
     }
 
-    BookMarkDecorator *bookMarkDecorator = nullptr;
+    BookMarkDecorator *bmDecorator = nullptr;
     if (ui->checkBoxBookmarkLine->isChecked()) {
-        bookMarkDecorator = this->bookMarkDecorator();
+        bmDecorator = this->bookMarkDecorator();
     }
 
-    int count = 0;
+    int matchCount = 0;
     finder->forEachMatch([&](int start, int end) {
         editor->indicatorFillRange(start, end - start);
-        count++;
+        matchCount++;
 
-        if (bookMarkDecorator) {
+        if (bmDecorator) {
             const int line = editor->lineFromPosition(start);
-            if (!bookMarkDecorator->isBookmarkSet(line)) {
-                bookMarkDecorator->addBookmark(line);
+            if (!bmDecorator->isBookmarkSet(line)) {
+                bmDecorator->addBookmark(line);
             }
         }
 

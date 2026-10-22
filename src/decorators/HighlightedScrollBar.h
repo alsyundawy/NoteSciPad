@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2019 Justin Dailey
@@ -16,7 +17,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef HIGHLIGHTEDSCROLLBAR_H
 #define HIGHLIGHTEDSCROLLBAR_H
 
@@ -25,11 +25,9 @@
 
 #include "EditorDecorator.h"
 
-
 class HighlightedScrollBar;
 
-class HighlightedScrollBarDecorator : public EditorDecorator
-{
+class HighlightedScrollBarDecorator : public EditorDecorator {
     Q_OBJECT
 
 public:
@@ -43,9 +41,7 @@ private:
     HighlightedScrollBar *scrollBar;
 };
 
-
-class HighlightedScrollBar : public QScrollBar
-{
+class HighlightedScrollBar : public QScrollBar {
     Q_OBJECT
 
 public:
@@ -69,4 +65,4 @@ private:
     int smartHighlighterIndicator;
 };
 
-#endif // HIGHLIGHTEDSCROLLBAR_H
+#endif  // HIGHLIGHTEDSCROLLBAR_H

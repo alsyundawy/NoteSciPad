@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2019 Justin Dailey
@@ -16,7 +17,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef LINENUMBERS_H
 #define LINENUMBERS_H
 
@@ -24,8 +24,7 @@
 
 #include "EditorDecorator.h"
 
-class LineNumbers : public EditorDecorator
-{
+class LineNumbers : public EditorDecorator {
     Q_OBJECT
 
 public:
@@ -38,4 +37,4 @@ public slots:
     void notify(const Scintilla::NotificationData *pscn) override;
 };
 
-#endif // LINENUMBERS_H
+#endif  // LINENUMBERS_H

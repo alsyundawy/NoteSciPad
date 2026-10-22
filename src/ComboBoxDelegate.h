@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2021 Justin Dailey
@@ -23,8 +24,7 @@
 
 using ComboBoxItem = QPair<QString, QVariant>;
 
-class ComboBoxDelegate : public QStyledItemDelegate
-{
+class ComboBoxDelegate : public QStyledItemDelegate {
     Q_OBJECT
 public:
     ComboBoxDelegate(const QList<ComboBoxItem> &items, QObject *parent = nullptr);
@@ -34,7 +34,8 @@ public:
     void setEditorData(QWidget *editor, const QModelIndex &index) const override;
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
 
-    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option,
+                              const QModelIndex &index) const override;
 
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
@@ -42,4 +43,4 @@ private:
     QList<ComboBoxItem> comboBoxItems;
 };
 
-#endif // COMBOBOXDELEGATE_H
+#endif  // COMBOBOXDELEGATE_H

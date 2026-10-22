@@ -26,8 +26,7 @@ class FolderAsWorkspaceDock;
 
 class QFileSystemModel;
 
-class FolderAsWorkspaceDock : public QDockWidget
-{
+class FolderAsWorkspaceDock : public QDockWidget {
     Q_OBJECT
 
 public:

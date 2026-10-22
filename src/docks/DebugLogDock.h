@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2022 Justin Dailey
@@ -16,7 +17,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef DEBUGLOGDOCK_H
 #define DEBUGLOGDOCK_H
 
@@ -27,8 +27,7 @@ namespace Ui {
 class DebugLogDock;
 }
 
-class DebugLogDock : public QDockWidget
-{
+class DebugLogDock : public QDockWidget {
     Q_OBJECT
 
 public:
@@ -39,4 +38,4 @@ private:
     Ui::DebugLogDock *ui;
 };
 
-#endif // DEBUGLOGDOCK_H
+#endif  // DEBUGLOGDOCK_H

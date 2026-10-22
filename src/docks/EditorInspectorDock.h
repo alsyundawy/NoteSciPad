@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2021 Justin Dailey
@@ -16,7 +17,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef EDITORINSPECTORDOCK_H
 #define EDITORINSPECTORDOCK_H
 
@@ -24,7 +24,6 @@
 #include <QTreeWidgetItem>
 
 #include "ScintillaTypes.h"
-
 
 class MainWindow;
 class ScintillaNext;
@@ -35,8 +34,7 @@ namespace Ui {
 class EditorInspectorDock;
 }
 
-class EditorInspectorDock : public QDockWidget
-{
+class EditorInspectorDock : public QDockWidget {
     Q_OBJECT
 
 public:
@@ -58,4 +56,4 @@ private:
     QVector<QPair<QTreeWidgetItem *, EditorFunction>> items;
 };
 
-#endif // EDITORINSPECTORDOCK_H
+#endif  // EDITORINSPECTORDOCK_H

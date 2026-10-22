@@ -16,7 +16,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "DebugLogDock.h"
 #include "ui_DebugLogDock.h"
 #include "DebugManager.h"
@@ -25,15 +24,11 @@
 
 static QPlainTextEdit *output = Q_NULLPTR;
 
-static void debugLogDockMessageHandler(const QString &msg)
-{
+static void debugLogDockMessageHandler(const QString &msg) {
     output->appendPlainText(msg);
 }
 
-DebugLogDock::DebugLogDock(QWidget *parent) :
-    QDockWidget(parent),
-    ui(new Ui::DebugLogDock)
-{
+DebugLogDock::DebugLogDock(QWidget *parent) : QDockWidget(parent), ui(new Ui::DebugLogDock) {
     ui->setupUi(this);
 
     output = ui->txtDebugOutput;
@@ -46,7 +41,6 @@ DebugLogDock::DebugLogDock(QWidget *parent) :
     });
 }
 
-DebugLogDock::~DebugLogDock()
-{
+DebugLogDock::~DebugLogDock() {
     delete ui;
 }

@@ -21,10 +21,5 @@
 #include <Qt>
 
 namespace SearchResultData {
-    enum Role
-    {
-        LineNumber = Qt::UserRole,
-        LinePosStart,
-        LinePosEnd
-    };
+enum Role { LineNumber = Qt::UserRole, LinePosStart, LinePosEnd };
 }

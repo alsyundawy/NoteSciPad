@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2019 Justin Dailey
@@ -16,7 +17,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef SCINTILLANEXT_H
 #define SCINTILLANEXT_H
 
@@ -28,23 +28,17 @@
 #include <QFileInfo>
 #include <QPoint>
 
-
-
-
-class ScintillaNext : public ScintillaEdit
-{
+class ScintillaNext : public ScintillaEdit {
     Q_OBJECT
 
 public:
     using QObject::setProperty;
-    using ScintillaEdit::setProperty;
-    using ScintillaEdit::getLine;
     using QWidget::setFocus;
-    using ScintillaEdit::setFocus;
+    using ScintillaEdit::getLine;
     using ScintillaEdit::getText;
-    QByteArray getText() {
-        return getText(length() + 1);
-    }
+    using ScintillaEdit::setFocus;
+    using ScintillaEdit::setProperty;
+    QByteArray getText() { return getText(length() + 1); }
     QVariant qtProperty(const char *name) const { return QObject::property(name); }
     bool setQtProperty(const char *name, const QVariant &value) { return QObject::setProperty(name, value); }
     QPoint pointFromPosition(Sci_Position pos) {
@@ -54,42 +48,47 @@ public:
     QString getFileName() const { return getName(); }
     void goToPos(sptr_t pos) { gotoPos(pos); }
     void getRange(int start, int end, char *text) const {
-        if (!text) return;
+        if (!text)
+            return;
         QByteArray b = get_text_range(start, end);
         std::memcpy(text, b.constData(), b.size());
         text[b.size()] = '\0';
     }
     void getLine(sptr_t line, char *text) {
-        if (!text) return;
+        if (!text)
+            return;
         QByteArray b = ScintillaEdit::getLine(line);
         std::memcpy(text, b.constData(), b.size());
         text[b.size()] = '\0';
     }
 
-    static bool isRangeValid(const Sci_CharacterRange &range)
-    {
+    static bool isRangeValid(const Sci_CharacterRange &range) {
         return range.cpMin != INVALID_POSITION && range.cpMax != INVALID_POSITION;
     }
 
     explicit ScintillaNext(QString name, QWidget *parent = Q_NULLPTR);
     virtual ~ScintillaNext();
 
-    static ScintillaNext *fromFile(const QString &filePath, bool tryToCreate=false);
+    static ScintillaNext *fromFile(const QString &filePath, bool tryToCreate = false);
     static QString eolModeToString(int eolMode);
     static int stringToEolMode(QString eolMode);
 
     int allocateIndicator(const QString &name);
 
-    template<typename Func>
-    void forEachMatch(const QString &text, Func callback) { forEachMatch(text.toUtf8(), callback); }
+    template <typename Func>
+    void forEachMatch(const QString &text, Func callback) {
+        forEachMatch(text.toUtf8(), callback);
+    }
 
-    template<typename Func>
-    void forEachMatch(const QByteArray &byteArray, Func callback) { forEachMatchInRange(byteArray, callback, {0, (Sci_PositionCR)length()}); }
+    template <typename Func>
+    void forEachMatch(const QByteArray &byteArray, Func callback) {
+        forEachMatchInRange(byteArray, callback, {0, (Sci_PositionCR)length()});
+    }
 
-    template<typename Func>
+    template <typename Func>
     void forEachMatchInRange(const QByteArray &byteArray, Func callback, Sci_CharacterRange range);
 
-    template<typename Func>
+    template <typename Func>
     void forEachLineInSelection(int selection, Func callback);
 
     void goToRange(const Sci_CharacterRange &range);
@@ -136,17 +135,12 @@ public:
     };
 
     enum BufferType {
-        New, // A temporary buffer, e.g. "New 1"
-        File, // Buffer tied to a file on the file system
-        FileMissing, // Buffer with a missing file on the file system
+        New,          // A temporary buffer, e.g. "New 1"
+        File,         // Buffer tied to a file on the file system
+        FileMissing,  // Buffer with a missing file on the file system
     };
 
-    enum class BomType {
-        None,
-        Utf8,
-        Utf16LE,
-        Utf16BE
-    };
+    enum class BomType { None, Utf8, Utf16LE, Utf16BE };
 
     BomType bom() const { return bomType; }
     void setBom(BomType bom) { bomType = bom; }
@@ -165,8 +159,7 @@ public:
     QString languageName;
     QByteArray languageSingleLineComment;
 
-    #include "ScintillaEnums.h"
-
+#include "ScintillaEnums.h"
 
 public slots:
     void close();
@@ -210,15 +203,13 @@ private:
     QDateTime modifiedTime;
     RangeAllocator indicatorResources;
 
-    bool temporary = false; // Temporary file loaded from a session. It can either be a 'New' file or actual 'File'
+    bool temporary = false;  // Temporary file loaded from a session. It can either be a 'New' file or actual 'File'
 
     bool readFromDisk(QFile &file);
-
 };
 
-template<typename Func>
-void ScintillaNext::forEachLineInSelection(int selection, Func callback)
-{
+template <typename Func>
+void ScintillaNext::forEachLineInSelection(int selection, Func callback) {
     int lineStart = lineFromPosition(selectionNStart(selection));
     int lineEnd = lineFromPosition(selectionNEnd(selection));
 
@@ -228,17 +219,16 @@ void ScintillaNext::forEachLineInSelection(int selection, Func callback)
 }
 
 // Stick this in the header file...because C++, that's why
-template<typename Func>
-void ScintillaNext::forEachMatchInRange(const QByteArray &text, Func callback, Sci_CharacterRange range)
-{
-    Sci_TextToFind ttf {range, text.constData(), {INVALID_POSITION, INVALID_POSITION}};
+template <typename Func>
+void ScintillaNext::forEachMatchInRange(const QByteArray &text, Func callback, Sci_CharacterRange range) {
+    Sci_TextToFind ttf{range, text.constData(), {INVALID_POSITION, INVALID_POSITION}};
     int flags = searchFlags();
 
     while (send(SCI_FINDTEXT, flags, reinterpret_cast<sptr_t>(&ttf)) != INVALID_POSITION) {
-        if(ttf.chrgText.cpMin == ttf.chrgText.cpMax)
+        if (ttf.chrgText.cpMin == ttf.chrgText.cpMax)
             break;
         ttf.chrg.cpMin = callback(ttf.chrgText.cpMin, ttf.chrgText.cpMax);
     }
 }
 
-#endif // SCINTILLANEXT_H
+#endif  // SCINTILLANEXT_H

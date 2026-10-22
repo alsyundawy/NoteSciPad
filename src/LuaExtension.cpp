@@ -322,8 +322,7 @@ static int iface_function_helper(lua_State *L, const IFaceFunction &func) {
         params[1] = reinterpret_cast<sptr_t>(params[0] ? lua_tostring(L, arg) : "");
         loopParamCount = 0;
     } else if ((func.paramType[1] == iface_stringresult) || (func.returnType == iface_stringresult)) {
-        needStringResult =
-            (func.paramType[1] == iface_stringresult) || (func.returnType == iface_stringresult) ? string : tstring;
+        needStringResult = string;
         // The buffer will be allocated later, so it won't leak if Lua does
         // a longjmp in response to a bad arg.
         if (func.paramType[0] == iface_length) {
@@ -421,7 +420,8 @@ struct IFacePropertyBinding {
 static int cf_ifaceprop_metatable_index(lua_State *L) {
     // if there is a getter, __index calls it
     // otherwise, __index raises "property 'name' is write-only".
-    IFacePropertyBinding *ipb = static_cast<IFacePropertyBinding *>(luaL_testudata(L, 1, "Nn_MT_IFacePropertyBinding"));
+    const IFacePropertyBinding *ipb =
+        static_cast<const IFacePropertyBinding *>(luaL_testudata(L, 1, "Nn_MT_IFacePropertyBinding"));
     if (!(ipb && IFacePropertyIsScriptable(*(ipb->prop)))) {
         raise_error(L, "Internal error: property binding is improperly set up");
         return 0;
@@ -440,7 +440,8 @@ static int cf_ifaceprop_metatable_index(lua_State *L) {
 }
 
 static int cf_ifaceprop_metatable_newindex(lua_State *L) {
-    IFacePropertyBinding *ipb = static_cast<IFacePropertyBinding *>(luaL_testudata(L, 1, "Nn_MT_IFacePropertyBinding"));
+    const IFacePropertyBinding *ipb =
+        static_cast<const IFacePropertyBinding *>(luaL_testudata(L, 1, "Nn_MT_IFacePropertyBinding"));
     if (!(ipb && IFacePropertyIsScriptable(*(ipb->prop)))) {
         raise_error(L, "Internal error: property binding is improperly set up");
         return 0;
@@ -470,11 +471,11 @@ static int cf_pane_iface_function(lua_State *L) {
     }
 }
 
-static int push_iface_function(lua_State *L, const char *name, IFaceTableInterface *iface) {
+static int push_iface_function(lua_State *L, const char *name, const IFaceTableInterface *iface) {
     auto func = iface->FindFunction(name);
     if (func != nullptr) {
         if (IFaceFunctionIsScriptable(*func)) {
-            lua_pushlightuserdata(L, (void *)func);
+            lua_pushlightuserdata(L, const_cast<IFaceFunction *>(func));
             lua_pushcclosure(L, cf_pane_iface_function, 1);
 
             // Since Lua experts say it is inefficient to create closures / cfunctions
@@ -488,7 +489,7 @@ static int push_iface_function(lua_State *L, const char *name, IFaceTableInterfa
     return -1;  // signal to try next pane index handler
 }
 
-static int push_iface_propval(lua_State *L, const char *name, IFaceTableInterface *iface) {
+static int push_iface_propval(lua_State *L, const char *name, const IFaceTableInterface *iface) {
     // this function doesn't raise errors, but returns 0 if the function is not handled.
 
     auto prop = iface->FindProperty(name);
@@ -552,7 +553,7 @@ static int push_iface_propval(lua_State *L, const char *name, IFaceTableInterfac
 }
 
 static int cf_pane_metatable_index(lua_State *L) {
-    IFaceTableInterface *iface = static_cast<IFaceTableInterface *>(lua_touserdata(L, lua_upvalueindex(1)));
+    const IFaceTableInterface *iface = static_cast<const IFaceTableInterface *>(lua_touserdata(L, lua_upvalueindex(1)));
     if (lua_isstring(L, 2)) {
         const char *name = lua_tostring(L, 2);
 
@@ -579,7 +580,7 @@ static int cf_pane_metatable_index(lua_State *L) {
 }
 
 static int cf_pane_metatable_newindex(lua_State *L) {
-    IFaceTableInterface *iface = static_cast<IFaceTableInterface *>(lua_touserdata(L, lua_upvalueindex(1)));
+    const IFaceTableInterface *iface = static_cast<const IFaceTableInterface *>(lua_touserdata(L, lua_upvalueindex(1)));
     if (lua_isstring(L, 2)) {
         auto prop = iface->FindProperty(lua_tostring(L, 2));
         if (prop != nullptr) {

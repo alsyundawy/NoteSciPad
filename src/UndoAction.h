@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2022 Justin Dailey
@@ -16,14 +17,12 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef UNDOACTION_H
 #define UNDOACTION_H
 
 class ScintillaNext;
 
-class UndoAction
-{
+class UndoAction {
 public:
     explicit UndoAction(ScintillaNext *editor);
     ~UndoAction();
@@ -32,4 +31,4 @@ private:
     ScintillaNext *editor;
 };
 
-#endif // UNDOACTION_H
+#endif  // UNDOACTION_H

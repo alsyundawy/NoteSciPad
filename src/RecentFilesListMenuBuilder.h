@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2022 Justin Dailey
@@ -16,7 +17,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef RECENTFILESLISTMENUBUILDER_H
 #define RECENTFILESLISTMENUBUILDER_H
 
@@ -25,8 +25,7 @@
 
 class QMenu;
 
-class RecentFilesListMenuBuilder : public QObject
-{
+class RecentFilesListMenuBuilder : public QObject {
     Q_OBJECT
 
 public:
@@ -43,4 +42,4 @@ private:
     RecentFilesListManager *manager;
 };
 
-#endif // RECENTFILESLISTMENUBUILDER_H
+#endif  // RECENTFILESLISTMENUBUILDER_H

@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2022 Justin Dailey
@@ -16,14 +17,12 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef SELECTIONTRACKER_H
 #define SELECTIONTRACKER_H
 
 class ScintillaNext;
 
-class SelectionTracker
-{
+class SelectionTracker {
 public:
     explicit SelectionTracker(ScintillaNext *editor);
     ~SelectionTracker();
@@ -40,4 +39,4 @@ private:
     int anchor;
 };
 
-#endif // SELECTIONTRACKER_H
+#endif  // SELECTIONTRACKER_H

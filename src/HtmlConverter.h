@@ -16,16 +16,13 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #pragma once
 
 #include "Converter.h"
 
-class HtmlConverter : public Converter
-{
+class HtmlConverter : public Converter {
     using Converter::Converter;
 
 public:
     void convertRange(QTextStream &stream, int start, int end) override;
 };
-

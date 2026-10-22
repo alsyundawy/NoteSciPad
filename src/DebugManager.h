@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2022 Justin Dailey
@@ -16,7 +17,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef DEBUGMANAGER_H
 #define DEBUGMANAGER_H
 
@@ -25,10 +25,10 @@
 typedef void (*DebugOutputHandler)(const QString &str);
 
 namespace DebugManager {
-    void manageDebugOutput();
-    void pauseDebugOutput();
-    void resumeDebugOutput();
-    void addMessageHandler(DebugOutputHandler handler);
-}
+void manageDebugOutput();
+void pauseDebugOutput();
+void resumeDebugOutput();
+void addMessageHandler(DebugOutputHandler handler);
+}  // namespace DebugManager
 
-#endif // DEBUGMANAGER_H
+#endif  // DEBUGMANAGER_H

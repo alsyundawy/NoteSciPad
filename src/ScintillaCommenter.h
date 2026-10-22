@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2022 Justin Dailey
@@ -16,7 +17,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef SCINTILLACOMMENTER_H
 #define SCINTILLACOMMENTER_H
 
@@ -24,8 +24,7 @@
 #include "SelectionTracker.h"
 #include "UndoAction.h"
 
-class ScintillaCommenter
-{
+class ScintillaCommenter {
 public:
     explicit ScintillaCommenter(ScintillaNext *editor);
 
@@ -43,4 +42,4 @@ private:
     UndoAction ua;
 };
 
-#endif // SCINTILLACOMMENTER_H
+#endif  // SCINTILLACOMMENTER_H

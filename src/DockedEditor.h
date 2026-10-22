@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2019 Justin Dailey
@@ -16,7 +17,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef DOCKEDEDITOR_H
 #define DOCKEDEDITOR_H
 
@@ -25,13 +25,12 @@
 #include "DockManager.h"
 #include "ScintillaNext.h"
 
-class DockedEditor : public QObject
-{
+class DockedEditor : public QObject {
     Q_OBJECT
 
 private:
-    ads::CDockManager* dockManager = Q_NULLPTR;
-    ads::CDockAreaWidget* latestDockArea = Q_NULLPTR;
+    ads::CDockManager *dockManager = Q_NULLPTR;
+    ads::CDockAreaWidget *latestDockArea = Q_NULLPTR;
     ScintillaNext *currentEditor = Q_NULLPTR;
 
 public:
@@ -67,4 +66,4 @@ signals:
     void titleBarDoubleClicked();
 };
 
-#endif // DOCKEDEDITOR_H
+#endif  // DOCKEDEDITOR_H

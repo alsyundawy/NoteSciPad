@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2019 Justin Dailey
@@ -16,7 +17,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef EDITORDECORATOR_H
 #define EDITORDECORATOR_H
 
@@ -24,8 +24,7 @@
 
 #include "ScintillaNext.h"
 
-class EditorDecorator : public QObject
-{
+class EditorDecorator : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled NOTIFY stateChanged)
 
@@ -48,4 +47,4 @@ protected:
     bool enabled = false;
 };
 
-#endif // EDITORDECORATOR_H
+#endif  // EDITORDECORATOR_H

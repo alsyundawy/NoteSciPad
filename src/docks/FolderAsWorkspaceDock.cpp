@@ -16,7 +16,6 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "FolderAsWorkspaceDock.h"
 #include "ApplicationSettings.h"
 #include "ui_FolderAsWorkspaceDock.h"
@@ -27,21 +26,12 @@
 ApplicationSetting<QString> rootPathSetting{"FolderAsWorkspace/RootPath"};
 
 namespace {
-    // QFileSystemModel's standard column order.
-    enum FileSystemColumn
-    {
-        NameColumn = 0,
-        SizeColumn,
-        TypeColumn,
-        DateColumn
-    };
-}
+// QFileSystemModel's standard column order.
+enum FileSystemColumn { NameColumn = 0, SizeColumn, TypeColumn, DateColumn };
+}  // namespace
 
-FolderAsWorkspaceDock::FolderAsWorkspaceDock(QWidget *parent) :
-    QDockWidget(parent),
-    ui(new Ui::FolderAsWorkspaceDock),
-    model(new QFileSystemModel(this))
-{
+FolderAsWorkspaceDock::FolderAsWorkspaceDock(QWidget *parent)
+    : QDockWidget(parent), ui(new Ui::FolderAsWorkspaceDock), model(new QFileSystemModel(this)) {
     ui->setupUi(this);
 
     ui->treeView->setModel(model);
@@ -56,14 +46,13 @@ FolderAsWorkspaceDock::FolderAsWorkspaceDock(QWidget *parent) :
     ui->toolButton->setMenu(menu);
     ui->toolButton->setPopupMode(QToolButton::MenuButtonPopup);
 
-    auto bindColumnVisibility = [this](QAction* action, int column) {
+    auto bindColumnVisibility = [this](QAction *action, int column) {
         ui->treeView->setColumnHidden(column, !action->isChecked());
-        connect(action, &QAction::toggled, this, [this, column](bool checked) {
-            ui->treeView->setColumnHidden(column, !checked);
-        });
+        connect(action, &QAction::toggled, this,
+                [this, column](bool checked) { ui->treeView->setColumnHidden(column, !checked); });
     };
 
-    auto bindActionToSetting = [](QAction* action, const QString& key) {
+    auto bindActionToSetting = [](QAction *action, const QString &key) {
         ApplicationSettings settings;
 
         action->setChecked(settings.value(key, false).toBool());
@@ -73,7 +62,7 @@ FolderAsWorkspaceDock::FolderAsWorkspaceDock(QWidget *parent) :
         });
     };
 
-    auto bindColumn = [&](QAction* action, int column, const QString& key) {
+    auto bindColumn = [&](QAction *action, int column, const QString &key) {
         bindColumnVisibility(action, column);
         bindActionToSetting(action, key);
     };
@@ -84,7 +73,8 @@ FolderAsWorkspaceDock::FolderAsWorkspaceDock(QWidget *parent) :
 
     connect(ui->actionShowHidden, &QAction::toggled, this, [this](bool showHidden) {
         auto filters = QDir::AllEntries | QDir::AllDirs | QDir::NoDotAndDotDot;
-        if (showHidden) filters |= QDir::Hidden;
+        if (showHidden)
+            filters |= QDir::Hidden;
         model->setFilter(filters);
     });
     bindActionToSetting(ui->actionShowHidden, "FolderAsWorkspace/ShowHidden");
@@ -111,13 +101,11 @@ FolderAsWorkspaceDock::FolderAsWorkspaceDock(QWidget *parent) :
     setRootPath(settings.get(rootPathSetting));
 }
 
-FolderAsWorkspaceDock::~FolderAsWorkspaceDock()
-{
+FolderAsWorkspaceDock::~FolderAsWorkspaceDock() {
     delete ui;
 }
 
-void FolderAsWorkspaceDock::setRootPath(const QString &dir)
-{
+void FolderAsWorkspaceDock::setRootPath(const QString &dir) {
     ApplicationSettings settings;
     settings.set(rootPathSetting, dir);
 
@@ -125,7 +113,6 @@ void FolderAsWorkspaceDock::setRootPath(const QString &dir)
     ui->treeView->setRootIndex(sourceIndex);
 }
 
-QString FolderAsWorkspaceDock::rootPath() const
-{
+QString FolderAsWorkspaceDock::rootPath() const {
     return model->rootPath();
 }

@@ -20,28 +20,21 @@
 
 #include "UndoAction.h"
 
-Finder::Finder(ScintillaNext *editor) :
-    editor(editor)
-{
+Finder::Finder(ScintillaNext *editor) : editor(editor) {}
+
+void Finder::setEditor(ScintillaNext *targetEditor) {
+    this->editor = targetEditor;
 }
 
-void Finder::setEditor(ScintillaNext *editor)
-{
-    this->editor = editor;
-}
-
-int Finder::searchFlags() const
-{
+int Finder::searchFlags() const {
     return static_cast<int>(find_options.flags);
 }
 
-bool Finder::isRegexSearch() const
-{
+bool Finder::isRegexSearch() const {
     return Scintilla::FlagSet(find_options.flags, Scintilla::FindOption::RegExp);
 }
 
-Sci_CharacterRange Finder::searchTarget(Sci_Position start, Sci_Position end)
-{
+Sci_CharacterRange Finder::searchTarget(Sci_Position start, Sci_Position end) {
     const QByteArray searchText = find_options.text.toUtf8();
 
     editor->setTargetRange(start, end);
@@ -50,19 +43,14 @@ Sci_CharacterRange Finder::searchTarget(Sci_Position start, Sci_Position end)
         return {INVALID_POSITION, INVALID_POSITION};
     }
 
-    return {
-        static_cast<Sci_PositionCR>(editor->targetStart()),
-        static_cast<Sci_PositionCR>(editor->targetEnd())
-    };
+    return {static_cast<Sci_PositionCR>(editor->targetStart()), static_cast<Sci_PositionCR>(editor->targetEnd())};
 }
 
-FindResult Finder::findNext()
-{
+FindResult Finder::findNext() {
     return findNextFrom(editor->selectionEnd());
 }
 
-FindResult Finder::findNextFrom(Sci_Position startPos)
-{
+FindResult Finder::findNextFrom(Sci_Position startPos) {
     FindResult result;
 
     if (find_options.text.isEmpty())
@@ -84,8 +72,7 @@ FindResult Finder::findNextFrom(Sci_Position startPos)
     return result;
 }
 
-FindResult Finder::findPrev()
-{
+FindResult Finder::findPrev() {
     FindResult result;
 
     if (find_options.text.isEmpty())
@@ -110,8 +97,7 @@ FindResult Finder::findPrev()
     return result;
 }
 
-int Finder::count()
-{
+int Finder::count() {
     if (find_options.text.isEmpty())
         return 0;
 
@@ -126,8 +112,7 @@ int Finder::count()
     return total;
 }
 
-FindResult Finder::replaceSelectionIfMatch(const QString &replaceText)
-{
+FindResult Finder::replaceSelectionIfMatch(const QString &replaceText) {
     FindResult result;
 
     if (find_options.text.isEmpty())
@@ -145,32 +130,24 @@ FindResult Finder::replaceSelectionIfMatch(const QString &replaceText)
 
     if (isRegexSearch()) {
         editor->replaceTargetRE(replacementText.length(), replacementText.constData());
-    }
-    else {
+    } else {
         editor->replaceTarget(replacementText.length(), replacementText.constData());
     }
 
-    result.range = {
-        static_cast<Sci_PositionCR>(editor->targetStart()),
-        static_cast<Sci_PositionCR>(editor->targetEnd())
-    };
+    result.range = {static_cast<Sci_PositionCR>(editor->targetStart()),
+                    static_cast<Sci_PositionCR>(editor->targetEnd())};
 
     return result;
 }
 
-int Finder::replaceAll(const QString &replaceText)
-{
+int Finder::replaceAll(const QString &replaceText) {
     if (find_options.text.isEmpty())
         return 0;
 
     const QByteArray searchText = find_options.text.toUtf8();
     const QByteArray replacementText = replaceText.toUtf8();
 
-    Sci_TextToFind findText{
-        {0, static_cast<Sci_PositionCR>(editor->length())},
-        searchText.constData(),
-        {-1, -1}
-    };
+    Sci_TextToFind findText{{0, static_cast<Sci_PositionCR>(editor->length())}, searchText.constData(), {-1, -1}};
 
     editor->setSearchFlags(searchFlags());
 
@@ -190,9 +167,8 @@ int Finder::replaceAll(const QString &replaceText)
 
         Sci_Position replacementLength;
         if (isRegexSearch()) {
-            replacementLength= editor->replaceTargetRE(replacementText.length(), replacementText.constData());
-        }
-        else {
+            replacementLength = editor->replaceTargetRE(replacementText.length(), replacementText.constData());
+        } else {
             replacementLength = editor->replaceTarget(replacementText.length(), replacementText.constData());
         }
 

@@ -30,8 +30,7 @@
 
 #include "ScintillaNext.h"
 
-static QSpinBox *FontSizeSpinBoxFactory()
-{
+static QSpinBox *FontSizeSpinBoxFactory() {
     QSpinBox *editor = new QSpinBox();
     editor->setFrame(false);
     editor->setRange(2, 24);
@@ -39,8 +38,7 @@ static QSpinBox *FontSizeSpinBoxFactory()
     return editor;
 }
 
-static QSpinBox *FontWeightSpinBoxFactory()
-{
+static QSpinBox *FontWeightSpinBoxFactory() {
     QSpinBox *editor = new QSpinBox();
     editor->setFrame(false);
     editor->setRange(100, 2400);
@@ -51,21 +49,19 @@ static QSpinBox *FontWeightSpinBoxFactory()
 
 static QString property_type_to_string(int type) {
     switch (type) {
-    case SC_TYPE_BOOLEAN:
-        return "Bool";
-    case SC_TYPE_INTEGER:
-        return "Int";
-    case SC_TYPE_STRING:
-        return "String";
-    default:
-        return "unknown";
+        case SC_TYPE_BOOLEAN:
+            return "Bool";
+        case SC_TYPE_INTEGER:
+            return "Int";
+        case SC_TYPE_STRING:
+            return "String";
+        default:
+            return "unknown";
     }
 }
 
-LanguageInspectorDock::LanguageInspectorDock(MainWindow *parent) :
-    QDockWidget(parent),
-    ui(new Ui::LanguageInspectorDock)
-{
+LanguageInspectorDock::LanguageInspectorDock(MainWindow *parent)
+    : QDockWidget(parent), ui(new Ui::LanguageInspectorDock) {
     ui->setupUi(this);
 
     SpinBoxDelegate *fontSizeDelegate = new SpinBoxDelegate(FontSizeSpinBoxFactory, this);
@@ -80,12 +76,10 @@ LanguageInspectorDock::LanguageInspectorDock(MainWindow *parent) :
     ColorPickerDelegate *backColorDelegate = new ColorPickerDelegate(this);
     ui->tblStyles->setItemDelegateForColumn(12, backColorDelegate);
 
-    QList<ComboBoxItem> caseItems{
-        {"SC_CASE_MIXED", SC_CASE_MIXED},
-        {"SC_CASE_UPPER", SC_CASE_UPPER},
-        {"SC_CASE_LOWER", SC_CASE_LOWER},
-        {"SC_CASE_CAMEL", SC_CASE_CAMEL}
-    };
+    QList<ComboBoxItem> caseItems{{"SC_CASE_MIXED", SC_CASE_MIXED},
+                                  {"SC_CASE_UPPER", SC_CASE_UPPER},
+                                  {"SC_CASE_LOWER", SC_CASE_LOWER},
+                                  {"SC_CASE_CAMEL", SC_CASE_CAMEL}};
     ComboBoxDelegate *caseComoboDelegate = new ComboBoxDelegate(caseItems, this);
     ui->tblStyles->setItemDelegateForColumn(15, caseComoboDelegate);
 
@@ -105,21 +99,18 @@ LanguageInspectorDock::LanguageInspectorDock(MainWindow *parent) :
         if (visible) {
             connectToEditor(parent->currentEditor());
             connect(parent, &MainWindow::editorActivated, this, &LanguageInspectorDock::connectToEditor);
-        }
-        else {
+        } else {
             disconnectFromEditor();
             disconnect(parent, &MainWindow::editorActivated, this, &LanguageInspectorDock::connectToEditor);
         }
     });
 }
 
-LanguageInspectorDock::~LanguageInspectorDock()
-{
+LanguageInspectorDock::~LanguageInspectorDock() {
     delete ui;
 }
 
-void LanguageInspectorDock::connectToEditor(ScintillaNext *editor)
-{
+void LanguageInspectorDock::connectToEditor(ScintillaNext *editor) {
     disconnectFromEditor();
 
     editorConnection = connect(editor, &ScintillaNext::updateUi, this, &LanguageInspectorDock::updatePositionInfo);
@@ -128,8 +119,7 @@ void LanguageInspectorDock::connectToEditor(ScintillaNext *editor)
     updateLexerInfo(editor);
 }
 
-void LanguageInspectorDock::disconnectFromEditor()
-{
+void LanguageInspectorDock::disconnectFromEditor() {
     if (editorConnection) {
         disconnect(editorConnection);
     }
@@ -139,32 +129,29 @@ void LanguageInspectorDock::disconnectFromEditor()
     }
 }
 
-void LanguageInspectorDock::updatePositionInfo(Scintilla::Update updated)
-{
+void LanguageInspectorDock::updatePositionInfo(Scintilla::Update updated) {
     if (FlagSet(updated, Scintilla::Update::Text) || FlagSet(updated, Scintilla::Update::Selection)) {
-        ScintillaNext *editor = qobject_cast<ScintillaNext*>(sender());
-        ui->lblInfo->setText(tr("Position %1 Style %2").arg(editor->currentPos()).arg(editor->styleAt(editor->currentPos())));
+        ScintillaNext *editor = qobject_cast<ScintillaNext *>(sender());
+        ui->lblInfo->setText(
+            tr("Position %1 Style %2").arg(editor->currentPos()).arg(editor->styleAt(editor->currentPos())));
     }
 }
 
-void LanguageInspectorDock::updateLexerInfo(ScintillaNext *editor)
-{
+void LanguageInspectorDock::updateLexerInfo(ScintillaNext *editor) {
     updateLanguageName(editor);
     updatePropertyInfo(editor);
     updateKeywordInfo(editor);
     updateStyleInfo(editor);
 }
 
-void LanguageInspectorDock::updateLanguageName(ScintillaNext *editor)
-{
+void LanguageInspectorDock::updateLanguageName(ScintillaNext *editor) {
     qInfo(Q_FUNC_INFO);
 
     ui->editLanguage->setText(editor->languageName);
     ui->editLexer->setText(editor->lexerLanguage());
 }
 
-void LanguageInspectorDock::updatePropertyInfo(ScintillaNext *editor)
-{
+void LanguageInspectorDock::updatePropertyInfo(ScintillaNext *editor) {
     const QSignalBlocker blocker(ui->tblProperties);
 
     ui->tblProperties->clearContents();
@@ -173,8 +160,7 @@ void LanguageInspectorDock::updatePropertyInfo(ScintillaNext *editor)
 
     if (propertyNames.isEmpty()) {
         ui->tblProperties->setRowCount(0);
-    }
-    else {
+    } else {
         QStringList propertyNamesList = propertyNames.split('\n');
 
         ui->tblProperties->setRowCount(propertyNamesList.count());
@@ -183,8 +169,10 @@ void LanguageInspectorDock::updatePropertyInfo(ScintillaNext *editor)
             const auto property = propertyNamesList[i];
 
             QTableWidgetItem *prop = new QTableWidgetItem(property);
-            QTableWidgetItem *type = new QTableWidgetItem(property_type_to_string(editor->propertyType(property.toLatin1().constData())));
-            QTableWidgetItem *desc = new QTableWidgetItem(QString(editor->describeProperty(property.toLatin1().constData())));
+            QTableWidgetItem *type =
+                new QTableWidgetItem(property_type_to_string(editor->propertyType(property.toLatin1().constData())));
+            QTableWidgetItem *desc =
+                new QTableWidgetItem(QString(editor->describeProperty(property.toLatin1().constData())));
             QTableWidgetItem *val = new QTableWidgetItem(QString(editor->property(property.toLatin1().constData())));
 
             desc->setToolTip(desc->text());
@@ -218,16 +206,14 @@ void LanguageInspectorDock::updatePropertyInfo(ScintillaNext *editor)
     });
 }
 
-void LanguageInspectorDock::updateKeywordInfo(ScintillaNext *editor)
-{
+void LanguageInspectorDock::updateKeywordInfo(ScintillaNext *editor) {
     ui->tblKeywords->clearContents();
 
     const QString keyWordSetsDescription = QString(editor->describeKeyWordSets());
 
     if (keyWordSetsDescription.isEmpty()) {
         ui->tblKeywords->setRowCount(0);
-    }
-    else {
+    } else {
         QStringList keyWordsSets = keyWordSetsDescription.split('\n');
 
         ui->tblKeywords->setRowCount(keyWordsSets.count());
@@ -244,8 +230,7 @@ void LanguageInspectorDock::updateKeywordInfo(ScintillaNext *editor)
     ui->tblKeywords->resizeColumnToContents(0);
 }
 
-void LanguageInspectorDock::updateStyleInfo(ScintillaNext *editor)
-{
+void LanguageInspectorDock::updateStyleInfo(ScintillaNext *editor) {
     if (auto model = ui->tblStyles->model()) {
         model->deleteLater();
     }

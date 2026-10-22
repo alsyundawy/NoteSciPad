@@ -211,7 +211,7 @@ private:
         throw QStringLiteral("Unexpected token '%1'").arg(ch);
     }
 
-    double evaluateFunction(const QString &fn, const QList<double> &args) {
+    static double evaluateFunction(const QString &fn, const QList<double> &args) {
         if (args.isEmpty()) {
             throw QStringLiteral("Function %1() requires arguments").arg(fn);
         }

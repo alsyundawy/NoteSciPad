@@ -18,8 +18,7 @@
 
 #include "ApplicationDecorator.h"
 
-void ApplicationDecorator::setEnabled(bool b)
-{
+void ApplicationDecorator::setEnabled(bool b) {
     enabled = b;
 
     emit stateChanged(enabled);

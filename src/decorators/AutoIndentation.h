@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2021 Justin Dailey
@@ -16,15 +17,12 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef AUTOINDENTATION_H
 #define AUTOINDENTATION_H
 
 #include "EditorDecorator.h"
 
-
-class AutoIndentation : public EditorDecorator
-{
+class AutoIndentation : public EditorDecorator {
     Q_OBJECT
 
 public:
@@ -37,4 +35,4 @@ private:
     void autoIndentLine(int line) const;
 };
 
-#endif // AUTOINDENTATION_H
+#endif  // AUTOINDENTATION_H

@@ -1,3 +1,4 @@
+#pragma once
 /*
  * This file is part of Notepad Next.
  * Copyright 2019 Justin Dailey
@@ -15,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 
 #ifndef SCIIFACETABLE_H
 #define SCIIFACETABLE_H
