@@ -671,6 +671,11 @@ QTabWidget::pane {
     background-color: %1;
     border-radius: 8px;
 }
+QTabBar {
+    background: transparent;
+    border: none;
+    qproperty-drawBase: 0;
+}
 QTabBar::tab {
     background-color: %1;
     color: %4;
