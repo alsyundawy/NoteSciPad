@@ -207,6 +207,7 @@ jobs:
           name: SparkNotePad-macOS-${{ matrix.arch }}-Qt${{ matrix.qt_version }}
           path: build/SparkNotePad*.dmg
           if-no-files-found: warn
+          retention-days: 90
 
       - name: Build Linux Targets (deb, rpm)
         if: matrix.platform == 'linux'
@@ -225,3 +226,4 @@ jobs:
             build/*.deb
             build/*.rpm
           if-no-files-found: warn
+          retention-days: 90
