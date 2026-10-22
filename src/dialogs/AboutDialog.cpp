@@ -31,10 +31,11 @@ AboutDialog::AboutDialog(QWidget *parent)
 void AboutDialog::setupUi()
 {
     setWindowTitle(tr("About NoteSciPad"));
-    resize(640, 480);
+    resize(540, 400);
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->setSpacing(10);
+    mainLayout->setContentsMargins(10, 10, 10, 10);
+    mainLayout->setSpacing(8);
 
     m_tabWidget = new QTabWidget(this);
     m_tabWidget->addTab(createAboutTab(), tr("&About"));
