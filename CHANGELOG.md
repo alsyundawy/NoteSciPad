@@ -7,11 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.1.0] - 2026-10-19
+## [1.1.0] - 2026-10-22
 
-### 🎨 Native Light/Dark UI Streamlining, Math Evaluation, Trending Lexers & High-Precision Toolbar Iconography
+### 🎨 Native Light/Dark UI Streamlining, 13-Pillar Quality, Theme Leakage Fix & High-Precision Toolbar Iconography
 
-NoteSciPad v1.1.0 delivers streamlined native Light and Dark modes without external palette overhead, restored toolbar dividing line and classic peach tab styling, Scintilla 5.6.7/Lexilla 5.5.4/Lua 5.5.1 engine upgrades, inline mathematical expression evaluation, 7 trending language lexers, redesigned 5-tab modern About dialog, universal dialog checkbox/radio layout overhaul, and pixel-perfect 16x16 toolbar iconography.
+NoteSciPad v1.1.0 delivers streamlined native Light and Dark modes without external palette overhead, restored toolbar dividing line and classic peach tab styling, Scintilla 5.6.7/Lexilla 5.5.4/Lua 5.5.1 engine upgrades, inline mathematical expression evaluation, 7 trending language lexers, complete elimination of light-mode dark theme leakage in `AboutDialog` and `DisplayInfoDialog`, compiler scope resolution for native palettes, redesigned 5-tab modern About dialog, universal dialog checkbox/radio layout overhaul, and pixel-perfect 16x16 toolbar iconography.
+
+#### 🛡️ Theme Leakage Elimination & Dialog Polish
+- **Zero Dark Mode Leakage in Light Mode**: Completely eliminated all usage of fragile Qt `palette(alternate-base)` and `palette(base)` stylesheets across `AboutDialog` and `DisplayInfoDialog`. On host operating systems set to Dark Mode (such as macOS Sequoia/Sonoma or Linux dark themes), Qt previously resolved those palette macros to dark gray (`#2d2d2d`), resulting in unsightly dark rectangles inside light-mode dialogs.
+- **Dynamic Theme Palette Binding (`updateThemeColors`)**: Implemented dynamic theme event listeners connected to `ThemeManager::themeChanged` in `AboutDialog` and `DisplayInfoDialog`. Color tokens are resolved deterministically using explicit CSS hex definitions (`#fafbfc` card background, `#f0f2f5` window background, `#e1e4e8` border, `#24292f` primary text, `#57606a` secondary text in Light Mode; `#282a36`, `#1e1f29`, `#44475a`, `#f8f8f2` in Dark Mode).
+- **Proportional About Dialog Sizing**: Calibrated About Dialog dimensions to a compact, elegant 540x400 px frame with multi-tab diagnostics.
+
+#### 🔧 Compiler Hardening & 13-Pillar C++ Refactoring
+- **Scope Resolution in ThemeManager**: Fixed Linux GCC compiler errors where `findThemePaletteById` was referenced without being in scope by binding direct pointer fallbacks (`&kDarkPalette` / `&kLightPalette`). Verified 100% build success on `ubuntu-24.04` (gcc 6.5 & gcc 6.8).
+- **13-Pillar Static Audit Clean**: Clean across all files in `src/` via Trunk Check and Cppcheck. Resolved all warnings for `missingOverride`, `noExplicitConstructor`, `shadowFunction`, `shadowMember`, `cstyleCast`, `constVariablePointer`, `ignoredReturnErrorCode`, and `passedByValue`.
 
 ---
 
