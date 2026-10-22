@@ -4,10 +4,19 @@
 name: MegaLinter
 
 on:
-  # Trigger mega-linter at every push. Action will also be visible from Pull Requests to main
-  push: # Comment this line to trigger action only on pull-requests (not recommended if you don't pay for GH Actions)
+  # Trigger mega-linter at push to main branches and release branches
+  push:
+    branches:
+      - main
+      - develop
+      - 1.*
   pull_request:
-    branches: [master, main]
+    branches:
+      - master
+      - main
+      - develop
+      - 1.*
+  workflow_dispatch:
 
 env: # Comment env block if you don't want to apply fixes
   # Apply linter fixes configuration
@@ -60,7 +69,7 @@ jobs:
         env:
           # All available variables are described in documentation
           # https://megalinter.io/configuration/
-          VALIDATE_ALL_CODEBASE: false # Validates all source when push on main, else just the git diff with main. Override with true if you always want to lint all sources
+          VALIDATE_ALL_CODEBASE: true # Validates all source across the entire codebase
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ACTION_ZIZMOR_UNSECURED_ENV_VARIABLES: GITHUB_TOKEN
           # ADD YOUR CUSTOM ENV VARIABLES HERE OR DEFINE THEM IN A FILE .mega-linter.yml AT THE ROOT OF YOUR REPOSITORY
@@ -76,6 +85,7 @@ jobs:
           path: |
             megalinter-reports
             mega-linter.log
+          retention-days: 90
 
       # Create pull request if applicable (for now works only on PR from same repository, not from forks)
       - name: Create Pull Request with applied fixes
