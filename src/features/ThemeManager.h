@@ -69,7 +69,7 @@ private:
     ~ThemeManager() override;
 
     ThemeMode m_themeMode = ThemeMode::Light;
-    QString m_currentPaletteId = QStringLiteral("defaultLight");
+    QString m_currentPaletteId = QStringLiteral("notepadNext");
     ApplicationSettings *m_settings = nullptr;
     MainWindow *m_activeWindow = nullptr;
 };

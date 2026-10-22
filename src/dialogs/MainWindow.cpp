@@ -3768,7 +3768,7 @@ void MainWindow::onEncryptDocumentTriggered() {
         editor->QObject::setProperty("IsEncrypted", true);
         editor->QObject::setProperty("EncryptionPassword", dlg.passphrase());
         editor->insertText(editor->currentPos(), "");
-        ui->statusBar->showMessage(tr("🔒 Document configured for AES-256 encryption. Save to write to disk."), 5000);
+        ui->statusBar->showMessage(tr("Document configured for AES-256 encryption. Save to write to disk."), 5000);
         ModernMessageBox::information(
             this, tr("Encryption Configured"),
             tr("This document is now set to be encrypted with AES-256 upon saving.\n\n"
@@ -3795,7 +3795,7 @@ void MainWindow::onDecryptDocumentTriggered() {
         editor->QObject::setProperty("IsEncrypted", false);
         editor->QObject::setProperty("EncryptionPassword", QString());
         editor->insertText(editor->currentPos(), "");
-        ui->statusBar->showMessage(tr("🔓 Encryption removed. Save to write as plain text."), 4000);
+        ui->statusBar->showMessage(tr("Encryption removed. Save to write as plain text."), 4000);
     }
 }
 
@@ -3814,17 +3814,16 @@ void MainWindow::onClipboardMonitoringStateChanged(bool active) {
         actionToggleClipboardMonitoring->setChecked(active);
     }
     if (active) {
-        ui->statusBar->showMessage(tr("📋 Clipboard Monitoring: ACTIVE (capturing copied text to document)"), 5000);
+        ui->statusBar->showMessage(tr("Clipboard Monitoring: ACTIVE (capturing copied text to document)"), 5000);
     } else {
-        ui->statusBar->showMessage(tr("📋 Clipboard Monitoring: STOPPED (Total captured: %1)")
-                                       .arg(ClipboardMonitor::instance()->capturedCount()),
-                                   4000);
+        ui->statusBar->showMessage(
+            tr("Clipboard Monitoring: STOPPED (Total captured: %1)").arg(ClipboardMonitor::instance()->capturedCount()),
+            4000);
     }
 }
 
 void MainWindow::onClipboardClipCaptured(const ClipboardMonitor::CapturedClip &clip, int totalCount) {
-    ui->statusBar->showMessage(tr("📋 Captured clipboard item #%1 (%2 chars)").arg(totalCount).arg(clip.charCount),
-                               3000);
+    ui->statusBar->showMessage(tr("Captured clipboard item #%1 (%2 chars)").arg(totalCount).arg(clip.charCount), 3000);
 }
 
 void MainWindow::onToggleTransparencyTriggered() {
@@ -4121,10 +4120,10 @@ void MainWindow::setupThemeMenu() {
     menuTheme->addSeparator();
 
     // 5. Reset and Mode Toggles
-    actionThemeLight = new QAction(tr("Reset to Default (Light Mode)"), this);
+    actionThemeLight = new QAction(tr("Reset to Default (Light Mode - NotepadNext)"), this);
     connect(actionThemeLight, &QAction::triggered, this, [this]() {
-        ThemeManager::instance()->setPalette(QStringLiteral("defaultLight"), this);
-        ui->statusBar->showMessage(tr("Theme reset to default Light Mode"), 3000);
+        ThemeManager::instance()->setPalette(QStringLiteral("notepadNext"), this);
+        ui->statusBar->showMessage(tr("Theme reset to default Light Mode (NotepadNext)"), 3000);
     });
     menuTheme->addAction(actionThemeLight);
 
