@@ -32,11 +32,11 @@ AboutDialog::AboutDialog(QWidget *parent)
 void AboutDialog::setupUi()
 {
     setWindowTitle(tr("About NoteSciPad"));
-    resize(680, 520);
+    resize(540, 400);
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->setContentsMargins(16, 16, 16, 16);
-    mainLayout->setSpacing(12);
+    mainLayout->setContentsMargins(10, 10, 10, 10);
+    mainLayout->setSpacing(8);
 
     m_tabWidget = new QTabWidget(this);
     m_tabWidget->addTab(createAboutTab(), tr("&About"));
@@ -56,31 +56,32 @@ QWidget *AboutDialog::createAboutTab()
 {
     QWidget *tab = new QWidget(this);
     QVBoxLayout *layout = new QVBoxLayout(tab);
-    layout->setContentsMargins(16, 16, 16, 16);
-    layout->setSpacing(14);
+    layout->setContentsMargins(10, 10, 10, 10);
+    layout->setSpacing(8);
 
     // Header layout with icon and title
     QHBoxLayout *headerLayout = new QHBoxLayout();
-    headerLayout->setSpacing(16);
+    headerLayout->setSpacing(12);
 
     QLabel *iconLabel = new QLabel(this);
     QPixmap iconPixmap(":/icons/NoteSciPad.png");
     if (!iconPixmap.isNull()) {
-        iconLabel->setPixmap(iconPixmap.scaled(80, 80, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        iconLabel->setPixmap(iconPixmap.scaled(52, 52, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     }
-    iconLabel->setFixedSize(80, 80);
+    iconLabel->setFixedSize(52, 52);
     headerLayout->addWidget(iconLabel);
 
     QVBoxLayout *titleLayout = new QVBoxLayout();
-    titleLayout->setSpacing(4);
+    titleLayout->setSpacing(2);
 
     QLabel *titleLabel = new QLabel(this);
-    titleLabel->setText(QString("<h2>NoteSciPad v%1</h2>"
-                                "<p style='margin: 0; color: palette(text); font-weight: bold;'>"
-                                "Independent, Ultra-Lightweight &amp; High-Performance Text Editor</p>"
-                                "<p style='margin: 0; color: palette(mid); font-style: italic; font-size: 11px;'>"
-                                "Powered natively by Vendored Scintilla &amp; Lexilla with Modern Qt 6</p>")
-                        .arg(APP_VERSION));
+    titleLabel->setText(
+        QString("<h3 style='margin: 0 0 2px 0; font-size: 15px;'>NoteSciPad v%1</h3>"
+                "<p style='margin: 0; color: palette(text); font-weight: bold; font-size: 11px;'>"
+                "Independent, Ultra-Lightweight &amp; High-Performance Text Editor</p>"
+                "<p style='margin: 1px 0 0 0; color: palette(mid); font-style: italic; font-size: 10px;'>"
+                "Powered natively by Vendored Scintilla &amp; Lexilla with Modern Qt 6</p>")
+            .arg(APP_VERSION));
     titleLayout->addWidget(titleLabel);
     headerLayout->addLayout(titleLayout);
     headerLayout->addStretch();
@@ -91,29 +92,37 @@ QWidget *AboutDialog::createAboutTab()
     noticeBox->setWordWrap(true);
     noticeBox->setStyleSheet(
         "QLabel {"
-        "  padding: 12px;"
+        "  padding: 8px 10px;"
         "  background-color: palette(alternate-base);"
         "  border: 1px solid palette(mid);"
-        "  border-radius: 8px;"
-        "  font-size: 12px;"
-        "}"
-    );
+        "  border-radius: 6px;"
+        "  font-size: 11px;"
+        "  line-height: 1.4;"
+        "}");
     noticeBox->setText(
         tr("<b>Important Legal &amp; Non-Affiliation Statement:</b><br/>"
            "<i>NoteSciPad is an independent open-source project. It is not affiliated with, "
-           "endorsed by, or associated with Notepad++, NotepadNext, Notepad4, or Notepad3.</i>")
-    );
+           "endorsed by, or associated with Notepad++, NotepadNext, Notepad4, or Notepad3.</i>"));
     layout->addWidget(noticeBox);
 
     QLabel *metaLabel = new QLabel(this);
     metaLabel->setOpenExternalLinks(true);
+    metaLabel->setStyleSheet(
+        "QLabel {"
+        "  padding: 8px 10px;"
+        "  background-color: palette(alternate-base);"
+        "  border: 1px solid palette(mid);"
+        "  border-radius: 6px;"
+        "  font-size: 11px;"
+        "  line-height: 1.4;"
+        "}");
     metaLabel->setText(
-        QString("<p><b>Distribution Channel:</b> %1<br/>"
-                "<b>Official Repository:</b> <a href='https://github.com/alsyundawy/NoteSciPad'>https://github.com/alsyundawy/NoteSciPad</a><br/>"
+        QString("<p style='margin: 0;'><b>Distribution Channel:</b> %1<br/>"
+                "<b>Official Repository:</b> <a "
+                "href='https://github.com/alsyundawy/NoteSciPad'>https://github.com/alsyundawy/NoteSciPad</a><br/>"
                 "<b>License:</b> GNU General Public License v3 (GPL-3.0-or-later)<br/>"
                 "<b>Engine Architecture:</b> Vendored Scintilla 5.6.x + Lexilla 5.5.x C++ Core</p>")
-        .arg(APP_DISTRIBUTION)
-    );
+            .arg(APP_DISTRIBUTION));
     layout->addWidget(metaLabel);
 
     layout->addStretch();
@@ -124,8 +133,8 @@ QWidget *AboutDialog::createMaintainerTab()
 {
     QWidget *tab = new QWidget(this);
     QVBoxLayout *layout = new QVBoxLayout(tab);
-    layout->setContentsMargins(16, 16, 16, 16);
-    layout->setSpacing(12);
+    layout->setContentsMargins(10, 10, 10, 10);
+    layout->setSpacing(8);
 
     QTextBrowser *browser = new QTextBrowser(this);
     browser->setOpenExternalLinks(true);
@@ -133,28 +142,30 @@ QWidget *AboutDialog::createMaintainerTab()
         "QTextBrowser {"
         "  background-color: palette(base);"
         "  border: 1px solid palette(mid);"
-        "  border-radius: 8px;"
-        "  padding: 12px;"
-        "  font-size: 13px;"
-        "}"
-    );
+        "  border-radius: 6px;"
+        "  padding: 8px 10px;"
+        "  font-size: 11px;"
+        "  line-height: 1.4;"
+        "}");
     browser->setHtml(
-        tr("<h3>Maintainer &amp; Official Support Channels</h3>"
+        tr("<h3 style='margin-top: 0; font-size: 13px;'>Maintainer &amp; Official Support Channels</h3>"
            "<p><b>Lead Architect &amp; Maintainer:</b> HARRY DERTIN SUTISNA ALSYUNDAWY (<code>@alsyundawy</code>)<br/>"
            "<b>Organization:</b> ALSYUNDAWY IT SOLUTION<br/>"
            "<b>Official Website:</b> <a href='https://alsyundawy.com'>https://alsyundawy.com</a><br/>"
            "<b>Official Email:</b> <a href='mailto:alsyundawy@gmail.com'>alsyundawy@gmail.com</a><br/>"
            "<b>GitHub Profile:</b> <a href='https://github.com/alsyundawy'>@alsyundawy</a><br/>"
            "<b>Telegram Channel:</b> <a href='https://t.me/alsyundawy'>@alsyundawy</a></p>"
-           "<hr/>"
-           "<h4>Sponsorship &amp; Donation Channels</h4>"
-           "<p>If you find NoteSciPad useful for your development and daily workflow, consider supporting our ongoing development:</p>"
+           "<hr style='border: 0; border-top: 1px solid palette(mid); margin: 10px 0;'/>"
+           "<h4 style='font-size: 12px; margin: 6px 0;'>Sponsorship &amp; Donation Channels</h4>"
+           "<p>If you find NoteSciPad useful for your development and daily workflow, consider supporting our ongoing "
+           "development:</p>"
            "<ul>"
            "<li>💳 <b>PayPal:</b> <a href='https://www.paypal.me/alsyundawy'>paypal.me/alsyundawy</a></li>"
            "<li>☕ <b>Buy Me A Coffee:</b> <a href='https://www.buymeacoffee.com/0TC98Sk'>buymeacoffee.com/0TC98Sk</a></li>"
-           "<li>🇮🇩 <b>QRIS (NMID: ID1020021153676):</b> <a href='https://github.com/user-attachments/assets/a0126f28-6dde-43da-ba14-d7c9a27de0df'>View Official QRIS Barcode</a></li>"
-           "</ul>")
-    );
+           "<li>🇮🇩 <b>QRIS (NMID: ID1020021153676):</b> <a "
+           "href='https://github.com/user-attachments/assets/a0126f28-6dde-43da-ba14-d7c9a27de0df'>View Official "
+           "QRIS Barcode</a></li>"
+           "</ul>"));
     layout->addWidget(browser);
     return tab;
 }
@@ -163,7 +174,7 @@ QWidget *AboutDialog::createCreditsTab()
 {
     QWidget *tab = new QWidget(this);
     QVBoxLayout *layout = new QVBoxLayout(tab);
-    layout->setContentsMargins(16, 16, 16, 16);
+    layout->setContentsMargins(10, 10, 10, 10);
 
     QTextBrowser *browser = new QTextBrowser(this);
     browser->setOpenExternalLinks(true);
@@ -171,27 +182,42 @@ QWidget *AboutDialog::createCreditsTab()
         "QTextBrowser {"
         "  background-color: palette(base);"
         "  border: 1px solid palette(mid);"
-        "  border-radius: 8px;"
-        "  padding: 12px;"
-        "  font-size: 12px;"
-        "}"
-    );
+        "  border-radius: 6px;"
+        "  padding: 8px 10px;"
+        "  font-size: 11px;"
+        "  line-height: 1.4;"
+        "}");
     browser->setHtml(
-        tr("<h3>Credits &amp; Upstream Attribution</h3>"
-           "<p>NoteSciPad stands on the shoulders of giants. We express our deepest gratitude to the following projects and authors:</p>"
+        tr("<h3 style='margin-top: 0; font-size: 13px;'>Credits &amp; Upstream Attribution</h3>"
+           "<p>NoteSciPad stands on the shoulders of giants. We express our deepest gratitude to the following "
+           "projects and authors:</p>"
            "<ul>"
-           "<li><b>Scintilla:</b> Created by Neil Hodgson and contributors. The legendary core editing component providing high-performance text rendering, multi-caret editing, and fold margins. (<a href='https://www.scintilla.org'>scintilla.org</a>)</li>"
-           "<li><b>Lexilla:</b> Created by Neil Hodgson and contributors. Provides syntax highlighting and styling lexers for over 100 programming languages. (<a href='https://www.scintilla.org'>scintilla.org/Lexilla.html</a>)</li>"
-           "<li><b>NotepadNext:</b> Created by Justin Dailey (dail8859). Provided the cross-platform Qt scaffolding and docking framework foundation. (<a href='https://github.com/dail8859/NotepadNext'>github.com/dail8859/NotepadNext</a>)</li>"
-           "<li><b>Notepad4:</b> Created by Zufu Liu (zufuliu). Provided invaluable architectural ideas, lexer updates, and utility concepts. (<a href='https://github.com/zufuliu/notepad4'>github.com/zufuliu/notepad4</a>)</li>"
-           "<li><b>Notepad3:</b> Created by Rizonesoft and contributors. Inspired Scintilla power-user text transformation patterns and UI polish. (<a href='https://www.rizonesoft.com'>rizonesoft.com</a>)</li>"
-           "<li><b>SubnetCalc for macOS:</b> Inspired UI elegance, theme architecture, and release documentation standards. (<a href='https://github.com/alsyundawy/SubnetCalc-MacOS'>github.com/alsyundawy/SubnetCalc-MacOS</a>)</li>"
-           "<li><b>Lon McGregor (NotepadPlusPlusIcons):</b> Designer of the iconic open-source editor and chameleon artwork series, adapted as NoteSciPad's official application icon. (<a href='https://github.com/LonMcGregor/NotepadPlusPlusIcons'>github.com/LonMcGregor/NotepadPlusPlusIcons</a>)</li>"
-           "<li><b>Qt Project:</b> Developed by The Qt Company and the Qt Open Source Community. (<a href='https://www.qt.io'>qt.io</a>)</li>"
+           "<li><b>Scintilla:</b> Created by Neil Hodgson and contributors. The legendary core editing component "
+           "providing high-performance text rendering, multi-caret editing, and fold margins. (<a "
+           "href='https://www.scintilla.org'>scintilla.org</a>)</li>"
+           "<li><b>Lexilla:</b> Created by Neil Hodgson and contributors. Provides syntax highlighting and styling "
+           "lexers for over 100 programming languages. (<a "
+           "href='https://www.scintilla.org'>scintilla.org/Lexilla.html</a>)</li>"
+           "<li><b>NotepadNext:</b> Created by Justin Dailey (dail8859). Provided the cross-platform Qt scaffolding "
+           "and docking framework foundation. (<a "
+           "href='https://github.com/dail8859/NotepadNext'>github.com/dail8859/NotepadNext</a>)</li>"
+           "<li><b>Notepad4:</b> Created by Zufu Liu (zufuliu). Provided invaluable architectural ideas, lexer "
+           "updates, and utility concepts. (<a "
+           "href='https://github.com/zufuliu/notepad4'>github.com/zufuliu/notepad4</a>)</li>"
+           "<li><b>Notepad3:</b> Created by Rizonesoft and contributors. Inspired Scintilla power-user text "
+           "transformation patterns and UI polish. (<a href='https://www.rizonesoft.com'>rizonesoft.com</a>)</li>"
+           "<li><b>SubnetCalc for macOS:</b> Inspired UI elegance, theme architecture, and release documentation "
+           "standards. (<a "
+           "href='https://github.com/alsyundawy/SubnetCalc-MacOS'>github.com/alsyundawy/SubnetCalc-MacOS</a>)</li>"
+           "<li><b>Lon McGregor (NotepadPlusPlusIcons):</b> Designer of the iconic open-source editor and chameleon "
+           "artwork series, adapted as NoteSciPad's official application icon. (<a "
+           "href='https://github.com/LonMcGregor/NotepadPlusPlusIcons'>github.com/LonMcGregor/"
+           "NotepadPlusPlusIcons</a>)</li>"
+           "<li><b>Qt Project:</b> Developed by The Qt Company and the Qt Open Source Community. (<a "
+           "href='https://www.qt.io'>qt.io</a>)</li>"
            "<li><b>uchardet:</b> Maintained by Freedesktop. Enables fast universal character encoding detection.</li>"
            "<li><b>Qt Advanced Docking System (ADS):</b> Advanced dock widget management.</li>"
-           "</ul>")
-    );
+           "</ul>"));
     layout->addWidget(browser);
     return tab;
 }
@@ -200,46 +226,52 @@ QWidget *AboutDialog::createEnvironmentTab()
 {
     QWidget *tab = new QWidget(this);
     QVBoxLayout *layout = new QVBoxLayout(tab);
-    layout->setContentsMargins(16, 16, 16, 16);
-    layout->setSpacing(14);
+    layout->setContentsMargins(10, 10, 10, 10);
+    layout->setSpacing(8);
 
     QLabel *infoLabel = new QLabel(this);
     infoLabel->setTextFormat(Qt::RichText);
     infoLabel->setStyleSheet(
         "QLabel {"
-        "  padding: 12px;"
+        "  padding: 8px 10px;"
         "  background-color: palette(alternate-base);"
         "  border: 1px solid palette(mid);"
-        "  border-radius: 8px;"
-        "  font-size: 13px;"
-        "}"
-    );
+        "  border-radius: 6px;"
+        "  font-size: 11px;"
+        "  line-height: 1.4;"
+        "}");
 
     QScreen *primary = QGuiApplication::primaryScreen();
     qreal dpr = primary ? primary->devicePixelRatio() : 1.0;
 
     QString infoText = QString(
-        "<b>Operating System:</b> %1 (%2)<br/>"
-        "<b>Architecture:</b> %3 (Build Target: %4)<br/>"
-        "<b>Qt Version:</b> %5 (Built with %6)<br/>"
-        "<b>Display Scale Ratio:</b> %7x (Retina / High-DPI)<br/>"
-        "<b>NoteSciPad Version:</b> v%8<br/>"
-        "<b>Kernel Type:</b> %9"
-    ).arg(QSysInfo::prettyProductName())
-     .arg(QSysInfo::kernelVersion())
-     .arg(QSysInfo::currentCpuArchitecture())
-     .arg(QSysInfo::buildCpuArchitecture())
-     .arg(qVersion())
-     .arg(QT_VERSION_STR)
-     .arg(QString::number(dpr, 'f', 1))
-     .arg(APP_VERSION)
-     .arg(QSysInfo::kernelType());
+                           "<b>Operating System:</b> %1 (%2)<br/>"
+                           "<b>Architecture:</b> %3 (Build Target: %4)<br/>"
+                           "<b>Qt Version:</b> %5 (Built with %6)<br/>"
+                           "<b>Display Scale Ratio:</b> %7x (Retina / High-DPI)<br/>"
+                           "<b>NoteSciPad Version:</b> v%8<br/>"
+                           "<b>Kernel Type:</b> %9")
+                           .arg(QSysInfo::prettyProductName())
+                           .arg(QSysInfo::kernelVersion())
+                           .arg(QSysInfo::currentCpuArchitecture())
+                           .arg(QSysInfo::buildCpuArchitecture())
+                           .arg(qVersion())
+                           .arg(QT_VERSION_STR)
+                           .arg(QString::number(dpr, 'f', 1))
+                           .arg(APP_VERSION)
+                           .arg(QSysInfo::kernelType());
 
     infoLabel->setText(infoText);
     layout->addWidget(infoLabel);
 
     QPushButton *copyBtn = new QPushButton(tr("Copy Diagnostics to Clipboard"), this);
     copyBtn->setCursor(Qt::PointingHandCursor);
+    copyBtn->setStyleSheet(
+        "QPushButton {"
+        "  padding: 5px 14px;"
+        "  font-size: 11px;"
+        "  font-weight: 600;"
+        "}");
     connect(copyBtn, &QPushButton::clicked, this, &AboutDialog::copySystemInfoToClipboard);
     layout->addWidget(copyBtn);
 
@@ -251,7 +283,7 @@ QWidget *AboutDialog::createLicenseTab()
 {
     QWidget *tab = new QWidget(this);
     QVBoxLayout *layout = new QVBoxLayout(tab);
-    layout->setContentsMargins(16, 16, 16, 16);
+    layout->setContentsMargins(10, 10, 10, 10);
 
     QTextBrowser *browser = new QTextBrowser(this);
     browser->setOpenExternalLinks(true);
@@ -259,13 +291,13 @@ QWidget *AboutDialog::createLicenseTab()
         "QTextBrowser {"
         "  background-color: palette(base);"
         "  border: 1px solid palette(mid);"
-        "  border-radius: 8px;"
-        "  padding: 12px;"
-        "  font-size: 12px;"
-        "}"
-    );
+        "  border-radius: 6px;"
+        "  padding: 8px 10px;"
+        "  font-size: 11px;"
+        "  line-height: 1.4;"
+        "}");
     browser->setHtml(
-        tr("<h3>GNU General Public License v3.0</h3>"
+        tr("<h3 style='margin-top: 0; font-size: 13px;'>GNU General Public License v3.0</h3>"
            "<p>NoteSciPad is free software: you can redistribute it and/or modify "
            "it under the terms of the GNU General Public License as published by "
            "the Free Software Foundation, either version 3 of the License, or "
@@ -274,8 +306,8 @@ QWidget *AboutDialog::createLicenseTab()
            "but WITHOUT ANY WARRANTY; without even the implied warranty of "
            "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the "
            "GNU General Public License for more details.</p>"
-           "<p>For complete license details, visit: <a href='https://www.gnu.org/licenses/'>https://www.gnu.org/licenses/</a></p>")
-    );
+           "<p>For complete license details, visit: <a "
+           "href='https://www.gnu.org/licenses/'>https://www.gnu.org/licenses/</a></p>"));
     layout->addWidget(browser);
     return tab;
 }
