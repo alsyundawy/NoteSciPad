@@ -323,6 +323,12 @@ QString ThemeManager::getThemeStyleSheet() const
     QString accent =
         pal ? QString::fromLatin1(pal->blue) : (darkActive ? QStringLiteral("#58a6ff") : QStringLiteral("#0969da"));
 
+    // User requirement: In light mode, toolbar background must be dark (charcoal/dracula),
+    // and light mode default is NotepadNext. In dark mode, toolbar background matches dark theme.
+    QString tbBg = darkActive ? win : QStringLiteral("#21252b");
+    QString tbBorder = darkActive ? border : QStringLiteral("#181a1f");
+    QString tbText = darkActive ? txtPri : QStringLiteral("#e6edf3");
+    QString tbHover = darkActive ? border : QStringLiteral("rgba(255, 255, 255, 0.12)");
 
     const QString templateStr = QString::fromUtf8(R"(
 /* Universal Base Typography & Text */
@@ -723,7 +729,37 @@ QTextBrowser {
     border: 1px solid %3;
     border-radius: 8px;
 }
+
+/* ToolBars */
+QToolBar {
+    background-color: %7;
+    border: none;
+    border-bottom: 1px solid %8;
+    spacing: 3px;
+    padding: 2px 6px;
+}
+QToolBar QToolButton {
+    background: transparent;
+    color: %9;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 3px;
+    margin: 1px;
+}
+QToolBar QToolButton:hover {
+    background-color: %10;
+    border-color: %8;
+}
+QToolBar QToolButton:pressed {
+    background-color: %6;
+    color: #ffffff;
+}
+QToolBar::separator {
+    width: 1px;
+    background-color: %8;
+    margin: 4px 6px;
+}
 )");
 
-    return templateStr.arg(win, txtPri, border, txtSec, card, accent);
+    return templateStr.arg(win, txtPri, border, txtSec, card, accent, tbBg, tbBorder, tbText).arg(tbHover);
 }
