@@ -14,6 +14,7 @@
 #include "test_math_evaluator.h"
 #include "test_crypto_manager.h"
 #include "test_code_compress_pretty.h"
+#include "test_lua_security.h"  // CVE-2026-42214 Lua injection regression tests
 
 int runAllTests(int argc, char *argv[]) {
     int status = 0;
@@ -43,6 +44,10 @@ int runAllTests(int argc, char *argv[]) {
     }
     {
         TestCodeCompressPretty t;
+        status |= QTest::qExec(&t, argc, argv);
+    }
+    {
+        TestLuaSecurity t;  // Security regression: CVE-2026-42214 Lua injection
         status |= QTest::qExec(&t, argc, argv);
     }
     return status;

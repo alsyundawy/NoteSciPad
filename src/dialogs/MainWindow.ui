@@ -97,6 +97,7 @@
     <addaction name="separator"/>
     <addaction name="menuRecentFiles"/>
     <addaction name="separator"/>
+    <addaction name="actionRestart"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
@@ -548,6 +549,9 @@
    <addaction name="actionPlayback"/>
    <addaction name="actionRunMacroMultipleTimes"/>
    <addaction name="actionSaveCurrentRecordedMacro"/>
+   <addaction name="separator"/>
+   <addaction name="actionRestart"/>
+   <addaction name="actionExit"/>
   </widget>
   <widget class="EditorInfoStatusBar" name="statusBar"/>
   <action name="actionNew">
@@ -614,9 +618,37 @@
     <string notr="true">Ctrl+S</string>
    </property>
   </action>
+  <action name="actionRestart">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/arrow_refresh.png</normaloff>:/icons/arrow_refresh.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Restart Application</string>
+   </property>
+   <property name="toolTip">
+    <string>Restart SparkNotePad</string>
+   </property>
+   <property name="statusTip">
+    <string>Gracefully save settings and relaunch the application</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">Ctrl+Alt+R</string>
+   </property>
+  </action>
   <action name="actionExit">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/cross.svg</normaloff>:/icons/cross.svg</iconset>
+   </property>
    <property name="text">
     <string>E&amp;xit</string>
+   </property>
+   <property name="toolTip">
+    <string>Exit SparkNotePad</string>
+   </property>
+   <property name="statusTip">
+    <string>Quit the application</string>
    </property>
    <property name="menuRole">
     <enum>QAction::QuitRole</enum>

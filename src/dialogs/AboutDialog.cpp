@@ -24,6 +24,8 @@
 #include <QSysInfo>
 #include <QScreen>
 #include <QPixmap>
+#include <QScrollArea>
+#include <QTabBar>
 
 AboutDialog::AboutDialog(QWidget *parent) : QDialog(parent) {
     setupUi();
@@ -34,17 +36,27 @@ AboutDialog::AboutDialog(QWidget *parent) : QDialog(parent) {
 
 void AboutDialog::setupUi() {
     setWindowTitle(tr("About SparkNotePad"));
-    resize(540, 400);
+    // Fix: minimum size prevents tab truncation on macOS Retina and Linux HiDPI
+    setMinimumSize(620, 480);
+    resize(660, 520);
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(10, 10, 10, 10);
     mainLayout->setSpacing(8);
 
     m_tabWidget = new QTabWidget(this);
+    // Fix: prevent tab label eliding and scroll arrows on narrow dialogs
+    m_tabWidget->tabBar()->setElideMode(Qt::ElideNone);
+    m_tabWidget->setUsesScrollButtons(false);
+
     m_tabWidget->addTab(createAboutTab(), tr("&About"));
     m_tabWidget->addTab(createMaintainerTab(), tr("&Maintainer"));
-    m_tabWidget->addTab(createCreditsTab(), tr("&Credits && Attribution"));
+    // Fix: shortened from tr("&Credits && Attribution") to prevent tab text clipping
+    // Full text preserved in tooltip per UX spec (Section 3.3)
+    m_tabWidget->addTab(createCreditsTab(), tr("&Credits"));
+    m_tabWidget->setTabToolTip(2, tr("Credits & Attribution"));
     m_tabWidget->addTab(createEnvironmentTab(), tr("&Diagnostics"));
+    m_tabWidget->setTabToolTip(3, tr("System & Engine Diagnostics"));
     m_tabWidget->addTab(createShortcutsTab(), tr("&Shortcuts"));
     m_tabWidget->addTab(createLicenseTab(), tr("&License"));
 
@@ -217,9 +229,9 @@ void AboutDialog::updateThemeColors() {
                 "<tr>"
                 "  <td style='font-weight: bold;'>Release Tag:</td>"
                 "  <td><a style='text-decoration: none;' "
-                "href='https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.3.0'>"
+                "href='https://github.com/alsyundawy/SparkNotePad/releases/tag/v1.3.5'>"
                 "<span style='background-color: #238636; color: #ffffff; padding: 1px 8px; border-radius: 10px; "
-                "font-weight: bold; font-size: 10px;'>🏷️ v1.3.0 Official Release</span></a></td>"
+                "font-weight: bold; font-size: 10px;'>🏷️ v1.3.5 Official Release</span></a></td>"
                 "</tr>"
                 "<tr>"
                 "  <td style='font-weight: bold;'>Lead Maintainer:</td>"
@@ -383,7 +395,13 @@ void AboutDialog::updateThemeColors() {
 }
 
 QWidget *AboutDialog::createAboutTab() {
-    QWidget *tab = new QWidget(this);
+    // Wrap content in QScrollArea to prevent clipping on small screens/HiDPI
+    QScrollArea *scroll = new QScrollArea(this);
+    scroll->setWidgetResizable(true);
+    scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    scroll->setFrameShape(QFrame::NoFrame);
+
+    QWidget *tab = new QWidget();
     QVBoxLayout *layout = new QVBoxLayout(tab);
     layout->setContentsMargins(10, 10, 10, 10);
     layout->setSpacing(8);
@@ -392,7 +410,7 @@ QWidget *AboutDialog::createAboutTab() {
     QHBoxLayout *headerLayout = new QHBoxLayout();
     headerLayout->setSpacing(12);
 
-    QLabel *iconLabel = new QLabel(this);
+    QLabel *iconLabel = new QLabel(tab);
     QPixmap iconPixmap(":/icons/SparkNotePad.png");
     if (!iconPixmap.isNull()) {
         iconLabel->setPixmap(iconPixmap.scaled(52, 52, Qt::KeepAspectRatio, Qt::SmoothTransformation));
@@ -403,10 +421,12 @@ QWidget *AboutDialog::createAboutTab() {
     QVBoxLayout *titleLayout = new QVBoxLayout();
     titleLayout->setSpacing(2);
 
-    m_titleLabel = new QLabel(this);
+    m_titleLabel = new QLabel(tab);
+    m_titleLabel->setWordWrap(true);  // Fix: prevent horizontal clipping on Retina
     titleLayout->addWidget(m_titleLabel);
 
-    m_badgesLabel = new QLabel(this);
+    m_badgesLabel = new QLabel(tab);
+    m_badgesLabel->setWordWrap(true);  // Fix: allow badge line wrapping
     titleLayout->addWidget(m_badgesLabel);
 
     headerLayout->addLayout(titleLayout);
@@ -414,16 +434,18 @@ QWidget *AboutDialog::createAboutTab() {
     layout->addLayout(headerLayout);
 
     // Legal notice box with dynamic theme card
-    m_noticeBox = new QLabel(this);
+    m_noticeBox = new QLabel(tab);
     m_noticeBox->setWordWrap(true);
     layout->addWidget(m_noticeBox);
 
-    m_metaLabel = new QLabel(this);
+    m_metaLabel = new QLabel(tab);
     m_metaLabel->setOpenExternalLinks(true);
+    m_metaLabel->setWordWrap(true);  // Fix: wrap long URLs on small dialogs
     layout->addWidget(m_metaLabel);
 
     layout->addStretch();
-    return tab;
+    scroll->setWidget(tab);
+    return scroll;
 }
 
 QWidget *AboutDialog::createMaintainerTab() {
@@ -439,14 +461,22 @@ QWidget *AboutDialog::createMaintainerTab() {
 }
 
 QWidget *AboutDialog::createCreditsTab() {
-    QWidget *tab = new QWidget(this);
+    // Wrap in QScrollArea for HiDPI/small screen safety
+    QScrollArea *scroll = new QScrollArea(this);
+    scroll->setWidgetResizable(true);
+    scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    scroll->setFrameShape(QFrame::NoFrame);
+
+    QWidget *tab = new QWidget();
     QVBoxLayout *layout = new QVBoxLayout(tab);
     layout->setContentsMargins(10, 10, 10, 10);
 
-    m_creditsBrowser = new QTextBrowser(this);
+    m_creditsBrowser = new QTextBrowser(tab);
     m_creditsBrowser->setOpenExternalLinks(true);
     layout->addWidget(m_creditsBrowser);
-    return tab;
+
+    scroll->setWidget(tab);
+    return scroll;
 }
 
 QWidget *AboutDialog::createEnvironmentTab() {

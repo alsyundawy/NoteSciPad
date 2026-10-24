@@ -10,6 +10,7 @@ set(TEST_HEADERS
     test_math_evaluator.h
     test_crypto_manager.h
     test_code_compress_pretty.h
+    test_lua_security.h
 )
 
 set(TEST_SOURCES

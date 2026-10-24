@@ -87,6 +87,9 @@ void ReleaseManager::checkForUpdates(QWidget *parent, bool silent) {
     QNetworkRequest request(apiUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, QString("SparkNotePad-App/%1").arg(currentVersion()));
     request.setRawHeader("Accept", "application/vnd.github.v3+json");
+    // Security: CVE-2026-95620 — Disable HTTP/2 to mitigate Qt QNetworkAccessManager
+    // use-after-free in HTTP/2 stream handling (Qt 6.9.0–6.11.2). Safe for all Qt versions.
+    request.setAttribute(QNetworkRequest::Http2AllowedAttribute, false);
 
     qInfo() << "[ReleaseManager] Checking for updates via:" << apiUrl.toString();
     m_netManager->get(request);

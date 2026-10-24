@@ -112,6 +112,10 @@ LuaState::~LuaState() {
     }
 }
 
+// Security: CVE-2026-42214 / GHSA-m5fq-c9x5-w54g mitigation.
+// setVariable() is the ONLY safe way to pass user-controlled data (filenames, file extensions,
+// paths, clipboard, document contents) into the Lua environment. It pushes the value as an
+// inert opaque Lua string via the C stack — it is NEVER interpolated into code.
 void LuaState::setVariable(const char *name, const QString &value) {
     setVariable(name, value.toUtf8().constData());
 }
@@ -165,6 +169,24 @@ void LuaState::executeFile(const QString &fileName) {
 
 void LuaState::clearStack() {
     lua_settop(L, 0);
+}
+
+void LuaState::restrictDangerousApis() {
+    // Security sandbox: removes OS/IO execution primitives that could be abused
+    // by untrusted user Lua macro/extension code. Call before executing any
+    // non-core user scripts.
+    // CVE-2026-42214 defense-in-depth: even if an injection slips through,
+    // os.execute / io.popen / package.loadlib are unavailable.
+    static const char *sandboxScript =
+        "os.execute  = nil\n"
+        "os.exit     = nil\n"
+        "os.tmpname  = nil\n"
+        "io.popen    = nil\n"
+        "if package then\n"
+        "  package.loadlib  = nil\n"
+        "  package.loadclib = nil\n"
+        "end\n";
+    internal_execute(sandboxScript, true);
 }
 
 void LuaState::raiseError(const char *errorMessage) {

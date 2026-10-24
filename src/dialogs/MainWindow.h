@@ -20,15 +20,16 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QtGlobal>
 #include <QMainWindow>
 #include <QLabel>
 #include <QActionGroup>
+#include <cstdint>
 
 #include "DockedEditor.h"
 
 #include "MacroManager.h"
 #include "ScintillaNext.h"
-#include "NppImporter.h"
 #include "SearchResultsCollector.h"
 
 namespace Ui {
@@ -139,7 +140,7 @@ public slots:
     void updateContentBasedUi(ScintillaNext *editor);
     void updateSaveStatusBasedUi(ScintillaNext *editor);
     void updateEditorPositionBasedUi();
-    void updateLanguageBasedUi(ScintillaNext *editor);
+    void updateLanguageBasedUi(const ScintillaNext *editor);
     void updateGui(ScintillaNext *editor);
 
     void detectLanguage(ScintillaNext *editor);
@@ -174,6 +175,11 @@ private slots:
     static void checkForUpdatesFinished(const QString &url);
     void activateEditor(ScintillaNext *editor);
 
+    // Application lifecycle — Restart/Exit (v1.3.5)
+    // Security: uses absolute paths to prevent CVE-2026-25926 untrusted search path.
+    void restartApplication(bool safeMode = false);
+    void exitApplication();
+
 private:
     Ui::MainWindow *ui = Q_NULLPTR;
     SparkNotePadApplication *app = nullptr;
@@ -206,7 +212,7 @@ private:
     void showSaveErrorMessage(ScintillaNext *editor, QFileDevice::FileError error);
     void showEditorZoomLevelIndicator();
 
-    enum class UserSaveAction { SaveAll, DiscardAll, Cancel };
+    enum class UserSaveAction : std::uint8_t { SaveAll, DiscardAll, Cancel };
     UserSaveAction promptForSave(const QVector<ScintillaNext *> &editorList);
 
     void saveSettings() const;
@@ -263,7 +269,6 @@ private:
 
     QMenu *menuRun = nullptr;
     QMenu *menuSavedTools = nullptr;
-    QList<QAction *> customToolActions;
     QMenu *menuEncryption = nullptr;
     QAction *actionEncryptDoc = nullptr;
     QAction *actionDecryptDoc = nullptr;

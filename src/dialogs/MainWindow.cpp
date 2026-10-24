@@ -16,6 +16,7 @@
  * along with Notepad Next.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <QtGlobal>
 #include "MainWindow.h"
 #include "SparkNotePadApplication.h"
 #include "ThemeSwitcherDialog.h"
@@ -58,6 +59,7 @@
 #include <QPrintPreviewDialog>
 #include <QPrinter>
 #include <QPdfWriter>
+#include <QProcess>  // Required for restartApplication() (v1.3.5)
 #include <QPainter>
 #include <QPageSize>
 #include <QPageLayout>
@@ -181,7 +183,8 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     connect(ui->actionReload, &QAction::triggered, this, &MainWindow::reloadFile);
     connect(ui->actionClose, &QAction::triggered, this, &MainWindow::closeCurrentFile);
     connect(ui->actionCloseAll, &QAction::triggered, this, &MainWindow::closeAllFiles);
-    connect(ui->actionExit, &QAction::triggered, this, &MainWindow::close);
+    connect(ui->actionRestart, &QAction::triggered, this, [this]() { restartApplication(false); });
+    connect(ui->actionExit, &QAction::triggered, this, &MainWindow::exitApplication);
 
     // Split editor actions
     connect(ui->actionSplitHorizontal, &QAction::triggered, this, [this]() {
@@ -198,6 +201,9 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
             dockedEditor->splitToBottom(newEditor);
         }
     });
+
+    ui->actionRestart->setStatusTip(tr("Gracefully saves settings and restarts SparkNotePad"));
+    ui->actionExit->setStatusTip(tr("Prompts to save open documents and quits SparkNotePad"));
 
 #ifdef Q_OS_WIN
     ui->actionExit->setShortcut(QKeySequence("Alt+F4"));
@@ -1939,14 +1945,10 @@ void MainWindow::newFile() {
     int count = 1;
     forever {
         QString newFileName = tr("New %1").arg(count);
-        bool canUseName = true;
-
-        for (const ScintillaNext *editor : editors()) {
-            if (!editor->isFile() && editor->getName() == newFileName) {
-                canUseName = false;
-                break;
-            }
-        }
+        const auto eds = editors();
+        const bool canUseName = !std::any_of(eds.begin(), eds.end(), [&](const ScintillaNext *ed) {
+            return !ed->isFile() && ed->getName() == newFileName;
+        });
 
         if (canUseName) {
             ScintillaNext *editor = app->getEditorManager()->createEditor(newFileName);
@@ -2538,13 +2540,8 @@ bool MainWindow::saveAll() {
 }
 
 bool MainWindow::saveAllEditors(const QVector<ScintillaNext *> &editorList) {
-    for (ScintillaNext *editor : editorList) {
-        if (!saveFile(editor)) {
-            return false;
-        }
-    }
-
-    return true;
+    return std::all_of(editorList.begin(), editorList.end(),
+                       [this](ScintillaNext *editor) { return saveFile(editor); });
 }
 
 void MainWindow::exportAsFormat(Converter *converter, const QString &filter) {
@@ -2750,13 +2747,8 @@ void MainWindow::updateFileStatusBasedUi(ScintillaNext *editor) {
 }
 
 bool MainWindow::isAnyUnsaved() const {
-    for (const ScintillaNext *editor : editors()) {
-        if (!editor->isSavedToDisk()) {
-            return true;
-        }
-    }
-
-    return false;
+    const auto eds = editors();
+    return std::any_of(eds.begin(), eds.end(), [](const ScintillaNext *editor) { return !editor->isSavedToDisk(); });
 }
 
 void MainWindow::updateEOLBasedUi(ScintillaNext *editor) {
@@ -2806,22 +2798,21 @@ void MainWindow::updateEditorPositionBasedUi() {
     ui->actionCloseAllExceptActive->setEnabled(editorCount() > 1);
 }
 
-void MainWindow::updateLanguageBasedUi(ScintillaNext *editor) {
+void MainWindow::updateLanguageBasedUi(const ScintillaNext *editor) {
     qInfo(Q_FUNC_INFO);
 
     const QString language_name = editor->languageName;
+    const auto actions = languageActionGroup->actions();
 
-    for (QAction *action : languageActionGroup->actions()) {
-        if (action->data().toString() == language_name) {
-            action->setChecked(true);
+    auto it = std::find_if(actions.begin(), actions.end(),
+                           [&](const QAction *action) { return action->data().toString() == language_name; });
 
-            // Found one, so we are completely done
-            return;
-        }
+    if (it != actions.end()) {
+        (*it)->setChecked(true);
+        return;
     }
 
-    // The above loop did not set any action as checked, so make sure they are all unchecked now
-    for (QAction *action : languageActionGroup->actions()) {
+    for (QAction *action : actions) {
         if (action->isChecked()) {
             action->setChecked(false);
         }
@@ -4043,7 +4034,7 @@ void MainWindow::populateWindowMenuDocuments() {
     QActionGroup *docGroup = new QActionGroup(this);
     docGroup->setExclusive(true);
 
-    ScintillaNext *current = currentEditor();
+    const ScintillaNext *current = currentEditor();
     int idx = 1;
     for (ScintillaNext *ed : allEditors) {
         QString name = ed->getName();
@@ -4186,4 +4177,85 @@ void MainWindow::onUserGuideTriggered() {
 
 void MainWindow::onDeveloperGuideTriggered() {
     DocumentationManager::instance().openDeveloperGuide(this);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Application Lifecycle: Restart & Exit  (SparkNotePad v1.3.5)
+// Security: CVE-2026-25926 (CWE-426 Untrusted Search Path) mitigation applied:
+//   • Always resolve executable path via QCoreApplication::applicationFilePath()
+//   • Never pass bare binary names or relative paths to QProcess::startDetached()
+//   • macOS: use /usr/bin/open with -n -a <BundlePath> for .app bundle relaunch
+// ─────────────────────────────────────────────────────────────────────────────
+
+void MainWindow::restartApplication(bool safeMode) {
+    ui->statusBar->showMessage(tr("Preparing to restart SparkNotePad..."), 3000);
+
+    // 1. Verify and prompt for unsaved changes; abort if user clicks Cancel
+    if (!checkEditorsBeforeClose(editors())) {
+        ui->statusBar->showMessage(tr("Restart canceled."), 3000);
+        return;
+    }
+
+    // 2. Save session and flush settings to disk
+    saveSettings();
+
+    // 3. Construct canonical executable path — CVE-2026-25926 mitigation (CWE-426)
+    //    QCoreApplication::applicationFilePath() returns the absolute path of the
+    //    running binary, preventing any working-directory binary hijacking.
+    const QString appFilePath = QCoreApplication::applicationFilePath();
+    QStringList args = QCoreApplication::arguments().mid(1);
+    if (safeMode && !args.contains(QLatin1StringView("--safe-mode"))) {
+        args.append(QLatin1StringView("--safe-mode"));
+    }
+
+    // 4. Release SingleApplication instance lock so the new process can acquire it
+    //    Without this, the relaunched instance detects an existing primary and exits.
+    //    SparkNotePadApplication exposes releaseSingleInstanceLock() for this purpose.
+    if (auto *sparkApp = qobject_cast<SparkNotePadApplication *>(QCoreApplication::instance())) {
+        sparkApp->releaseSingleInstanceLock();
+    }
+
+#if defined(Q_OS_MACOS)
+    bool launched = false;
+    // macOS: detect .app bundle root. If running from Foo.app/Contents/MacOS/SparkNotePad,
+    // relaunch via /usr/bin/open -n -a Foo.app to get a proper macOS application lifecycle.
+    const QDir appDir(QCoreApplication::applicationDirPath());
+    QDir bundleDir = appDir;
+    if (bundleDir.dirName() == QLatin1StringView("MacOS") && bundleDir.cdUp() && bundleDir.cdUp() &&
+        bundleDir.dirName().endsWith(QLatin1StringView(".app"))) {
+        QStringList openArgs{QLatin1StringView("-n"), QLatin1StringView("-a"), bundleDir.absolutePath()};
+        if (!args.isEmpty()) {
+            openArgs.append(QLatin1StringView("--args"));
+            openArgs.append(args);
+        }
+        // /usr/bin/open is an absolute path — no search-path risk.
+        launched = QProcess::startDetached(QLatin1StringView("/usr/bin/open"), openArgs);
+    }
+    if (!launched) {
+        launched = QProcess::startDetached(appFilePath, args, QCoreApplication::applicationDirPath());
+    }
+#else
+    const bool launched = QProcess::startDetached(appFilePath, args, QCoreApplication::applicationDirPath());
+#endif
+
+    if (!launched) {
+        QMessageBox::warning(this, tr("Restart Failed"),
+                             tr("Unable to relaunch SparkNotePad automatically from:\n%1").arg(appFilePath));
+        return;
+    }
+
+    QCoreApplication::quit();
+}
+
+void MainWindow::exitApplication() {
+    ui->statusBar->showMessage(tr("Closing SparkNotePad..."), 2000);
+
+    // Prompt for unsaved changes across all open tabs; allow cancellation.
+    if (!checkEditorsBeforeClose(editors())) {
+        ui->statusBar->showMessage(tr("Exit canceled."), 2000);
+        return;
+    }
+
+    saveSettings();
+    QCoreApplication::quit();
 }

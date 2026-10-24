@@ -1,9 +1,9 @@
-# SparkNotePad Release DocNote — v1.3.0
+# SparkNotePad Release DocNote — v1.3.5
 
 ```text
 ================================================================================
-Release Version     : 1.3.0 (Official SparkNotePad Brand Evolution & 13-Pillar Audit)
-Release Date        : 2026-10-20
+Release Version     : 1.3.5 (Restart/Exit Lifecycle, HiDPI Polish, 2025–2026 Security Audit & Linter Compliance)
+Release Date        : 2026-10-24
 Lead Maintainer     : Harry Dertin Sutisna Alsyundawy (@alsyundawy)
 Organization        : ALSYUNDAWY IT SOLUTION (https://alsyundawy.com)
 Repository          : https://github.com/alsyundawy/SparkNotePad
@@ -481,3 +481,48 @@ Certified by **Harry Dertin Sutisna Alsyundawy** — SparkNotePad Lead Maintaine
 | **`1.1.0`**   | Zero dark leakage            | **Verified Success** (Ubuntu gcc) | ✔ 0 issues  | Up-to-date |
 | **`develop`** | Zero dark leakage            | **Verified Success** (Ubuntu gcc) | ✔ 0 issues  | Up-to-date |
 | **`1.0.0`**   | Zero dark leakage            | Building                          | ✔ 0 issues  | Up-to-date |
+
+---
+
+## 9. SparkNotePad Release v1.3.5 — Lifecycle Architecture, AboutDialog HiDPI Overhaul & 2025–2026 Security Verification
+
+### 9.1 Application Lifecycle Architecture: Restart & Exit
+
+- **Restart Application Workflow (`MainWindow::restartApplication(bool safeMode)`)**:
+  - Prompt and save unsaved buffers across all open editors with cancellation support.
+  - Stop active background file monitors via `TailMonitoringManager`.
+  - Persist application settings and session state via `saveSettings()`.
+  - **CWE-426 (Untrusted Search Path / CVE-2026-25926) Mitigation**: The executable path is resolved strictly via `QCoreApplication::applicationFilePath()`, preventing relative path lookup attacks or working-directory binary hijacking.
+  - **SingleApplication Lock Handshake**: Calls `SparkNotePadApplication::releaseSingleInstanceLock()` prior to spawning the replacement process, closing the local socket server and detaching shared memory so the child process immediately claims primary instance status without triggering a multi-instance rejection or socket forward.
+  - **macOS Bundle Relink**: Detects if running inside an Apple `.app` bundle (`Contents/MacOS/SparkNotePad`) and invokes `/usr/bin/open -n -a <BundlePath>` to ensure a pristine macOS Cocoa application lifecycle and dock state.
+  - **Linux / Native Detached Spawn**: Falls back to `QProcess::startDetached(appFilePath, args, applicationDirPath)` for native Linux desktop integration.
+- **Explicit Exit Application Workflow (`MainWindow::exitApplication()`)**:
+  - Direct toolbar and menu access with status bar feedback (`"Closing SparkNotePad..."`).
+  - Pre-exit dirty check across all tabs (`checkEditorsBeforeClose()`).
+  - Accessible name and description for assistive technologies and screen readers.
+
+### 9.2 AboutDialog HiDPI & Retina Geometry Overhaul
+
+- **Diagnosis**: On macOS Retina displays (2x scaling) and Linux HiDPI desktops, the tab header `&Credits && Attribution` exceeded available tab bar width, resulting in text truncation and the appearance of tiny tab scroll arrows. Additionally, long description labels caused horizontal layout expansion.
+- **Resolution**:
+  - Shortened tab label to `tr("&Credits")` while preserving complete context in tab tooltip `tr("Credits & Attribution")`.
+  - Added system diagnostics tab tooltip `tr("System & Engine Diagnostics")`.
+  - Set minimum dialog dimensions to `620x480` and default size to `660x520`.
+  - Locked elide mode to `Qt::ElideNone` and disabled tab scroll buttons (`setUsesScrollButtons(false)`).
+  - Wrapped `createAboutTab()` and `createCreditsTab()` in responsive `QScrollArea` widgets (`setWidgetResizable(true)`).
+  - Enabled `setWordWrap(true)` across title, badge, and legal notice labels.
+
+### 9.3 2025–2026 Security Audit & CVE Mitigations
+
+- **CVE-2026-42214 / GHSA-m5fq-c9x5-w54g (Lua Code Injection)**:
+  - Lineage audit confirmed vulnerable pre-0.14 NotepadNext pattern concatenated file extensions into Lua chunks (`QString::arg()`).
+  - SparkNotePad binds all user extensions as inert data via `getLuaState()->setVariable("ext", extension)` using `lua_pushlstring` on the Lua C stack.
+  - The executed Lua chunk is a compile-time static raw string literal. Added security regression test suite `tests/test_lua_security.h` to the CI suite.
+- **CVE-2026-95620 (Qt QNetworkAccessManager HTTP/2 Stream UAF)**:
+  - Mitigated in `ReleaseManager::checkForUpdates()` by setting `request.setAttribute(QNetworkRequest::Http2AllowedAttribute, false)`.
+- **Lua Script Sandboxing (`LuaState::restrictDangerousApis()`)**:
+  - Sandboxes untrusted extensions by setting `os.execute`, `os.exit`, `os.tmpname`, `io.popen`, and `package.loadlib` to `nil`.
+  - Wire `--safe-mode` command-line switch to invoke sandboxing upon startup.
+- **Dual-Format Cryptography Integrity (`TestCryptoManager`)**:
+  - Validated AES-256-CBC + HMAC-SHA256 authenticated encryption (`SPKENC01` and legacy `NSPENC01`).
+  - Added unit test assertions proving automatic rejection of tampered ciphertext, MAC, IV, and salt bytes.

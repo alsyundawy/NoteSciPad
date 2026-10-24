@@ -2265,5 +2265,94 @@
       <translation>Panduan &amp;Pengembang SparkNotePad</translation>
     </message>
   </context>
+  <context>
+    <name>AboutDialog</name>
+    <message>
+      <location filename="../src/dialogs/AboutDialog.cpp" line="55"/>
+      <source>&amp;Credits</source>
+      <translation>&amp;Kredit</translation>
+    </message>
+    <message>
+      <location filename="../src/dialogs/AboutDialog.cpp" line="57"/>
+      <source>Credits &amp; Attribution</source>
+      <translation>Kredit &amp; Atribusi</translation>
+    </message>
+    <message>
+      <location filename="../src/dialogs/AboutDialog.cpp" line="59"/>
+      <source>System &amp; Engine Diagnostics</source>
+      <translation>Diagnostik Sistem &amp; Mesin</translation>
+    </message>
+  </context>
+  <context>
+    <name>MainWindow</name>
+    <message>
+      <location filename="../src/dialogs/MainWindow.cpp" line="4195"/>
+      <source>Preparing to restart SparkNotePad...</source>
+      <translation>Mempersiapkan mulai ulang SparkNotePad...</translation>
+    </message>
+    <message>
+      <location filename="../src/dialogs/MainWindow.cpp" line="4200"/>
+      <source>Restart canceled.</source>
+      <translation>Mulai ulang dibatalkan.</translation>
+    </message>
+    <message>
+      <location filename="../src/dialogs/MainWindow.cpp" line="4239"/>
+      <source>Restart Failed</source>
+      <translation>Mulai Ulang Gagal</translation>
+    </message>
+    <message>
+      <location filename="../src/dialogs/MainWindow.cpp" line="4241"/>
+      <source>Unable to relaunch SparkNotePad automatically from:
+%1</source>
+      <translation>Tidak dapat meluncurkan ulang SparkNotePad secara otomatis dari:
+%1</translation>
+    </message>
+    <message>
+      <location filename="../src/dialogs/MainWindow.cpp" line="4249"/>
+      <source>Closing SparkNotePad...</source>
+      <translation>Menutup SparkNotePad...</translation>
+    </message>
+    <message>
+      <location filename="../src/dialogs/MainWindow.cpp" line="4253"/>
+      <source>Exit canceled.</source>
+      <translation>Keluar dibatalkan.</translation>
+    </message>
+    <message>
+      <source>&amp;Restart Application</source>
+      <translation>&amp;Mulai Ulang Aplikasi</translation>
+    </message>
+    <message>
+      <source>Restart SparkNotePad</source>
+      <translation>Mulai Ulang SparkNotePad</translation>
+    </message>
+    <message>
+      <source>Gracefully save settings and relaunch the application</source>
+      <translation>Simpan pengaturan dengan baik dan luncurkan ulang aplikasi</translation>
+    </message>
+    <message>
+      <source>Restart Application</source>
+      <translation>Mulai Ulang Aplikasi</translation>
+    </message>
+    <message>
+      <source>Gracefully saves settings and restarts SparkNotePad</source>
+      <translation>Menyimpan pengaturan dengan aman dan memulai ulang SparkNotePad</translation>
+    </message>
+    <message>
+      <source>Exit Application</source>
+      <translation>Keluar dari Aplikasi</translation>
+    </message>
+    <message>
+      <source>Prompts to save open documents and quits SparkNotePad</source>
+      <translation>Meminta konfirmasi simpan dokumen terbuka dan menutup SparkNotePad</translation>
+    </message>
+    <message>
+      <source>Quit the application</source>
+      <translation>Keluar dari aplikasi</translation>
+    </message>
+    <message>
+      <source>Exit SparkNotePad</source>
+      <translation>Keluar dari SparkNotePad</translation>
+    </message>
+  </context>
 </TS>
 

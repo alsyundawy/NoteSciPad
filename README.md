@@ -24,7 +24,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.3.0-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.3.0"></a>
+  <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.3.5-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.3.5"></a>
   <a href="https://apple.com/macos"><img src="https://img.shields.io/badge/Platform-macOS%20Sequoia%20%7C%20Sonoma%20%7C%20Linux-000000?style=for-the-badge&logo=apple&logoColor=white" alt="Supported Platforms"></a>
   <a href="https://isocpp.org"><img src="https://img.shields.io/badge/Standard-ISO%20C%2B%2B20-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="C++20 Standard"></a>
   <a href="https://qt.io"><img src="https://img.shields.io/badge/Framework-Qt%206.5%20%7C%206.8%20%7C%206.10%20%7C%206.11-41CD52?style=for-the-badge&logo=qt&logoColor=white" alt="Qt Framework"></a>
@@ -119,22 +119,26 @@ Where modern desktop text editors frequently consume upwards of 500 MB of RAM si
 
 ## Key Features & Capabilities Matrix
 
-| Feature                          | Capability Description                                                                                        |          Shortcut           |
-| :------------------------------- | :------------------------------------------------------------------------------------------------------------ | :-------------------------: |
-| **AES-256-CBC Encryption**       | High-assurance document encryption with PBKDF2 key derivation (100,000 rounds) and HMAC-SHA256 integrity auth | `Ctrl+Alt+E` / `Ctrl+Alt+D` |
-| **Real-Time Log Monitoring**     | Live disk log streaming (`tail -f`) with debounced reload intervals (500 ms) and auto-scroll                  |        `Ctrl+Alt+Y`         |
-| **25 Theme Families (75 V.)**    | 75 hand-crafted developer palettes strictly adhering to international WCAG 2.1 AA/AAA contrast standards      |        `Themes` Menu        |
-| **Pixel-Perfect 16x16 Toolbar**  | High-contrast crisp iconography for Find, Replace, Zoom, and Indent Guides across Dark & Light modes          |        Main Toolbar         |
-| **Ergonomic Dialog Spacing**     | Polished, accessible spacing for checkboxes and radio buttons across all preferences and search dialogs       |         All Dialogs         |
-| **JavaScript Evaluator**         | Isolated execution sandbox for rapid mathematical computation, JSON formatting, and string manipulation       |       `Ctrl+Shift+J`        |
-| **Interactive Regex Tester**     | Regular expression tester featuring dynamic capture group matching, multiline evaluation, and dot-all modes   |     `Ctrl+Alt+Shift+R`      |
-| **Color Preview Call-Tips**      | Floating interactive color preview boxes supporting `#HEX`, `rgb()`, `rgba()`, and `hsl()` color formats      |        Cursor Hover         |
-| **Window Opacity Control**       | Native window alpha-channel transparency adjustment (20%–100%) for back-referencing underlying documents      |        `Ctrl+Alt+T`         |
-| **macOS System Services**        | Seamless AppKit context menu integration (`Open Selection / Path in SparkNotePad`)                            |      macOS Context M.       |
-| **Multi-Monitor Boundary Guard** | `ScreenDisplayManager` prevents off-screen window placement across multi-DPI and external monitor hotplugs    |          Automatic          |
-| **Base64 & Format Converters**   | Encoding and decoding for Base64, binary/octal/decimal/hexadecimal radices, and casing mutations              |      `Edit >> Convert`      |
-| **Unicode Code Point Inspector** | Detailed Unicode code point analysis (`U+XXXX`), decimal value display, and Unicode category identification   |         Status Bar          |
-| **Automatic Encoding Detector**  | Universal charset recognition powered by `uchardet` with one-click conversion (UTF-8, UTF-16, ANSI, CJK)      |         Status Bar          |
+| Feature                          | Capability Description                                                                                        |           Shortcut           |
+| :------------------------------- | :------------------------------------------------------------------------------------------------------------ | :--------------------------: |
+| **Graceful App Restart**         | Flushes sessions, saves settings, and relaunches cleanly without single-instance conflicts                    |         `Ctrl+Alt+R`         |
+| **Prominent Exit Action**        | Accessible toolbar and File menu termination with unsaved-document prompts and safe cleanup                   | Toolbar / `Cmd+Q` / `Alt+F4` |
+| **About Dialog HiDPI Polish**    | Responsive `QScrollArea` wrapping, label word-wrap, and elision-free layout across Retina/4K                  |       `Help >> About`        |
+| **2025–2026 Security Posture**   | Mitigates Lua injection (CVE-2026-42214), Qt HTTP/2 UAF (CVE-2026-95620), and dual crypto                     |           Built-in           |
+| **AES-256-CBC Encryption**       | High-assurance document encryption with PBKDF2 key derivation (100,000 rounds) and HMAC-SHA256 integrity auth | `Ctrl+Alt+E` / `Ctrl+Alt+D`  |
+| **Real-Time Log Monitoring**     | Live disk log streaming (`tail -f`) with debounced reload intervals (500 ms) and auto-scroll                  |         `Ctrl+Alt+Y`         |
+| **25 Theme Families (75 V.)**    | 75 hand-crafted developer palettes strictly adhering to international WCAG 2.1 AA/AAA contrast standards      |        `Themes` Menu         |
+| **Pixel-Perfect 16x16 Toolbar**  | High-contrast crisp iconography for Find, Replace, Zoom, and Indent Guides across Dark & Light modes          |         Main Toolbar         |
+| **Ergonomic Dialog Spacing**     | Polished, accessible spacing for checkboxes and radio buttons across all preferences and search dialogs       |         All Dialogs          |
+| **JavaScript Evaluator**         | Isolated execution sandbox for rapid mathematical computation, JSON formatting, and string manipulation       |        `Ctrl+Shift+J`        |
+| **Interactive Regex Tester**     | Regular expression tester featuring dynamic capture group matching, multiline evaluation, and dot-all modes   |      `Ctrl+Alt+Shift+R`      |
+| **Color Preview Call-Tips**      | Floating interactive color preview boxes supporting `#HEX`, `rgb()`, `rgba()`, and `hsl()` color formats      |         Cursor Hover         |
+| **Window Opacity Control**       | Native window alpha-channel transparency adjustment (20%–100%) for back-referencing underlying documents      |         `Ctrl+Alt+T`         |
+| **macOS System Services**        | Seamless AppKit context menu integration (`Open Selection / Path in SparkNotePad`)                            |       macOS Context M.       |
+| **Multi-Monitor Boundary Guard** | `ScreenDisplayManager` prevents off-screen window placement across multi-DPI and external monitor hotplugs    |          Automatic           |
+| **Base64 & Format Converters**   | Encoding and decoding for Base64, binary/octal/decimal/hexadecimal radices, and casing mutations              |      `Edit >> Convert`       |
+| **Unicode Code Point Inspector** | Detailed Unicode code point analysis (`U+XXXX`), decimal value display, and Unicode category identification   |          Status Bar          |
+| **Automatic Encoding Detector**  | Universal charset recognition powered by `uchardet` with one-click conversion (UTF-8, UTF-16, ANSI, CJK)      |          Status Bar          |
 
 ---
 
@@ -249,6 +253,17 @@ trunk check -n -j 2
 ## Changelog
 
 Full chronological release history is documented in [CHANGELOG.md](CHANGELOG.md).
+
+### [v1.3.5] — Restart/Exit Lifecycle, About Dialog Polish, 2025–2026 Security Audit & CVE Mitigations (2026-10-24)
+
+- **Graceful Application Restart (`Ctrl+Alt+R`)**: Implemented safe restart workflow in `MainWindow::restartApplication()` that prompts for unsaved changes, saves user settings, stops active tail monitors, releases single-instance mutex/locks, and relaunches via absolute canonical binary path (preventing CWE-426 untrusted search path). Supports macOS `.app` bundle relaunching (`/usr/bin/open -n -a`) and `--safe-mode`.
+- **Prominent Exit Action**: Integrated accessible exit button into the main toolbar and File menu with unsaved-document confirmation and status feedback.
+- **About Dialog Layout Refactoring**: Resolved tab text clipping and badge label truncation on macOS Retina and Linux HiDPI displays. Shortened `&Credits && Attribution` to `&Credits` (with full tooltip), set minimum dialog geometry (`620x480`), prevented tab eliding (`Qt::ElideNone`), enabled label word-wrapping, and wrapped content inside responsive `QScrollArea` widgets.
+- **2025–2026 Security Audit & Vulnerability Mitigations**:
+  - **CVE-2026-42214 / GHSA-m5fq-c9x5-w54g (Lua Code Injection)**: Audited and verified mitigation via `LuaState::setVariable()` inert data binding; added security regression test suite (`tests/test_lua_security.h`).
+  - **CVE-2026-95620 (Qt HTTP/2 Stream UAF)**: Explicitly disabled HTTP/2 on update check network requests (`QNetworkRequest::Http2AllowedAttribute = false`).
+  - **Lua Script Sandboxing**: Added `LuaState::restrictDangerousApis()` to neutralize dangerous OS/IO primitives (`os.execute`, `io.popen`, `package.loadlib`) when `--safe-mode` is activated.
+  - **Dual-Format Cryptographic Regression Tests**: Expanded `TestCryptoManager` with comprehensive HMAC-SHA256 tamper-rejection tests across ciphertext, MAC, IV, and salt components.
 
 ### [v1.3.0] — SparkNotePad Brand Transformation, High-Precision Iconography, UI Ergonomics & 13-Pillar Hardening (2026-10-20)
 

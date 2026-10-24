@@ -7,6 +7,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.5] - 2026-10-24
+
+### ⚡ Restart/Exit Lifecycle, About Dialog Polish, 2025–2026 Security Audit & CVE Mitigations
+
+SparkNotePad v1.3.5 delivers graceful application restart and explicit exit actions, comprehensive About dialog truncation fixes for macOS Retina and Linux HiDPI, a primary-source verified 2025–2026 security audit of all vendored engines and Qt dependencies, and defense-in-depth hardening against all confirmed relevant CVEs.
+
+#### 🆕 Added
+
+- **Restart Application Action (`Ctrl+Alt+R` / `Cmd+Option+R`)**: Graceful restart from the File menu that verifies unsaved documents across all tabs (`checkEditorsBeforeClose()`), flushes `QSettings` (`saveSettings()`), stops the auto-save timer, releases the SingleApplication instance lock (`releaseSingleInstanceLock()`), and relaunches natively: macOS `.app` bundles via `/usr/bin/open -n -a <bundle>` (absolute path), Linux via `QProcess::startDetached(QCoreApplication::applicationFilePath(), args)`. Supports optional `--safe-mode` flag.
+- **Explicit Exit Application Action**: Enhanced clean shutdown with unsaved document confirmation, settings flush, and status bar feedback. Accessible via File → Exit with full `setAccessibleName` / `setStatusTip` metadata.
+- **Security Regression Tests (`tests/test_lua_security.h`)**: Added `TestLuaSecurity` to the standard test suite verifying:
+  - CVE-2026-42214 / GHSA-m5fq-c9x5-w54g: Extension injection payloads treated as literal Lua variable data (not code).
+  - `LuaState::setVariable()` inert data contract (values pushed via `lua_pushstring`, never `luaL_loadstring`).
+  - `LuaState::restrictDangerousApis()` sandbox removes `os.execute`, `os.exit`, `io.popen`, `package.loadlib`.
+- **`LuaState::restrictDangerousApis()` Sandbox Method**: Strips dangerous OS/IO Lua primitives (`os.execute`, `os.exit`, `os.tmpname`, `io.popen`, `package.loadlib`, `package.loadclib`) for untrusted macro/extension execution contexts.
+
+#### 🔧 Fixed
+
+- **About Dialog Tab & Text Truncation**: Fixed text clipping on macOS Retina (SF Pro) and Linux HiDPI:
+  - Shortened `&Credits && Attribution` tab label to `&Credits` (full label preserved as `QTabWidget::setTabToolTip()`).
+  - Added `setTabToolTip()` for both `&Credits` ("Credits & Attribution") and `&Diagnostics` ("System & Engine Diagnostics").
+  - Set `tabBar()->setElideMode(Qt::ElideNone)` and `setUsesScrollButtons(false)` to prevent tab scroll arrows.
+  - Set `setMinimumSize(620, 480)` and `resize(660, 520)` to give tabs room without elision.
+  - Wrapped `createAboutTab()` and `createCreditsTab()` content inside frameless `QScrollArea` (`setWidgetResizable(true)`, `ScrollBarAlwaysOff` horizontal).
+  - Enabled `setWordWrap(true)` on `m_titleLabel`, `m_badgesLabel`, and `m_metaLabel` to prevent horizontal overflow.
+- **AboutDialog Version Reference**: Updated release tag link from `v1.3.0` to `v1.3.5` throughout dialog content.
+
+#### 🛡️ Security
+
+- **CVE-2026-95620 (Qt QNetworkAccessManager HTTP/2 Use-After-Free)**: Explicitly set `request.setAttribute(QNetworkRequest::Http2AllowedAttribute, false)` in `ReleaseManager::checkForUpdates()`. Eliminates exposure regardless of Qt version; safe on all Qt 6.5–6.11+ builds.
+- **CVE-2026-42214 / GHSA-m5fq-c9x5-w54g (NotepadNext Lua Code Injection)**: Confirmed mitigated in `SparkNotePadApplication::detectLanguageFromExtension()` via `setVariable("ext", extension)` pattern. Security comment added to `LuaState.h` and `LuaState.cpp` documenting the invariant. Defense-in-depth `restrictDangerousApis()` sandbox added.
+- **CVE-2026-25926 (CWE-426 Untrusted Search Path)**: `restartApplication()` always uses `QCoreApplication::applicationFilePath()` (absolute) and `/usr/bin/open` (absolute) for macOS bundle relaunch. No bare binary names passed to process launchers.
+- **Verified NOT AFFECTED**: CVE-2025-52938, CVE-2025-52939 (Lua OOB — Lua 5.5.1 is patched), CVE-2026-4744 (Oniguruma — not used), CVE-2026-38972 (Notepad3 LoadLibrary — Qt-only AboutDialog), CVE-2025-15556 (WinGUp updater — no binary auto-updater), CVE-2026-48778/48800 (XML command injection — no ShellExecute from config).
+- **2025–2026 Primary-Source CVE Audit Completed**: All engines verified: Scintilla 5.6.7 (zero CVEs), Lexilla 5.5.4 (zero CVEs), Lua 5.5.1 (zero upstream CVEs; Redis/Thrift CVEs affect different forks).
+
+#### 🌐 Changed
+
+- **CMakeLists.txt**: Bumped `VERSION` and `APP_VERSION` from `1.3.0` to `1.3.5`.
+- **Localization**: `SparkNotePad_en.ts` and `SparkNotePad_id.ts` synchronized with new v1.3.5 UI strings.
+
+---
+
 ## [1.3.0] - 2026-10-22
 
 ### ⚡ Official SparkNotePad Brand Evolution, 13-Pillar Quality Verification, Theme Leakage Elimination & Dual-Format Crypto Compatibility

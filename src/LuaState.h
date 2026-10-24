@@ -32,6 +32,11 @@ public:
     LuaState();
     ~LuaState();
 
+    // Security: CVE-2026-42214 / GHSA-m5fq-c9x5-w54g mitigation:
+    // ALWAYS use setVariable() to pass user-controlled data (filenames, extensions,
+    // clipboard content, document text) to Lua. NEVER concatenate user data into
+    // execute()/executeAndReturn() string arguments. The template overloads below
+    // enforce compile-time literal strings to prevent accidental dynamic string injection.
     void setVariable(const char *name, const QString &value);
     void setVariable(const char *name, const char *value);
     void setVariable(const char *name, bool value);
@@ -39,17 +44,23 @@ public:
     void executeFile(const QString &fileName);
     void clearStack();
 
+    // Security sandbox: call after luaL_openlibs() to strip dangerous OS/IO primitives
+    // when executing untrusted user macro scripts or extension code.
+    // Removes: os.execute, os.exit, os.tmpname, io.popen, package.loadlib, package.loadclib
+    // SAFE to call on the shared LuaState; core language/editor functions are unaffected.
+    void restrictDangerousApis();
+
     void raiseError(const char *errorMessage = Q_NULLPTR);
 
     lua_State *L = Q_NULLPTR;
 
-    // Require literal char pointers
+    // Require literal char pointers — prevents runtime dynamic string injection at compile time.
     template <size_t N>
     void execute(const char (&statement)[N], bool clear = true) {
         internal_execute(statement, clear);
     }
 
-    // Require literal char pointers
+    // Require literal char pointers — prevents runtime dynamic string injection at compile time.
     template <typename T, size_t N>
     T executeAndReturn(const char (&statement)[N]) {
         return internal_executeAndReturn<T>(statement);

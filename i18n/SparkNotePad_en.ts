@@ -2270,5 +2270,94 @@
       <translation>SparkNotePad &amp;Developer Guide</translation>
     </message>
   </context>
+  <context>
+    <name>AboutDialog</name>
+    <message>
+      <location filename="../src/dialogs/AboutDialog.cpp" line="55"/>
+      <source>&amp;Credits</source>
+      <translation>&amp;Credits</translation>
+    </message>
+    <message>
+      <location filename="../src/dialogs/AboutDialog.cpp" line="57"/>
+      <source>Credits &amp; Attribution</source>
+      <translation>Credits &amp; Attribution</translation>
+    </message>
+    <message>
+      <location filename="../src/dialogs/AboutDialog.cpp" line="59"/>
+      <source>System &amp; Engine Diagnostics</source>
+      <translation>System &amp; Engine Diagnostics</translation>
+    </message>
+  </context>
+  <context>
+    <name>MainWindow</name>
+    <message>
+      <location filename="../src/dialogs/MainWindow.cpp" line="4195"/>
+      <source>Preparing to restart SparkNotePad...</source>
+      <translation>Preparing to restart SparkNotePad...</translation>
+    </message>
+    <message>
+      <location filename="../src/dialogs/MainWindow.cpp" line="4200"/>
+      <source>Restart canceled.</source>
+      <translation>Restart canceled.</translation>
+    </message>
+    <message>
+      <location filename="../src/dialogs/MainWindow.cpp" line="4239"/>
+      <source>Restart Failed</source>
+      <translation>Restart Failed</translation>
+    </message>
+    <message>
+      <location filename="../src/dialogs/MainWindow.cpp" line="4241"/>
+      <source>Unable to relaunch SparkNotePad automatically from:
+%1</source>
+      <translation>Unable to relaunch SparkNotePad automatically from:
+%1</translation>
+    </message>
+    <message>
+      <location filename="../src/dialogs/MainWindow.cpp" line="4249"/>
+      <source>Closing SparkNotePad...</source>
+      <translation>Closing SparkNotePad...</translation>
+    </message>
+    <message>
+      <location filename="../src/dialogs/MainWindow.cpp" line="4253"/>
+      <source>Exit canceled.</source>
+      <translation>Exit canceled.</translation>
+    </message>
+    <message>
+      <source>&amp;Restart Application</source>
+      <translation>&amp;Restart Application</translation>
+    </message>
+    <message>
+      <source>Restart SparkNotePad</source>
+      <translation>Restart SparkNotePad</translation>
+    </message>
+    <message>
+      <source>Gracefully save settings and relaunch the application</source>
+      <translation>Gracefully save settings and relaunch the application</translation>
+    </message>
+    <message>
+      <source>Restart Application</source>
+      <translation>Restart Application</translation>
+    </message>
+    <message>
+      <source>Gracefully saves settings and restarts SparkNotePad</source>
+      <translation>Gracefully saves settings and restarts SparkNotePad</translation>
+    </message>
+    <message>
+      <source>Exit Application</source>
+      <translation>Exit Application</translation>
+    </message>
+    <message>
+      <source>Prompts to save open documents and quits SparkNotePad</source>
+      <translation>Prompts to save open documents and quits SparkNotePad</translation>
+    </message>
+    <message>
+      <source>Quit the application</source>
+      <translation>Quit the application</translation>
+    </message>
+    <message>
+      <source>Exit SparkNotePad</source>
+      <translation>Exit SparkNotePad</translation>
+    </message>
+  </context>
 </TS>
 

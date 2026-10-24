@@ -24,7 +24,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.3.0-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.3.0"></a>
+  <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest"><img src="https://img.shields.io/badge/Release-v1.3.5-2ea44f?style=for-the-badge&logo=github&logoColor=white" alt="Latest Release v1.3.5"></a>
   <a href="https://apple.com/macos"><img src="https://img.shields.io/badge/Platform-macOS%20Sequoia%20%7C%20Sonoma%20%7C%20Linux-000000?style=for-the-badge&logo=apple&logoColor=white" alt="Supported Platforms"></a>
   <a href="https://isocpp.org"><img src="https://img.shields.io/badge/Standard-ISO%20C%2B%2B20-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="C++20 Standard"></a>
   <a href="https://qt.io"><img src="https://img.shields.io/badge/Framework-Qt%206.5%20%7C%206.8%20%7C%206.10%20%7C%206.11-41CD52?style=for-the-badge&logo=qt&logoColor=white" alt="Qt Framework"></a>
@@ -119,22 +119,26 @@ Ketika editor teks desktop modern kerap menghabiskan lebih dari 500 MB RAM hanya
 
 ## Fitur Utama & Matriks Kapabilitas
 
-| Fitur                          | Deskripsi Kapabilitas                                                                                                 |     Pintasan (Shortcut)     |
-| :----------------------------- | :-------------------------------------------------------------------------------------------------------------------- | :-------------------------: |
-| **Enkripsi AES-256-CBC**       | Enkripsi dokumen berkekuatan tinggi dengan PBKDF2 (100.000 putaran) dan autentikasi integritas HMAC-SHA256            | `Ctrl+Alt+E` / `Ctrl+Alt+D` |
-| **Pemantauan Log Langsung**    | Streaming berkas log disk secara real-time (`tail -f`) dengan muat-ulang debounced (500 ms) dan auto-scroll           |        `Ctrl+Alt+Y`         |
-| **25 Rumpun Tema (75 Varian)** | 75 palet tema pengembang pilihan yang memenuhi standar kontras internasional WCAG 2.1 AA/AAA                          |        Menu `Themes`        |
-| **Bilah Alat 16x16 Pixel-Fit** | Ikonografi tajam beresolusi tinggi untuk Cari, Ganti, Zoom, dan Indent Guide di tema Gelap & Terang                   |      Bilah Alat Utama       |
-| **Ergonomi Spasi Dialog**      | Tata letak dan jarak terstandarisasi untuk kotak centang dan tombol radio di seluruh preferensi & dialog pencarian    |       Seluruh Dialog        |
-| **Evaluator JavaScript**       | Kotak pasir (sandbox) eksekusi JavaScript terisolasi untuk kalkulasi matematis, pemformatan JSON, dan manipulasi teks |       `Ctrl+Shift+J`        |
-| **Pengujian Regex Interaktif** | Penguji ekspresi reguler dengan pencocokan grup dinamis, multiline, dan penanda dot-all                               |     `Ctrl+Alt+Shift+R`      |
-| **Call-Tip Pratinjau Warna**   | Kotak pratinjau warna mengambang interaktif untuk kode format `#HEX`, `rgb()`, `rgba()`, dan `hsl()`                  |        Hover Kursor         |
-| **Transparansi Jendela**       | Pengatur opasitas jendela native (20%–100%) untuk referensi dokumen latar belakang                                    |        `Ctrl+Alt+T`         |
-| **Layanan Sistem macOS**       | Integrasi menu konteks AppKit (`Open Selection / Path in SparkNotePad`)                                               |     Menu Konteks macOS      |
-| **Keamanan Multi-Monitor**     | `ScreenDisplayManager` mencegah jendela terbuka di luar bidang layar saat perpindahan monitor multi-DPI               |          Otomatis           |
-| **Konverter Base64 & Format**  | Pengkodean dan penguraian Base64, angka biner/oktal/desimal/heksadesimal, serta transformasi casing                   |   Menu `Edit >> Convert`    |
-| **Inspektor Karakter Unicode** | Analisis detail titik kode Unicode (`U+XXXX`), nilai desimal, dan kategori karakter                                   |        Bilah Status         |
-| **Deteksi Enkripsi Otomatis**  | Pengenalan encoding universal dengan `uchardet` serta konversi instan (UTF-8, UTF-16, ANSI, CJK)                      |        Bilah Status         |
+| Fitur                            | Deskripsi Kapabilitas                                                                                                 |       Pintasan (Shortcut)       |
+| :------------------------------- | :-------------------------------------------------------------------------------------------------------------------- | :-----------------------------: |
+| **Mulai Ulang Aplikasi Aman**    | Mengosongkan sesi, menyimpan pengaturan, dan meluncurkan ulang aplikasi tanpa konflik lock                            |          `Ctrl+Alt+R`           |
+| **Tombol Keluar Terkemuka**      | Penghentian aplikasi yang mudah diakses di bilah alat dan menu dengan konfirmasi simpan                               | Bilah Alat / `Cmd+Q` / `Alt+F4` |
+| **Penyempurnaan Dialog Tentang** | Tata letak responsif dengan `QScrollArea`, pelipatan teks, dan bebas pemotongan di Retina/4K                          |      Menu `Help >> About`       |
+| **Keamanan Siber 2025–2026**     | Mitigasi injeksi Lua (CVE-2026-42214), mitigasi UAF Qt HTTP/2 (CVE-2026-95620), dual crypto                           |             Bawaan              |
+| **Enkripsi AES-256-CBC**         | Enkripsi dokumen berkekuatan tinggi dengan PBKDF2 (100.000 putaran) dan autentikasi integritas HMAC-SHA256            |   `Ctrl+Alt+E` / `Ctrl+Alt+D`   |
+| **Pemantauan Log Langsung**      | Streaming berkas log disk secara real-time (`tail -f`) dengan muat-ulang debounced (500 ms) dan auto-scroll           |          `Ctrl+Alt+Y`           |
+| **25 Rumpun Tema (75 Varian)**   | 75 palet tema pengembang pilihan yang memenuhi standar kontras internasional WCAG 2.1 AA/AAA                          |          Menu `Themes`          |
+| **Bilah Alat 16x16 Pixel-Fit**   | Ikonografi tajam beresolusi tinggi untuk Cari, Ganti, Zoom, dan Indent Guide di tema Gelap & Terang                   |        Bilah Alat Utama         |
+| **Ergonomi Spasi Dialog**        | Tata letak dan jarak terstandarisasi untuk kotak centang dan tombol radio di seluruh preferensi & dialog pencarian    |         Seluruh Dialog          |
+| **Evaluator JavaScript**         | Kotak pasir (sandbox) eksekusi JavaScript terisolasi untuk kalkulasi matematis, pemformatan JSON, dan manipulasi teks |         `Ctrl+Shift+J`          |
+| **Pengujian Regex Interaktif**   | Penguji ekspresi reguler dengan pencocokan grup dinamis, multiline, dan penanda dot-all                               |       `Ctrl+Alt+Shift+R`        |
+| **Call-Tip Pratinjau Warna**     | Kotak pratinjau warna mengambang interaktif untuk kode format `#HEX`, `rgb()`, `rgba()`, dan `hsl()`                  |          Hover Kursor           |
+| **Transparansi Jendela**         | Pengatur opasitas jendela native (20%–100%) untuk referensi dokumen latar belakang                                    |          `Ctrl+Alt+T`           |
+| **Layanan Sistem macOS**         | Integrasi menu konteks AppKit (`Open Selection / Path in SparkNotePad`)                                               |       Menu Konteks macOS        |
+| **Keamanan Multi-Monitor**       | `ScreenDisplayManager` mencegah jendela terbuka di luar bidang layar saat perpindahan monitor multi-DPI               |            Otomatis             |
+| **Konverter Base64 & Format**    | Pengkodean dan penguraian Base64, angka biner/oktal/desimal/heksadesimal, serta transformasi casing                   |     Menu `Edit >> Convert`      |
+| **Inspektor Karakter Unicode**   | Analisis detail titik kode Unicode (`U+XXXX`), nilai desimal, dan kategori karakter                                   |          Bilah Status           |
+| **Deteksi Enkripsi Otomatis**    | Pengenalan encoding universal dengan `uchardet` serta konversi instan (UTF-8, UTF-16, ANSI, CJK)                      |          Bilah Status           |
 
 ---
 
@@ -249,6 +253,17 @@ trunk check -n -j 2
 ## Changelog
 
 Riwayat rilis lengkap dan kronologis terdokumentasi pada berkas [CHANGELOG.md](CHANGELOG.md).
+
+### [v1.3.5] — Siklus Mulai Ulang/Keluar Aplikasi, Poles Dialog Tentang, Audit Keamanan 2025–2026 & Mitigasi CVE (2026-10-24)
+
+- **Mulai Ulang Aplikasi Aman (`Ctrl+Alt+R`)**: Implementasi alur kerja mulai ulang yang aman pada `MainWindow::restartApplication()` yang meminta konfirmasi berkas belum tersimpan, menyimpan pengaturan pengguna, menghentikan pemantau tail log aktif, melepaskan pengunci single-instance, dan meluncurkan kembali via path biner kanonikal absolut (mencegah risiko CWE-426 untrusted search path). Mendukung peluncuran bundel `.app` macOS (`/usr/bin/open -n -a`) dan opsi `--safe-mode`.
+- **Aksi Keluar Terkemuka**: Integrasi tombol keluar yang mudah diakses pada bilah alat utama dan menu Berkas lengkap dengan konfirmasi penyimpanan dokumen dan status bilah.
+- **Penyempurnaan Tata Letak Dialog Tentang**: Mengatasi pemotongan teks tab dan pemotongan badge pada layar macOS Retina dan Linux HiDPI. Memperpendek `&Credits && Attribution` menjadi `&Credits` / `&Kredit` (dengan tooltip lengkap), menetapkan batas ukuran minimal dialog (`620x480`), menonaktifkan eliding tab (`Qt::ElideNone`), mengaktifkan pelipatan teks pada label, dan membungkus tata letak dalam widget responsif `QScrollArea`.
+- **Audit Keamanan 2025–2026 & Mitigasi Kerentanan**:
+  - **CVE-2026-42214 / GHSA-m5fq-c9x5-w54g (Injeksi Kode Lua)**: Mengaudit dan memastikan mitigasi melalui pengikatan data inert `LuaState::setVariable()`; penambahan rangkaian tes regresi keamanan (`tests/test_lua_security.h`).
+  - **CVE-2026-95620 (UAF Aliran HTTP/2 Qt)**: Menonaktifkan HTTP/2 secara eksplisit pada permintaan jaringan pemeriksaan pembaruan (`QNetworkRequest::Http2AllowedAttribute = false`).
+  - **Sandboxing Skrip Lua**: Menambahkan `LuaState::restrictDangerousApis()` untuk menonaktifkan primitif OS/IO berbahaya (`os.execute`, `io.popen`, `package.loadlib`) saat parameter `--safe-mode` diaktifkan.
+  - **Tes Regresi Kriptografi Format Ganda**: Memperluas cakupan `TestCryptoManager` dengan pengujian penolakan manipulasi HMAC-SHA256 pada komponen ciphertext, MAC, IV, dan salt.
 
 ### [v1.3.0] — Transformasi Brand SparkNotePad, Ikonografi Berpresisi Tinggi, Ergonomi UI & Pengerasan 13 Pilar (2026-10-20)
 

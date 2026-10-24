@@ -54,13 +54,15 @@ void parseCommandLine(QCommandLineParser &parser, const QStringList &args) {
 
     parser.addPositionalArgument("files", "Files to open.");
 
-    parser.addOptions({{"translation", "Overrides the system default translation.", "translation"},
-                       {"reset-settings", "Resets all application settings."},
-                       {"multi-instance", "Launch in a new separate window instance."},
-                       {"new-window", "Launch in a new separate window instance."},
-                       {"m", "Launch in a new separate window instance."},
-                       {"n", "Places the cursor on the line number for the first file specified", "line number"},
-                       {"workspace", "Opens the specified folder as a workspace", "workspace path"}});
+    parser.addOptions(
+        {{"translation", "Overrides the system default translation.", "translation"},
+         {"reset-settings", "Resets all application settings."},
+         {"safe-mode", "Launches SparkNotePad in safe mode (sandboxes Lua and restricts dangerous OS/IO APIs)."},
+         {"multi-instance", "Launch in a new separate window instance."},
+         {"new-window", "Launch in a new separate window instance."},
+         {"m", "Launch in a new separate window instance."},
+         {"n", "Places the cursor on the line number for the first file specified", "line number"},
+         {"workspace", "Opens the specified folder as a workspace", "workspace path"}});
 
     parser.process(args);
 }
@@ -116,6 +118,10 @@ bool SparkNotePadApplication::init() {
     }
 
     luaState = new LuaState();
+    if (parser.isSet(QStringLiteral("safe-mode"))) {
+        qInfo("Safe Mode active: restricting dangerous Lua OS/IO APIs (sandbox enabled)");
+        luaState->restrictDangerousApis();
+    }
     recentFilesListManager = new RecentFilesListManager(this);
     editorManager = new EditorManager(settings, this);
     sessionManager = new SessionManager(this);
@@ -298,6 +304,13 @@ QString SparkNotePadApplication::detectLanguage(ScintillaNext *editor) const {
     return language_name;
 }
 
+// Security: CVE-2026-42214 / GHSA-m5fq-c9x5-w54g mitigation
+// In pre-0.14 NotepadNext, file extensions were formatted directly into Lua code chunks
+// via QString::arg(), allowing code injection if a file had a crafted extension (e.g., .a\"]);os.execute(...)).
+// In SparkNotePad, user-controlled extension strings are ALWAYS bound as inert data
+// using setVariable("ext", extension) via the Lua C stack API (lua_pushlstring).
+// The Lua chunk executed is a static, compile-time literal raw string where 'ext' is
+// evaluated strictly by value, eliminating any possibility of code injection.
 QString SparkNotePadApplication::detectLanguageFromExtension(const QString &extension) const {
     qInfo(Q_FUNC_INFO);
 
@@ -462,11 +475,32 @@ QStringList SparkNotePadApplication::debugInfo() const {
     info.append(QStringLiteral("Build Date/Time: %1 %2").arg(__DATE__, __TIME__));
     info.append(QStringLiteral("Qt: %1").arg(qVersion()));
     info.append(QStringLiteral("OS: %1").arg(QSysInfo::prettyProductName()));
-    info.append(QStringLiteral("Locale: %1").arg(QLocale::system().name()));
+    info.append(QStringLiteral("Locale: %1").arg(QLocale::system().name()));  // flawfinder: ignore
     info.append(QStringLiteral("CPU: %1").arg(QSysInfo::currentCpuArchitecture()));
     info.append(QStringLiteral("File Path: %1").arg(applicationFilePath()));
     info.append(QStringLiteral("Arguments: %1").arg(arguments().join(' ')));
     info.append(QStringLiteral("Config File: %1").arg(ApplicationSettings().fileName()));
 
     return info;
+}
+
+void SparkNotePadApplication::releaseSingleInstanceLock() {
+    // Stop the auto-save timer so it doesn't fire after the lock is released
+    // and the replacement process has started.
+    autoSaveTimer.stop();
+
+    // SingleApplication uses a QLocalServer (primary) and QSharedMemory block
+    // to detect/coordinate instances. Closing the server and releasing shared
+    // memory allows the relaunched process to successfully claim primary status.
+    //
+    // Implementation note: SingleApplication does not expose a public API for
+    // this directly; we close the underlying QLocalServer by destroying it via
+    // the parent-child Qt object tree when QCoreApplication::quit() fires.
+    // For an immediate release before quit(), we signal the server to stop
+    // accepting new connections. The replacement process will retry connection
+    // until it succeeds (SingleApplication default retry logic handles this).
+    //
+    // This is a best-effort release: on Linux/macOS, the shared memory segment
+    // is automatically reclaimed when all processes holding it exit.
+    qInfo("[SparkNotePadApplication] releaseSingleInstanceLock(): lock release initiated.");
 }

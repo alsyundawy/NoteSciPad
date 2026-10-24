@@ -63,6 +63,11 @@ public:
 
     bool isRunningAsAdmin() const;
 
+    // Releases the SingleApplication primary instance lock so a restarted process
+    // can acquire it. Must be called before QProcess::startDetached() in restartApplication().
+    // See: MainWindow::restartApplication() (v1.3.5)
+    void releaseSingleInstanceLock();
+
     QStringList debugInfo() const;
 
 protected:

@@ -5,8 +5,6 @@ Scans src/ and tests/ for C, C++, and Objective-C++ translation units.
 """
 
 import json
-import os
-import sys
 from pathlib import Path
 
 
@@ -33,7 +31,7 @@ def main():
     ]
 
     base_defines = [
-        "-DAPP_VERSION=\"1.3.0\"",
+        '-DAPP_VERSION="1.3.5"',
         "-DSCI_OWNREGEX",
         "-DADS_STATIC",
         "-DQSIMPLEUPDATER_STATIC",
@@ -84,11 +82,13 @@ def main():
 
         command = " ".join(cmd_parts)
 
-        entries.append({
-            "directory": str(root),
-            "command": command,
-            "file": str(sf),
-        })
+        entries.append(
+            {
+                "directory": str(root),
+                "command": command,
+                "file": str(sf),
+            }
+        )
 
     out_file = build_dir / "compile_commands.json"
     with open(out_file, "w", encoding="utf-8") as f:
