@@ -2,7 +2,6 @@
 
 **Project:** SparkNotePad (Alternative Notepad for macOS & Linux)
 **Standard:** C++20 / Qt 6.5+ / ScintillaNext
-**Reference Document:** WORKGROUND.md
 
 ---
 
@@ -10,7 +9,7 @@
 
 1. **Vendored Editor Engine**: Always use vendored copies of Scintilla (`thirdparty/scintilla`) and Lexilla (`thirdparty/lexilla`). Never replace them with system libraries or dynamic Qt bindings.
 2. **ScintillaNext Wrapper**: All editor operations, indicators, markers, and styling calls must pass through `ScintillaNext` or clean helper wrappers. Do not bypass the Scintilla document model.
-3. **Product Branding**: The product name is **SparkNotePad**. Binary name is `SparkNotePad` or `notesci`. Never use Notepad++, NotepadNext, or Notepad4 as application names.
+3. **Product Branding**: The product name is **SparkNotePad**. Binary target name is `SparkNotePad`. Never use Notepad++, NotepadNext, or Notepad4 as application names.
 4. **Mandatory Attribution & Non-Affiliation**: Maintain clear attribution in About dialog and README. Every ported algorithm from Notepad4 or Notepad3 must include source commentary.
 
 ---

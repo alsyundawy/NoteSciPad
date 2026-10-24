@@ -380,19 +380,19 @@ SparkNotePad is deployed across macOS and Linux desktop environments where Dark 
 
 ---
 
-## ADR-016: Universal Linux Packaging Architecture (Flatpak and AppImage)
+## ADR-016: Native Linux Packaging Architecture (.deb and .rpm via CPack)
 
 - **Status:** Accepted
 - **Date:** 2026-10-19
 - **Context:**
-  While native \`.deb\` and \`.rpm\` packages serve Debian/Ubuntu and Fedora/RHEL users, modern Linux distributions (such as Arch, Manjaro, openSUSE, and immutable OSes like Fedora Silverblue and SteamOS) benefit significantly from sandboxed Flatpaks and standalone portable AppImages.
+  Linux users on Debian, Ubuntu, Linux Mint, Fedora, RHEL, and openSUSE require standard native packages with automatic dependency resolution and seamless package manager integration.
 - **Decision:**
-  1. Authored \`deploy/linux/flatpak/io.github.alsyundawy.SparkNotePad.yml\` utilizing \`org.kde.Platform\` 6.6.
-  2. Implemented \`deploy/linux/appimage/AppRun\` and automated AppDir bundling script \`scripts/package-flatpak-appimage.sh\`.
-  3. Authored \`doc/FLATPAK_AND_APPIMAGE_PACKAGING.md\` detailing build commands and security permissions.
+  1. Standardized native packaging using CMake and CPack (`cmake/PackagingLinux.cmake`).
+  2. Implemented automated `.deb` and `.rpm` packaging targets (`cmake --build build --target deb` and `rpm`).
+  3. Authored `doc/LINUX_DEB_RPM_PACKAGING.md` detailing build commands and package specifications.
 - **Consequences:**
-  - Distribution across any Linux distribution regardless of package manager.
-  - Ready for future Flathub submission.
+  - Automated binary packaging directly integrated into CMake build pipeline and GitHub Actions CI/CD.
+  - Zero reliance on external bundling tools.
 
 ---
 
@@ -418,10 +418,10 @@ SparkNotePad is deployed across macOS and Linux desktop environments where Dark 
 - **Context:**
   SparkNotePad includes essential text, data, and security utility engines (Base64, NumberConverter, MathEvaluator, CaseConverter, GuidTimestampUtils, CryptoManager, CodeCompressPretty). Establishing an automated unit test suite ensures zero algorithmic regression and guarantees cross-platform reliability.
 - **Decision:**
-  1. Created modular test suite under \`tests/\` linking to \`Qt6::Test\`.
-  2. Implemented automated runner \`scripts/run-unit-tests.sh\` and empirical verifier \`scripts/test_utilities_standalone.py\`.
-  3. Integrated \`BUILD_TESTS\` option in root \`CMakeLists.txt\` enabled by default.
-  4. Authored \`doc/UNIT_TESTING_FRAMEWORK.md\`.
+  1. Created modular test suite under `tests/` linking to `Qt6::Test`.
+  2. Implemented automated runner `scripts/run-unit-tests.sh` and empirical verifier `scripts/test_utilities_standalone.py`.
+  3. Integrated `BUILD_TESTS` option in root `CMakeLists.txt` enabled by default.
+  4. Authored `doc/UNIT_TESTING_FRAMEWORK.md`.
 - **Consequences:**
   - Automated regression detection for all utility transformations and cryptographic workflows.
 
@@ -434,8 +434,8 @@ SparkNotePad is deployed across macOS and Linux desktop environments where Dark 
 - **Context:**
   While unit tests validate pure utility algorithms, GUI behavior, multi-language input (IME composition, CJK fonts, double-width cursors), huge file handling (10MB-50MB logs), and macOS native system integration (VoiceOver, Services, proxy icon) require a formalized, reproducible manual QA checklist and automated test fixture generation.
 - **Decision:**
-  1. Authored \`doc/MANUAL_TEST_CHECKLIST.md\` specifying concrete test cases across 6 functional axes.
-  2. Implemented \`scripts/generate-manual-test-fixtures.sh\` to generate UTF-8 BOM, CJK multilingual, and 10MB test files automatically.
+  1. Authored `doc/MANUAL_TEST_CHECKLIST.md` specifying concrete test cases across 6 functional axes.
+  2. Implemented `scripts/generate-manual-test-fixtures.sh` to generate UTF-8 BOM, CJK multilingual, and 10MB test files automatically.
 - **Consequences:**
   - Standardized release qualification before signing and tagging production versions.
 
@@ -448,8 +448,8 @@ SparkNotePad is deployed across macOS and Linux desktop environments where Dark 
 - **Context:**
   SparkNotePad was created to provide a first-class editor experience for Indonesian developers and the global open-source community. Synchronizing new features with both Indonesian and English translations prevents untranslated UI leaks.
 - **Decision:**
-  1. Updated `i18n/NotepadNext_id.ts` with Indonesian translations across all newly added modules (`DisplayInfoDialog`, `ReleaseManager`, `DocumentationManager`, `ThemeManager`, `AccessibilityManager`).
-  2. Maintained `i18n/NotepadNext_en.ts` as the canonical English reference.
+  1. Updated `i18n/SparkNotePad_id.ts` with Indonesian translations across all newly added modules (`DisplayInfoDialog`, `ReleaseManager`, `DocumentationManager`, `ThemeManager`, `AccessibilityManager`).
+  2. Maintained `i18n/SparkNotePad_en.ts` as the canonical English reference.
   3. Authored `doc/LOCALIZATION_GUIDE.md`.
 - **Consequences:**
   - Complete, natural Indonesian localization and consistent global English localization.
