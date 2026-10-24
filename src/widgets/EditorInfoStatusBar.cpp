@@ -40,8 +40,8 @@ EditorInfoStatusBar::EditorInfoStatusBar(QMainWindow *window) : QStatusBar(windo
     addPermanentWidget(unicodeChar, 0);
     unicodeChar->setToolTip(tr("Character Unicode Code Point at Cursor (Click for full details)"));
     connect(qobject_cast<StatusLabel *>(unicodeChar), &StatusLabel::clicked, this, [this]() {
-        if (MainWindow *mw = qobject_cast<MainWindow *>(this->window())) {
-            if (QAction *act = mw->findChild<QAction *>("actionShowCharacterInfo")) {
+        if (const auto *mw = qobject_cast<const MainWindow *>(this->window())) {
+            if (auto *act = mw->findChild<QAction *>("actionShowCharacterInfo")) {
                 act->trigger();
             }
         }
@@ -57,14 +57,14 @@ EditorInfoStatusBar::EditorInfoStatusBar(QMainWindow *window) : QStatusBar(windo
     eolFormat->setToolTip(tr("End of Line Format (Right-click to convert)"));
     eolFormat->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(qobject_cast<StatusLabel *>(eolFormat), &StatusLabel::customContextMenuRequested, this,
-            [=, this](const QPoint &pos) { emit customContextMenuRequestedForEOLLabel(eolFormat->mapToGlobal(pos)); });
+            [this](const QPoint &pos) { emit customContextMenuRequestedForEOLLabel(eolFormat->mapToGlobal(pos)); });
 
     unicodeType = new StatusLabel(110);
     addPermanentWidget(unicodeType, 0);
     unicodeType->setToolTip(tr("Encoding / BOM (Click to view or convert)"));
     connect(qobject_cast<StatusLabel *>(unicodeType), &StatusLabel::clicked, this, [this]() {
-        if (MainWindow *mw = qobject_cast<MainWindow *>(this->window())) {
-            if (QAction *act = mw->findChild<QAction *>("actionShowEncodingInfo")) {
+        if (const auto *mw = qobject_cast<const MainWindow *>(this->window())) {
+            if (auto *act = mw->findChild<QAction *>("actionShowEncodingInfo")) {
                 act->trigger();
             }
         }
@@ -74,12 +74,11 @@ EditorInfoStatusBar::EditorInfoStatusBar(QMainWindow *window) : QStatusBar(windo
     addPermanentWidget(overType, 0);
     overType->setToolTip(tr("Typing Mode: Insert (INS) / Overtype (OVR)"));
 
-    MainWindow *w = qobject_cast<MainWindow *>(window);
+    const auto *w = qobject_cast<const MainWindow *>(window);
     connect(w, &MainWindow::editorActivated, this, &EditorInfoStatusBar::connectToEditor);
 
-    connect(qobject_cast<StatusLabel *>(overType), &StatusLabel::clicked, w, [=, this]() {
-        ScintillaNext *editor = w->currentEditor();
-        if (editor) {
+    connect(qobject_cast<StatusLabel *>(overType), &StatusLabel::clicked, w, [this, w]() {
+        if (auto *editor = w->currentEditor()) {
             editor->editToggleOvertype();
             updateOverType(editor);
         }
@@ -124,16 +123,15 @@ void EditorInfoStatusBar::loadSettings() {
     m_fieldVisibility[FieldOverType] = settings.value(QStringLiteral("OverType"), true).toBool();
     settings.endGroup();
 
-    for (int i = 0; i < FieldCount; ++i) {
-        Field f = static_cast<Field>(i);
-        QLabel *label = labelForField(f);
-        if (label) {
+    for (int i = 0; i < static_cast<int>(FieldCount); ++i) {
+        const auto f = static_cast<Field>(i);
+        if (auto *label = labelForField(f)) {
             label->setVisible(m_fieldVisibility.value(f, true));
         }
     }
 }
 
-void EditorInfoStatusBar::saveSettings() {
+void EditorInfoStatusBar::saveSettings() const {
     QSettings settings;
     settings.beginGroup(QStringLiteral("StatusBarFields"));
     settings.setValue(QStringLiteral("Language"), m_fieldVisibility.value(FieldLanguage, true));
@@ -149,8 +147,7 @@ void EditorInfoStatusBar::saveSettings() {
 
 void EditorInfoStatusBar::setFieldVisible(Field field, bool visible) {
     m_fieldVisibility[field] = visible;
-    QLabel *label = labelForField(field);
-    if (label) {
+    if (auto *label = labelForField(field)) {
         label->setVisible(visible);
     }
     saveSettings();
@@ -161,11 +158,10 @@ bool EditorInfoStatusBar::isFieldVisible(Field field) const {
 }
 
 void EditorInfoStatusBar::resetToDefaults() {
-    for (int i = 0; i < FieldCount; ++i) {
-        Field f = static_cast<Field>(i);
+    for (int i = 0; i < static_cast<int>(FieldCount); ++i) {
+        const auto f = static_cast<Field>(i);
         m_fieldVisibility[f] = true;
-        QLabel *label = labelForField(f);
-        if (label) {
+        if (auto *label = labelForField(f)) {
             label->setVisible(true);
         }
     }
@@ -199,17 +195,16 @@ void EditorInfoStatusBar::contextMenuEvent(QContextMenuEvent *event) {
 
     menu.addSeparator();
 
-    QAction *dialogAction = menu.addAction(tr("Customize Status Bar Fields..."));
+    const auto *dialogAction = menu.addAction(tr("Customize Status Bar Fields..."));
     connect(dialogAction, &QAction::triggered, this, &EditorInfoStatusBar::showCustomizerDialog);
 
-    QAction *resetAction = menu.addAction(tr("Reset to Default Fields"));
+    const auto *resetAction = menu.addAction(tr("Reset to Default Fields"));
     connect(resetAction, &QAction::triggered, this, &EditorInfoStatusBar::resetToDefaults);
 
     menu.exec(event->globalPos());
 }
 
-void EditorInfoStatusBar::setOccurrencesCount(const QString &query, int count) {
-    Q_UNUSED(query);
+void EditorInfoStatusBar::setOccurrencesCount(const QString & /*query*/, int count) {
     if (occurrences) {
         if (count > 0) {
             occurrences->setText(tr("Occ: %L1").arg(count));
@@ -243,22 +238,23 @@ void EditorInfoStatusBar::connectToEditor(ScintillaNext *editor) {
         return;
 
     editorUiUpdated = connect(editor, &ScintillaNext::updateUi, this, &EditorInfoStatusBar::editorUpdated);
-    documentLexerChanged = connect(editor, &ScintillaNext::lexerChanged, this, [=, this]() { updateLanguage(editor); });
+    documentLexerChanged =
+        connect(editor, &ScintillaNext::lexerChanged, this, [this, editor]() { updateLanguage(editor); });
 
     refresh(editor);
 }
 
 void EditorInfoStatusBar::editorUpdated(Scintilla::Update updated) {
-    ScintillaNext *editor = qobject_cast<ScintillaNext *>(sender());
+    auto *editor = qobject_cast<ScintillaNext *>(sender());
     if (!editor)
         return;
 
-    if (Scintilla::FlagSet(updated, Scintilla::Update::Text)) {
+    using enum Scintilla::Update;
+    if (Scintilla::FlagSet(updated, Text)) {
         updateDocumentSize(editor);
     }
 
-    if (Scintilla::FlagSet(updated, Scintilla::Update::Text) ||
-        Scintilla::FlagSet(updated, Scintilla::Update::Selection)) {
+    if (Scintilla::FlagSet(updated, Text) || Scintilla::FlagSet(updated, Selection)) {
         updateSelectionInfo(editor);
         updateUnicodeChar(editor);
     }
@@ -279,23 +275,23 @@ void EditorInfoStatusBar::updateSelectionInfo(ScintillaNext *editor) {
     if (editor->selections() > 1) {
         selectionText = tr("Sel: N/A");
     } else {
-        int start = editor->selectionStart();
-        int end = editor->selectionEnd();
+        const int start = static_cast<int>(editor->selectionStart());
+        const int end = static_cast<int>(editor->selectionEnd());
         if (start != end) {
-            int lines = editor->lineFromPosition(end) - editor->lineFromPosition(start) + 1;
+            const int lines = static_cast<int>(editor->lineFromPosition(end) - editor->lineFromPosition(start) + 1);
             int charCount = 0;
             // On huge selections (e.g. Select All on tens of megabytes), countCharacters byte-by-byte
             // stalls the main thread. Fallback to byte range above 2MB.
             if (end - start > 2 * 1024 * 1024) {
                 charCount = end - start;
             } else {
-                charCount = editor->countCharacters(start, end);
+                charCount = static_cast<int>(editor->countCharacters(start, end));
             }
             selectionText = tr("Sel: %L1 | %L2").arg(charCount).arg(lines);
         }
     }
 
-    const int pos = editor->currentPos();
+    const int pos = static_cast<int>(editor->currentPos());
     QString positionText =
         tr("Ln: %L1    Col: %L2    ").arg(editor->lineFromPosition(pos) + 1).arg(editor->column(pos) + 1);
     docPos->setText(positionText + selectionText);
@@ -334,10 +330,13 @@ void EditorInfoStatusBar::updateEol(ScintillaNext *editor) {
         case SC_EOL_LF:
             eolFormat->setText(tr("Unix (LF)"));
             break;
+        default:
+            eolFormat->setText(tr("Unknown"));
+            break;
     }
 }
 
-void EditorInfoStatusBar::updateEncoding(ScintillaNext *editor) {
+void EditorInfoStatusBar::updateEncoding(const ScintillaNext *editor) {
     if (!editor || !unicodeType)
         return;
     unicodeType->setText(EncodingDetector::formatDisplayName(editor->encodingName(), editor->bom()));
@@ -346,8 +345,7 @@ void EditorInfoStatusBar::updateEncoding(ScintillaNext *editor) {
 void EditorInfoStatusBar::updateOverType(ScintillaNext *editor) {
     if (!editor || !overType)
         return;
-    bool overtype = editor->overtype();
-    if (overtype) {
+    if (editor->overtype()) {
         overType->setText(tr("OVR"));
     } else {
         overType->setText(tr("INS"));

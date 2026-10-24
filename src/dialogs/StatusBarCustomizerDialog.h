@@ -14,12 +14,13 @@
 #ifndef STATUSBARCUSTOMIZERDIALOG_H
 #define STATUSBARCUSTOMIZERDIALOG_H
 
+#include "EditorInfoStatusBar.h"
+
 #include <QDialog>
 #include <QMap>
 
 class QCheckBox;
 class QPushButton;
-class EditorInfoStatusBar;
 
 class StatusBarCustomizerDialog : public QDialog {
     Q_OBJECT
@@ -37,7 +38,7 @@ private:
     void setupUi();
 
     EditorInfoStatusBar *m_statusBar;
-    QMap<int, QCheckBox *> m_checkBoxes;
+    QMap<EditorInfoStatusBar::Field, QCheckBox *> m_checkBoxes;
 };
 
 #endif  // STATUSBARCUSTOMIZERDIALOG_H

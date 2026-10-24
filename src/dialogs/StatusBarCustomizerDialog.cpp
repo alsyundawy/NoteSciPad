@@ -118,7 +118,7 @@ void StatusBarCustomizerDialog::onResetDefaults() {
     if (m_statusBar) {
         m_statusBar->resetToDefaults();
         for (auto it = m_checkBoxes.begin(); it != m_checkBoxes.end(); ++it) {
-            it.value()->setChecked(m_statusBar->isFieldVisible(static_cast<EditorInfoStatusBar::Field>(it.key())));
+            it.value()->setChecked(m_statusBar->isFieldVisible(it.key()));
         }
     }
 }

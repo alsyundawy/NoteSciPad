@@ -26,7 +26,7 @@ class EditorInfoStatusBar : public QStatusBar {
     Q_OBJECT
 
 public:
-    enum Field {
+    enum class Field : std::uint8_t {
         FieldLanguage = 0,
         FieldDocSize,
         FieldDocPos,
@@ -37,12 +37,13 @@ public:
         FieldOverType,
         FieldCount
     };
+    using enum Field;
     Q_ENUM(Field)
 
     explicit EditorInfoStatusBar(QMainWindow *window);
 
     void refresh(ScintillaNext *editor);
-    void updateEncoding(ScintillaNext *editor);
+    void updateEncoding(const ScintillaNext *editor);
 
     void setFieldVisible(Field field, bool visible);
     bool isFieldVisible(Field field) const;
@@ -73,7 +74,7 @@ private slots:
 
 private:
     void loadSettings();
-    void saveSettings();
+    void saveSettings() const;
     QLabel *labelForField(Field field) const;
 
     QLabel *docType{nullptr};

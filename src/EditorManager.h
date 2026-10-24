@@ -44,7 +44,7 @@ signals:
     void editorClosed(ScintillaNext *editor);
 
 private:
-    void setupEditor(ScintillaNext *editor);
+    void setupEditor(ScintillaNext *editor) const;
     void purgeOldEditorPointers();
     QList<QPointer<ScintillaNext>> getEditors();
     int detectEOLMode(const ScintillaNext *editor) const;
