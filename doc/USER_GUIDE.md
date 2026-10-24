@@ -40,9 +40,9 @@ SparkNotePad is designed for developers, sysadmins, writers, and power users who
 
 ### 2.1 macOS
 
-- **System Requirements:** macOS 12.0 (Monterey), 13.0 (Ventura), 14.0 (Sonoma), 15.0+ (Sequoia) on Apple Silicon (M1/M2/M3/M4) or Intel x86_64.
+- **System Requirements:** macOS 11.0 (Big Sur) up to macOS 15.0+ (Sequoia) on Apple Silicon (M1/M2/M3/M4) or Intel x86_64.
 - **Installation:**
-  1. Download `SparkNotePad-<version>-macOS-arm64.dmg` (or `x86_64.dmg`).
+  1. Download `SparkNotePad-v<version>-arm64.dmg` (or `SparkNotePad-v<version>-x64.dmg`).
   2. Open the DMG image and drag `SparkNotePad.app` into your `/Applications` directory.
   3. The application is codesigned with Apple Hardened Runtime.
 
@@ -51,7 +51,7 @@ SparkNotePad is designed for developers, sysadmins, writers, and power users who
 - Install the `.deb` package:
 
   ```bash
-  sudo apt install ./SparkNotePad_<version>_amd64.deb
+  sudo apt install ./sparknotepad_<version>_amd64.deb
   ```
 
 ### 2.3 Linux (Fedora / RHEL / openSUSE)
@@ -59,9 +59,9 @@ SparkNotePad is designed for developers, sysadmins, writers, and power users who
 - Install the `.rpm` package:
 
   ```bash
-  sudo rpm -ivh SparkNotePad-<version>-1.x86_64.rpm
+  sudo rpm -ivh sparknotepad-<version>-1.x86_64.rpm
   # or using dnf:
-  sudo dnf install ./SparkNotePad-<version>-1.x86_64.rpm
+  sudo dnf install ./sparknotepad-<version>-1.x86_64.rpm
   ```
 
 ---
@@ -284,6 +284,7 @@ SparkNotePad is built with universal accessibility compliance (WCAG 2.1 AA):
 | **Log Tail Monitoring**       | `Cmd+Alt+M`                   | `Ctrl+Alt+M`                  |
 | **Clipboard History**         | `Cmd+Alt+V`                   | `Ctrl+Alt+V`                  |
 | **Accessibility & Shortcuts** | `Shift+F1`                    | `Shift+F1` / `F1`             |
+| **Restart Application**       | `Cmd+Alt+R`                   | `Ctrl+Alt+R`                  |
 | **User Guide**                | `F1`                          | `Ctrl+F1`                     |
 
 ---
