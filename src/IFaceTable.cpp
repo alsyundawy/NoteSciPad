@@ -85,8 +85,7 @@ int IFaceTable::GetConstantName(int value, char *nameOut, unsigned nameBufferLen
         if (func.value == value) {
             int len = static_cast<int>(strlen(func.name) + strlen(prefix));
             if (nameOut && (static_cast<int>(nameBufferLen) > len)) {
-                strcpy(nameOut, prefix);
-                strcat(nameOut, func.name);
+                snprintf(nameOut, nameBufferLen, "%s%s", prefix, func.name);
                 // fix case
                 for (char *nm = nameOut + strlen(prefix); *nm; ++nm) {
                     if (*nm >= 'a' && *nm <= 'z') {
@@ -104,7 +103,7 @@ int IFaceTable::GetConstantName(int value, char *nameOut, unsigned nameBufferLen
         if (con.value == value && (hint == NULL || strncmp(hint, con.name, strlen(hint)) == 0)) {
             int len = static_cast<int>(strlen(con.name));
             if (nameOut && (static_cast<int>(nameBufferLen) > len)) {
-                strcpy(nameOut, con.name);
+                snprintf(nameOut, nameBufferLen, "%s", con.name);
                 return len;
             } else {
                 return -1 - len;

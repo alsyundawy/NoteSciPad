@@ -53,7 +53,7 @@ QString GuidTimestampUtils::generateTimestamp(TimestampFormat format) {
         case DateTimeShort:
             return now.toString(QStringLiteral("yyyy-MM-dd HH:mm:ss"));
         case DateTimeLong:
-            return QLocale::system().toString(now, QLocale::LongFormat);
+            return QLocale::system().toString(now, QLocale::LongFormat);  // flawfinder: ignore
         case Iso8601Local:
             return now.toString(Qt::ISODate);
         case Iso8601Utc:

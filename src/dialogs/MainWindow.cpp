@@ -820,9 +820,10 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     srDock->toggleViewAction()->setShortcut(Qt::Key_F7);
     ui->menuView->addAction(srDock->toggleViewAction());
 
+    // NOLINTBEGIN(bugprone-easily-swappable-parameters)
     connect(srDock, &SearchResultsDock::searchResultActivated, this,
             [this](ScintillaNext *editor, int lineNumber, int startPositionFromBeginning,
-                   int endPositionFromBeginning)  // NOLINT(bugprone-easily-swappable-parameters) // NOSONAR(cpp:S5817)
+                   int endPositionFromBeginning)  // NOSONAR(cpp:S5817)
             {
                 dockedEditor->switchToEditor(editor);
 
@@ -832,6 +833,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
 
                 editor->grabFocus();
             });
+    // NOLINTEND(bugprone-easily-swappable-parameters)
 
     auto *actionRegexHelper = new QAction(tr("Regular Expression &Tester && Reference..."), this);
     actionRegexHelper->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::SHIFT | Qt::Key_R));

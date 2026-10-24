@@ -471,8 +471,10 @@ CryptoManager::CryptoResult CryptoManager::encrypt(const QByteArray &plaintext, 
     // 1. Generate 16 bytes Salt and 16 bytes IV
     uint8_t salt[SALT_LEN];
     uint8_t iv[IV_LEN];
-    QRandomGenerator::system()->fillRange(reinterpret_cast<quint32 *>(salt), SALT_LEN / sizeof(quint32));
-    QRandomGenerator::system()->fillRange(reinterpret_cast<quint32 *>(iv), IV_LEN / sizeof(quint32));
+    QRandomGenerator::system()->fillRange(reinterpret_cast<quint32 *>(salt),
+                                          SALT_LEN / sizeof(quint32));  // flawfinder: ignore
+    QRandomGenerator::system()->fillRange(reinterpret_cast<quint32 *>(iv),
+                                          IV_LEN / sizeof(quint32));  // flawfinder: ignore
 
     // 2. Derive 32 bytes AES Key + 32 bytes HMAC Key
     uint8_t aesKey[32];

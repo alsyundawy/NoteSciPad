@@ -369,9 +369,10 @@ QFileDevice::FileError ScintillaNext::save(bool preserveTimestamp) {
         originalAccessTime = fileInfo.lastRead();
     }
 
-    const QByteArray data =
-        QByteArray::fromRawData(reinterpret_cast<const char *>(characterPointer()),
-                                textLength());  // NOLINT(performance-no-int-to-ptr) // NOSONAR(cpp:S5356, cpp:S5416)
+    // NOLINTBEGIN(performance-no-int-to-ptr)
+    const QByteArray data = QByteArray::fromRawData(reinterpret_cast<const char *>(characterPointer()),
+                                                    textLength());  // NOSONAR(cpp:S5356, cpp:S5416)
+    // NOLINTEND(performance-no-int-to-ptr)
     const QString path = fileInfo.filePath();
     QFileDevice::FileError writeSuccessful = writeToDisk(data, path, bomType, fileEncoding);
 
@@ -446,9 +447,10 @@ QFileDevice::FileError ScintillaNext::saveAs(const QString &newFilePath) {
 
     emit aboutToSave();
 
-    const QByteArray data =
-        QByteArray::fromRawData(reinterpret_cast<const char *>(characterPointer()),
-                                textLength());  // NOLINT(performance-no-int-to-ptr) // NOSONAR(cpp:S5356, cpp:S5416)
+    // NOLINTBEGIN(performance-no-int-to-ptr)
+    const QByteArray data = QByteArray::fromRawData(reinterpret_cast<const char *>(characterPointer()),
+                                                    textLength());  // NOSONAR(cpp:S5356, cpp:S5416)
+    // NOLINTEND(performance-no-int-to-ptr)
     QFileDevice::FileError saveSuccessful = writeToDisk(data, newFilePath, bomType, fileEncoding);
 
     if (saveSuccessful == QFileDevice::NoError) {
@@ -469,9 +471,10 @@ QFileDevice::FileError ScintillaNext::saveAs(const QString &newFilePath) {
 }
 
 QFileDevice::FileError ScintillaNext::saveCopyAs(const QString &destPath) const {
-    const QByteArray data =
-        QByteArray::fromRawData(reinterpret_cast<const char *>(characterPointer()),
-                                textLength());  // NOLINT(performance-no-int-to-ptr) // NOSONAR(cpp:S5356, cpp:S5416)
+    // NOLINTBEGIN(performance-no-int-to-ptr)
+    const QByteArray data = QByteArray::fromRawData(reinterpret_cast<const char *>(characterPointer()),
+                                                    textLength());  // NOSONAR(cpp:S5356, cpp:S5416)
+    // NOLINTEND(performance-no-int-to-ptr)
     return writeToDisk(data, destPath, bomType, fileEncoding);
 }
 
@@ -568,9 +571,10 @@ void ScintillaNext::uncommentLineSelection() {
 }
 
 void ScintillaNext::removeDuplicateLines() {
-    const QByteArray data =
-        QByteArray::fromRawData(reinterpret_cast<const char *>(characterPointer()),
-                                textLength());  // NOLINT(performance-no-int-to-ptr) // NOSONAR(cpp:S5356, cpp:S5416)
+    // NOLINTBEGIN(performance-no-int-to-ptr)
+    const QByteArray data = QByteArray::fromRawData(reinterpret_cast<const char *>(characterPointer()),
+                                                    textLength());  // NOSONAR(cpp:S5356, cpp:S5416)
+    // NOLINTEND(performance-no-int-to-ptr)
     const QByteArray delim = eolString();
 
     auto lines = ByteArrayUtils::split(data, delim);
@@ -589,9 +593,10 @@ void ScintillaNext::removeDuplicateLines() {
 }
 
 void ScintillaNext::removeConsecutiveDuplicateLines() {
-    const QByteArray data =
-        QByteArray::fromRawData(reinterpret_cast<const char *>(characterPointer()),
-                                textLength());  // NOLINT(performance-no-int-to-ptr) // NOSONAR(cpp:S5356, cpp:S5416)
+    // NOLINTBEGIN(performance-no-int-to-ptr)
+    const QByteArray data = QByteArray::fromRawData(reinterpret_cast<const char *>(characterPointer()),
+                                                    textLength());  // NOSONAR(cpp:S5356, cpp:S5416)
+    // NOLINTEND(performance-no-int-to-ptr)
     const QByteArray delim = eolString();
 
     auto lines = ByteArrayUtils::split(data, delim);

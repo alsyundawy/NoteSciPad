@@ -66,6 +66,7 @@
 > 🍏 **[`Latest Releases (v1.3.5)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
 > 📖 **[`Release DocNotes (DOCNOTE.md)`](DOCNOTE.md)** &nbsp;|&nbsp;
 > 📜 **[`Changelog (CHANGELOG.md)`](CHANGELOG.md)** &nbsp;|&nbsp;
+> ⚖️ **[`Komparasi NotepadNext vs SparkNotePad`](doc/NOTEPADNEXT_VS_SPARKNOTEPAD_COMPARISON.md)** &nbsp;|&nbsp;
 > 🐛 **[`Issue Tracker`](https://github.com/alsyundawy/SparkNotePad/issues)** &nbsp;|&nbsp;
 > 💖 **[`Support via PayPal`](https://www.paypal.me/alsyundawy)**
 
@@ -191,13 +192,13 @@ Andromeda    Nightfox     Cobalt2       Alabaster    Tomorrow
 
 Berkas biner resmi SparkNotePad v1.3.5 siap pakai dapat diunduh langsung melalui halaman [GitHub Releases](https://github.com/alsyundawy/SparkNotePad/releases/latest):
 
-| Platform            | Arsitektur Target           | Format Paket | Tautan Unduhan                                                                                                                                             |
-| :------------------ | :-------------------------- | :----------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **macOS 15+ / 14+** | Apple Silicon (M1/M2/M3/M4) |    `.dmg`    | [SparkNotePad-v1.3.5-arm64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-v1.3.5-arm64.dmg)                         |
-| **macOS 15+ / 14+** | Intel (x86_64)              |    `.dmg`    | [SparkNotePad-v1.3.5-x64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-v1.3.5-x64.dmg)                             |
-| **Linux**           | x86_64 (Ubuntu / Debian)    |    `.deb`    | [sparknotepad_1.3.5_amd64.deb](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/sparknotepad_1.3.5_amd64.deb)                           |
-| **Linux**           | x86_64 (Fedora / RHEL)      |    `.rpm`    | [sparknotepad-1.3.5-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/sparknotepad-1.3.5-1.x86_64.rpm)                     |
-| **macOS / Linux**   | Skrip Pembantu Asosiasi     |    `.sh`     | [SparkNotePad-Default-Editor.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-Default-Editor.sh)                       |
+| Platform            | Arsitektur Target           | Format Paket | Tautan Unduhan                                                                                                                         |
+| :------------------ | :-------------------------- | :----------: | :------------------------------------------------------------------------------------------------------------------------------------- |
+| **macOS 15+ / 14+** | Apple Silicon (M1/M2/M3/M4) |    `.dmg`    | [SparkNotePad-v1.3.5-arm64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-v1.3.5-arm64.dmg)     |
+| **macOS 15+ / 14+** | Intel (x86_64)              |    `.dmg`    | [SparkNotePad-v1.3.5-x64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-v1.3.5-x64.dmg)         |
+| **Linux**           | x86_64 (Ubuntu / Debian)    |    `.deb`    | [sparknotepad_1.3.5_amd64.deb](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/sparknotepad_1.3.5_amd64.deb)       |
+| **Linux**           | x86_64 (Fedora / RHEL)      |    `.rpm`    | [sparknotepad-1.3.5-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/sparknotepad-1.3.5-1.x86_64.rpm) |
+| **macOS / Linux**   | Skrip Pembantu Asosiasi     |    `.sh`     | [SparkNotePad-Default-Editor.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-Default-Editor.sh)   |
 
 ---
 
@@ -256,7 +257,8 @@ Riwayat rilis lengkap dan kronologis terdokumentasi pada berkas [CHANGELOG.md](C
 
 ### [v1.3.5] — Siklus Mulai Ulang/Keluar Aplikasi, Koreksi Form Cari & Ganti, Pembasmian Total Linter & Audit Keamanan 2025–2026 (2026-10-24)
 
-- **Pembasmian Total 958 Error IDE & 25 Peringatan SonarQube**: Kepatuhan penuh terverifikasi pada pustaka Scintilla 5.6.7 (`Platform.h`, `Geometry.h`, `ScintillaEdit.h`) serta kode inti SparkNotePad (`ScintillaNext.h`, `FindReplaceDialog`), menuntaskan shadowing parameter, konversi tipe data, swappable parameters, non-virtual destructor, dan dependensi sirkular preprocessor. Mengadopsi C++20 `using enum MessageType;` pada `FindReplaceDialog::showMessage()` (SonarQube `cpp:S6021`), menyederhanakan `.clangd` menjadi dokumen tunggal, dan mengonfigurasi `.vscode/settings.json` serta `sonar-project.properties` untuk menonaktifkan validasi TypeScript pada berkas terjemahan XML Qt `.ts`.
+- **Pembasmian Total 1.288 Error IDE & 756 Error SonarQube**: Mengonfigurasi basis data kompilasi AppleClang bersih (874 KB, 286 unit) yang menuntaskan seluruh error header search path. Kepatuhan penuh terverifikasi pada pustaka Scintilla 5.6.7 (`Platform.h`, `Geometry.h`, `ScintillaEdit.h`) serta kode inti SparkNotePad (`ScintillaNext.h`, `FindReplaceDialog`, `MainWindow.cpp`, `IFaceTable.cpp`), menuntaskan shadowing parameter, konversi tipe data, swappable parameters, non-virtual destructor, dan dependensi sirkular preprocessor. Mengganti fungsi C tidak aman `strcpy`/`strcat` dengan `snprintf` berbatas ukuran buffer, serta menuntaskan seluruh temuan Flawfinder level 4 (0 temuan di seluruh repositori).
+- **Dokumen Komparasi Mendalam vs Upstream**: Menambahkan [doc/NOTEPADNEXT_VS_SPARKNOTEPAD_COMPARISON.md](doc/NOTEPADNEXT_VS_SPARKNOTEPAD_COMPARISON.md) yang memuat analisis teknis mendalam dwibahasa (Inggris & Indonesia) yang membandingkan official NotepadNext 0.15 dengan SparkNotePad v1.3.5 pada lebih dari 40 dimensi arsitektur, keamanan, integrasi macOS, dan perangkat pengembang.
 - **Lokalisasi Bahasa Indonesia 100% Selesai & Baku (Kepatuhan EYD V, PASTI & Mozilla L10n)**: Pembangunan ulang dan penyempurnaan seluruh 1.391 pesan pada `i18n/SparkNotePad_id.ts` (0 unfinished). Standardisasi peristilahan komputasi mengacu pada standar resmi Kemendikdasmen (EYD V, PASTI, KBBI VI): mengeliminasi kejanggalan terjemahan mesin (`bALIK kASUS` → `bALIK hURUF`, `Berhubung Tanda Hubung` → `Bertanda Hubung`, `Minimalkan` → `Padatkan` untuk pemadatan kode, `sintaks` → `sintaksis`, `pengkodean` → `pengodean`, `bawaannya` → `bawaan adalah`, `pembesaran` → `perbesaran`, dan `&Undo` → `&Urungkan`).
 - **Penegakan Form 1 Kotak Input pada Tab Find & Mark**: Memastikan hanya terdapat 1 kotak input pencarian pada tab Find dan Mark melalui pemanggilan eksplisit `ui->labelReplaceWith->hide()` dan `ui->comboReplace->hide()` saat pergantian tab (`changeTab()`).
 - **Ikon Vektor Modern SVG pada Bilah Alat**: Menambahkan pintasan Pengaturan (`icons/settings.svg`) dan tombol Keluar (`icons/exit.svg`) dengan grafis vektor SVG tajam pada bilah alat utama.

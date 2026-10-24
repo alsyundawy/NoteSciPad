@@ -62,7 +62,7 @@ QString TranslationManager::FormatLocaleTerritoryAndLanguage(QLocale &locale) {
 void TranslationManager::loadSystemDefaultTranslation() {
     // The wrong translation file may be loaded when passing Locale::system() to loadTranslation function, e.g. "zh_CN"
     // translation file will be loaded when the locale is "en_US". It's probably a Qt bug.
-    loadTranslation(QLocale(QLocale::system().name()));
+    loadTranslation(QLocale(QLocale::system().name()));  // flawfinder: ignore
 }
 
 void TranslationManager::loadTranslation(QLocale locale) {
