@@ -11,7 +11,6 @@ permissions:
 env:
   # Qt version used for the canonical release DMG (must match one of the matrix qt_version values)
   QT_RELEASE_VER: "6.8"
-  APPLE_CERTIFICATE_BASE64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
 
 jobs:
   # ─── Linux Ubuntu Matrix ───────────────────────────────────────────
@@ -114,6 +113,8 @@ jobs:
     name: build (macos-x64, ${{ matrix.qt_version }})
     runs-on: ${{ matrix.runs_on }}
     timeout-minutes: 60
+    env:
+      APPLE_CERTIFICATE_BASE64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
     strategy:
       fail-fast: false
       matrix:
@@ -225,6 +226,8 @@ jobs:
     if: always() && !cancelled() && !contains(needs.build-macos-x64.result, 'failure')
     runs-on: ${{ matrix.runs_on }}
     timeout-minutes: 60
+    env:
+      APPLE_CERTIFICATE_BASE64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
     strategy:
       fail-fast: false
       matrix:

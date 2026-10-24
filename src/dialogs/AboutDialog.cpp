@@ -40,7 +40,7 @@ void AboutDialog::setupUi() {
     setMinimumSize(620, 480);
     resize(660, 520);
 
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    auto *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(10, 10, 10, 10);
     mainLayout->setSpacing(8);
 
@@ -62,7 +62,7 @@ void AboutDialog::setupUi() {
 
     mainLayout->addWidget(m_tabWidget);
 
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close, this);
+    auto *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close, this);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::accept);
     mainLayout->addWidget(buttonBox);
 }
@@ -72,18 +72,35 @@ void AboutDialog::updateThemeColors() {
     bool dark = ThemeManager::instance()->isDarkActive();
 
     // World standard accessible color metrics (WCAG 2.1 AAA: high contrast, zero blur)
-    QString winBg =
-        pal ? QString::fromLatin1(pal->win) : (dark ? QStringLiteral("#0f172a") : QStringLiteral("#f8fafc"));
-    QString cardBg =
-        pal ? QString::fromLatin1(pal->card) : (dark ? QStringLiteral("#1e293b") : QStringLiteral("#ffffff"));
-    QString borderCol =
-        pal ? QString::fromLatin1(pal->border) : (dark ? QStringLiteral("#334155") : QStringLiteral("#cbd5e1"));
-    QString accentCol =
-        pal ? QString::fromLatin1(pal->blue) : (dark ? QStringLiteral("#38bdf8") : QStringLiteral("#2563eb"));
-    QString txtPri =
-        pal ? QString::fromLatin1(pal->txtPri) : (dark ? QStringLiteral("#f8fafc") : QStringLiteral("#0f172a"));
-    QString txtSec =
-        pal ? QString::fromLatin1(pal->txtSec) : (dark ? QStringLiteral("#94a3b8") : QStringLiteral("#475569"));
+    QString winBg;
+    QString cardBg;
+    QString borderCol;
+    QString accentCol;
+    QString txtPri;
+    QString txtSec;
+
+    if (pal) {
+        winBg = QString::fromLatin1(pal->win);
+        cardBg = QString::fromLatin1(pal->card);
+        borderCol = QString::fromLatin1(pal->border);
+        accentCol = QString::fromLatin1(pal->blue);
+        txtPri = QString::fromLatin1(pal->txtPri);
+        txtSec = QString::fromLatin1(pal->txtSec);
+    } else if (dark) {
+        winBg = QStringLiteral("#0f172a");
+        cardBg = QStringLiteral("#1e293b");
+        borderCol = QStringLiteral("#334155");
+        accentCol = QStringLiteral("#38bdf8");
+        txtPri = QStringLiteral("#f8fafc");
+        txtSec = QStringLiteral("#94a3b8");
+    } else {
+        winBg = QStringLiteral("#f8fafc");
+        cardBg = QStringLiteral("#ffffff");
+        borderCol = QStringLiteral("#cbd5e1");
+        accentCol = QStringLiteral("#2563eb");
+        txtPri = QStringLiteral("#0f172a");
+        txtSec = QStringLiteral("#475569");
+    }
 
     QString badgeBg = dark ? QStringLiteral("rgba(255,255,255,0.08)") : QStringLiteral("rgba(0,0,0,0.05)");
     QString cardStyle =
@@ -249,7 +266,7 @@ void AboutDialog::updateThemeColors() {
 
     if (m_diagnosticsCard) {
         m_diagnosticsCard->setStyleSheet(cardStyle);
-        QScreen *primary = QGuiApplication::primaryScreen();
+        const QScreen *primary = QGuiApplication::primaryScreen();
         qreal dpr = primary ? primary->devicePixelRatio() : 1.0;
 
         QString infoText = QString(
@@ -396,29 +413,28 @@ void AboutDialog::updateThemeColors() {
 
 QWidget *AboutDialog::createAboutTab() {
     // Wrap content in QScrollArea to prevent clipping on small screens/HiDPI
-    QScrollArea *scroll = new QScrollArea(this);
+    auto *scroll = new QScrollArea(this);
     scroll->setWidgetResizable(true);
     scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     scroll->setFrameShape(QFrame::NoFrame);
 
-    QWidget *tab = new QWidget();
-    QVBoxLayout *layout = new QVBoxLayout(tab);
+    auto *tab = new QWidget();
+    auto *layout = new QVBoxLayout(tab);
     layout->setContentsMargins(10, 10, 10, 10);
     layout->setSpacing(8);
 
     // Header layout with icon and title
-    QHBoxLayout *headerLayout = new QHBoxLayout();
+    auto *headerLayout = new QHBoxLayout();
     headerLayout->setSpacing(12);
 
-    QLabel *iconLabel = new QLabel(tab);
-    QPixmap iconPixmap(":/icons/SparkNotePad.png");
-    if (!iconPixmap.isNull()) {
+    auto *iconLabel = new QLabel(tab);
+    if (const QPixmap iconPixmap(":/icons/SparkNotePad.png"); !iconPixmap.isNull()) {
         iconLabel->setPixmap(iconPixmap.scaled(52, 52, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     }
     iconLabel->setFixedSize(52, 52);
     headerLayout->addWidget(iconLabel);
 
-    QVBoxLayout *titleLayout = new QVBoxLayout();
+    auto *titleLayout = new QVBoxLayout();
     titleLayout->setSpacing(2);
 
     m_titleLabel = new QLabel(tab);
@@ -449,8 +465,8 @@ QWidget *AboutDialog::createAboutTab() {
 }
 
 QWidget *AboutDialog::createMaintainerTab() {
-    QWidget *tab = new QWidget(this);
-    QVBoxLayout *layout = new QVBoxLayout(tab);
+    auto *tab = new QWidget(this);
+    auto *layout = new QVBoxLayout(tab);
     layout->setContentsMargins(10, 10, 10, 10);
     layout->setSpacing(8);
 
@@ -462,13 +478,13 @@ QWidget *AboutDialog::createMaintainerTab() {
 
 QWidget *AboutDialog::createCreditsTab() {
     // Wrap in QScrollArea for HiDPI/small screen safety
-    QScrollArea *scroll = new QScrollArea(this);
+    auto *scroll = new QScrollArea(this);
     scroll->setWidgetResizable(true);
     scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     scroll->setFrameShape(QFrame::NoFrame);
 
-    QWidget *tab = new QWidget();
-    QVBoxLayout *layout = new QVBoxLayout(tab);
+    auto *tab = new QWidget();
+    auto *layout = new QVBoxLayout(tab);
     layout->setContentsMargins(10, 10, 10, 10);
 
     m_creditsBrowser = new QTextBrowser(tab);
@@ -480,8 +496,8 @@ QWidget *AboutDialog::createCreditsTab() {
 }
 
 QWidget *AboutDialog::createEnvironmentTab() {
-    QWidget *tab = new QWidget(this);
-    QVBoxLayout *layout = new QVBoxLayout(tab);
+    auto *tab = new QWidget(this);
+    auto *layout = new QVBoxLayout(tab);
     layout->setContentsMargins(10, 10, 10, 10);
     layout->setSpacing(8);
 
@@ -489,7 +505,7 @@ QWidget *AboutDialog::createEnvironmentTab() {
     m_diagnosticsCard->setTextFormat(Qt::RichText);
     layout->addWidget(m_diagnosticsCard);
 
-    QPushButton *copyBtn = new QPushButton(tr("Copy Diagnostics to Clipboard"), this);
+    auto *copyBtn = new QPushButton(tr("Copy Diagnostics to Clipboard"), this);
     copyBtn->setCursor(Qt::PointingHandCursor);
     connect(copyBtn, &QPushButton::clicked, this, &AboutDialog::copySystemInfoToClipboard);
     layout->addWidget(copyBtn);
@@ -499,8 +515,8 @@ QWidget *AboutDialog::createEnvironmentTab() {
 }
 
 QWidget *AboutDialog::createShortcutsTab() {
-    QWidget *tab = new QWidget(this);
-    QVBoxLayout *layout = new QVBoxLayout(tab);
+    auto *tab = new QWidget(this);
+    auto *layout = new QVBoxLayout(tab);
     layout->setContentsMargins(10, 10, 10, 10);
 
     m_shortcutsBrowser = new QTextBrowser(this);
@@ -510,8 +526,8 @@ QWidget *AboutDialog::createShortcutsTab() {
 }
 
 QWidget *AboutDialog::createLicenseTab() {
-    QWidget *tab = new QWidget(this);
-    QVBoxLayout *layout = new QVBoxLayout(tab);
+    auto *tab = new QWidget(this);
+    auto *layout = new QVBoxLayout(tab);
     layout->setContentsMargins(10, 10, 10, 10);
 
     m_licenseBrowser = new QTextBrowser(this);
@@ -520,8 +536,8 @@ QWidget *AboutDialog::createLicenseTab() {
     return tab;
 }
 
-void AboutDialog::copySystemInfoToClipboard() {
-    QScreen *primary = QGuiApplication::primaryScreen();
+void AboutDialog::copySystemInfoToClipboard() const {
+    const QScreen *primary = QGuiApplication::primaryScreen();
     qreal dpr = primary ? primary->devicePixelRatio() : 1.0;
 
     QString plainInfo = QString(

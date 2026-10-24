@@ -24,6 +24,7 @@
 #include <QEvent>
 #include <QStatusBar>
 #include <QTabBar>
+#include <memory>
 
 #include "Finder.h"
 #include "ISearchResultsHandler.h"
@@ -55,9 +56,9 @@ public:
     void setSearchResultsHandler(ISearchResultsHandler *searchResultsHandler);
 
 protected:
-    bool event(QEvent *event) override;
-    void showEvent(QShowEvent *event) override;
-    void closeEvent(QCloseEvent *event) override;
+    bool event(QEvent *ev) override;
+    void showEvent(QShowEvent *ev) override;
+    void closeEvent(QCloseEvent *ev) override;
 
 signals:
     void windowActivated();
@@ -91,7 +92,7 @@ private:
     void performFind(SearchDirection direction);
     void prepareToPerformSearch(bool isReplace = false);
     void loadSettings();
-    void saveSettings();
+    void saveSettings() const;
 
     void savePosition();
     void restorePosition();
@@ -101,20 +102,20 @@ private:
     void showMessage(const QString &message, const QString &color);
     int ensureMarkIndicator();
     BookMarkDecorator *bookMarkDecorator() const;
-    void clearAllBookmarks();
+    void clearAllBookmarks() const;
 
     void updateFindList(const QString &text);
     void updateReplaceList(const QString &text);
 
     bool isFirstTime = true;
     QPoint lastClosedPosition;
-    Ui::FindReplaceDialog *ui;
+    std::unique_ptr<Ui::FindReplaceDialog> ui;
 
-    ScintillaNext *editor;
-    QStatusBar *statusBar;
-    QTabBar *tabBar;
-    ISearchResultsHandler *searchResultsHandler;
-    Finder *finder;
+    ScintillaNext *editor = nullptr;
+    QStatusBar *statusBar = nullptr;
+    QTabBar *tabBar = nullptr;
+    ISearchResultsHandler *searchResultsHandler = nullptr;
+    std::unique_ptr<Finder> finder;
 };
 
 #endif  // FINDREPLACEDIALOG_H

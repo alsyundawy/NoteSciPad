@@ -60,7 +60,7 @@ bool ReleaseManager::isNewerVersion(const QString &latestVersion, const QString 
     QStringList lParts = lCore.split('.');
     QStringList cParts = cCore.split('.');
 
-    int maxLen = qMax(lParts.size(), cParts.size());
+    const int maxLen = static_cast<int>(qMax(lParts.size(), cParts.size()));
     for (int i = 0; i < maxLen; ++i) {
         int lNum = (i < lParts.size()) ? lParts[i].toInt() : 0;
         int cNum = (i < cParts.size()) ? cParts[i].toInt() : 0;
@@ -72,8 +72,7 @@ bool ReleaseManager::isNewerVersion(const QString &latestVersion, const QString 
 
     // If core numeric parts are equal, check pre-release tags
     bool lHasPre = l.contains('-');
-    bool cHasPre = c.contains('-');
-    if (!lHasPre && cHasPre)
+    if (const bool cHasPre = c.contains('-'); !lHasPre && cHasPre)
         return true;  // Full release is newer than pre-release
 
     return false;
@@ -147,8 +146,8 @@ void ReleaseManager::onReplyFinished(QNetworkReply *reply) {
             msgBox.setText(msg);
             msgBox.setIcon(QMessageBox::Information);
             const QAbstractButton *btnDownload = msgBox.addButton(tr("&Download Update"), QMessageBox::ActionRole);
-            QAbstractButton *btnLater = msgBox.addButton(tr("&Remind Me Later"), QMessageBox::RejectRole);
-            Q_UNUSED(btnLater);
+            const QAbstractButton *btnLater = msgBox.addButton(tr("&Remind Me Later"), QMessageBox::RejectRole);
+            (void)btnLater;
 
             msgBox.exec();
             if (msgBox.clickedButton() == btnDownload) {

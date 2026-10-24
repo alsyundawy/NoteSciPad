@@ -26,10 +26,9 @@
 
 std::string dumpLuaState(lua_State *L) {
     std::stringstream ostr;
-    int i;
-    int top = lua_gettop(L);
+    const int top = lua_gettop(L);
     ostr << "top=" << top << ":\n";
-    for (i = 1; i <= top; ++i) {
+    for (int i = 1; i <= top; ++i) {
         int t = lua_type(L, i);
         switch (t) {
             case LUA_TSTRING:
@@ -50,9 +49,9 @@ std::string dumpLuaState(lua_State *L) {
 }
 
 static int require_resource(lua_State *L) {
-    const char *module = luaL_checkstring(L, 1);
+    const char *modName = luaL_checkstring(L, 1);
 
-    QString module_file = QString(":/languages/%1.lua").arg(module);
+    QString module_file = QString(":/languages/%1.lua").arg(modName);
     QFile f(module_file);
 
     lua_pop(L, 1);

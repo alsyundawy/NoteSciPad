@@ -25,6 +25,19 @@ SparkNotePad v1.3.5 delivers graceful application restart and explicit exit acti
 
 #### 🔧 Fixed
 
+- **Eradication of All IDE, Clangd, SonarQube & FlyLint Diagnostic Errors**:
+  - **IDE Header Resolution Fix**: Resolved missing include/framework paths for Qt headers (`<QObject>`, `<QDialog>`, `<QtGlobal>`, `<QString>`, `<QTest>`) by adding complete framework includes and `-x c++-header` entries for all `.h`/`.hpp` files in `scripts/generate_compilation_database.py`, generating a 286-entry database that indexes both headers and translation units.
+  - **Clangd & VS Code Integration**: Configured `--query-driver` for LLVM/Apple Clang in `.clangd` and `.vscode/settings.json`, and added `.vscode/c_cpp_properties.json` for full IntelliSense and compiler path mapping.
+  - **FlyLint Crash Resolution**: Disabled invalid external parser invocation (`lizard`) in `.vscode/settings.json`, resolving `Line could not be parsed: Usage :` exception.
+  - **SonarQube / SonarLint Compliance**:
+    - `FindReplaceDialog`: Eliminated variable shadowing (`window` -> `mainWin`, `event` -> `ev`), converted raw `new`/`delete` to `std::unique_ptr<Ui::FindReplaceDialog>` and `std::unique_ptr<Finder>`, added `const` member qualifiers (`saveSettings() const`, `clearAllBookmarks() const`), converted string literals to raw strings `R"(\\)"`, added explicit lambda captures, added `using enum Scintilla::FindOption;`, resolved integer precision loss via `static_cast<int>`, and cleaned up commented-out code.
+    - `AboutDialog`: Refactored `updateThemeColors()` by removing nested ternaries, reducing cognitive complexity under 25, marked `copySystemInfoToClipboard() const`, marked screen pointers `const QScreen *`, replaced redundant types with `auto`, and adopted if-init statements.
+    - `ThemeManager`: Defaulted special member functions, added `using enum ThemeManager::ThemeMode;`, decomposed nested ternaries, merged nested `if` statements, reduced scope of `sheet` inside `if (qApp)`, and eliminated pseudo-TODO comments.
+    - `ReleaseManager`: Cast integer sizes via `static_cast<int>`, adopted if-init statements, marked `const QAbstractButton *btnLater`, and cleaned up macro semicolons.
+    - `LuaState`: Scoped loop counter `i` inside `for` statement, and renamed `module` to `modName`.
+    - `TestCryptoManager` & `TestLuaSecurity`: Marked all slot methods `const`, adopted `std::array<std::string_view, 11>`, named test namespace, and used raw string literals.
+    - `generate_compilation_database.py`: Decomposed monolithic script into clean helper functions, dropping cognitive complexity from 21 to < 5.
+    - `release.yml`: Refactored `secrets` access to comply with actionlint and workflow schema requirements.
 - **About Dialog Tab & Text Truncation**: Fixed text clipping on macOS Retina (SF Pro) and Linux HiDPI:
   - Shortened `&Credits && Attribution` tab label to `&Credits` (full label preserved as `QTabWidget::setTabToolTip()`).
   - Added `setTabToolTip()` for both `&Credits` ("Credits & Attribution") and `&Diagnostics` ("System & Engine Diagnostics").

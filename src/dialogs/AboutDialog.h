@@ -26,7 +26,7 @@ public:
     ~AboutDialog() override = default;
 
 private slots:
-    void copySystemInfoToClipboard();
+    void copySystemInfoToClipboard() const;
     void updateThemeColors();
 
 private:

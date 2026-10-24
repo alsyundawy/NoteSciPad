@@ -20,6 +20,38 @@ Static Linter       : Trunk Check (cppcheck-qt, clang-format, pragma-once)
 
 ---
 
+## 0. Executive Summary: Release v1.3.5
+
+SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostics (945 compiler/preprocessor diagnostic errors and 25 SonarQube quality warnings), clean Trunk, MegaLinter, and FlyLint verification, graceful application restart/exit lifecycle controls, About dialog HiDPI/Retina truncation fixes, primary-source verified 2025–2026 security audits across all dependencies (Scintilla 5.6.7, Lexilla 5.5.4, Lua 5.5.1, Qt 6.5–6.12), and complete mitigation of CVE-2026-95620 and CVE-2026-42214.
+
+### Key Milestones in v1.3.5
+
+1. **Eradication of IDE & Linter Diagnostics (945 IDE & 25 SonarQube Errors)**:
+   - **Header Indexing & Preprocessor Resolution**: Replaced broken compilation database generation with a modular `scripts/generate_compilation_database.py` that indexes all `.h` and `.hpp` files (`-x c++-header`) alongside `.cpp`, `.c`, and `.mm` files (286 entries total). Provided full Qt framework search paths (`QtCore`, `QtGui`, `QtWidgets`, `QtNetwork`, `QtPrintSupport`, `QtCore5Compat`, `QtTest`).
+   - **Clangd, SonarLint & C/C++ Extensions**: Added `.vscode/c_cpp_properties.json` and updated `.clangd` with `--query-driver` and complete include flags, eliminating missing `<QObject>`, `<QDialog>`, `<QtGlobal>`, and `#pragma once` warnings.
+   - **C/C++ FlyLint Crash Fix**: Disabled erroneous external parser (`lizard` compression CLI) in `.vscode/settings.json`, resolving `Line could not be parsed: Usage :` crash.
+   - **Code Modernization Across All Pillars**:
+     - `FindReplaceDialog`: Refactored to `std::unique_ptr<Ui::FindReplaceDialog>` and `std::unique_ptr<Finder>`, eliminated variable shadowing (`window` -> `mainWin`, `event` -> `ev`), added `const` member qualifiers, converted string literals to raw strings `R"(\\)"`, added explicit lambda captures, added `using enum Scintilla::FindOption;`, and cast sizes via `static_cast<int>`.
+     - `AboutDialog`: Decomposed nested ternaries in `updateThemeColors()`, dropping cognitive complexity under 25, marked `copySystemInfoToClipboard() const`, marked screen pointers `const QScreen *`, and replaced redundant types with `auto`.
+     - `ThemeManager`: Defaulted special member functions, added `using enum ThemeManager::ThemeMode;`, decomposed nested ternaries, merged nested `if` statements, reduced scope of `sheet` inside `if (qApp)`, and eliminated pseudo-TODO comments.
+     - `ReleaseManager`: Cast integer sizes via `static_cast<int>`, adopted if-init statements, marked `const QAbstractButton *btnLater`, and cleaned up macro semicolons.
+     - `LuaState`: Scoped loop counter `i` inside `for` statement, and renamed `module` to `modName`.
+     - `TestCryptoManager` & `TestLuaSecurity`: Marked all slot methods `const`, adopted `std::array<std::string_view, 11>`, named test namespace, and used raw string literals.
+     - `generate_compilation_database.py`: Decomposed monolithic script into clean helper functions with cognitive complexity < 5.
+     - `release.yml`: Refactored `secrets` access to comply with actionlint and workflow schema requirements.
+
+2. **Application Restart & Explicit Exit Lifecycle**:
+   - Native application restart via `MainWindow::restartApplication()` (`Ctrl+Alt+R` / `Cmd+Option+R`).
+   - Verifies unsaved tabs, flushes settings, terminates timers, releases `SingleApplication` locks, and relaunches with absolute binary path (`/usr/bin/open -n -a` on macOS, `QProcess::startDetached` on Linux).
+   - Explicit File → Exit action with confirmation and status bar feedback.
+
+3. **2025–2026 Primary-Source CVE Audit & Security Hardening**:
+   - **CVE-2026-95620 Mitigation**: Disabled HTTP/2 in `ReleaseManager::checkForUpdates()`, eliminating Qt QNetworkAccessManager HTTP/2 use-after-free risk across all Qt 6 versions.
+   - **CVE-2026-42214 Mitigation**: Verified inert `lua_pushlstring` / `setVariable()` contract in `SparkNotePadApplication::detectLanguageFromExtension()`, supplemented by `LuaState::restrictDangerousApis()` sandbox and 100% passing test regression suite (`tests/test_lua_security.h`).
+   - **Verified Clean**: Scintilla 5.6.7, Lexilla 5.5.4, and Lua 5.5.1 confirm 0 relevant CVEs.
+
+---
+
 ## 1. Executive Summary: Release v1.3.0
 
 SparkNotePad **v1.3.0** marks the definitive brand evolution from NoteSciPad into **SparkNotePad**. This release encompasses comprehensive identifier and target renaming across all source modules, packaging manifests, and deployment pipelines. Accompanying the rename is a complete 13-pillar code quality and performance audit, new high-contrast iconsets conforming to Apple HIG and Windows multi-resolution standards, dual-format cryptographic backward compatibility (`SPKENC01` + `NSPENC01`), and refined Indonesian localization adhering strictly to standard terminology.

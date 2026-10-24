@@ -20,19 +20,21 @@
 #include <QTest>
 #include <QString>
 #include <QStringList>
+#include <array>
+#include <string_view>
 
 // ─── Payload corpus (CVE-2026-42214 injection patterns) ─────────────────────
 // Each entry represents a crafted file extension that would execute arbitrary
 // Lua code if interpolated with QString::arg() into a luaL_dostring() call.
 // After the fix (setVariable pattern), these MUST be treated as literal strings.
 
-namespace {
+namespace LuaSecurityCorpus {
 // Payloads that would break out of a Lua string literal
-constexpr const char *kLuaInjectionPayloads[] = {
+constexpr std::array<std::string_view, 11> kLuaInjectionPayloads = {
     // Classic injection: close the string, inject os.execute, restart string
-    "a\"]);os.execute(\"id\");--",
+    R"(a"]);os.execute("id");--)",
     // Double-quote escape injection
-    "cpp\");os.execute(\"whoami\");--",
+    R"(cpp");os.execute("whoami");--)",
     // Null-byte injection attempt (should not crash)
     // Note: Qt QString handles embedded nulls safely
     "py\x00evil",
@@ -55,8 +57,8 @@ constexpr const char *kLuaInjectionPayloads[] = {
     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
 };
-constexpr int kPayloadCount = 11;
-}  // namespace
+constexpr int kPayloadCount = static_cast<int>(kLuaInjectionPayloads.size());
+}  // namespace LuaSecurityCorpus
 
 class TestLuaSecurity : public QObject {
     Q_OBJECT
@@ -69,7 +71,7 @@ private slots:
     // string that would indicate Lua threw an exception). The actual language
     // detection will return "Text" for all crafted extensions since they will
     // not match any real language extension pattern.
-    void testExtensionPayloadsReturnLiteralResult() {
+    void testExtensionPayloadsReturnLiteralResult() const {
         // This test is conceptual: it validates the secure contract.
         // The actual LuaState requires a full Qt application context (luaL_openlibs,
         // init.lua executed, languages table populated). In the CI/CD pipeline,
@@ -93,8 +95,10 @@ private slots:
 
         // Payload validation: confirm all injection strings are valid QStrings
         // (non-null, no unexpected encoding errors)
-        for (int i = 0; i < kPayloadCount; ++i) {
-            const QString ext = QString::fromUtf8(kLuaInjectionPayloads[i]);
+        for (int i = 0; i < LuaSecurityCorpus::kPayloadCount; ++i) {
+            const QString ext = QString::fromUtf8(
+                LuaSecurityCorpus::kLuaInjectionPayloads[static_cast<size_t>(i)].data(),
+                static_cast<int>(LuaSecurityCorpus::kLuaInjectionPayloads[static_cast<size_t>(i)].size()));
             // The QString must be representable; it must not be nullptr
             // (boundary: empty string is valid)
             QVERIFY(!ext.isNull());
@@ -106,7 +110,7 @@ private slots:
             // the Lua VM will at worst return "Text" — never execute os.execute().
 
             // Length sanity: extensions > 255 chars are pathological but must not crash.
-            if (i == kPayloadCount - 1) {
+            if (i == LuaSecurityCorpus::kPayloadCount - 1) {
                 QVERIFY(ext.length() > 200);
             }
         }
@@ -122,7 +126,7 @@ private slots:
     }
 
     // ─── T2: setVariable contract — values are inert Lua globals ────────────
-    void testSetVariableCreatesInertGlobal() {
+    void testSetVariableCreatesInertGlobal() const {
         // Contract: setVariable(name, value) calls lua_pushlstring + lua_setglobal.
         // The value is stored as a Lua string object, never parsed as Lua code.
         // Injection payloads set as globals must survive round-trip without execution.
@@ -135,7 +139,7 @@ private slots:
     }
 
     // ─── T3: restrictDangerousApis() removes OS/IO execution primitives ──────
-    void testRestrictDangerousApisRemovesPrimitives() {
+    void testRestrictDangerousApisRemovesPrimitives() const {
         // After LuaState::restrictDangerousApis() is called:
         //   os.execute  == nil
         //   os.exit     == nil
