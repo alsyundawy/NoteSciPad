@@ -197,7 +197,7 @@ Berkas biner resmi SparkNotePad v1.3.5 siap pakai dapat diunduh langsung melalui
 | **macOS 15+ / 14+** | Intel (x86_64)              |    `.dmg`    | [SparkNotePad-v1.3.5-x64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-v1.3.5-x64.dmg)                             |
 | **Linux**           | x86_64 (Ubuntu / Debian)    |    `.deb`    | [sparknotepad_1.3.5_amd64.deb](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/sparknotepad_1.3.5_amd64.deb)                           |
 | **Linux**           | x86_64 (Fedora / RHEL)      |    `.rpm`    | [sparknotepad-1.3.5-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/sparknotepad-1.3.5-1.x86_64.rpm)                     |
-| **Linux Universal** | Universal Sandboxed         |   Flatpak    | [io.github.alsyundawy.SparkNotePad.flatpak](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/io.github.alsyundawy.SparkNotePad.flatpak) |
+| **macOS / Linux**   | Skrip Pembantu Asosiasi     |    `.sh`     | [SparkNotePad-Default-Editor.sh](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-Default-Editor.sh)                       |
 
 ---
 
