@@ -273,6 +273,16 @@ NoteSciPad v1.1.0 delivers streamlined native Light and Dark modes without exter
 
 ### ✨ Added
 
+#### Toolbar Polish & Find/Mark Dialog Form Input Enforcement
+
+- **Find & Replace Dialog Input Box Form Enforcement (Find & Mark Tabs)**:
+  - Fixed an issue where the Find and Mark tabs inadvertently displayed two input form boxes (showing a squashed or unhidden `Replace` field) because the original code only set `setMaximumHeight(0)` without invoking `hide()`.
+  - Replaced the height-only hack with explicit `ui->labelReplaceWith->hide(); ui->comboReplace->hide();` on `FIND_TAB` and `MARK_TAB`, and `ui->labelReplaceWith->show(); ui->comboReplace->show();` on `REPLACE_TAB`.
+  - Updated `FindReplaceDialog::setTab(int tab)` to explicitly invoke `changeTab(tab)` so that switching to Find or Mark tab reliably resets and enforces exactly ONE single search box on screen.
+- **Settings & Exit Action Icons on Main Toolbar**:
+  - Integrated Settings (`actionPreferences`) and Exit (`actionExit`) buttons directly onto `mainToolBar` with separator.
+  - Added modern vector SVG icons `icons/settings.svg` and `icons/exit.svg` for sharp rendering across Retina and standard displays.
+
 #### Native Dark & Light Mode Streamlining
 
 - **Simplified Native Dark and Light Modes**: Streamlined ThemeManager to exclusively support dedicated Dark and Light modes (`kLightPalette` and `kDarkPalette`) without external palette catalogs or ThemeSwitcherDialog.
