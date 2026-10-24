@@ -96,8 +96,8 @@ static bool isNewlineCharacter(char c) {
     return c == '\n' || c == '\r';
 }
 
-ScintillaNext::ScintillaNext(QString name, QWidget *parent)
-    : ScintillaEdit(parent), name(name), indicatorResources(INDICATOR_MAX + 1) {
+ScintillaNext::ScintillaNext(QString initialName, QWidget *parent)
+    : ScintillaEdit(parent), name(std::move(initialName)), indicatorResources(INDICATOR_MAX + 1) {
     // Per the scintilla documentation, some parts of the range are not generally available
     indicatorResources.disableRange(0, 7);
     indicatorResources.disableRange(INDICATOR_IME, INDICATOR_IME_MAX);
@@ -287,8 +287,8 @@ bool ScintillaNext::canSaveToDisk() const {
            (bufferType == ScintillaNext::File && modify()) || (bufferType == ScintillaNext::FileMissing);
 }
 
-void ScintillaNext::setName(const QString &name) {
-    this->name = name;
+void ScintillaNext::setName(const QString &newName) {
+    this->name = newName;
 
     emit renamed();
 }

@@ -24,6 +24,7 @@
 #include <QEvent>
 #include <QStatusBar>
 #include <QTabBar>
+#include <cstdint>
 #include <memory>
 
 #include "Finder.h"
@@ -41,9 +42,9 @@ class FindReplaceDialog : public QDialog {
     Q_OBJECT
 
 public:
-    enum { FIND_TAB = 0, REPLACE_TAB = 1, MARK_TAB = 2 };
+    enum TabIndex : std::uint8_t { FIND_TAB = 0, REPLACE_TAB = 1, MARK_TAB = 2 };
 
-    enum class SearchDirection { Forwards, Backwards };
+    enum class SearchDirection : std::uint8_t { Forwards, Backwards };
 
     explicit FindReplaceDialog(ISearchResultsHandler *searchResults, MainWindow *window = nullptr);
     ~FindReplaceDialog() override;

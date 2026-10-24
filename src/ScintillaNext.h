@@ -27,6 +27,8 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QPoint>
+#include <algorithm>
+#include <cstdint>
 
 class ScintillaNext : public ScintillaEdit {
     Q_OBJECT
@@ -39,8 +41,8 @@ public:
     using ScintillaEdit::setFocus;
     using ScintillaEdit::setProperty;
     QByteArray getText() { return getText(length() + 1); }
-    QVariant qtProperty(const char *name) const { return QObject::property(name); }
-    bool setQtProperty(const char *name, const QVariant &value) { return QObject::setProperty(name, value); }
+    QVariant qtProperty(const char *propName) const { return QObject::property(propName); }
+    bool setQtProperty(const char *propName, const QVariant &value) { return QObject::setProperty(propName, value); }
     QPoint pointFromPosition(Sci_Position pos) {
         return QPoint(static_cast<int>(pointXFromPosition(pos)), static_cast<int>(pointYFromPosition(pos)));
     }
@@ -51,23 +53,25 @@ public:
         if (!text)
             return;
         QByteArray b = get_text_range(start, end);
-        std::memcpy(text, b.constData(), b.size());
-        text[b.size()] = '\0';
+        const auto sz = static_cast<size_t>(b.size());
+        std::copy_n(b.constData(), sz, text);
+        text[sz] = '\0';
     }
     void getLine(sptr_t line, char *text) {
         if (!text)
             return;
         QByteArray b = ScintillaEdit::getLine(line);
-        std::memcpy(text, b.constData(), b.size());
-        text[b.size()] = '\0';
+        const auto sz = static_cast<size_t>(b.size());
+        std::copy_n(b.constData(), sz, text);
+        text[sz] = '\0';
     }
 
     static bool isRangeValid(const Sci_CharacterRange &range) {
         return range.cpMin != INVALID_POSITION && range.cpMax != INVALID_POSITION;
     }
 
-    explicit ScintillaNext(QString name, QWidget *parent = Q_NULLPTR);
-    virtual ~ScintillaNext();
+    explicit ScintillaNext(QString initialName, QWidget *parent = Q_NULLPTR);
+    ~ScintillaNext() override;
 
     static ScintillaNext *fromFile(const QString &filePath, bool tryToCreate = false);
     static QString eolModeToString(int eolMode);
@@ -117,8 +121,8 @@ public:
     bool isSavedToDisk() const;
     bool canSaveToDisk() const;
 
-    QString getName() const { return name; }
-    void setName(const QString &name);
+    const QString &getName() const { return name; }
+    void setName(const QString &newName);
     QString getPath() const;
     QString getFilePath() const;
 
@@ -127,25 +131,25 @@ public:
 
     void detachFileInfo(const QString &newName);
 
-    enum FileStateChange {
+    enum FileStateChange : std::uint8_t {
         NoChange,
         Modified,
         Deleted,
         Restored,
     };
 
-    enum BufferType {
+    enum BufferType : std::uint8_t {
         New,          // A temporary buffer, e.g. "New 1"
         File,         // Buffer tied to a file on the file system
         FileMissing,  // Buffer with a missing file on the file system
     };
 
-    enum class BomType { None, Utf8, Utf16LE, Utf16BE };
+    enum class BomType : std::uint8_t { None, Utf8, Utf16LE, Utf16BE };
 
     BomType bom() const { return bomType; }
-    void setBom(BomType bom) { bomType = bom; }
+    void setBom(BomType newBom) { bomType = newBom; }
 
-    QString encodingName() const { return fileEncoding; }
+    const QString &encodingName() const { return fileEncoding; }
     void setFileEncoding(const QString &encoding) { fileEncoding = encoding; }
 
     void convertToEncoding(const QString &newEncoding, BomType newBom);
@@ -210,8 +214,8 @@ private:
 
 template <typename Func>
 void ScintillaNext::forEachLineInSelection(int selection, Func callback) {
-    int lineStart = lineFromPosition(selectionNStart(selection));
-    int lineEnd = lineFromPosition(selectionNEnd(selection));
+    int lineStart = static_cast<int>(lineFromPosition(selectionNStart(selection)));
+    int lineEnd = static_cast<int>(lineFromPosition(selectionNEnd(selection)));
 
     for (int curLine = lineStart; curLine <= lineEnd; ++curLine) {
         callback(curLine);
@@ -222,7 +226,7 @@ void ScintillaNext::forEachLineInSelection(int selection, Func callback) {
 template <typename Func>
 void ScintillaNext::forEachMatchInRange(const QByteArray &text, Func callback, Sci_CharacterRange range) {
     Sci_TextToFind ttf{range, text.constData(), {INVALID_POSITION, INVALID_POSITION}};
-    int flags = searchFlags();
+    int flags = static_cast<int>(searchFlags());
 
     while (send(SCI_FINDTEXT, flags, reinterpret_cast<sptr_t>(&ttf)) != INVALID_POSITION) {
         if (ttf.chrgText.cpMin == ttf.chrgText.cpMax)

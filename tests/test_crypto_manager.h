@@ -7,6 +7,7 @@
 
 #include <QObject>
 #include <QTest>
+#include <cstddef>
 #include "utils/CryptoManager.h"
 
 class TestCryptoManager : public QObject {
@@ -52,7 +53,7 @@ private slots:
         QByteArray tampered = enc.data;
         const auto cipherOffset = static_cast<int>(CryptoManager::HEADER_META_LEN);
         QVERIFY(tampered.size() > cipherOffset);
-        tampered[cipherOffset] = static_cast<char>(static_cast<unsigned char>(tampered[cipherOffset]) ^ 0x5AU);
+        tampered[cipherOffset] = static_cast<char>(static_cast<std::byte>(tampered[cipherOffset]) ^ std::byte{0x5A});
 
         const auto dec = CryptoManager::decrypt(tampered, pass);
         QVERIFY2(!dec.success, "Decryption must fail when ciphertext body is modified (HMAC verification failure)");
@@ -68,7 +69,7 @@ private slots:
 
         const auto macOffset = 8 + 4 + 16 + 16;
         QByteArray tampered = enc.data;
-        tampered[macOffset] = static_cast<char>(static_cast<unsigned char>(tampered[macOffset]) ^ 0xFFU);
+        tampered[macOffset] = static_cast<char>(static_cast<std::byte>(tampered[macOffset]) ^ std::byte{0xFF});
 
         const auto dec = CryptoManager::decrypt(tampered, pass);
         QVERIFY2(!dec.success, "Decryption must fail when MAC byte is flipped");
@@ -84,7 +85,7 @@ private slots:
 
         const auto ivOffset = 8 + 4 + 16;
         QByteArray tampered = enc.data;
-        tampered[ivOffset] = static_cast<char>(static_cast<unsigned char>(tampered[ivOffset]) ^ 0xAAU);
+        tampered[ivOffset] = static_cast<char>(static_cast<std::byte>(tampered[ivOffset]) ^ std::byte{0xAA});
 
         const auto dec = CryptoManager::decrypt(tampered, pass);
         QVERIFY2(!dec.success, "Decryption must fail when IV is tampered with (HMAC covers IV)");
@@ -100,7 +101,7 @@ private slots:
 
         const auto saltOffset = 8 + 4;
         QByteArray tampered = enc.data;
-        tampered[saltOffset] = static_cast<char>(static_cast<unsigned char>(tampered[saltOffset]) ^ 0x33U);
+        tampered[saltOffset] = static_cast<char>(static_cast<std::byte>(tampered[saltOffset]) ^ std::byte{0x33});
 
         const auto dec = CryptoManager::decrypt(tampered, pass);
         QVERIFY2(!dec.success, "Decryption must fail when Salt is tampered with");

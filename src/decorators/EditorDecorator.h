@@ -30,13 +30,13 @@ class EditorDecorator : public QObject {
 
 public:
     explicit EditorDecorator(ScintillaNext *editor) : QObject(editor), editor(editor) {}
-    virtual ~EditorDecorator() {}
+    ~EditorDecorator() override = default;
 
     bool isEnabled() const { return enabled; }
     ScintillaNext *getEditor() const { return editor; }
 
 public slots:
-    void setEnabled(bool b);
+    virtual void setEnabled(bool b);
     virtual void notify(const Scintilla::NotificationData *pscn) = 0;
 
 signals:

@@ -22,9 +22,14 @@ Static Linter       : Trunk Check (cppcheck-qt, clang-format, pragma-once)
 
 ## 0. Executive Summary: Release v1.3.5
 
-SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostics (945 compiler/preprocessor diagnostic errors and 25 SonarQube quality warnings), clean Trunk, MegaLinter, and FlyLint verification, graceful application restart/exit lifecycle controls, About dialog HiDPI/Retina truncation fixes, primary-source verified 2025–2026 security audits across all dependencies (Scintilla 5.6.7, Lexilla 5.5.4, Lua 5.5.1, Qt 6.5–6.12), and complete mitigation of CVE-2026-95620 and CVE-2026-42214.
+SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostics (945 compiler/preprocessor diagnostic errors and 25 SonarQube quality warnings), clean Trunk, MegaLinter, and FlyLint verification, graceful application restart/exit lifecycle controls, About dialog HiDPI/Retina truncation fixes, Find & Replace dialog single-input form correction for Find and Mark tabs, modern Toolbar icons for Settings and Exit, primary-source verified 2025–2026 security audits across all dependencies (Scintilla 5.6.7, Lexilla 5.5.4, Lua 5.5.1, Qt 6.5–6.12), and complete mitigation of CVE-2026-95620 and CVE-2026-42214.
 
 ### Key Milestones in v1.3.5
+
+0. **Find & Replace Dialog Input Box Form Enforcement (Find & Mark Tabs)**:
+   - Eliminated the defect where the Find and Mark tabs rendered two input boxes due to `setMaximumHeight(0)` failing to completely hide the Replace row in Qt's `QFormLayout`.
+   - Applied explicit `ui->labelReplaceWith->hide(); ui->comboReplace->hide();` on `FIND_TAB` and `MARK_TAB`, and `ui->labelReplaceWith->show(); ui->comboReplace->show();` on `REPLACE_TAB`.
+   - Updated `setTab(int tab)` to explicitly call `changeTab(tab)` guaranteeing that switching between tabs immediately and reliably collapses the form to exactly 1 single search input box.
 
 1. **Eradication of IDE & Linter Diagnostics (945 IDE & 25 SonarQube Errors)**:
    - **Header Indexing & Preprocessor Resolution**: Replaced broken compilation database generation with a modular `scripts/generate_compilation_database.py` that indexes all `.h` and `.hpp` files (`-x c++-header`) alongside `.cpp`, `.c`, and `.mm` files (286 entries total). Eliminated infinite recursive include loop caused by `-I.../include` matching Qt forwarding headers (`#include nested too deeply`), replacing raw include paths with `-iframework` and `-isystem .../Qt*.framework/Headers`.

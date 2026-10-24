@@ -13,10 +13,12 @@
 #define ABOUTDIALOG_H
 
 #include <QDialog>
+#include <QEvent>
 
 class QTabWidget;
 class QLabel;
 class QTextBrowser;
+class QPushButton;
 
 class AboutDialog : public QDialog {
     Q_OBJECT
@@ -25,12 +27,16 @@ public:
     explicit AboutDialog(QWidget *parent = nullptr);
     ~AboutDialog() override = default;
 
+protected:
+    void changeEvent(QEvent *event) override;
+
 private slots:
     void copySystemInfoToClipboard() const;
     void updateThemeColors();
 
 private:
     void setupUi();
+    void retranslateUi();
     QWidget *createAboutTab();
     QWidget *createMaintainerTab();
     QWidget *createCreditsTab();
@@ -39,6 +45,7 @@ private:
     QWidget *createLicenseTab();
 
     QTabWidget *m_tabWidget = nullptr;
+    QPushButton *m_closeBtn = nullptr;
     QLabel *m_titleLabel = nullptr;
     QLabel *m_badgesLabel = nullptr;
     QLabel *m_metaLabel = nullptr;

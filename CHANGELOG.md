@@ -29,6 +29,10 @@ SparkNotePad v1.3.5 delivers graceful application restart and explicit exit acti
 
 #### 🔧 Fixed
 
+- **Find & Replace Dialog Input Box Form Alignment (Find & Mark Tabs)**:
+  - Fixed an issue where the Find and Mark tabs inadvertently displayed two input form boxes (showing a squashed or unhidden `Replace` field) because the original code only set `setMaximumHeight(0)` without invoking `hide()`.
+  - Replaced the height-only hack with explicit `ui->labelReplaceWith->hide(); ui->comboReplace->hide();` on `FIND_TAB` and `MARK_TAB`, and `ui->labelReplaceWith->show(); ui->comboReplace->show();` on `REPLACE_TAB`.
+  - Updated `FindReplaceDialog::setTab(int tab)` to explicitly invoke `changeTab(tab)` so that switching to Find or Mark tab reliably resets and enforces exactly ONE single search box on screen.
 - **Eradication of All 945 IDE, Clangd, SonarQube & FlyLint Diagnostic Errors**:
   - **IDE Header Resolution & Circular Include Prevention**: Discovered that `-I/path/to/include` caused `/path/to/include/QtCore/qobject.h` forwarding stubs to match themselves in an infinite recursive include loop (`#include nested too deeply`), dropping `<QObject>`, `<QDialog>`, and `<QtGlobal>`. Replaced raw include directory flags with `-iframework /path/to/lib` and direct `-isystem /path/to/lib/Qt*.framework/Headers` across `scripts/generate_compilation_database.py`, `.clangd`, and `.vscode/settings.json`, completely resolving the 945 cascade diagnostics.
   - **Clangd Argument Correction**: Removed misplaced `--query-driver` compiler flag from `.clangd` `CompileFlags.Add` (which caused compiler driver errors), keeping it properly scoped to `clangd.arguments` in `.vscode/settings.json`.

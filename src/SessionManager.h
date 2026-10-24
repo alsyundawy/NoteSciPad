@@ -37,7 +37,7 @@ public:
     };
     Q_DECLARE_FLAGS(SessionFileTypes, SessionFileType)
 
-    SessionManager(SparkNotePadApplication *app, SessionFileTypes types = SessionFileTypes());
+    explicit SessionManager(SparkNotePadApplication *app, SessionFileTypes types = SessionFileTypes());
 
     void setSessionFileTypes(SessionFileTypes types);
 
