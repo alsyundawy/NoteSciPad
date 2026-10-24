@@ -259,7 +259,7 @@
     <message>
         <location filename="../src/dialogs/AboutDialog.cpp" line="391" />
         <source>Created by Neil Hodgson and contributors. Syntax highlighting and styling lexers for over 100 programming languages.</source>
-        <translation>Dibuat oleh Neil Hodgson dan para kontributor. Penyorotan sintaks dan lekser gaya untuk lebih dari 100 bahasa pemrograman.</translation>
+        <translation>Dibuat oleh Neil Hodgson dan para kontributor. Penyorotan sintaksis dan lekser gaya untuk lebih dari 100 bahasa pemrograman.</translation>
     </message>
     <message>
         <location filename="../src/dialogs/AboutDialog.cpp" line="392" />
@@ -294,7 +294,7 @@
     <message>
         <location filename="../src/dialogs/AboutDialog.cpp" line="398" />
         <source>Maintained by Freedesktop. Enables fast universal character encoding detection.</source>
-        <translation>Dikelola oleh Freedesktop. Memungkinkan deteksi pengkodean karakter universal yang cepat.</translation>
+        <translation>Dikelola oleh Freedesktop. Memungkinkan deteksi pengodean karakter universal yang cepat.</translation>
     </message>
     <message>
         <location filename="../src/dialogs/AboutDialog.cpp" line="399" />
@@ -359,7 +359,7 @@
     <message>
         <location filename="../src/dialogs/AboutDialog.cpp" line="435" />
         <source>Column / Rectangular Box Selection</source>
-        <translation>Pilihan Kolom / Kotak Persegi Panjang</translation>
+        <translation>Pemilihan Kolom / Kotak Persegi Panjang</translation>
     </message>
     <message>
         <location filename="../src/dialogs/AboutDialog.cpp" line="449" />
@@ -457,7 +457,7 @@
     <message>
         <location filename="../src/dialogs/AccessibilityHelpDialog.cpp" line="51" />
         <source>&lt;h3&gt;Accessibility Standards Compliance (WCAG 2.2 AAA &amp;amp; Section 508)&lt;/h3&gt;&lt;p&gt;SparkNotePad adheres to modern digital accessibility best practices:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;Full Keyboard Operability:&lt;/b&gt; 100% of editor features, dialogs, menus, and tools are operable without a pointing device (mouse or trackpad).&lt;/li&gt;&lt;li&gt;&lt;b&gt;Dynamic Zoom &amp;amp; Font Scaling:&lt;/b&gt; Zoom text smoothly with &lt;code&gt;Ctrl + Plus&lt;/code&gt; and &lt;code&gt;Ctrl + Minus&lt;/code&gt;, or reset with &lt;code&gt;Ctrl + 0&lt;/code&gt;.&lt;/li&gt;&lt;li&gt;&lt;b&gt;High-Contrast Dark &amp;amp; Light Themes:&lt;/b&gt; SparkNotePad adapts dynamically to system dark mode preferences with high-contrast text and indicator colors.&lt;/li&gt;&lt;li&gt;&lt;b&gt;Full Screen &amp;amp; Distraction-Free:&lt;/b&gt; Press &lt;code&gt;Cmd+Ctrl+F&lt;/code&gt; (macOS) or &lt;code&gt;F11&lt;/code&gt; (Linux) for full screen, and &lt;code&gt;F9&lt;/code&gt; for Focused View mode.&lt;/li&gt;&lt;li&gt;&lt;b&gt;No Rapid Flashing:&lt;/b&gt; Visual indicators and brace match decorators use steady, non-seizure-inducing visual highlights.&lt;/li&gt;&lt;/ul&gt;</source>
-        <translation>&lt;h3&gt;Kepatuhan Standar Aksesibilitas (WCAG 2.2 AAA &amp;amp; Section 508)&lt;/h3&gt;&lt;p&gt;SparkNotePad mematuhi praktik terbaik aksesibilitas digital modern:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;Operabilitas Papan Ketik Penuh:&lt;/b&gt; 100% fitur editor, dialog, menu, dan alat dapat dioperasikan tanpa perangkat penunjuk (tetikus atau trackpad).&lt;/li&gt;&lt;li&gt;&lt;b&gt;Pembesaran Dinamis &amp;amp; Penskalaan Font:&lt;/b&gt; Perbesar atau perkecil teks dengan mulus menggunakan &lt;code&gt;Ctrl + Plus&lt;/code&gt; dan &lt;code&gt;Ctrl + Minus&lt;/code&gt;, atau atur ulang dengan &lt;code&gt;Ctrl + 0&lt;/code&gt;.&lt;/li&gt;&lt;li&gt;&lt;b&gt;Tema Gelap &amp;amp; Terang Kontras Tinggi:&lt;/b&gt; SparkNotePad menyesuaikan secara dinamis dengan preferensi mode gelap sistem dengan warna teks dan indikator kontras tinggi.&lt;/li&gt;&lt;li&gt;&lt;b&gt;Layar Penuh &amp;amp; Bebas Gangguan:&lt;/b&gt; Tekan &lt;code&gt;Cmd+Ctrl+F&lt;/code&gt; (macOS) atau &lt;code&gt;F11&lt;/code&gt; (Linux) untuk layar penuh, dan &lt;code&gt;F9&lt;/code&gt; untuk mode Tampilan Terfokus.&lt;/li&gt;&lt;li&gt;&lt;b&gt;Tanpa Kedipan Cepat:&lt;/b&gt; Indikator visual dan penanda pencocokan tanda kurung menggunakan sorotan visual yang stabil dan aman dari pemicu kejang.&lt;/li&gt;&lt;/ul&gt;</translation>
+        <translation>&lt;h3&gt;Kepatuhan Standar Aksesibilitas (WCAG 2.2 AAA &amp;amp; Section 508)&lt;/h3&gt;&lt;p&gt;SparkNotePad mematuhi praktik terbaik aksesibilitas digital modern:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;Operabilitas Papan Ketik Penuh:&lt;/b&gt; 100% fitur editor, dialog, menu, dan alat dapat dioperasikan tanpa perangkat penunjuk (tetikus atau trackpad).&lt;/li&gt;&lt;li&gt;&lt;b&gt;Perbesaran Dinamis &amp;amp; Penskalaan Font:&lt;/b&gt; Perbesar atau perkecil teks dengan mulus menggunakan &lt;code&gt;Ctrl + Plus&lt;/code&gt; dan &lt;code&gt;Ctrl + Minus&lt;/code&gt;, atau atur ulang dengan &lt;code&gt;Ctrl + 0&lt;/code&gt;.&lt;/li&gt;&lt;li&gt;&lt;b&gt;Tema Gelap &amp;amp; Terang Kontras Tinggi:&lt;/b&gt; SparkNotePad menyesuaikan secara dinamis dengan preferensi mode gelap sistem dengan warna teks dan indikator kontras tinggi.&lt;/li&gt;&lt;li&gt;&lt;b&gt;Layar Penuh &amp;amp; Bebas Gangguan:&lt;/b&gt; Tekan &lt;code&gt;Cmd+Ctrl+F&lt;/code&gt; (macOS) atau &lt;code&gt;F11&lt;/code&gt; (Linux) untuk layar penuh, dan &lt;code&gt;F9&lt;/code&gt; untuk mode Tampilan Terfokus.&lt;/li&gt;&lt;li&gt;&lt;b&gt;Tanpa Kedipan Cepat:&lt;/b&gt; Indikator visual dan penanda pencocokan tanda kurung menggunakan sorotan visual yang stabil dan aman dari pemicu kejang.&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
         <location filename="../src/dialogs/AccessibilityHelpDialog.cpp" line="89" />
@@ -583,12 +583,12 @@
         <location filename="../src/dialogs/AccessibilityHelpDialog.cpp" line="114" />
         <location filename="../src/dialogs/AccessibilityHelpDialog.cpp" line="116" />
         <source>Edit</source>
-        <translation>Edit</translation>
+        <translation>Sunting</translation>
     </message>
     <message>
         <location filename="../src/dialogs/AccessibilityHelpDialog.cpp" line="104" />
         <source>Revert last text change</source>
-        <translation>Batalkan perubahan teks terakhir</translation>
+        <translation>Urungkan perubahan teks terakhir</translation>
     </message>
     <message>
         <location filename="../src/dialogs/AccessibilityHelpDialog.cpp" line="105" />
@@ -598,7 +598,7 @@
     <message>
         <location filename="../src/dialogs/AccessibilityHelpDialog.cpp" line="106" />
         <source>Reapply previously reverted text change</source>
-        <translation>Terapkan kembali perubahan teks yang sebelumnya dibatalkan</translation>
+        <translation>Terapkan kembali perubahan teks yang sebelumnya diurungkan</translation>
     </message>
     <message>
         <location filename="../src/dialogs/AccessibilityHelpDialog.cpp" line="107" />
@@ -792,7 +792,7 @@
     <message>
         <location filename="../src/dialogs/AccessibilityHelpDialog.cpp" line="135" />
         <source>Reset Zoom</source>
-        <translation>Atur Ulang Pembesaran</translation>
+        <translation>Atur Ulang Perbesaran</translation>
     </message>
     <message>
         <location filename="../src/dialogs/AccessibilityHelpDialog.cpp" line="135" />
@@ -920,7 +920,7 @@
     <message>
         <location filename="../src/utils/CaseConverter.cpp" line="126" />
         <source>Document is read-only.</source>
-        <translation>Dokumen hanya-baca.</translation>
+        <translation>Dokumen hanya baca.</translation>
     </message>
     <message>
         <location filename="../src/utils/CaseConverter.cpp" line="163" />
@@ -940,7 +940,7 @@
     <message>
         <location filename="../src/utils/CaseConverter.cpp" line="239" />
         <source>iNVERT cASE</source>
-        <translation>bALIK kASUS</translation>
+        <translation>bALIK hURUF</translation>
     </message>
     <message>
         <location filename="../src/utils/CaseConverter.cpp" line="242" />
@@ -1024,7 +1024,7 @@
     <message>
         <location filename="../src/dialogs/CharacterInfoDialog.ui" line="158" />
         <source>Encodings &amp; Byte Sequences</source>
-        <translation>Pengkodean &amp; Urutan Bita</translation>
+        <translation>Pengodean &amp; Urutan Bita</translation>
     </message>
     <message>
         <location filename="../src/dialogs/CharacterInfoDialog.ui" line="164" />
@@ -1379,7 +1379,7 @@
     <message>
         <location filename="../src/dialogs/DisplayInfoDialog.cpp" line="63" />
         <source>Refresh Rate</source>
-        <translation>Kecepatan Refresh</translation>
+        <translation>Laju Penyegaran</translation>
     </message>
     <message>
         <location filename="../src/dialogs/DisplayInfoDialog.cpp" line="63" />
@@ -1506,7 +1506,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="29" />
         <source>Document Language / Syntax Scheme</source>
-        <translation>Bahasa Dokumen / Skema Sintaks</translation>
+        <translation>Bahasa Dokumen / Skema Sintaksis</translation>
     </message>
     <message>
         <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="33" />
@@ -1579,7 +1579,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="197" />
         <source>File Encoding</source>
-        <translation>Pengkodean Berkas</translation>
+        <translation>Pengodean Berkas</translation>
     </message>
     <message>
         <location filename="../src/widgets/EditorInfoStatusBar.cpp" line="198" />
@@ -2381,7 +2381,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/FindReplaceDialog.ui" line="336" />
         <source>Clear all marks</source>
-        <translation>Hapus Semua Tanda</translation>
+        <translation>Hapus semua tanda</translation>
     </message>
     <message>
         <location filename="../src/dialogs/FindReplaceDialog.ui" line="346" />
@@ -2426,12 +2426,12 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/FindReplaceDialog.ui" line="524" />
         <source>Match &amp;case</source>
-        <translation>Cocokkan besar/kecil &amp;huruf</translation>
+        <translation>Cocokkan &amp;huruf besar/kecil</translation>
     </message>
     <message>
         <location filename="../src/dialogs/FindReplaceDialog.ui" line="531" />
         <source>Wra&amp;p Around</source>
-        <translation>Pencarian ber&amp;putar</translation>
+        <translation>Lanjutkan dari &amp;awal</translation>
     </message>
     <message>
         <location filename="../src/dialogs/FindReplaceDialog.cpp" line="65" />
@@ -2611,12 +2611,12 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/features/FocusedViewDialog.cpp" line="63" />
         <source>Match &amp;case</source>
-        <translation>Cocokkan besar/kecil &amp;huruf</translation>
+        <translation>Cocokkan &amp;huruf besar/kecil</translation>
     </message>
     <message>
         <location filename="../src/features/FocusedViewDialog.cpp" line="64" />
         <source>&amp;Whole word</source>
-        <translation>&amp;Seluruh kata</translation>
+        <translation>Kata &amp;utuh</translation>
     </message>
     <message>
         <location filename="../src/features/FocusedViewDialog.cpp" line="65" />
@@ -2884,7 +2884,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/JsEvaluationDialog.cpp" line="84" />
         <source>Crypto: Hex Encoding</source>
-        <translation>Kripto: Pengkodean Heks</translation>
+        <translation>Kripto: Pengodean Heks</translation>
     </message>
     <message>
         <location filename="../src/dialogs/JsEvaluationDialog.cpp" line="103" />
@@ -2894,12 +2894,12 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/JsEvaluationDialog.cpp" line="112" />
         <source>✓ Evaluated successfully in %1 ms</source>
-        <translation>✓ Berhasil dievaluasi dalam %1 md</translation>
+        <translation>✓ Berhasil dievaluasi dalam %1 ms</translation>
     </message>
     <message>
         <location filename="../src/dialogs/JsEvaluationDialog.cpp" line="117" />
         <source>✗ Error during execution (%1 ms)</source>
-        <translation>✗ Kesalahan selama eksekusi (%1 md)</translation>
+        <translation>✗ Kesalahan selama eksekusi (%1 ms)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/JsEvaluationDialog.cpp" line="134" />
@@ -2909,7 +2909,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/JsEvaluationDialog.cpp" line="146" />
         <source>Cannot insert: Editor is read-only.</source>
-        <translation>Tidak dapat menyisipkan: Editor hanya-baca.</translation>
+        <translation>Tidak dapat menyisipkan: Editor berstatus hanya-baca.</translation>
     </message>
 </context>
 <context>
@@ -2927,7 +2927,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/docks/LanguageInspectorDock.ui" line="70" />
         <source>Lexer:</source>
-        <translation>Lexer:</translation>
+        <translation>Lekser:</translation>
     </message>
     <message>
         <location filename="../src/docks/LanguageInspectorDock.ui" line="86" />
@@ -3211,7 +3211,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="183" />
         <source>Encoding/Decoding</source>
-        <translation>Enkode / Dekode</translation>
+        <translation>Pengodean / Pendekodean</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="284" />
@@ -3322,7 +3322,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="665" />
         <source>&amp;Undo</source>
-        <translation>&amp;Batalkan</translation>
+        <translation>&amp;Urungkan</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="678" />
@@ -3508,7 +3508,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="1033" />
         <source>Reset Zoom</source>
-        <translation>Atur Ulang Pembesaran</translation>
+        <translation>Atur Ulang Perbesaran</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="1041" />
@@ -3740,7 +3740,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="249" />
         <source>Code Formatter &amp; Minifier</source>
-        <translation>Pemformat &amp; Peminimal Kode</translation>
+        <translation>Pemformat &amp; Pemadat Kode</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="267" />
@@ -3830,7 +3830,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="907" />
         <source>&amp;Title Case</source>
-        <translation>Huruf Besar Setiap &amp;Kata</translation>
+        <translation>Huruf &amp;Judul</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="910" />
@@ -3840,7 +3840,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="918" />
         <source>&amp;Sentence case</source>
-        <translation>Huruf pertama &amp;kalimat besar</translation>
+        <translation>Huruf &amp;kalimat</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="921" />
@@ -3850,7 +3850,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="929" />
         <source>&amp;iNVERT cASE</source>
-        <translation>&amp;bALIK kASUS</translation>
+        <translation>&amp;bALIK hURUF</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="932" />
@@ -3986,7 +3986,7 @@ Atau URL daring cadangan:
         <location filename="../src/dialogs/MainWindow.ui" line="1496" />
         <location filename="../src/dialogs/MainWindow.ui" line="1499" />
         <source>Copy selection or document as syntax-colored Rich Text Format</source>
-        <translation>Salin pilihan atau dokumen sebagai Format Rich Text berwarna sintaks</translation>
+        <translation>Salin pilihan atau dokumen sebagai Format Rich Text berwarna sintaksis</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="1502" />
@@ -4312,12 +4312,12 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="1943" />
         <source>Sort Lines Ascending (Case-Insensitive)</source>
-        <translation>Urutkan Baris Menaik (Abaikan Besar/Kecil Huruf)</translation>
+        <translation>Urutkan Baris Menaik (Abaikan Huruf Besar/Kecil)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="1948" />
         <source>Sort Lines Descending (Case-Insensitive)</source>
-        <translation>Urutkan Baris Menurun (Abaikan Besar/Kecil Huruf)</translation>
+        <translation>Urutkan Baris Menurun (Abaikan Huruf Besar/Kecil)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="1953" />
@@ -4524,7 +4524,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="2156" />
         <source>New GUID / UUID (Hyphenated)</source>
-        <translation>GUID / UUID Baru (Berhubung Tanda Hubung)</translation>
+        <translation>GUID / UUID Baru (Bertanda Hubung)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="2159" />
@@ -4540,7 +4540,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="2170" />
         <source>New GUID (with Braces { ... })</source>
-        <translation>GUID Baru (dengan Tanda Kurung Kurawal { ... })</translation>
+        <translation>GUID Baru (dengan Kurung Kurawal { ... })</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="2173" />
@@ -4584,7 +4584,7 @@ Atau URL daring cadangan:
         <location filename="../src/dialogs/MainWindow.ui" line="2209" />
         <location filename="../src/dialogs/MainWindow.ui" line="2212" />
         <source>Format and indent current selection or entire document</source>
-        <translation>Format dan indentasi pilihan saat ini atau seluruh dokumen</translation>
+        <translation>Format dan inden pilihan saat ini atau seluruh dokumen</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="2215" />
@@ -4594,13 +4594,13 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="2220" />
         <source>Minify / Compress (Auto)</source>
-        <translation>Minimalkan / Kompres (Otomatis)</translation>
+        <translation>Padatkan / Kompresi (Otomatis)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="2223" />
         <location filename="../src/dialogs/MainWindow.ui" line="2226" />
         <source>Minify and compact current selection or entire document</source>
-        <translation>Minimalkan dan padatkan pilihan saat ini atau seluruh dokumen</translation>
+        <translation>Padatkan pilihan saat ini atau seluruh dokumen</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="2229" />
@@ -4615,7 +4615,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="2239" />
         <source>JSON Minify</source>
-        <translation>Minimalkan JSON</translation>
+        <translation>Padatkan JSON</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="2244" />
@@ -4625,7 +4625,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="2249" />
         <source>JSON5 Minify</source>
-        <translation>Minimalkan JSON5</translation>
+        <translation>Padatkan JSON5</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="2254" />
@@ -4635,7 +4635,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="2259" />
         <source>CSS Minify</source>
-        <translation>Minimalkan CSS</translation>
+        <translation>Padatkan CSS</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="2264" />
@@ -4645,7 +4645,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="2269" />
         <source>JavaScript Minify</source>
-        <translation>Minimalkan JavaScript</translation>
+        <translation>Padatkan JavaScript</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="2274" />
@@ -4849,7 +4849,7 @@ Atau URL daring cadangan:
         <location filename="../src/dialogs/MainWindow.ui" line="2456" />
         <location filename="../src/dialogs/MainWindow.ui" line="2459" />
         <source>Show Unicode code point, name, category, and encoding bytes for character under caret</source>
-        <translation>Tampilkan titik kode Unicode, nama, kategori, dan bita pengkodean untuk karakter di bawah tanda sisipan</translation>
+        <translation>Tampilkan titik kode Unicode, nama, kategori, dan bita pengodean untuk karakter di bawah tanda sisipan</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.ui" line="2462" />
@@ -4965,7 +4965,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="378" />
         <source>Minified</source>
-        <translation>Diminimalkan</translation>
+        <translation>Dipadatkan</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="378" />
@@ -5002,7 +5002,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="440" />
         <source>JS Evaluated in %1 ms: %2</source>
-        <translation>JS Dievaluasi dalam %1 md: %2</translation>
+        <translation>JS Dievaluasi dalam %1 ms: %2</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="444" />
@@ -5013,7 +5013,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="456" />
         <source>JS Evaluated in %1 ms</source>
-        <translation>JS Dievaluasi dalam %1 md</translation>
+        <translation>JS Dievaluasi dalam %1 ms</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="487" />
@@ -5382,7 +5382,7 @@ Atau URL daring cadangan:
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="2601" />
         <source>Copied syntax-colored %1 to clipboard (%2)</source>
-        <translation>Menyalin %1 berwarna sintaks ke papan klip (%2)</translation>
+        <translation>Menyalin %1 berwarna sintaksis ke papan klip (%2)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="2614" />
@@ -5701,7 +5701,7 @@ Peringatan: Frasa sandi yang hilang tidak dapat dipulihkan oleh SparkNotePad. Pa
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="3872" />
         <source>Window Transparency: OFF (100% Opaque)</source>
-        <translation>Transparansi Jendela: MATI (100% Kedap Cahaya)</translation>
+        <translation>Transparansi Jendela: MATI (100% Opak)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="3887" />
@@ -5788,12 +5788,12 @@ Peringatan: Frasa sandi yang hilang tidak dapat dipulihkan oleh SparkNotePad. Pa
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="4134" />
         <source>Reset to Default (Light Mode - NotepadNext)</source>
-        <translation>Atur Ulang ke Default (Mode Terang - NotepadNext)</translation>
+        <translation>Atur Ulang ke Bawaan (Mode Terang - NotepadNext)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="4137" />
         <source>Theme reset to default Light Mode (NotepadNext)</source>
-        <translation>Tema diatur ulang ke Mode Terang default (NotepadNext)</translation>
+        <translation>Tema diatur ulang ke Mode Terang bawaan (NotepadNext)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/MainWindow.cpp" line="4141" />
@@ -5957,7 +5957,7 @@ Peringatan: Frasa sandi yang hilang tidak dapat dipulihkan oleh SparkNotePad. Pa
     <message>
         <location filename="../src/dialogs/ManageToolsDialog.ui" line="63" />
         <source>&amp;Edit...</source>
-        <translation>&amp;Edit...</translation>
+        <translation>&amp;Sunting...</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ManageToolsDialog.ui" line="70" />
@@ -6447,7 +6447,7 @@ Kunci: %2</translation>
     <message>
         <location filename="../src/dialogs/PreferencesDialog.ui" line="141" />
         <source>Default Font</source>
-        <translation>Font Baku</translation>
+        <translation>Font Bawaan</translation>
     </message>
     <message>
         <location filename="../src/dialogs/PreferencesDialog.ui" line="147" />
@@ -6467,7 +6467,7 @@ Kunci: %2</translation>
     <message>
         <location filename="../src/dialogs/PreferencesDialog.ui" line="197" />
         <source>Default Line Endings</source>
-        <translation>Akhir Baris Baku</translation>
+        <translation>Akhir Baris Bawaan</translation>
     </message>
     <message>
         <location filename="../src/dialogs/PreferencesDialog.ui" line="209" />
@@ -6533,7 +6533,7 @@ Kunci: %2</translation>
         <location filename="../src/dialogs/PreferencesDialog.ui" line="299" />
         <location filename="../src/dialogs/PreferencesDialog.cpp" line="163" />
         <source>Default Directory</source>
-        <translation>Direktori Baku</translation>
+        <translation>Direktori Bawaan</translation>
     </message>
     <message>
         <location filename="../src/dialogs/PreferencesDialog.ui" line="308" />
@@ -6573,7 +6573,7 @@ Kunci: %2</translation>
     <message>
         <location filename="../src/dialogs/PreferencesDialog.cpp" line="107" />
         <source>System Default</source>
-        <translation>Standar Sistem</translation>
+        <translation>Bawaan Sistem</translation>
     </message>
     <message>
         <location filename="../src/dialogs/PreferencesDialog.cpp" line="108" />
@@ -6593,7 +6593,7 @@ Kunci: %2</translation>
     <message>
         <location filename="../src/dialogs/PreferencesDialog.cpp" line="221" />
         <source>&lt;System Default&gt;</source>
-        <translation>&lt;Standar Sistem&gt;</translation>
+        <translation>&lt;Bawaan Sistem&gt;</translation>
     </message>
     <message>
         <location filename="../src/dialogs/PreferencesDialog.cpp" line="238" />
@@ -6633,7 +6633,7 @@ Kunci: %2</translation>
     <message>
         <location filename="../src/dialogs/PreferencesDialog.cpp" line="328" />
         <source> ms</source>
-        <translation> md</translation>
+        <translation> ms</translation>
     </message>
     <message>
         <location filename="../src/dialogs/PreferencesDialog.cpp" line="333" />
@@ -6666,7 +6666,7 @@ Kunci: %2</translation>
     <message>
         <location filename="../src/widgets/QuickFindWidget.ui" line="44" />
         <source>Match case</source>
-        <translation>Cocokkan besar/kecil huruf</translation>
+        <translation>Cocokkan huruf besar/kecil</translation>
     </message>
     <message>
         <location filename="../src/widgets/QuickFindWidget.ui" line="47" />
@@ -6744,7 +6744,7 @@ Kunci: %2</translation>
     <message>
         <location filename="../src/dialogs/RegexHelperDialog.ui" line="81" />
         <source>Multiline (^ and $ match lines)</source>
-        <translation>Multi-baris (^ dan $ cocok baris)</translation>
+        <translation>Multibaris (^ dan $ mencocokkan baris)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/RegexHelperDialog.ui" line="106" />
@@ -6769,7 +6769,7 @@ Kunci: %2</translation>
     <message>
         <location filename="../src/dialogs/RegexHelperDialog.ui" line="150" />
         <source>Syntax Reference Cheat Sheet</source>
-        <translation>Lembar Contekan Referensi Sintaks</translation>
+        <translation>Lembar Contekan Referensi Sintaksis</translation>
     </message>
     <message>
         <location filename="../src/dialogs/RegexHelperDialog.ui" line="160" />
@@ -7038,12 +7038,12 @@ Harap periksa koneksi internet Anda.</translation>
     <message>
         <location filename="../src/dialogs/StatusBarCustomizerDialog.cpp" line="49" />
         <source>Document Language / Syntax Scheme</source>
-        <translation>Bahasa Dokumen / Skema Sintaks</translation>
+        <translation>Bahasa Dokumen / Skema Sintaksis</translation>
     </message>
     <message>
         <location filename="../src/dialogs/StatusBarCustomizerDialog.cpp" line="50" />
         <source>Current language syntax highlighter (e.g. C++, HTML, Markdown)</source>
-        <translation>Penyorot sintaks bahasa saat ini (cth. C++, HTML, Markdown)</translation>
+        <translation>Penyorot sintaksis bahasa saat ini (cth. C++, HTML, Markdown)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/StatusBarCustomizerDialog.cpp" line="51" />
@@ -7098,12 +7098,12 @@ Harap periksa koneksi internet Anda.</translation>
     <message>
         <location filename="../src/dialogs/StatusBarCustomizerDialog.cpp" line="61" />
         <source>File Encoding (UTF-8 / ANSI)</source>
-        <translation>Pengkodean Berkas (UTF-8 / ANSI)</translation>
+        <translation>Pengodean Berkas (UTF-8 / ANSI)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/StatusBarCustomizerDialog.cpp" line="61" />
         <source>Active encoding and BOM status</source>
-        <translation>Pengkodean aktif dan status BOM</translation>
+        <translation>Pengodean aktif dan status BOM</translation>
     </message>
     <message>
         <location filename="../src/dialogs/StatusBarCustomizerDialog.cpp" line="62" />
@@ -7113,7 +7113,7 @@ Harap periksa koneksi internet Anda.</translation>
     <message>
         <location filename="../src/dialogs/StatusBarCustomizerDialog.cpp" line="63" />
         <source>Keyboard typing insert or replace mode</source>
-        <translation>Mode pengetikan keyboard sisip atau ganti</translation>
+        <translation>Mode pengetikan papan ketik sisip atau timpa</translation>
     </message>
     <message>
         <location filename="../src/dialogs/StatusBarCustomizerDialog.cpp" line="82" />
@@ -7202,32 +7202,32 @@ Harap periksa koneksi internet Anda.</translation>
     <message>
         <location filename="../src/dialogs/TailOptionsDialog.ui" line="34" />
         <source>250 ms (Ultra High Speed)</source>
-        <translation>250 md (Kecepatan Sangat Tinggi)</translation>
+        <translation>250 ms (Kecepatan Sangat Tinggi)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/TailOptionsDialog.ui" line="39" />
         <source>500 ms (Fast)</source>
-        <translation>500 md (Cepat)</translation>
+        <translation>500 ms (Cepat)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/TailOptionsDialog.ui" line="44" />
         <source>750 ms (Standard / Recommended)</source>
-        <translation>750 md (Standar / Direkomendasikan)</translation>
+        <translation>750 ms (Standar / Direkomendasikan)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/TailOptionsDialog.ui" line="49" />
         <source>1000 ms (1 second)</source>
-        <translation>1000 md (1 detik)</translation>
+        <translation>1000 ms (1 detik)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/TailOptionsDialog.ui" line="54" />
         <source>2000 ms (2 seconds)</source>
-        <translation>2000 md (2 detik)</translation>
+        <translation>2000 ms (2 detik)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/TailOptionsDialog.ui" line="59" />
         <source>5000 ms (5 seconds)</source>
-        <translation>5000 md (5 detik)</translation>
+        <translation>5000 ms (5 detik)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/TailOptionsDialog.ui" line="67" />
@@ -7267,7 +7267,7 @@ Harap periksa koneksi internet Anda.</translation>
     <message>
         <location filename="../src/dialogs/TailOptionsDialog.ui" line="132" />
         <source>Lock document in Read-Only mode while monitoring is active</source>
-        <translation>Kunci dokumen dalam mode Hanya-Baca saat pemantauan aktif</translation>
+        <translation>Kunci dokumen dalam mode hanya-baca saat pemantauan aktif</translation>
     </message>
 </context>
 <context>
@@ -7285,7 +7285,7 @@ Harap periksa koneksi internet Anda.</translation>
     <message>
         <location filename="../src/dialogs/ThemeSwitcherDialog.cpp" line="52" />
         <source>Search theme by name or family (e.g. catppuccin, dracula, nord, light)...</source>
-        <translation>Cari tema berdasarkan nama atau famili (misal catppuccin, dracula, nord, light)...</translation>
+        <translation>Cari tema berdasarkan nama atau rumpun (misal catppuccin, dracula, nord, light)...</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ThemeSwitcherDialog.cpp" line="57" />
@@ -7350,7 +7350,7 @@ Harap periksa koneksi internet Anda.</translation>
     <message>
         <location filename="../src/dialogs/ManageToolsDialog.cpp" line="29" />
         <source>Edit External Tool</source>
-        <translation>Edit Alat Eksternal</translation>
+        <translation>Sunting Alat Eksternal</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ManageToolsDialog.cpp" line="38" />
@@ -7360,7 +7360,7 @@ Harap periksa koneksi internet Anda.</translation>
     <message>
         <location filename="../src/dialogs/ManageToolsDialog.cpp" line="40" />
         <source>Optional, defaults to file directory</source>
-        <translation>Opsional, bawaannya ke direktori berkas</translation>
+        <translation>Opsional, bawaan adalah direktori berkas</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ManageToolsDialog.cpp" line="42" />
