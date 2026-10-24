@@ -9,6 +9,18 @@
 #ifndef PLATFORM_H
 #define PLATFORM_H
 
+#include <cstddef>
+#include <cstdint>
+#include <memory>
+#include <optional>
+#include <string>
+#include <string_view>
+#include <vector>
+
+#include "ScintillaTypes.h"
+#include "Geometry.h"
+
+
 // PLAT_GTK = GTK+ on Linux or Win32
 // PLAT_GTK_WIN32 is defined additionally when running PLAT_GTK under Win32
 // PLAT_WIN = Win32 API on Win32 OS
@@ -86,12 +98,12 @@ namespace Scintilla::Internal {
 // Underlying the implementation of the platform classes are platform specific types.
 // Sometimes these need to be passed around by client code so they are defined here
 
-typedef void *SurfaceID;
-typedef void *WindowID;
-typedef void *MenuID;
-typedef void *TickerID;
-typedef void *Function;
-typedef void *IdlerID;
+using SurfaceID = void *;
+using WindowID = void *;
+using MenuID = void *;
+using TickerID = void *;
+using Function = void *;
+using IdlerID = void *;
 
 /**
  * Font management.
@@ -110,6 +122,7 @@ struct FontParameters {
 	const char *localeName;
 	Scintilla::FontStretch stretch;
 
+	// NOSONAR(cpp:S5498)
 	explicit constexpr FontParameters(
 		const char *faceName_,
 		XYPOSITION size_=10,
@@ -184,7 +197,7 @@ struct SurfaceMode {
 /**
  * A surface abstracts a place to draw.
  */
-class Surface {
+class Surface { // NOSONAR(cpp:S1448)
 public:
 	Surface() noexcept = default;
 	Surface(const Surface &) = delete;
@@ -263,10 +276,9 @@ public:
  */
 class Window {
 protected:
-	WindowID wid;
+	WindowID wid = nullptr; // NOSONAR(cpp:S5495)
 public:
-	Window() noexcept : wid(nullptr), cursorLast(Cursor::invalid) {
-	}
+	Window() noexcept = default;
 	Window(const Window &source) = delete;
 	Window(Window &&) = delete;
 	Window &operator=(WindowID wid_) noexcept {
@@ -291,7 +303,7 @@ public:
 	void SetCursor(Cursor curs);
 	PRectangle GetMonitorRect(Point pt);
 private:
-	Cursor cursorLast;
+	Cursor cursorLast = Cursor::invalid;
 };
 
 /**
@@ -301,13 +313,15 @@ private:
 // ScintillaBase implements IListBoxDelegate to receive ListBoxEvents from a ListBox
 
 struct ListBoxEvent {
-	enum class EventType { selectionChange, doubleClick } event;
-	ListBoxEvent(EventType event_) noexcept : event(event_) {
+	enum class EventType { selectionChange, doubleClick };
+	EventType event;
+	explicit ListBoxEvent(EventType event_) noexcept : event(event_) {
 	}
 };
 
 class IListBoxDelegate {
 public:
+	virtual ~IListBoxDelegate() = default;
 	virtual void ListNotify(ListBoxEvent *plbe)=0;
 };
 
@@ -373,7 +387,7 @@ const char *DefaultFont();
 int DefaultFontSize();
 unsigned int DoubleClickTime();
 constexpr long LongFromTwoShorts(short a,short b) noexcept {
-	return (a) | ((b) << 16);
+	return a | (b << 16);
 }
 
 }

@@ -3015,9 +3015,9 @@ bool MainWindow::checkFileForModification(ScintillaNext *editor) {
         return false;
     }
 
-    if (const auto state = editor->checkFileForStateChange(); state == ScintillaNext::NoChange) {
+    if (const auto state = editor->checkFileForStateChange(); state == ScintillaNext::FileStateChange::NoChange) {
         return false;
-    } else if (state == ScintillaNext::Modified) {
+    } else if (state == ScintillaNext::FileStateChange::Modified) {
         qInfo("ScintillaNext::Modified");
         const QString filePath = editor->getFilePath();
         if (ModernMessageBox::question(
@@ -3027,9 +3027,9 @@ bool MainWindow::checkFileForModification(ScintillaNext *editor) {
         } else {
             editor->omitModifications();
         }
-    } else if (state == ScintillaNext::Deleted) {
+    } else if (state == ScintillaNext::FileStateChange::Deleted) {
         qInfo("ScintillaNext::Deleted");
-    } else if (state == ScintillaNext::Restored) {
+    } else if (state == ScintillaNext::FileStateChange::Restored) {
         qInfo("ScintillaNext::Restored");
     }
 

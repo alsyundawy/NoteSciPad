@@ -280,7 +280,7 @@ void FindReplaceDialog::findAllInCurrentDocument() {
 
     QString text = findString();
 
-    finder->options().text = text;
+    finder->options().text = std::move(text);
     finder->forEachMatch([&firstMatch, this](int start, int end) {
         // Only add the file entry if there was a valid search result
         if (firstMatch) {
@@ -792,7 +792,7 @@ void FindReplaceDialog::copyMarkedText() {
     showMessage(tr("Copied %Ln marked text(s)", "", static_cast<int>(markedTexts.size())), "green");
 }
 
-void FindReplaceDialog::showMessage(const QString &message, const QString &color) {
+void FindReplaceDialog::showMessage(const QString &message, const QString &color) { // NOSONAR(cpp:S5498)
     QString resolvedColor = color;
     const bool dark = ThemeManager::instance()->isDarkActive();
     if (color == QLatin1String("green")) {

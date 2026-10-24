@@ -103,7 +103,7 @@ public:
 
     void deleteLine(int line);
 
-    void cutAllowLine(); // NOSONAR(cpp:S5495)
+    void cutAllowLine(); // NOLINT // NOSONAR(cpp:S5495)
 
     Sci_CharacterRange getContextText();
     Sci_CharacterRange wordAtPosition(int pos);
@@ -137,19 +137,12 @@ public:
         Deleted,
         Restored,
     };
-    static constexpr auto NoChange = FileStateChange::NoChange;
-    static constexpr auto Modified = FileStateChange::Modified;
-    static constexpr auto Deleted = FileStateChange::Deleted;
-    static constexpr auto Restored = FileStateChange::Restored;
 
     enum class BufferType : std::uint8_t {
         New,          // A temporary buffer, e.g. "New 1"
         File,         // Buffer tied to a file on the file system
         FileMissing,  // Buffer with a missing file on the file system
     };
-    static constexpr auto New = BufferType::New;
-    static constexpr auto File = BufferType::File;
-    static constexpr auto FileMissing = BufferType::FileMissing;
 
     enum class BomType : std::uint8_t { None, Utf8, Utf16LE, Utf16BE };
 
@@ -170,10 +163,10 @@ public:
     QString languageName;
     QByteArray languageSingleLineComment;
 
-#include "ScintillaEnums.h" // NOSONAR // NOLINT
+#include "ScintillaEnums.h" // IWYU pragma: keep // NOLINT // NOSONAR
 
 public slots:
-    void close(); // NOSONAR(cpp:S5495)
+    void close(); // NOLINT // NOSONAR(cpp:S5495)
     QFileDevice::FileError save(bool preserveTimestamp = false);
     QDateTime fileTimestamp();
     void updateTimestamp();

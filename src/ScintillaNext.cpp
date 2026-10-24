@@ -280,8 +280,8 @@ bool ScintillaNext::canSaveToDisk() const {
     // - It is marked as a temporary since as soon as it gets saved it is no longer a temporary buffer
     // - A modified file
     // - A missing file since as soon as it is saved it is no longer missing.
-    return temporary || (bufferType == ScintillaNext::New && modify()) ||
-           (bufferType == ScintillaNext::File && modify()) || (bufferType == ScintillaNext::FileMissing);
+    return temporary || (bufferType == BufferType::New && modify()) ||
+           (bufferType == BufferType::File && modify()) || (bufferType == BufferType::FileMissing);
 }
 
 void ScintillaNext::setName(const QString &newName) {
@@ -291,7 +291,7 @@ void ScintillaNext::setName(const QString &newName) {
 }
 
 bool ScintillaNext::isFile() const {
-    return bufferType == ScintillaNext::File || bufferType == ScintillaNext::FileMissing;
+    return bufferType == BufferType::File || bufferType == BufferType::FileMissing;
 }
 
 QFileInfo ScintillaNext::getFileInfo() const {
@@ -431,7 +431,7 @@ void ScintillaNext::omitModifications() {
 }
 
 QFileDevice::FileError ScintillaNext::saveAs(const QString &newFilePath) {
-    bool isRenamed = bufferType == ScintillaNext::New || fileInfo.canonicalFilePath() != newFilePath;
+    bool isRenamed = bufferType == BufferType::New || fileInfo.canonicalFilePath() != newFilePath;
 
     emit aboutToSave();
 
@@ -682,7 +682,7 @@ bool ScintillaNext::readFromDisk(QFile &file) {
 }
 
 QDateTime ScintillaNext::fileTimestamp() {
-    Q_ASSERT(bufferType != ScintillaNext::New);
+    Q_ASSERT(bufferType != BufferType::New);
 
     fileInfo.refresh();
     qInfo("%s last modified %s", qUtf8Printable(fileInfo.fileName()),
@@ -701,7 +701,7 @@ void ScintillaNext::setFileInfo(const QString &targetFilePath) {
     Q_ASSERT(fileInfo.exists());
 
     name = fileInfo.fileName();
-    bufferType = ScintillaNext::File;
+    bufferType = BufferType::File;
 
     updateTimestamp();
 }
@@ -709,7 +709,7 @@ void ScintillaNext::setFileInfo(const QString &targetFilePath) {
 void ScintillaNext::detachFileInfo(const QString &newName) {
     setName(newName);
 
-    bufferType = ScintillaNext::New;
+    bufferType = BufferType::New;
 }
 
 void ScintillaNext::setTemporary(bool temp) {
