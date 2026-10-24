@@ -169,6 +169,16 @@ NoteSciPad v1.2.0 delivers comprehensive visual, architectural, and engine upgra
 
 ### ✨ Added
 
+#### Toolbar Polish & Find/Mark Dialog Form Input Enforcement
+
+- **Find & Replace Dialog Input Box Form Enforcement (Find & Mark Tabs)**:
+  - Fixed an issue where the Find and Mark tabs inadvertently displayed two input form boxes (showing a squashed or unhidden `Replace` field) because the original code only set `setMaximumHeight(0)` without invoking `hide()`.
+  - Replaced the height-only hack with explicit `ui->labelReplaceWith->hide(); ui->comboReplace->hide();` on `FIND_TAB` and `MARK_TAB`, and `ui->labelReplaceWith->show(); ui->comboReplace->show();` on `REPLACE_TAB`.
+  - Updated `FindReplaceDialog::setTab(int tab)` to explicitly invoke `changeTab(tab)` so that switching to Find or Mark tab reliably resets and enforces exactly ONE single search box on screen.
+- **Settings & Exit Action Icons on Main Toolbar**:
+  - Integrated Settings (`actionPreferences`) and Exit (`actionExit`) buttons directly onto `mainToolBar` with separator.
+  - Added modern vector SVG icons `icons/settings.svg` and `icons/exit.svg` for sharp rendering across Retina and standard displays.
+
 #### Apple HIG Compliant Multi-Resolution Icons
 
 - **82% Squircle Canvas Grid**: Re-engineered application icon with official Apple HIG optical padding (~100px border margins on 1024x1024 canvas), resolving oversized Dock rendering on macOS Sequoia and Sonoma.
