@@ -22,7 +22,7 @@ Static Linter       : Trunk Check (cppcheck-qt, clang-format, pragma-once)
 
 ## 0. Executive Summary: Release v1.3.5
 
-SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostics (945 compiler/preprocessor diagnostic errors and 25 SonarQube quality warnings), clean Trunk, MegaLinter, and FlyLint verification, graceful application restart/exit lifecycle controls, About dialog HiDPI/Retina truncation fixes, Find & Replace dialog single-input form correction for Find and Mark tabs, modern Toolbar icons for Settings and Exit, primary-source verified 2025–2026 security audits across all dependencies (Scintilla 5.6.7, Lexilla 5.5.4, Lua 5.5.1, Qt 6.5–6.12), and complete mitigation of CVE-2026-95620 and CVE-2026-42214.
+SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostics (958 compiler/preprocessor diagnostic errors and 25 SonarQube quality warnings), clean Trunk, MegaLinter, and FlyLint verification, graceful application restart/exit lifecycle controls, About dialog HiDPI/Retina truncation fixes, Find & Replace dialog single-input form correction for Find and Mark tabs, modern Toolbar icons for Settings and Exit, primary-source verified 2025–2026 security audits across all dependencies (Scintilla 5.6.7, Lexilla 5.5.4, Lua 5.5.1, Qt 6.5–6.12), and complete mitigation of CVE-2026-95620 and CVE-2026-42214.
 
 ### Key Milestones in v1.3.5
 

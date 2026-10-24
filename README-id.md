@@ -43,7 +43,7 @@
 
 <p align="center">
   <a href="#downloads--artifact-catalogs">
-    <img src="https://img.shields.io/badge/🚀_Download_Artifacts-v1.3.0-238636?style=for-the-badge&logo=cloudsmith&logoColor=white" alt="Download Artifacts">
+    <img src="https://img.shields.io/badge/🚀_Download_Artifacts-v1.3.5-238636?style=for-the-badge&logo=cloudsmith&logoColor=white" alt="Download Artifacts">
   </a>
   <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest">
     <img src="https://img.shields.io/badge/🪞_Releases_&_Changelog-GitHub-0284c7?style=for-the-badge&logo=github&logoColor=white" alt="Releases & Changelog">
@@ -63,7 +63,7 @@
 > Lead Developer & Maintainer:<br>
 > **[`HARRY DERTIN SUTISNA ALSYUNDAWY (@alsyundawy)`](https://github.com/alsyundawy)** — [`ALSYUNDAWY IT SOLUTION`](https://alsyundawy.com)<br>
 >
-> 🍏 **[`Latest Releases (v1.3.0)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
+> 🍏 **[`Latest Releases (v1.3.5)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
 > 📖 **[`Release DocNotes (DOCNOTE.md)`](DOCNOTE.md)** &nbsp;|&nbsp;
 > 📜 **[`Changelog (CHANGELOG.md)`](CHANGELOG.md)** &nbsp;|&nbsp;
 > 🐛 **[`Issue Tracker`](https://github.com/alsyundawy/SparkNotePad/issues)** &nbsp;|&nbsp;
@@ -189,15 +189,15 @@ Andromeda    Nightfox     Cobalt2       Alabaster    Tomorrow
 
 ## Downloads & Artifact Catalogs
 
-Berkas biner resmi SparkNotePad v1.3.0 siap pakai dapat diunduh langsung melalui halaman [GitHub Releases](https://github.com/alsyundawy/SparkNotePad/releases/latest):
+Berkas biner resmi SparkNotePad v1.3.5 siap pakai dapat diunduh langsung melalui halaman [GitHub Releases](https://github.com/alsyundawy/SparkNotePad/releases/latest):
 
 | Platform            | Arsitektur Target           | Format Paket | Tautan Unduhan                                                                                                                                             |
 | :------------------ | :-------------------------- | :----------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **macOS 15+ / 14+** | Apple Silicon (M1/M2/M3/M4) |    `.dmg`    | [SparkNotePad-v1.3.0-arm64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/SparkNotePad-v1.3.0-arm64.dmg)                         |
-| **macOS 15+ / 14+** | Intel (x86_64)              |    `.dmg`    | [SparkNotePad-v1.3.0-x64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/SparkNotePad-v1.3.0-x64.dmg)                             |
-| **Linux**           | x86_64 (Ubuntu / Debian)    |    `.deb`    | [sparknotepad_1.3.0_amd64.deb](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/sparknotepad_1.3.0_amd64.deb)                           |
-| **Linux**           | x86_64 (Fedora / RHEL)      |    `.rpm`    | [sparknotepad-1.3.0-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/sparknotepad-1.3.0-1.x86_64.rpm)                     |
-| **Linux Universal** | Universal Sandboxed         |   Flatpak    | [io.github.alsyundawy.SparkNotePad.flatpak](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/io.github.alsyundawy.SparkNotePad.flatpak) |
+| **macOS 15+ / 14+** | Apple Silicon (M1/M2/M3/M4) |    `.dmg`    | [SparkNotePad-v1.3.5-arm64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-v1.3.5-arm64.dmg)                         |
+| **macOS 15+ / 14+** | Intel (x86_64)              |    `.dmg`    | [SparkNotePad-v1.3.5-x64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-v1.3.5-x64.dmg)                             |
+| **Linux**           | x86_64 (Ubuntu / Debian)    |    `.deb`    | [sparknotepad_1.3.5_amd64.deb](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/sparknotepad_1.3.5_amd64.deb)                           |
+| **Linux**           | x86_64 (Fedora / RHEL)      |    `.rpm`    | [sparknotepad-1.3.5-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/sparknotepad-1.3.5-1.x86_64.rpm)                     |
+| **Linux Universal** | Universal Sandboxed         |   Flatpak    | [io.github.alsyundawy.SparkNotePad.flatpak](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/io.github.alsyundawy.SparkNotePad.flatpak) |
 
 ---
 
@@ -254,8 +254,11 @@ trunk check -n -j 2
 
 Riwayat rilis lengkap dan kronologis terdokumentasi pada berkas [CHANGELOG.md](CHANGELOG.md).
 
-### [v1.3.5] — Siklus Mulai Ulang/Keluar Aplikasi, Poles Dialog Tentang, Audit Keamanan 2025–2026 & Mitigasi CVE (2026-10-24)
+### [v1.3.5] — Siklus Mulai Ulang/Keluar Aplikasi, Koreksi Form Cari & Ganti, Pembasmian Total Linter & Audit Keamanan 2025–2026 (2026-10-24)
 
+- **Pembasmian Total 958 Error IDE & 25 Peringatan SonarQube**: Kepatuhan penuh terverifikasi pada pustaka Scintilla 5.6.7 (`Platform.h`, `Geometry.h`, `ScintillaEdit.h`) serta kode inti SparkNotePad (`ScintillaNext.h`, `FindReplaceDialog`), menuntaskan shadowing parameter, konversi tipe data, swappable parameters, non-virtual destructor, dan dependensi sirkular preprocessor.
+- **Penegakan Form 1 Kotak Input pada Tab Find & Mark**: Memastikan hanya terdapat 1 kotak input pencarian pada tab Find dan Mark melalui pemanggilan eksplisit `ui->labelReplaceWith->hide()` dan `ui->comboReplace->hide()` saat pergantian tab (`changeTab()`).
+- **Ikon Vektor Modern SVG pada Bilah Alat**: Menambahkan pintasan Pengaturan (`icons/settings.svg`) dan tombol Keluar (`icons/exit.svg`) dengan grafis vektor SVG tajam pada bilah alat utama.
 - **Mulai Ulang Aplikasi Aman (`Ctrl+Alt+R`)**: Implementasi alur kerja mulai ulang yang aman pada `MainWindow::restartApplication()` yang meminta konfirmasi berkas belum tersimpan, menyimpan pengaturan pengguna, menghentikan pemantau tail log aktif, melepaskan pengunci single-instance, dan meluncurkan kembali via path biner kanonikal absolut (mencegah risiko CWE-426 untrusted search path). Mendukung peluncuran bundel `.app` macOS (`/usr/bin/open -n -a`) dan opsi `--safe-mode`.
 - **Aksi Keluar Terkemuka**: Integrasi tombol keluar yang mudah diakses pada bilah alat utama dan menu Berkas lengkap dengan konfirmasi penyimpanan dokumen dan status bilah.
 - **Penyempurnaan Tata Letak Dialog Tentang**: Mengatasi pemotongan teks tab dan pemotongan badge pada layar macOS Retina dan Linux HiDPI. Memperpendek `&Credits && Attribution` menjadi `&Credits` / `&Kredit` (dengan tooltip lengkap), menetapkan batas ukuran minimal dialog (`620x480`), menonaktifkan eliding tab (`Qt::ElideNone`), mengaktifkan pelipatan teks pada label, dan membungkus tata letak dalam widget responsif `QScrollArea`.

@@ -43,7 +43,7 @@
 
 <p align="center">
   <a href="#downloads--artifact-catalogs">
-    <img src="https://img.shields.io/badge/🚀_Download_Artifacts-v1.3.0-238636?style=for-the-badge&logo=cloudsmith&logoColor=white" alt="Download Artifacts">
+    <img src="https://img.shields.io/badge/🚀_Download_Artifacts-v1.3.5-238636?style=for-the-badge&logo=cloudsmith&logoColor=white" alt="Download Artifacts">
   </a>
   <a href="https://github.com/alsyundawy/SparkNotePad/releases/latest">
     <img src="https://img.shields.io/badge/🪞_Releases_&_Changelog-GitHub-0284c7?style=for-the-badge&logo=github&logoColor=white" alt="Releases & Changelog">
@@ -63,7 +63,7 @@
 > Lead Developer & Maintainer:<br>
 > **[`HARRY DERTIN SUTISNA ALSYUNDAWY (@alsyundawy)`](https://github.com/alsyundawy)** — [`ALSYUNDAWY IT SOLUTION`](https://alsyundawy.com)<br>
 >
-> 🍏 **[`Latest Releases (v1.3.0)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
+> 🍏 **[`Latest Releases (v1.3.5)`](https://github.com/alsyundawy/SparkNotePad/releases/latest)** &nbsp;|&nbsp;
 > 📖 **[`Release DocNotes (DOCNOTE.md)`](DOCNOTE.md)** &nbsp;|&nbsp;
 > 📜 **[`Changelog (CHANGELOG.md)`](CHANGELOG.md)** &nbsp;|&nbsp;
 > 🐛 **[`Issue Tracker`](https://github.com/alsyundawy/SparkNotePad/issues)** &nbsp;|&nbsp;
@@ -189,15 +189,15 @@ Andromeda    Nightfox     Cobalt2       Alabaster    Tomorrow
 
 ## Downloads & Artifact Catalogs
 
-Official production binary packages for SparkNotePad v1.3.0 are ready for immediate download via [GitHub Releases](https://github.com/alsyundawy/SparkNotePad/releases/latest):
+Official production binary packages for SparkNotePad v1.3.5 are ready for immediate download via [GitHub Releases](https://github.com/alsyundawy/SparkNotePad/releases/latest):
 
 | Platform            | Target Architecture         | Package Format | Download Link                                                                                                                                              |
 | :------------------ | :-------------------------- | :------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **macOS 15+ / 14+** | Apple Silicon (M1/M2/M3/M4) |     `.dmg`     | [SparkNotePad-v1.3.0-arm64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/SparkNotePad-v1.3.0-arm64.dmg)                         |
-| **macOS 15+ / 14+** | Intel (x86_64)              |     `.dmg`     | [SparkNotePad-v1.3.0-x64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/SparkNotePad-v1.3.0-x64.dmg)                             |
-| **Linux**           | x86_64 (Ubuntu / Debian)    |     `.deb`     | [sparknotepad_1.3.0_amd64.deb](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/sparknotepad_1.3.0_amd64.deb)                           |
-| **Linux**           | x86_64 (Fedora / RHEL)      |     `.rpm`     | [sparknotepad-1.3.0-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/sparknotepad-1.3.0-1.x86_64.rpm)                     |
-| **Linux Universal** | Universal Sandboxed         |    Flatpak     | [io.github.alsyundawy.SparkNotePad.flatpak](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.0/io.github.alsyundawy.SparkNotePad.flatpak) |
+| **macOS 15+ / 14+** | Apple Silicon (M1/M2/M3/M4) |     `.dmg`     | [SparkNotePad-v1.3.5-arm64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-v1.3.5-arm64.dmg)                         |
+| **macOS 15+ / 14+** | Intel (x86_64)              |     `.dmg`     | [SparkNotePad-v1.3.5-x64.dmg](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/SparkNotePad-v1.3.5-x64.dmg)                             |
+| **Linux**           | x86_64 (Ubuntu / Debian)    |     `.deb`     | [sparknotepad_1.3.5_amd64.deb](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/sparknotepad_1.3.5_amd64.deb)                           |
+| **Linux**           | x86_64 (Fedora / RHEL)      |     `.rpm`     | [sparknotepad-1.3.5-1.x86_64.rpm](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/sparknotepad-1.3.5-1.x86_64.rpm)                     |
+| **Linux Universal** | Universal Sandboxed         |    Flatpak     | [io.github.alsyundawy.SparkNotePad.flatpak](https://github.com/alsyundawy/SparkNotePad/releases/download/v1.3.5/io.github.alsyundawy.SparkNotePad.flatpak) |
 
 ---
 
@@ -254,8 +254,11 @@ trunk check -n -j 2
 
 Full chronological release history is documented in [CHANGELOG.md](CHANGELOG.md).
 
-### [v1.3.5] — Restart/Exit Lifecycle, About Dialog Polish, 2025–2026 Security Audit & CVE Mitigations (2026-10-24)
+### [v1.3.5] — Restart/Exit Lifecycle, Find & Replace Form Fix, 100% Linter Eradication & 2025–2026 Security Audit (2026-10-24)
 
+- **Complete Eradication of 958 IDE Diagnostics & 25 SonarQube Errors**: Fully verified compliance across Scintilla 5.6.7 (`Platform.h`, `Geometry.h`, `ScintillaEdit.h`) and SparkNotePad (`ScintillaNext.h`, `FindReplaceDialog`), resolving parameter shadowing, type conversions, swappable parameters, non-virtual destructors, and preprocessor circular dependencies.
+- **Find & Replace Single Search Input Enforcement**: Strictly enforced single input box layout on Find and Mark tabs via explicit `ui->labelReplaceWith->hide()` and `ui->comboReplace->hide()` in `changeTab()`.
+- **Modern Vector SVG Toolbar Icons**: Added Preferences shortcut (`icons/settings.svg`) and Exit button (`icons/exit.svg`) with modern SVG vector rendering on main toolbar.
 - **Graceful Application Restart (`Ctrl+Alt+R`)**: Implemented safe restart workflow in `MainWindow::restartApplication()` that prompts for unsaved changes, saves user settings, stops active tail monitors, releases single-instance mutex/locks, and relaunches via absolute canonical binary path (preventing CWE-426 untrusted search path). Supports macOS `.app` bundle relaunching (`/usr/bin/open -n -a`) and `--safe-mode`.
 - **Prominent Exit Action**: Integrated accessible exit button into the main toolbar and File menu with unsaved-document confirmation and status feedback.
 - **About Dialog Layout Refactoring**: Resolved tab text clipping and badge label truncation on macOS Retina and Linux HiDPI displays. Shortened `&Credits && Attribution` to `&Credits` (with full tooltip), set minimum dialog geometry (`620x480`), prevented tab eliding (`Qt::ElideNone`), enabled label word-wrapping, and wrapped content inside responsive `QScrollArea` widgets.
