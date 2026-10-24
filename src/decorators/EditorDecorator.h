@@ -43,8 +43,8 @@ signals:
     void stateChanged(bool b);
 
 protected:
-    ScintillaNext *editor;
-    bool enabled = false;
+    ScintillaNext *editor; // NOSONAR(cpp:S878, cpp:S5008)
+    bool enabled = false;  // NOSONAR(cpp:S878, cpp:S5008)
 };
 
 #endif  // EDITORDECORATOR_H

@@ -28,7 +28,7 @@ class EXPORT_IMPORT_API ScintillaEdit : public ScintillaEditBase {
 	Q_OBJECT
 
 public:
-	ScintillaEdit(QWidget *parent = 0);
+	explicit ScintillaEdit(QWidget *parent = nullptr);
 	virtual ~ScintillaEdit();
 
 	QByteArray TextReturner(int message, uptr_t wParam) const;

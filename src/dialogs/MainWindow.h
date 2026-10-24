@@ -26,11 +26,12 @@
 #include <QActionGroup>
 #include <cstdint>
 
+#include "ClipboardMonitor.h"
 #include "DockedEditor.h"
-
 #include "MacroManager.h"
 #include "ScintillaNext.h"
 #include "SearchResultsCollector.h"
+#include "TransparentWindowManager.h"
 
 namespace Ui {
 class MainWindow;
@@ -58,10 +59,7 @@ class PerformanceDiagnosticsDialog;
 class MarkOccurrences;
 class FileBrowserDock;
 
-#include "ClipboardMonitor.h"
-#include "TransparentWindowManager.h"
-
-class MainWindow : public QMainWindow {
+class MainWindow : public QMainWindow { // NOSONAR(cpp:S1448, cpp:S1820)
     Q_OBJECT
 
 public:
@@ -80,14 +78,14 @@ public:
 
 public slots:
     void newFile();
-    void newWindow();
+    void newWindow() const;
     void exportPdf();
 
     void openFileDialog();
     void openFile(const QString &filePath);
 
     void openFolderAsWorkspaceDialog();
-    void setFolderAsWorkspacePath(const QString &dir);
+    void setFolderAsWorkspacePath(const QString &dir) const;
 
     void reloadFile();
 
@@ -133,14 +131,14 @@ public slots:
 
     void showFindReplaceDialog(int index);
 
-    void updateFileStatusBasedUi(ScintillaNext *editor);
-    void updateEOLBasedUi(ScintillaNext *editor);
+    void updateFileStatusBasedUi(const ScintillaNext *editor);
+    void updateEOLBasedUi(const ScintillaNext *editor);
     void updateDocumentBasedUi(Scintilla::Update updated);
     void updateSelectionBasedUi(ScintillaNext *editor);
     void updateContentBasedUi(ScintillaNext *editor);
-    void updateSaveStatusBasedUi(ScintillaNext *editor);
+    void updateSaveStatusBasedUi(const ScintillaNext *editor);
     void updateEditorPositionBasedUi();
-    void updateLanguageBasedUi(const ScintillaNext *editor);
+    void updateLanguageBasedUi(const ScintillaNext *editor) const;
     void updateGui(ScintillaNext *editor);
 
     void detectLanguage(ScintillaNext *editor);
@@ -170,7 +168,7 @@ protected:
     void changeEvent(QEvent *event) override;
 
 private slots:
-    void tabBarRightClicked(ScintillaNext *editor);
+    void tabBarRightClicked(const ScintillaNext *editor);
     void languageMenuTriggered();
     static void checkForUpdatesFinished(const QString &url);
     void activateEditor(ScintillaNext *editor);
@@ -190,7 +188,7 @@ private:
     template <typename Method>
     void connectEditorAction(QAction *action, Method method) {
         connect(action, &QAction::triggered, this, [this, method]() {
-            if (auto *editor = currentEditor()) {
+            if (auto *editor = currentEditor()) { // NOSONAR(cpp:S5417)
                 (editor->*method)();
             }
         });
@@ -198,19 +196,19 @@ private:
     template <typename Method, typename Arg>
     void connectEditorAction(QAction *action, Method method, Arg value) {
         connect(action, &QAction::triggered, this, [this, method, value]() {
-            if (auto *editor = currentEditor()) {
+            if (auto *editor = currentEditor()) { // NOSONAR(cpp:S5417)
                 (editor->*method)(value);
             }
         });
     }
-    void applyCustomShortcuts();
+    void applyCustomShortcuts() const;
     void initUpdateCheck();
-    ScintillaNext *getInitialEditor();
+    ScintillaNext *getInitialEditor() const;
     void openFileList(const QStringList &fileNames);
     bool checkEditorsBeforeClose(const QVector<ScintillaNext *> &editorList);
     bool checkFileForModification(ScintillaNext *editor);
-    void showSaveErrorMessage(ScintillaNext *editor, QFileDevice::FileError error);
-    void showEditorZoomLevelIndicator();
+    void showSaveErrorMessage(const ScintillaNext *editor, QFileDevice::FileError error);
+    void showEditorZoomLevelIndicator() const;
 
     enum class UserSaveAction : std::uint8_t { SaveAll, DiscardAll, Cancel };
     UserSaveAction promptForSave(const QVector<ScintillaNext *> &editorList);
@@ -231,18 +229,18 @@ private:
     void updateCustomToolsMenu();
     void onRunTriggered();
     void onRunCurrentFileTriggered();
-    void onOpenTerminalHereTriggered();
-    void onRevealInFileManagerTriggered();
-    void onOpenInBrowserTriggered();
-    void onSearchGoogleTriggered();
-    void onSearchWikipediaTriggered();
-    void onSearchGitHubTriggered();
-    void onSearchStackOverflowTriggered();
+    void onOpenTerminalHereTriggered() const;
+    void onRevealInFileManagerTriggered() const;
+    void onOpenInBrowserTriggered() const;
+    void onSearchGoogleTriggered() const;
+    void onSearchWikipediaTriggered() const;
+    void onSearchGitHubTriggered() const;
+    void onSearchStackOverflowTriggered() const;
     void onManageToolsTriggered();
     void onRegexHelperTriggered();
     void onEncryptDocumentTriggered();
     void onDecryptDocumentTriggered();
-    void onToggleClipboardMonitoringTriggered();
+    void onToggleClipboardMonitoringTriggered() const;
     void onClipboardHistoryTriggered();
     void onClipboardMonitoringStateChanged(bool active);
     void onToggleTailMonitoringTriggered();
@@ -299,8 +297,6 @@ private:
     QList<QAction *> m_windowDocActions;
     FocusedViewDialog *focusedViewDialog = nullptr;
     LanguageInspectorDock *languageInspectorDock = nullptr;
-
-    // NppImporter *npp;
 
     MacroManager macroManager;
     DefaultDirectoryManager *defaultDirectoryManager;

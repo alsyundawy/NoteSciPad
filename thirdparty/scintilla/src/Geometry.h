@@ -123,7 +123,7 @@ public:
 		return (pt.x >= left) && ((pt.x+1) <= right) &&
 			(pt.y >= top) && ((pt.y+1) <= bottom);
 	}
-	[[nodiscard]] constexpr bool Contains(PRectangle rc) const noexcept {
+	[[nodiscard]] constexpr bool Contains(const PRectangle &rc) const noexcept {
 		return (rc.left >= left) && (rc.right <= right) &&
 			(rc.top >= top) && (rc.bottom <= bottom);
 	}
@@ -294,6 +294,7 @@ class Stroke {
 public:
 	ColourRGBA colour;
 	XYPOSITION width;
+	// cppcheck-suppress noExplicitConstructor
 	constexpr Stroke(ColourRGBA colour_, XYPOSITION width_=1.0) noexcept :
 		colour(colour_), width(width_) {
 	}
@@ -309,6 +310,7 @@ class Fill {
 public:
 	ColourRGBA colour;
 	// Not explicit as used very often from simple contexts so would just be noise.
+	// cppcheck-suppress noExplicitConstructor
 	constexpr Fill(ColourRGBA colour_) noexcept :
 		colour(colour_) {
 	}
@@ -324,6 +326,7 @@ public:
 	constexpr FillStroke(ColourRGBA colourFill_, ColourRGBA colourStroke_, XYPOSITION widthStroke_=1.0) noexcept :
 		fill(colourFill_), stroke(colourStroke_, widthStroke_) {
 	}
+	// cppcheck-suppress noExplicitConstructor
 	constexpr FillStroke(ColourRGBA colourBoth, XYPOSITION widthStroke_=1.0) noexcept :
 		fill(colourBoth), stroke(colourBoth, widthStroke_) {
 	}

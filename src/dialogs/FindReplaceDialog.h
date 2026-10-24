@@ -38,11 +38,14 @@ namespace Ui {
 class FindReplaceDialog;
 }
 
-class FindReplaceDialog : public QDialog {
+class FindReplaceDialog : public QDialog { // NOSONAR(cpp:S1448)
     Q_OBJECT
 
 public:
-    enum TabIndex : std::uint8_t { FIND_TAB = 0, REPLACE_TAB = 1, MARK_TAB = 2 };
+    enum class TabIndex : std::uint8_t { Find = 0, Replace = 1, Mark = 2 };
+    static constexpr int FIND_TAB = static_cast<int>(TabIndex::Find);
+    static constexpr int REPLACE_TAB = static_cast<int>(TabIndex::Replace);
+    static constexpr int MARK_TAB = static_cast<int>(TabIndex::Mark);
 
     enum class SearchDirection : std::uint8_t { Forwards, Backwards };
 

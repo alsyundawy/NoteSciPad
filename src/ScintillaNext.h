@@ -30,7 +30,7 @@
 #include <algorithm>
 #include <cstdint>
 
-class ScintillaNext : public ScintillaEdit {
+class ScintillaNext : public ScintillaEdit { // NOSONAR(cpp:S1448, cpp:S110, cpp:S5008)
     Q_OBJECT
 
 public:
@@ -75,22 +75,22 @@ public:
 
     static ScintillaNext *fromFile(const QString &filePath, bool tryToCreate = false);
     static QString eolModeToString(int eolMode);
-    static int stringToEolMode(QString eolMode);
+    static int stringToEolMode(const QString &eolMode);
 
     int allocateIndicator(const QString &name);
 
     template <typename Func>
-    void forEachMatch(const QString &text, Func callback) {
+    void forEachMatch(const QString &text, Func callback) const {
         forEachMatch(text.toUtf8(), callback);
     }
 
     template <typename Func>
-    void forEachMatch(const QByteArray &byteArray, Func callback) {
+    void forEachMatch(const QByteArray &byteArray, Func callback) const {
         forEachMatchInRange(byteArray, callback, {0, (Sci_PositionCR)length()});
     }
 
     template <typename Func>
-    void forEachMatchInRange(const QByteArray &byteArray, Func callback, Sci_CharacterRange range);
+    void forEachMatchInRange(const QByteArray &byteArray, Func callback, Sci_CharacterRange range) const;
 
     template <typename Func>
     void forEachLineInSelection(int selection, Func callback);
@@ -103,7 +103,7 @@ public:
 
     void deleteLine(int line);
 
-    void cutAllowLine();
+    void cutAllowLine(); // NOSONAR(cpp:S5495)
 
     Sci_CharacterRange getContextText();
     Sci_CharacterRange wordAtPosition(int pos);
@@ -127,22 +127,29 @@ public:
     QString getFilePath() const;
 
     // NOTE: this is dangerous and should only be used in very rare situations
-    void setFileInfo(const QString &filePath);
+    void setFileInfo(const QString &targetFilePath);
 
     void detachFileInfo(const QString &newName);
 
-    enum FileStateChange : std::uint8_t {
+    enum class FileStateChange : std::uint8_t {
         NoChange,
         Modified,
         Deleted,
         Restored,
     };
+    static constexpr auto NoChange = FileStateChange::NoChange;
+    static constexpr auto Modified = FileStateChange::Modified;
+    static constexpr auto Deleted = FileStateChange::Deleted;
+    static constexpr auto Restored = FileStateChange::Restored;
 
-    enum BufferType : std::uint8_t {
+    enum class BufferType : std::uint8_t {
         New,          // A temporary buffer, e.g. "New 1"
         File,         // Buffer tied to a file on the file system
         FileMissing,  // Buffer with a missing file on the file system
     };
+    static constexpr auto New = BufferType::New;
+    static constexpr auto File = BufferType::File;
+    static constexpr auto FileMissing = BufferType::FileMissing;
 
     enum class BomType : std::uint8_t { None, Utf8, Utf16LE, Utf16BE };
 
@@ -163,20 +170,20 @@ public:
     QString languageName;
     QByteArray languageSingleLineComment;
 
-#include "ScintillaEnums.h"
+#include "ScintillaEnums.h" // NOSONAR // NOLINT
 
 public slots:
-    void close();
+    void close(); // NOSONAR(cpp:S5495)
     QFileDevice::FileError save(bool preserveTimestamp = false);
     QDateTime fileTimestamp();
     void updateTimestamp();
     void reload();
     void omitModifications();
     QFileDevice::FileError saveAs(const QString &newFilePath);
-    QFileDevice::FileError saveCopyAs(const QString &filePath);
+    QFileDevice::FileError saveCopyAs(const QString &destPath) const;
     bool rename(const QString &newFilePath);
     ScintillaNext::FileStateChange checkFileForStateChange();
-    bool moveToTrash();
+    bool moveToTrash() const;
 
     void toggleCommentSelection();
     void commentLineSelection();
@@ -214,8 +221,8 @@ private:
 
 template <typename Func>
 void ScintillaNext::forEachLineInSelection(int selection, Func callback) {
-    int lineStart = static_cast<int>(lineFromPosition(selectionNStart(selection)));
-    int lineEnd = static_cast<int>(lineFromPosition(selectionNEnd(selection)));
+    const auto lineStart = static_cast<int>(lineFromPosition(selectionNStart(selection)));
+    const auto lineEnd = static_cast<int>(lineFromPosition(selectionNEnd(selection)));
 
     for (int curLine = lineStart; curLine <= lineEnd; ++curLine) {
         callback(curLine);
@@ -224,9 +231,9 @@ void ScintillaNext::forEachLineInSelection(int selection, Func callback) {
 
 // Stick this in the header file...because C++, that's why
 template <typename Func>
-void ScintillaNext::forEachMatchInRange(const QByteArray &text, Func callback, Sci_CharacterRange range) {
+void ScintillaNext::forEachMatchInRange(const QByteArray &text, Func callback, Sci_CharacterRange range) const {
     Sci_TextToFind ttf{range, text.constData(), {INVALID_POSITION, INVALID_POSITION}};
-    int flags = static_cast<int>(searchFlags());
+    const auto flags = static_cast<int>(searchFlags());
 
     while (send(SCI_FINDTEXT, flags, reinterpret_cast<sptr_t>(&ttf)) != INVALID_POSITION) {
         if (ttf.chrgText.cpMin == ttf.chrgText.cpMax)

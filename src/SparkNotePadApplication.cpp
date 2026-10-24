@@ -83,7 +83,7 @@ SparkNotePadApplication::SparkNotePadApplication(int &argc, char **argv) : Singl
     DebugManager::pauseDebugOutput();
 }
 
-bool SparkNotePadApplication::init() {
+bool SparkNotePadApplication::init() { // NOSONAR(cpp:S3776)
     qInfo(Q_FUNC_INFO);
 
 #ifndef Q_OS_MACOS
@@ -117,7 +117,7 @@ bool SparkNotePadApplication::init() {
         translationManager->loadSystemDefaultTranslation();
     }
 
-    luaState = new LuaState();
+    luaState = new LuaState(); // NOSONAR(cpp:S5025)
     if (parser.isSet(QStringLiteral("safe-mode"))) {
         qInfo("Safe Mode active: restricting dangerous Lua OS/IO APIs (sandbox enabled)");
         luaState->restrictDangerousApis();
@@ -126,13 +126,13 @@ bool SparkNotePadApplication::init() {
     editorManager = new EditorManager(settings, this);
     sessionManager = new SessionManager(this);
 
-    connect(editorManager, &EditorManager::editorCreated, recentFilesListManager, [this](ScintillaNext *editor) {
+    connect(editorManager, &EditorManager::editorCreated, recentFilesListManager, [this](const ScintillaNext *editor) {
         if (editor->isFile()) {
             recentFilesListManager->removeFile(editor->getFilePath());
         }
     });
 
-    connect(editorManager, &EditorManager::editorClosed, recentFilesListManager, [this](ScintillaNext *editor) {
+    connect(editorManager, &EditorManager::editorClosed, recentFilesListManager, [this](const ScintillaNext *editor) {
         if (editor->isFile()) {
             recentFilesListManager->addFile(editor->getFilePath());
         }
@@ -142,9 +142,9 @@ bool SparkNotePadApplication::init() {
 
     connect(this, &SparkNotePadApplication::aboutToQuit, this, &SparkNotePadApplication::saveSettings);
 
-    EditorConfigAppDecorator *ecad = new EditorConfigAppDecorator(this);
+    auto *ecad = new EditorConfigAppDecorator(this);
     ecad->setEnabled(true);
-    MarkerAppDecorator *mad = new MarkerAppDecorator(this);
+    auto *mad = new MarkerAppDecorator(this);
     mad->setEnabled(true);
 
     luaState->executeFile(":/scripts/init.lua");
@@ -157,8 +157,7 @@ bool SparkNotePadApplication::init() {
     MacServicesHandler::instance()->setActiveWindow(window);
 
     // If the application is activated, restore focus
-    connect(this, &SparkNotePadApplication::focusChanged, this, [&](QWidget *old, QWidget *now) {
-        Q_UNUSED(old);
+    connect(this, &SparkNotePadApplication::focusChanged, this, [this](const QWidget * /*old*/, QWidget *now) {
         if (now) {
             currentlyFocusedWidget = now;
         }
@@ -168,7 +167,7 @@ bool SparkNotePadApplication::init() {
     connect(this, &SingleApplication::receivedMessage, this, &SparkNotePadApplication::receiveInfoFromSecondaryInstance,
             Qt::QueuedConnection);
 
-    connect(this, &SparkNotePadApplication::applicationStateChanged, this, [&](Qt::ApplicationState state) {
+    connect(this, &SparkNotePadApplication::applicationStateChanged, this, [this](Qt::ApplicationState state) {
         if (state == Qt::ApplicationActive) {
             if (window->isActiveWindow()) {
                 window->focusIn();
@@ -266,8 +265,8 @@ void SparkNotePadApplication::setEditorLanguage(ScintillaNext *editor, const QSt
     editor->languageSingleLineComment =
         getLuaState()->executeAndReturn<QString>("return languages[languageName].singleLineComment or \"\"").toUtf8();
 
-    auto lexerInstance = CreateLexer(lexer.toLatin1().constData());
-    editor->setILexer((sptr_t)lexerInstance);
+    const auto *lexerInstance = CreateLexer(lexer.toLatin1().constData());
+    editor->setILexer(reinterpret_cast<sptr_t>(lexerInstance));
     editor->clearDocumentStyle();
 
     emit editor->lexerChanged();
@@ -291,7 +290,7 @@ QStringList SparkNotePadApplication::getLanguageKeywords(const QString &language
 QString SparkNotePadApplication::detectLanguage(ScintillaNext *editor) const {
     qInfo(Q_FUNC_INFO);
 
-    QString language_name = QStringLiteral("Text");
+    auto language_name = QStringLiteral("Text");
 
     if (editor->isFile()) {
         language_name = detectLanguageFromExtension(editor->getFileInfo().suffix());
@@ -416,7 +415,7 @@ bool SparkNotePadApplication::isRunningAsAdmin() const {
 
 bool SparkNotePadApplication::event(QEvent *ev) {
     if (ev->type() == QEvent::FileOpen) {
-        QFileOpenEvent *fileOpenEvent = static_cast<QFileOpenEvent *>(ev);
+        const auto *fileOpenEvent = static_cast<const QFileOpenEvent *>(ev);
         qInfo("QFileOpenEvent %s", qUtf8Printable(fileOpenEvent->file()));
         openFiles(QStringList() << fileOpenEvent->file());
         return true;
@@ -437,12 +436,12 @@ void SparkNotePadApplication::loadSettings() {
     recentFilesListManager->setFileList(getSettings()->value("App/RecentFilesList").toStringList());
 }
 
-void SparkNotePadApplication::saveSettings() {
+void SparkNotePadApplication::saveSettings() const {
     getSettings()->setValue("App/RecentFilesList", recentFilesListManager->fileList());
 }
 
 void SparkNotePadApplication::saveSession() {
-    for (const auto &editor : window->editors()) {
+    for (const auto *editor : window->editors()) {
         if (editor->isFile()) {
             recentFilesListManager->addFile(editor->getFilePath());
         }

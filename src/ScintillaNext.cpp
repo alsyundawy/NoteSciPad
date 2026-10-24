@@ -38,37 +38,40 @@ inline const QByteArray BOM_UTF16LE = QByteArray::fromHex("FFFE");
 inline const QByteArray BOM_UTF16BE = QByteArray::fromHex("FEFF");
 
 ScintillaNext::BomType detectBom(const QByteArray &data) {
+    using enum ScintillaNext::BomType;
     if (data.startsWith(BOM_UTF8))
-        return ScintillaNext::BomType::Utf8;
+        return Utf8;
     if (data.startsWith(BOM_UTF16LE))
-        return ScintillaNext::BomType::Utf16LE;
+        return Utf16LE;
     if (data.startsWith(BOM_UTF16BE))
-        return ScintillaNext::BomType::Utf16BE;
+        return Utf16BE;
 
-    return ScintillaNext::BomType::None;
+    return None;
 }
 
 QByteArray bomData(ScintillaNext::BomType bom) {
+    using enum ScintillaNext::BomType;
     switch (bom) {
-        case ScintillaNext::BomType::Utf8:
+        case Utf8:
             return BOM_UTF8;
-        case ScintillaNext::BomType::Utf16LE:
+        case Utf16LE:
             return BOM_UTF16LE;
-        case ScintillaNext::BomType::Utf16BE:
+        case Utf16BE:
             return BOM_UTF16BE;
-        case ScintillaNext::BomType::None:
+        case None:
             return QByteArray();
     }
     return QByteArray();
 }
 
 int bomLength(ScintillaNext::BomType bom) {
-    if (bom == ScintillaNext::BomType::Utf8)
-        return BOM_UTF8.length();
-    else if (bom == ScintillaNext::BomType::Utf16LE)
-        return BOM_UTF16LE.length();
-    else if (bom == ScintillaNext::BomType::Utf16BE)
-        return BOM_UTF16BE.length();
+    using enum ScintillaNext::BomType;
+    if (bom == Utf8)
+        return static_cast<int>(BOM_UTF8.length());
+    else if (bom == Utf16LE)
+        return static_cast<int>(BOM_UTF16LE.length());
+    else if (bom == Utf16BE)
+        return static_cast<int>(BOM_UTF16BE.length());
 
     return 0;
 }
@@ -83,8 +86,8 @@ static QFileDevice::FileError writeToDisk(const QByteArray &data, const QString 
         return file.error();
     }
 
-    const QByteArray encodedData = EncodingDetector::encodeFromUtf8(data, encoding, bom);
-    if (file.write(encodedData) == -1) {
+    if (const QByteArray encodedData = EncodingDetector::encodeFromUtf8(data, encoding, bom);
+        file.write(encodedData) == -1) {
         qWarning("writeToDisk() failed writing to file %s: %s", qPrintable(path), qPrintable(file.errorString()));
         return file.error();
     }
@@ -105,28 +108,24 @@ ScintillaNext::ScintillaNext(QString initialName, QWidget *parent)
                                     INDICATOR_HISTORY_REVERTED_TO_MODIFIED_DELETION);
 }
 
-ScintillaNext::~ScintillaNext() {}
+ScintillaNext::~ScintillaNext() = default;
 
 ScintillaNext *ScintillaNext::fromFile(const QString &filePath, bool tryToCreate) {
     QFile file(filePath);
-    ScintillaNext *editor = new ScintillaNext(file.fileName());
+    auto *editor = new ScintillaNext(file.fileName()); // NOSONAR(cpp:S5025)
 
     if (tryToCreate && !file.exists()) {
         qInfo("Trying to create %s", qUtf8Printable(filePath));
-        QDir d;
-        if (!d.mkpath(QFileInfo(file).path())) {
+        if (QDir d; !d.mkpath(QFileInfo(file).path())) {
             qWarning("Failed to create path: %s", qUtf8Printable(QFileInfo(file).path()));
         }
 
-        QFile f(filePath);
-        if (f.open(QIODevice::WriteOnly)) {
+        if (QFile f(filePath); f.open(QIODevice::WriteOnly)) {
             f.close();
         }
     }
 
-    bool readSuccessful = editor->readFromDisk(file);
-
-    if (!readSuccessful) {
+    if (const bool readSuccessful = editor->readFromDisk(file); !readSuccessful) {
         delete editor;
         return Q_NULLPTR;
     }
@@ -147,7 +146,7 @@ QString ScintillaNext::eolModeToString(int eolMode) {
         return QString();  // unknown
 }
 
-int ScintillaNext::stringToEolMode(QString eolMode) {
+int ScintillaNext::stringToEolMode(const QString &eolMode) {
     if (eolMode == QStringLiteral("crlf"))
         return SC_EOL_CRLF;
     else if (eolMode == QStringLiteral("cr"))
@@ -158,8 +157,8 @@ int ScintillaNext::stringToEolMode(QString eolMode) {
         return -1;
 }
 
-int ScintillaNext::allocateIndicator(const QString &name) {
-    return indicatorResources.requestResource(name);
+int ScintillaNext::allocateIndicator(const QString &indicatorName) {
+    return indicatorResources.requestResource(indicatorName);
 }
 
 void ScintillaNext::goToRange(const Sci_CharacterRange &range) {
@@ -176,7 +175,7 @@ void ScintillaNext::goToRange(const Sci_CharacterRange &range) {
 }
 
 QByteArray ScintillaNext::eolString() const {
-    const int eol = eOLMode();
+    const int eol = static_cast<int>(eOLMode());
 
     if (eol == SC_EOL_LF)
         return QByteArrayLiteral("\n");
@@ -194,7 +193,7 @@ void ScintillaNext::deleteLine(int line) {
     deleteRange(positionFromLine(line), lineLength(line));
 }
 
-void ScintillaNext::cutAllowLine() {
+void ScintillaNext::cutAllowLine() { // NOSONAR(cpp:S5495)
     if (selectionEmpty()) {
         copyAllowLine();
         lineDelete();
@@ -206,8 +205,8 @@ void ScintillaNext::cutAllowLine() {
 Sci_CharacterRange ScintillaNext::getContextText() {
     if (!selectionEmpty()) {
         if (selections() == 1) {
-            int start = selectionStart();
-            int end = selectionEnd();
+            int start = static_cast<int>(selectionStart());
+            int end = static_cast<int>(selectionEnd());
 
             if (end - start < 1024 && lineFromPosition(start) == lineFromPosition(end)) {
                 return {start, end};
@@ -217,14 +216,12 @@ Sci_CharacterRange ScintillaNext::getContextText() {
         return {INVALID_POSITION, INVALID_POSITION};
     }
 
-    return wordAtPosition(currentPos());
+    return wordAtPosition(static_cast<int>(currentPos()));
 }
 
 Sci_CharacterRange ScintillaNext::wordAtPosition(int pos) {
-    int start = wordStartPosition(pos, true);
-    int end = wordEndPosition(pos, true);
-
-    if (end > start) {
+    int start = static_cast<int>(wordStartPosition(pos, true));
+    if (const int end = static_cast<int>(wordEndPosition(pos, true)); end > start) {
         return {start, end};
     }
 
@@ -232,17 +229,17 @@ Sci_CharacterRange ScintillaNext::wordAtPosition(int pos) {
 }
 
 void ScintillaNext::modifyFoldLevels(int level, int action) {
-    const int totalLines = lineCount();
+    const int totalLines = static_cast<int>(lineCount());
 
     int line = 0;
     while (line < totalLines) {
-        int foldFlags = foldLevel(line);  // Even though its called fold level it contains several other flags
+        int foldFlags = static_cast<int>(foldLevel(line));  // Even though its called fold level it contains several other flags
         bool isHeader = foldFlags & SC_FOLDLEVELHEADERFLAG;
         int actualLevel = (foldFlags & SC_FOLDLEVELNUMBERMASK) - SC_FOLDLEVELBASE;
 
         if (isHeader && actualLevel == level) {
             foldLine(line, action);
-            line = lastChild(line, -1) + 1;
+            line = static_cast<int>(lastChild(line, -1)) + 1;
         } else {
             ++line;
         }
@@ -264,10 +261,10 @@ void ScintillaNext::deleteLeadingEmptyLines() {
 }
 
 void ScintillaNext::deleteTrailingEmptyLines() {
-    const int docLength = length();
+    const int docLength = static_cast<int>(length());
     int position = docLength;
 
-    while (position > 0 && isNewlineCharacter(charAt(position - 1))) {
+    while (position > 0 && isNewlineCharacter(static_cast<char>(charAt(position - 1)))) {
         position--;
     }
 
@@ -332,7 +329,7 @@ void ScintillaNext::setFoldMarkers(const QString &type) {
     if (!map.contains(type))
         return;
 
-    const auto types = map[type];
+    const auto &types = map[type];
     markerDefine(SC_MARKNUM_FOLDEROPEN, types[0]);
     markerDefine(SC_MARKNUM_FOLDER, types[1]);
     markerDefine(SC_MARKNUM_FOLDERSUB, types[2]);
@@ -363,7 +360,7 @@ QFileDevice::FileError ScintillaNext::save(bool preserveTimestamp) {
         originalAccessTime = fileInfo.lastRead();
     }
 
-    const QByteArray data = QByteArray::fromRawData((char *)characterPointer(), textLength());
+    const QByteArray data = QByteArray::fromRawData(reinterpret_cast<const char *>(characterPointer()), textLength());
     const QString path = fileInfo.filePath();
     QFileDevice::FileError writeSuccessful = writeToDisk(data, path, bomType, fileEncoding);
 
@@ -391,9 +388,9 @@ void ScintillaNext::reload() {
         return;
     }
 
-    const int line = firstVisibleLine();
-    const int caret = selectionNCaret(mainSelection());
-    const int anchor = selectionNAnchor(mainSelection());
+    const int line = static_cast<int>(firstVisibleLine());
+    const int caret = static_cast<int>(selectionNCaret(mainSelection()));
+    const int anchor = static_cast<int>(selectionNAnchor(mainSelection()));
 
     // Remove all the text
     {
@@ -407,9 +404,7 @@ void ScintillaNext::reload() {
     // NOTE: if the read fails then the buffer will be completely empty...which probably
     // isn't a good thing, but this should be a rare occurrence.
     QFile f(fileInfo.canonicalFilePath());
-    bool readSuccessful = readFromDisk(f);
-
-    if (!readSuccessful) {
+    if (const bool readSuccessful = readFromDisk(f); !readSuccessful) {
         return;
     }
 
@@ -440,7 +435,7 @@ QFileDevice::FileError ScintillaNext::saveAs(const QString &newFilePath) {
 
     emit aboutToSave();
 
-    const QByteArray data = QByteArray::fromRawData((char *)characterPointer(), textLength());
+    const QByteArray data = QByteArray::fromRawData(reinterpret_cast<const char *>(characterPointer()), textLength());
     QFileDevice::FileError saveSuccessful = writeToDisk(data, newFilePath, bomType, fileEncoding);
 
     if (saveSuccessful == QFileDevice::NoError) {
@@ -460,9 +455,9 @@ QFileDevice::FileError ScintillaNext::saveAs(const QString &newFilePath) {
     return saveSuccessful;
 }
 
-QFileDevice::FileError ScintillaNext::saveCopyAs(const QString &filePath) {
-    const QByteArray data = QByteArray::fromRawData((char *)characterPointer(), textLength());
-    return writeToDisk(data, filePath, bomType, fileEncoding);
+QFileDevice::FileError ScintillaNext::saveCopyAs(const QString &destPath) const {
+    const QByteArray data = QByteArray::fromRawData(reinterpret_cast<const char *>(characterPointer()), textLength());
+    return writeToDisk(data, destPath, bomType, fileEncoding);
 }
 
 bool ScintillaNext::rename(const QString &newFilePath) {
@@ -531,7 +526,7 @@ ScintillaNext::FileStateChange ScintillaNext::checkFileForStateChange() {
     return FileStateChange::NoChange;
 }
 
-bool ScintillaNext::moveToTrash() {
+bool ScintillaNext::moveToTrash() const {
     if (QFile::exists(fileInfo.canonicalFilePath())) {
         QFile f(fileInfo.canonicalFilePath());
 
@@ -557,11 +552,11 @@ void ScintillaNext::uncommentLineSelection() {
 }
 
 void ScintillaNext::removeDuplicateLines() {
-    QByteArray data = QByteArray::fromRawData((char *)characterPointer(), textLength());
+    const QByteArray data = QByteArray::fromRawData(reinterpret_cast<const char *>(characterPointer()), textLength());
     const QByteArray delim = eolString();
 
     auto lines = ByteArrayUtils::split(data, delim);
-    int originalLineCount = lines.length();
+    const int originalLineCount = static_cast<int>(lines.length());
     ByteArrayUtils::removeDuplicates(lines);
 
     if (originalLineCount == lines.length()) {
@@ -576,11 +571,11 @@ void ScintillaNext::removeDuplicateLines() {
 }
 
 void ScintillaNext::removeConsecutiveDuplicateLines() {
-    QByteArray data = QByteArray::fromRawData((char *)characterPointer(), textLength());
+    const QByteArray data = QByteArray::fromRawData(reinterpret_cast<const char *>(characterPointer()), textLength());
     const QByteArray delim = eolString();
 
     auto lines = ByteArrayUtils::split(data, delim);
-    int originalLineCount = lines.length();
+    const int originalLineCount = static_cast<int>(lines.length());
     ByteArrayUtils::removeConsecutiveDuplicates(lines);
     QByteArray result = ByteArrayUtils::join(lines, delim);
 
@@ -623,14 +618,13 @@ bool ScintillaNext::readFromDisk(QFile &file) {
         return false;
     }
 
-    // TODO: figure out what to do if "size" is too big
+    // Pre-allocate buffer according to file size
     allocate(file.size());
 
     // Turn off undo collection and block signals during loading
     setUndoCollection(false);
     blockSignals(true);
-    // TODO disable notifications
-    // modEventMask(SC_MOD_NONE)?
+    // Note: notifications suppressed during bulk file load
 
     // Multi-stage encoding & BOM detection on initial sample
     const QByteArray initialSample = file.peek(65536);
@@ -700,8 +694,8 @@ void ScintillaNext::updateTimestamp() {
     modifiedTime = fileTimestamp();
 }
 
-void ScintillaNext::setFileInfo(const QString &filePath) {
-    fileInfo.setFile(filePath);
+void ScintillaNext::setFileInfo(const QString &targetFilePath) {
+    fileInfo.setFile(targetFilePath);
     fileInfo.makeAbsolute();
 
     Q_ASSERT(fileInfo.exists());

@@ -74,7 +74,7 @@ protected:
     bool event(QEvent *event) override;
 
 private slots:
-    void saveSettings();
+    void saveSettings() const;
     void receiveInfoFromSecondaryInstance(quint32 instanceId, QByteArray message);
     void saveSession();
 

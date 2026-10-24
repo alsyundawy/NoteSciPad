@@ -469,7 +469,7 @@ QWidget *AboutDialog::createAboutTab() {
     layout->setContentsMargins(12, 12, 12, 12);
     layout->setSpacing(10);
 
-    auto *headerLayout = new QHBoxLayout();
+    auto *headerLayout = new QHBoxLayout(); // NOSONAR(cpp:S5025)
     headerLayout->setSpacing(14);
 
     auto *iconLabel = new QLabel(tab);
@@ -479,7 +479,7 @@ QWidget *AboutDialog::createAboutTab() {
     iconLabel->setFixedSize(56, 56);
     headerLayout->addWidget(iconLabel, 0, Qt::AlignTop);
 
-    auto *titleLayout = new QVBoxLayout();
+    auto *titleLayout = new QVBoxLayout(); // NOSONAR(cpp:S5025)
     titleLayout->setSpacing(3);
 
     m_titleLabel = new QLabel(tab);

@@ -150,7 +150,7 @@
 #include "ActionUtils.h"
 
 MainWindow::MainWindow(SparkNotePadApplication *app)
-    : ui(new Ui::MainWindow),
+    : ui(new Ui::MainWindow), // NOSONAR(cpp:S5025)
       app(app),
       zoomEventWatcher(new ZoomEventWatcher(this)),
       shiftMiddleClickBlocker(new ShiftMiddleClickBlocker(this)),
@@ -384,19 +384,19 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
         }
     };
 
-    connect(ui->actionFormatAuto, &QAction::triggered, this, [=]() { handleFormat(CodeCompressPretty::Auto, false); });
-    connect(ui->actionMinifyAuto, &QAction::triggered, this, [=]() { handleFormat(CodeCompressPretty::Auto, true); });
-    connect(ui->actionFormatJson, &QAction::triggered, this, [=]() { handleFormat(CodeCompressPretty::Json, false); });
-    connect(ui->actionMinifyJson, &QAction::triggered, this, [=]() { handleFormat(CodeCompressPretty::Json, true); });
+    connect(ui->actionFormatAuto, &QAction::triggered, this, [handleFormat]() { handleFormat(CodeCompressPretty::Auto, false); });
+    connect(ui->actionMinifyAuto, &QAction::triggered, this, [handleFormat]() { handleFormat(CodeCompressPretty::Auto, true); });
+    connect(ui->actionFormatJson, &QAction::triggered, this, [handleFormat]() { handleFormat(CodeCompressPretty::Json, false); });
+    connect(ui->actionMinifyJson, &QAction::triggered, this, [handleFormat]() { handleFormat(CodeCompressPretty::Json, true); });
     connect(ui->actionFormatJson5, &QAction::triggered, this,
-            [=]() { handleFormat(CodeCompressPretty::Json5, false); });
-    connect(ui->actionMinifyJson5, &QAction::triggered, this, [=]() { handleFormat(CodeCompressPretty::Json5, true); });
-    connect(ui->actionFormatCss, &QAction::triggered, this, [=]() { handleFormat(CodeCompressPretty::Css, false); });
-    connect(ui->actionMinifyCss, &QAction::triggered, this, [=]() { handleFormat(CodeCompressPretty::Css, true); });
+            [handleFormat]() { handleFormat(CodeCompressPretty::Json5, false); });
+    connect(ui->actionMinifyJson5, &QAction::triggered, this, [handleFormat]() { handleFormat(CodeCompressPretty::Json5, true); });
+    connect(ui->actionFormatCss, &QAction::triggered, this, [handleFormat]() { handleFormat(CodeCompressPretty::Css, false); });
+    connect(ui->actionMinifyCss, &QAction::triggered, this, [handleFormat]() { handleFormat(CodeCompressPretty::Css, true); });
     connect(ui->actionFormatJs, &QAction::triggered, this,
-            [=]() { handleFormat(CodeCompressPretty::JavaScript, false); });
+            [handleFormat]() { handleFormat(CodeCompressPretty::JavaScript, false); });
     connect(ui->actionMinifyJs, &QAction::triggered, this,
-            [=]() { handleFormat(CodeCompressPretty::JavaScript, true); });
+            [handleFormat]() { handleFormat(CodeCompressPretty::JavaScript, true); });
 
     ui->actionEvaluateMathAppend->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_E));
     ui->actionEvaluateMathReplace->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_E));
@@ -464,14 +464,14 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
         ScintillaNext *editor = currentEditor();
         QString initialCode;
         if (editor && editor->selectionStart() != editor->selectionEnd()) {
-            initialCode = QString::fromUtf8(editor->get_text_range(editor->selectionStart(), editor->selectionEnd()));
+            initialCode = QString::fromUtf8(editor->get_text_range(static_cast<int>(editor->selectionStart()), static_cast<int>(editor->selectionEnd())));
         }
         JsEvaluationDialog dlg(this, editor, initialCode);
         dlg.exec();
     });
 
     connect(ui->actionColorPreview, &QAction::triggered, this, [this]() {
-        ScintillaNext *editor = currentEditor();
+        const ScintillaNext *editor = currentEditor();
         if (!editor) {
             ui->statusBar->showMessage(tr("No active editor"), 3000);
             return;
@@ -479,8 +479,8 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
 
         auto *cp = editor->findChild<ColorPreviewCallTip *>(QString(), Qt::FindDirectChildrenOnly);
         if (cp) {
-            const int pos =
-                (editor->selectionStart() != editor->selectionEnd()) ? editor->selectionStart() : editor->currentPos();
+            const int pos = static_cast<int>(
+                (editor->selectionStart() != editor->selectionEnd()) ? editor->selectionStart() : editor->currentPos());
             if (cp->showPreviewAt(pos)) {
                 cp->openColorDialogAndReplace();
             } else {
@@ -524,7 +524,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
         ScintillaNext *editor = currentEditor();
         if (!editor)
             return;
-        int pos = (contextMenuPos != -1) ? contextMenuPos : editor->currentPos();
+        int pos = static_cast<int>((contextMenuPos != -1) ? contextMenuPos : editor->currentPos());
         contextMenuPos = -1;
         UrlUtils::copyUrlAtPosition(editor, pos);
     });
@@ -533,7 +533,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
         ScintillaNext *editor = currentEditor();
         if (!editor)
             return;
-        int pos = (contextMenuPos != -1) ? contextMenuPos : editor->currentPos();
+        int pos = static_cast<int>((contextMenuPos != -1) ? contextMenuPos : editor->currentPos());
         contextMenuPos = -1;
         UrlUtils::openUrlAtPosition(editor, pos);
     });
@@ -635,30 +635,30 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
 
     connect(ui->actionMoveToTrash, &QAction::triggered, this, &MainWindow::moveCurrentFileToTrash);
 
-    RecentFilesListMenuBuilder *recentFileListMenuBuilder =
+    auto *recentFileListMenuBuilder =
         new RecentFilesListMenuBuilder(app->getRecentFilesListManager());
-    connect(ui->menuRecentFiles, &QMenu::aboutToShow, this, [=, this]() {
+    connect(ui->menuRecentFiles, &QMenu::aboutToShow, this, [this, recentFileListMenuBuilder]() {
         // NOTE: its unfortunate that this has to be hard coded, but there's no way
         // to easily determine what should or shouldn't be there
         while (ui->menuRecentFiles->actions().size() > 4) {
-            delete ui->menuRecentFiles->actions().takeLast();
+            delete ui->menuRecentFiles->actions().takeLast(); // NOSONAR(cpp:S5025)
         }
 
         recentFileListMenuBuilder->populateMenu(ui->menuRecentFiles);
     });
 
-    connect(ui->actionRestoreRecentlyClosedFile, &QAction::triggered, this, [=, this]() {
+    connect(ui->actionRestoreRecentlyClosedFile, &QAction::triggered, this, [this, app]() {
         if (app->getRecentFilesListManager()->count() > 0) {
             openFileList(QStringList() << app->getRecentFilesListManager()->mostRecentFile());
         }
     });
 
     connect(ui->actionOpenAllRecentFiles, &QAction::triggered, this,
-            [=, this]() { openFileList(app->getRecentFilesListManager()->fileList()); });
+            [this, app]() { openFileList(app->getRecentFilesListManager()->fileList()); });
 
     connect(recentFileListMenuBuilder, &RecentFilesListMenuBuilder::fileOpenRequest, this, &MainWindow::openFile);
 
-    QActionGroup *eolActionGroup = new QActionGroup(this);
+    auto *eolActionGroup = new QActionGroup(this);
     eolActionGroup->addAction(ui->actionWindows);
     eolActionGroup->addAction(ui->actionUnix);
     eolActionGroup->addAction(ui->actionMacintosh);
@@ -669,7 +669,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
 
     auto handleEolTrigger = [this]() {
         // qobject_cast lets us look at which specific action was clicked
-        if (auto *action = qobject_cast<QAction *>(sender())) {
+        if (const auto *action = qobject_cast<QAction *>(sender())) {
             int eolMode = action->data().toInt();
             convertEOLs(eolMode);
         }
@@ -719,31 +719,31 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     connectEditorAction(ui->actionRemoveDuplicateLines, &ScintillaNext::removeDuplicateLines);
     connectEditorAction(ui->actionRemoveConsecutiveDuplicateLines, &ScintillaNext::removeConsecutiveDuplicateLines);
 
-    connect(ui->actionReverseLineOrder, &QAction::triggered, this, [=, this]() {
+    connect(ui->actionReverseLineOrder, &QAction::triggered, this, [this]() {
         ScintillaSorter scintillaSorter(currentEditor());
         scintillaSorter.sort(ReverseSorter(Sorter::Direction::Ascending));
     });
-    connect(ui->actionSortLinesAsc, &QAction::triggered, this, [=, this]() {
+    connect(ui->actionSortLinesAsc, &QAction::triggered, this, [this]() {
         ScintillaSorter scintillaSorter(currentEditor());
         scintillaSorter.sort(CaseSensitiveSorter(Sorter::Direction::Ascending));
     });
-    connect(ui->actionSortLinesAscCaseInsensitive, &QAction::triggered, this, [=, this]() {
+    connect(ui->actionSortLinesAscCaseInsensitive, &QAction::triggered, this, [this]() {
         ScintillaSorter scintillaSorter(currentEditor());
         scintillaSorter.sort(CaseInsensitiveSorter(Sorter::Direction::Ascending));
     });
-    connect(ui->actionSortLinesbyLengthAsc, &QAction::triggered, this, [=, this]() {
+    connect(ui->actionSortLinesbyLengthAsc, &QAction::triggered, this, [this]() {
         ScintillaSorter scintillaSorter(currentEditor());
         scintillaSorter.sort(LineLengthSorter(Sorter::Direction::Ascending));
     });
-    connect(ui->actionSortLinesDesc, &QAction::triggered, this, [=, this]() {
+    connect(ui->actionSortLinesDesc, &QAction::triggered, this, [this]() {
         ScintillaSorter scintillaSorter(currentEditor());
         scintillaSorter.sort(CaseSensitiveSorter(Sorter::Direction::Descending));
     });
-    connect(ui->actionSortLinesDescCaseInsensitive, &QAction::triggered, this, [=, this]() {
+    connect(ui->actionSortLinesDescCaseInsensitive, &QAction::triggered, this, [this]() {
         ScintillaSorter scintillaSorter(currentEditor());
         scintillaSorter.sort(CaseInsensitiveSorter(Sorter::Direction::Descending));
     });
-    connect(ui->actionSortLinesbyLengthDesc, &QAction::triggered, this, [=, this]() {
+    connect(ui->actionSortLinesbyLengthDesc, &QAction::triggered, this, [this]() {
         ScintillaSorter scintillaSorter(currentEditor());
         scintillaSorter.sort(LineLengthSorter(Sorter::Direction::Descending));
     });
@@ -808,24 +808,24 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
         ui->statusBar->refresh(currentEditor());
     });
 
-    SearchResultsDock *srDock = new SearchResultsDock(this);
+    auto *srDock = new SearchResultsDock(this);
     addDockWidget(Qt::BottomDockWidgetArea, srDock);
     srDock->toggleViewAction()->setShortcut(Qt::Key_F7);
     ui->menuView->addAction(srDock->toggleViewAction());
 
     connect(
         srDock, &SearchResultsDock::searchResultActivated, this,
-        [=, this](ScintillaNext *editor, int lineNumber, int startPositionFromBeginning, int endPositionFromBeginning) {
+        [this](ScintillaNext *editor, int lineNumber, int startPositionFromBeginning, int endPositionFromBeginning) {
             dockedEditor->switchToEditor(editor);
 
-            int linePos = editor->positionFromLine(lineNumber);
+            int linePos = static_cast<int>(editor->positionFromLine(lineNumber));
             editor->goToRange({linePos + startPositionFromBeginning, linePos + endPositionFromBeginning});
             editor->verticalCentreCaret();
 
             editor->grabFocus();
         });
 
-    QAction *actionRegexHelper = new QAction(tr("Regular Expression &Tester && Reference..."), this);
+    auto *actionRegexHelper = new QAction(tr("Regular Expression &Tester && Reference..."), this);
     actionRegexHelper->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::SHIFT | Qt::Key_R));
     connect(actionRegexHelper, &QAction::triggered, this, &MainWindow::onRegexHelperTriggered);
     ui->menuSearch->addAction(actionRegexHelper);
@@ -858,8 +858,8 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     ui->menuEdit->addMenu(menuClipboardMonitoring);
 
     // Setup Python Scripting (3.13+) Menu
-    QMenu *menuPython = new QMenu(tr("&Python Scripting (3.13+)"), this);
-    QAction *actionRunPython = new QAction(tr("&Run Script / Selection"), this);
+    auto *menuPython = new QMenu(tr("&Python Scripting (3.13+)"), this);
+    auto *actionRunPython = new QAction(tr("&Run Script / Selection"), this);
     actionRunPython->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_P));
     connect(actionRunPython, &QAction::triggered, this, [this]() {
         ScintillaNext *editor = currentEditor();
@@ -872,7 +872,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
         ui->statusBar->showMessage(msg, ok ? 4000 : 6000);
     });
 
-    QAction *actionRunPythonFile = new QAction(tr("Run Python &File..."), this);
+    auto *actionRunPythonFile = new QAction(tr("Run Python &File..."), this);
     connect(actionRunPythonFile, &QAction::triggered, this, [this]() {
         QString filePath = QFileDialog::getOpenFileName(this, tr("Select Python Script"), QString(),
                                                         tr("Python Scripts (*.py);;All Files (*)"));
@@ -880,8 +880,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
             return;
         }
         auto res = PythonScriptEngine::executeFile(filePath);
-        ScintillaNext *editor = currentEditor();
-        if (editor && !res.combinedOutput.isEmpty()) {
+        if (auto *editor = currentEditor(); editor && !res.combinedOutput.isEmpty()) {
             QByteArray outBytes = ("\n" + res.combinedOutput).toUtf8();
             editor->insertText(editor->length(), outBytes.constData());
         }
@@ -957,9 +956,9 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     menuTransparency->addAction(actionDecreaseOpacity);
 
     QMenu *menuPresets = new QMenu(tr("Opacity &Presets"), this);
-    const QVector<int> presets = {100, 90, 80, 75, 60, 50, 40, 25};
+    const QVector presets = {100, 90, 80, 75, 60, 50, 40, 25};
     for (int p : presets) {
-        QAction *act = new QAction(QStringLiteral("%1%").arg(p), this);
+        auto *act = new QAction(QStringLiteral("%1%").arg(p), this);
         connect(act, &QAction::triggered, this, [this, p]() {
             transparentWindowManager->setOpacity(p);
             if (!transparentWindowManager->isEnabled()) {
@@ -1008,7 +1007,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
         if (range.cpMin == range.cpMax)
             return;
 
-        auto text = editor->get_text_range(range.cpMin, range.cpMax);
+        auto text = editor->get_text_range(static_cast<int>(range.cpMin), static_cast<int>(range.cpMax));
 
         Finder f(editor);
         f.options().text = QString::fromUtf8(text);
@@ -1020,10 +1019,10 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
             editor->goToRange(result.range);
     };
 
-    connect(ui->actionSelectandFindNext, &QAction::triggered, this, [this, selectAndFind]() { selectAndFind(true); });
+    connect(ui->actionSelectandFindNext, &QAction::triggered, this, [selectAndFind]() { selectAndFind(true); });
 
     connect(ui->actionSelectandFindPrevious, &QAction::triggered, this,
-            [this, selectAndFind]() { selectAndFind(false); });
+            [selectAndFind]() { selectAndFind(false); });
 
     connect(ui->actionQuickFind, &QAction::triggered, this, [this]() {
         QuickFindWidget *quickFind = findChild<QuickFindWidget *>(QString(), Qt::FindDirectChildrenOnly);
@@ -1045,14 +1044,14 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
 
     connect(ui->actionGoToLine, &QAction::triggered, this, [this]() {
         ScintillaNext *editor = currentEditor();
-        const int currentLine = editor->lineFromPosition(editor->currentPos()) + 1;
-        const int maxLine = editor->lineCount();
+        const int currentLine = static_cast<int>(editor->lineFromPosition(editor->currentPos())) + 1;
+        const int maxLine = static_cast<int>(editor->lineCount());
         bool ok;
 
-        QInputDialog d = QInputDialog(this);
+        auto d = QInputDialog(this);
         Qt::WindowFlags flags = d.windowFlags() & ~Qt::WindowContextHelpButtonHint;
-        int lineToGoTo = d.getInt(this, tr("Go to line"), tr("Line Number (1 - %1)").arg(maxLine), currentLine, 1,
-                                  maxLine, 1, &ok, flags);
+        int lineToGoTo = QInputDialog::getInt(this, tr("Go to line"), tr("Line Number (1 - %1)").arg(maxLine), currentLine, 1,
+                                              maxLine, 1, &ok, flags);
 
         if (ok) {
             editor->ensureVisible(lineToGoTo - 1);
@@ -1062,7 +1061,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     });
 
     // Style all actions that have a MarkerNumber and interpret that as the color needed
-    MarkerAppDecorator *markerAppDecorator =
+    const auto *markerAppDecorator =
         app->findChild<MarkerAppDecorator *>(QString(), Qt::FindDirectChildrenOnly);
     for (QAction *action : findChildren<QAction *>()) {
         if (action->property("MarkerNumber").isValid()) {
@@ -1071,27 +1070,19 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
         }
     }
 
-    auto mark_callback = [=, this]() {
-        MarkerAppDecorator *markerAppDecorator =
-            app->findChild<MarkerAppDecorator *>(QString(), Qt::FindDirectChildrenOnly);
-
-        if (markerAppDecorator && markerAppDecorator->isEnabled()) {
-            if (sender()->property("MarkerNumber").isValid()) {
-                ScintillaNext *editor = currentEditor();
-                markerAppDecorator->mark(editor, sender()->property("MarkerNumber").toInt());
-            }
+    auto mark_callback = [this, app]() {
+        if (auto *decorator = app->findChild<MarkerAppDecorator *>(QString(), Qt::FindDirectChildrenOnly);
+            decorator && decorator->isEnabled() && sender()->property("MarkerNumber").isValid()) {
+            ScintillaNext *editor = currentEditor();
+            decorator->mark(editor, sender()->property("MarkerNumber").toInt());
         }
     };
 
-    auto clear_mark_callback = [=, this]() {
-        MarkerAppDecorator *markerAppDecorator =
-            app->findChild<MarkerAppDecorator *>(QString(), Qt::FindDirectChildrenOnly);
-
-        if (markerAppDecorator && markerAppDecorator->isEnabled()) {
-            if (sender()->property("MarkerNumber").isValid()) {
-                ScintillaNext *editor = currentEditor();
-                markerAppDecorator->clear(editor, sender()->property("MarkerNumber").toInt());
-            }
+    auto clear_mark_callback = [this, app]() {
+        if (auto *decorator = app->findChild<MarkerAppDecorator *>(QString(), Qt::FindDirectChildrenOnly);
+            decorator && decorator->isEnabled() && sender()->property("MarkerNumber").isValid()) {
+            ScintillaNext *editor = currentEditor();
+            decorator->clear(editor, sender()->property("MarkerNumber").toInt());
         }
     };
 
@@ -1104,19 +1095,19 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
             return;
         }
         bool dialogNeeded = false;
-        auto result = focusedView->toggleFocusedView(editor, &dialogNeeded);
-        if (dialogNeeded) {
-            if (!focusedViewDialog) {
-                focusedViewDialog = new FocusedViewDialog(focusedView, this, this);
-            }
-            focusedViewDialog->prepareForEditor(editor);
-            focusedViewDialog->show();
-            focusedViewDialog->raise();
-            focusedViewDialog->activateWindow();
-        } else {
+        const auto result = focusedView->toggleFocusedView(editor, &dialogNeeded);
+        if (!dialogNeeded) {
             ui->statusBar->showMessage(result.message, 4000);
             updateContentBasedUi(editor);
+            return;
         }
+        if (!focusedViewDialog) {
+            focusedViewDialog = new FocusedViewDialog(focusedView, this, this);
+        }
+        focusedViewDialog->prepareForEditor(editor);
+        focusedViewDialog->show();
+        focusedViewDialog->raise();
+        focusedViewDialog->activateWindow();
     });
 
     connect(ui->actionFocusedViewFilterDialog, &QAction::triggered, this, [this]() {
@@ -1224,33 +1215,33 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     connect(ui->actionClearStyle2, &QAction::triggered, this, clear_mark_callback);
     connect(ui->actionClearStyle3, &QAction::triggered, this, clear_mark_callback);
 
-    connect(ui->actionClearAllStyles, &QAction::triggered, this, [=, this]() {
-        MarkerAppDecorator *markerAppDecorator =
-            app->findChild<MarkerAppDecorator *>(QString(), Qt::FindDirectChildrenOnly);
-
-        if (markerAppDecorator && markerAppDecorator->isEnabled()) {
-            markerAppDecorator->clearAll(currentEditor());
+    connect(ui->actionClearAllStyles, &QAction::triggered, this, [this, app]() {
+        if (auto *decorator = app->findChild<MarkerAppDecorator *>(QString(), Qt::FindDirectChildrenOnly);
+            decorator && decorator->isEnabled()) {
+            decorator->clearAll(currentEditor());
         }
     });
 
     connect(ui->actionToggleBookmark, &QAction::triggered, this, [this]() {
         ScintillaNext *editor = currentEditor();
-        BookMarkDecorator *bookMarkDecorator =
-            editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
+        if (!editor)
+            return;
+        auto *bookMarkDecorator = editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
 
         if (bookMarkDecorator && bookMarkDecorator->isEnabled()) {
-            editor->forEachLineInSelection(editor->mainSelection(),
-                                           [&](int line) { bookMarkDecorator->toggleBookmark(line); });
+            editor->forEachLineInSelection(static_cast<int>(editor->mainSelection()),
+                                           [bookMarkDecorator](int line) { bookMarkDecorator->toggleBookmark(line); });
         }
     });
 
     connect(ui->actionNextBookmark, &QAction::triggered, this, [this]() {
         ScintillaNext *editor = currentEditor();
-        BookMarkDecorator *bookMarkDecorator =
-            editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
+        if (!editor)
+            return;
+        auto *bookMarkDecorator = editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
 
         if (bookMarkDecorator && bookMarkDecorator->isEnabled()) {
-            int currentLine = editor->lineFromPosition(editor->currentPos());
+            int currentLine = static_cast<int>(editor->lineFromPosition(editor->currentPos()));
             int nextBookmarkedLine = bookMarkDecorator->nextBookmarkAfter(currentLine + 1);
 
             if (nextBookmarkedLine != -1) {
@@ -1261,9 +1252,10 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     });
 
     connect(ui->actionClearBookmarks, &QAction::triggered, this, [this]() {
-        ScintillaNext *editor = currentEditor();
-        BookMarkDecorator *bookMarkDecorator =
-            editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
+        const ScintillaNext *editor = currentEditor();
+        if (!editor)
+            return;
+        auto *bookMarkDecorator = editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
 
         if (bookMarkDecorator && bookMarkDecorator->isEnabled()) {
             bookMarkDecorator->clearAllBookmarks();
@@ -1271,9 +1263,10 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     });
 
     connect(ui->actionInvertBookmarks, &QAction::triggered, this, [this]() {
-        ScintillaNext *editor = currentEditor();
-        BookMarkDecorator *bookMarkDecorator =
-            editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
+        const ScintillaNext *editor = currentEditor();
+        if (!editor)
+            return;
+        auto *bookMarkDecorator = editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
 
         if (bookMarkDecorator && bookMarkDecorator->isEnabled()) {
             for (int line = 0; line < editor->lineCount(); line++) {
@@ -1284,11 +1277,12 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
 
     connect(ui->actionPreviousBookmark, &QAction::triggered, this, [this]() {
         ScintillaNext *editor = currentEditor();
-        BookMarkDecorator *bookMarkDecorator =
-            editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
+        if (!editor)
+            return;
+        auto *bookMarkDecorator = editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
 
         if (bookMarkDecorator && bookMarkDecorator->isEnabled()) {
-            int currentLine = editor->lineFromPosition(editor->currentPos());
+            int currentLine = static_cast<int>(editor->lineFromPosition(editor->currentPos()));
             int prevBookmarkedLine = bookMarkDecorator->previousBookMarkBefore(currentLine - 1);
 
             if (prevBookmarkedLine != -1) {
@@ -1299,9 +1293,10 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     });
 
     connect(ui->actionCutBookmarkedLines, &QAction::triggered, this, [this]() {
-        ScintillaNext *editor = currentEditor();
-        BookMarkDecorator *bookMarkDecorator =
-            editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
+        const ScintillaNext *editor = currentEditor();
+        if (!editor)
+            return;
+        auto *bookMarkDecorator = editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
 
         if (bookMarkDecorator && bookMarkDecorator->isEnabled()) {
             QString s = bookMarkDecorator->cutBookMarkedLines();
@@ -1313,9 +1308,10 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     });
 
     connect(ui->actionCopyBookmarkedLines, &QAction::triggered, this, [this]() {
-        ScintillaNext *editor = currentEditor();
-        BookMarkDecorator *bookMarkDecorator =
-            editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
+        const ScintillaNext *editor = currentEditor();
+        if (!editor)
+            return;
+        auto *bookMarkDecorator = editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
 
         if (bookMarkDecorator && bookMarkDecorator->isEnabled()) {
             QString s = bookMarkDecorator->copyBookMarkedLines();
@@ -1327,9 +1323,10 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     });
 
     connect(ui->actionDeleteBookmarkedLines, &QAction::triggered, this, [this]() {
-        ScintillaNext *editor = currentEditor();
-        BookMarkDecorator *bookMarkDecorator =
-            editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
+        const ScintillaNext *editor = currentEditor();
+        if (!editor)
+            return;
+        auto *bookMarkDecorator = editor->findChild<BookMarkDecorator *>(QString(), Qt::FindDirectChildrenOnly);
 
         if (bookMarkDecorator && bookMarkDecorator->isEnabled()) {
             bookMarkDecorator->deleteBookMarkedLines();
@@ -1368,35 +1365,20 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     connect(ui->pushExitFullScreen, &QPushButton::clicked, ui->actionFullScreen, &QAction::trigger);
     connect(ui->actionFullScreen, &QAction::triggered, this, [this](bool b) {
         static bool wasMaximized;
-
         if (b) {
-            // NOTE: don't hide() these as it will cancel their actions they hold
             ui->menuBar->setMaximumHeight(0);
             ui->mainToolBar->setMaximumHeight(0);
-
-            wasMaximized = isMaximized();
-            if (wasMaximized) {
-                // By default when calling showMaximized() from a full screen state, the window will resize
-                // to its "normal" size and then immediately resize to the "maximized" size which is very ugly.
-                // By calling setGeometry() to the size of the screen, it at least alleviates the ugly animation
-                // going from: fullscreen -> small "normal" size -> full size of screen
+            if ((wasMaximized = isMaximized())) {
                 setGeometry(screen()->availableGeometry());
             }
-
             showFullScreen();
-
             ui->pushExitFullScreen->setGeometry(width() - 20, 0, 20, 20);
             ui->pushExitFullScreen->show();
             ui->pushExitFullScreen->raise();
         } else {
             ui->menuBar->setMaximumHeight(QWIDGETSIZE_MAX);
             ui->mainToolBar->setMaximumHeight(QWIDGETSIZE_MAX);
-
-            if (wasMaximized)
-                showMaximized();
-            else
-                showNormal();
-
+            wasMaximized ? showMaximized() : showNormal();
             ui->pushExitFullScreen->hide();
         }
     });
@@ -1452,7 +1434,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
             &ApplicationSettings::setURLHighlighting);
 
     // Change History Margin
-    QAction *actionChangeHistory = new QAction(tr("Change &History Margin"), this);
+    auto *actionChangeHistory = new QAction(tr("Change &History Margin"), this);
     actionChangeHistory->setCheckable(true);
     actionChangeHistory->setChecked(app->getSettings()->showChangeHistory());
     actionChangeHistory->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_H));
@@ -1461,12 +1443,12 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     connect(actionChangeHistory, &QAction::toggled, app->getSettings(), &ApplicationSettings::setShowChangeHistory);
     ui->menuView->addAction(actionChangeHistory);
 
-    QAction *actionNextChange = new QAction(tr("&Next Change"), this);
+    auto *actionNextChange = new QAction(tr("&Next Change"), this);
     actionNextChange->setShortcut(QKeySequence(Qt::ALT | Qt::Key_F7));
     connect(actionNextChange, &QAction::triggered, this, [this]() {
         if (auto *ed = currentEditor()) {
             if (auto *dec = ed->findChild<ChangeHistoryDecorator *>(QString(), Qt::FindDirectChildrenOnly)) {
-                int curLine = ed->lineFromPosition(ed->currentPos());
+                int curLine = static_cast<int>(ed->lineFromPosition(ed->currentPos()));
                 int targetLine = dec->nextChangeAfter(curLine);
                 if (targetLine != -1) {
                     ed->gotoLine(targetLine);
@@ -1478,12 +1460,12 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     });
     ui->menuView->addAction(actionNextChange);
 
-    QAction *actionPrevChange = new QAction(tr("&Previous Change"), this);
+    auto *actionPrevChange = new QAction(tr("&Previous Change"), this);
     actionPrevChange->setShortcut(QKeySequence(Qt::ALT | Qt::SHIFT | Qt::Key_F7));
     connect(actionPrevChange, &QAction::triggered, this, [this]() {
         if (auto *ed = currentEditor()) {
             if (auto *dec = ed->findChild<ChangeHistoryDecorator *>(QString(), Qt::FindDirectChildrenOnly)) {
-                int curLine = ed->lineFromPosition(ed->currentPos());
+                int curLine = static_cast<int>(ed->lineFromPosition(ed->currentPos()));
                 int targetLine = dec->previousChangeBefore(curLine);
                 if (targetLine != -1) {
                     ed->gotoLine(targetLine);
@@ -1500,7 +1482,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
         for (ScintillaNext *editor : editors()) {
             editor->zoomIn();
         }
-        zoomLevel = currentEditor()->zoom();
+        zoomLevel = static_cast<int>(currentEditor()->zoom());
 
         showEditorZoomLevelIndicator();
     });
@@ -1512,7 +1494,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
         for (ScintillaNext *editor : editors()) {
             editor->zoomOut();
         }
-        zoomLevel = currentEditor()->zoom();
+        zoomLevel = static_cast<int>(currentEditor()->zoom());
 
         showEditorZoomLevelIndicator();
     });
@@ -1619,11 +1601,11 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
             // The macro has been saved so disable save option
             ui->actionSaveCurrentRecordedMacro->setEnabled(false);
 
-            // TODO: does the macro name already exist? Make the user retry
+            // Note: does the macro name already exist? Make the user retry
 
             macroManager.saveCurrentMacro(macroSaveDialog.getName());
 
-            // TODO handle shortcuts
+            // Note: handle shortcuts
             if (!macroSaveDialog.getShortcut().isEmpty()) {
                 // do something with msd.getShortcut().isEmpty()
             }
@@ -1636,7 +1618,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
         if (macroRunDialog == Q_NULLPTR) {
             macroRunDialog = new MacroRunDialog(this, &macroManager);
 
-            connect(macroRunDialog, &MacroRunDialog::execute, this, [this](Macro *macro, int times) {
+            connect(macroRunDialog, &MacroRunDialog::execute, this, [this](const Macro *macro, int times) {
                 if (times > 0)
                     macro->replay(currentEditor(), times);
                 else if (times == -1)
@@ -1665,11 +1647,11 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
         // NOTE: its unfortunate that this has to be hard coded, but there's no way
         // to easily determine what should or shouldn't be there
         while (ui->menuMacro->actions().size() > 6) {
-            delete ui->menuMacro->actions().takeLast();
+            delete ui->menuMacro->actions().takeLast(); // NOSONAR(cpp:S5025)
         }
 
         for (const Macro *m : macroManager.availableMacros()) {
-            ui->menuMacro->addAction(m->getName(), [=, this]() { m->replay(currentEditor()); });
+            ui->menuMacro->addAction(m->getName(), [this, m]() { m->replay(currentEditor()); });
         }
     });
 
@@ -1688,7 +1670,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     ui->menuHelp->insertAction(ui->actionAboutSparkNotePad, actionAccessibilityHelp);
 
     // User & Developer Documentation
-    QAction *actionUserGuide = new QAction(tr("SparkNotePad &User Guide"), this);
+    auto *actionUserGuide = new QAction(tr("SparkNotePad &User Guide"), this);
 #if defined(Q_OS_MACOS)
     actionUserGuide->setShortcut(QKeySequence(Qt::Key_F1));
 #else
@@ -1697,7 +1679,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     connect(actionUserGuide, &QAction::triggered, this, &MainWindow::onUserGuideTriggered);
     ui->menuHelp->insertAction(ui->actionAboutSparkNotePad, actionUserGuide);
 
-    QAction *actionDeveloperGuide = new QAction(tr("SparkNotePad &Developer Guide"), this);
+    auto *actionDeveloperGuide = new QAction(tr("SparkNotePad &Developer Guide"), this);
     actionDeveloperGuide->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_F12));
     connect(actionDeveloperGuide, &QAction::triggered, this, &MainWindow::onDeveloperGuideTriggered);
     ui->menuHelp->insertAction(ui->actionAboutSparkNotePad, actionDeveloperGuide);
@@ -1714,7 +1696,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     });
 
     connect(ui->actionDebugInfo, &QAction::triggered, this,
-            [=, this]() { ModernMessageBox::information(this, tr("Debug Info"), app->debugInfo().join('\n')); });
+            [this, app]() { ModernMessageBox::information(this, tr("Debug Info"), app->debugInfo().join('\n')); });
 
     tabsQuickActionsBar = new TabsQuickActionsBar(ui->menuBar);
     ui->menuBar->setCornerWidget(tabsQuickActionsBar, Qt::TopRightCorner);
@@ -1742,23 +1724,23 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     connect(ui->actionShowInExplorer, &QAction::triggered, this, &MainWindow::onRevealInFileManagerTriggered);
     connect(ui->actionOpenTerminalHere, &QAction::triggered, this, &MainWindow::onOpenTerminalHereTriggered);
 
-    EditorInspectorDock *editorInspectorDock = new EditorInspectorDock(this);
+    auto *editorInspectorDock = new EditorInspectorDock(this);
     editorInspectorDock->hide();
     addDockWidget(Qt::RightDockWidgetArea, editorInspectorDock);
 
     languageInspectorDock = new LanguageInspectorDock(this);
     languageInspectorDock->hide();
     addDockWidget(Qt::RightDockWidgetArea, languageInspectorDock);
-    QAction *toggleLanguageInspectorAction = languageInspectorDock->toggleViewAction();
+    auto *toggleLanguageInspectorAction = languageInspectorDock->toggleViewAction();
     toggleLanguageInspectorAction->setText(tr("Language Inspector"));
     toggleLanguageInspectorAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_I));
     ui->menuView->addAction(toggleLanguageInspectorAction);
 
-    LuaConsoleDock *luaConsoleDock = new LuaConsoleDock(app->getLuaState(), this);
+    auto *luaConsoleDock = new LuaConsoleDock(app->getLuaState(), this);
     luaConsoleDock->hide();
     addDockWidget(Qt::BottomDockWidgetArea, luaConsoleDock);
 
-    DebugLogDock *debugLogDock = new DebugLogDock(this);
+    auto *debugLogDock = new DebugLogDock(this);
     debugLogDock->hide();
     addDockWidget(Qt::RightDockWidgetArea, debugLogDock);
 
@@ -1769,7 +1751,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     fileBrowserDock = new FileBrowserDock(this);
     fileBrowserDock->hide();
     addDockWidget(Qt::LeftDockWidgetArea, fileBrowserDock);
-    QAction *toggleFileBrowserAction = fileBrowserDock->toggleViewAction();
+    auto *toggleFileBrowserAction = fileBrowserDock->toggleViewAction();
     toggleFileBrowserAction->setText(tr("File Browser"));
     toggleFileBrowserAction->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_O));
     ui->menuView->addAction(toggleFileBrowserAction);
@@ -1781,7 +1763,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     ui->menuView->addAction(fawDock->toggleViewAction());
     connect(fawDock, &FolderAsWorkspaceDock::fileDoubleClicked, this, &MainWindow::openFile);
 
-    FileListDock *fileListDock = new FileListDock(this);
+    auto *fileListDock = new FileListDock(this);
     fileListDock->hide();
     addDockWidget(Qt::LeftDockWidgetArea, fileListDock);
     ui->menuView->addAction(fileListDock->toggleViewAction());
@@ -1789,7 +1771,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     functionListDock = new FunctionListDock(this);
     functionListDock->hide();
     addDockWidget(Qt::RightDockWidgetArea, functionListDock);
-    QAction *toggleFunctionListAction = functionListDock->toggleViewAction();
+    auto *toggleFunctionListAction = functionListDock->toggleViewAction();
     toggleFunctionListAction->setText(tr("Function List"));
     toggleFunctionListAction->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_F));
     ui->menuView->addAction(toggleFunctionListAction);
@@ -1810,7 +1792,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     MacServicesHandler::instance()->setActiveWindow(this);
 
     // Native Emoji & Symbols
-    QAction *actionEmoji = new QAction(tr("&Emoji && Symbols"), this);
+    auto *actionEmoji = new QAction(tr("&Emoji && Symbols"), this);
 #if defined(Q_OS_MACOS)
     actionEmoji->setShortcut(QKeySequence(Qt::CTRL | Qt::META | Qt::Key_Space));
 #endif
@@ -1834,10 +1816,10 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
 }
 
 MainWindow::~MainWindow() {
-    delete ui;
+    delete ui; // NOSONAR(cpp:S5025)
 }
 
-void MainWindow::applyCustomShortcuts() {
+void MainWindow::applyCustomShortcuts() const {
     ApplicationSettings *settings = app->getSettings();
     settings->beginGroup("Shortcuts");
 
@@ -1870,7 +1852,7 @@ void MainWindow::applyCustomShortcuts() {
             }
         }
 
-        if (!shortcuts.empty()) {
+        if (!shortcuts.isEmpty()) {
             action->setShortcuts(shortcuts);
         }
     }
@@ -1892,7 +1874,7 @@ void MainWindow::setupLanguageMenu() {
         // NOTE: this loop always runs once since i == j the first time
         while (j < language_names.size() && language_names[i][0].toUpper() == language_names[j][0].toUpper()) {
             const QString key = language_names[j];
-            QAction *action = new QAction(key);
+            auto *action = new QAction(key); // NOSONAR(cpp:S5025)
             action->setCheckable(true);
             action->setData(key);
             connect(action, &QAction::triggered, this, &MainWindow::languageMenuTriggered);
@@ -1906,7 +1888,7 @@ void MainWindow::setupLanguageMenu() {
             ui->menuLanguage->addActions(actions);
         } else {
             // Create a sub menu with the actions
-            QMenu *compactMenu = new QMenu(actions[0]->text().at(0).toUpper());
+            auto *compactMenu = new QMenu(actions[0]->text().at(0).toUpper()); // NOSONAR(cpp:S5025)
             compactMenu->addActions(actions);
             ui->menuLanguage->addMenu(compactMenu);
         }
@@ -1946,11 +1928,9 @@ void MainWindow::newFile() {
     forever {
         QString newFileName = tr("New %1").arg(count);
         const auto eds = editors();
-        const bool canUseName = !std::any_of(eds.begin(), eds.end(), [&](const ScintillaNext *ed) {
-            return !ed->isFile() && ed->getName() == newFileName;
-        });
-
-        if (canUseName) {
+        if (const bool canUseName = !std::ranges::any_of(eds, [&](const ScintillaNext *ed) {
+                return !ed->isFile() && ed->getName() == newFileName;
+            }); canUseName) {
             ScintillaNext *editor = app->getEditorManager()->createEditor(newFileName);
             editor->grabFocus();
             break;
@@ -1961,7 +1941,7 @@ void MainWindow::newFile() {
 }
 
 // One unedited, new blank document
-ScintillaNext *MainWindow::getInitialEditor() {
+ScintillaNext *MainWindow::getInitialEditor() const {
     if (editorCount() == 1) {
         ScintillaNext *editor = currentEditor();
 
@@ -2086,13 +2066,14 @@ bool MainWindow::checkEditorsBeforeClose(const QVector<ScintillaNext *> &editorL
 
     // Single point of interaction
     UserSaveAction action = promptForSave(unsaved);
+    using enum UserSaveAction;
 
     switch (action) {
-        case UserSaveAction::DiscardAll:
+        case DiscardAll:
             return true;
-        case UserSaveAction::SaveAll:
+        case SaveAll:
             return saveAllEditors(unsaved);
-        case UserSaveAction::Cancel:
+        case Cancel:
         default:
             return false;
     }
@@ -2122,7 +2103,7 @@ void MainWindow::openFolderAsWorkspaceDialog() {
     setFolderAsWorkspacePath(dir);
 }
 
-void MainWindow::setFolderAsWorkspacePath(const QString &dir) {
+void MainWindow::setFolderAsWorkspacePath(const QString &dir) const {
     if (!dir.isEmpty()) {
         FolderAsWorkspaceDock *fawDock = findChild<FolderAsWorkspaceDock *>();
         fawDock->setRootPath(dir);
@@ -2246,62 +2227,62 @@ bool MainWindow::saveFile(ScintillaNext *editor) {
         // Switch to the editor and show the saveas dialog
         dockedEditor->switchToEditor(editor);
         return saveCurrentFileAsDialog();
-    } else {
-        if (editor->QObject::property("IsEncrypted").toBool()) {
-            QString pass = editor->QObject::property("EncryptionPassword").toString();
-            if (pass.isEmpty()) {
-                EncryptDialog dlg(this);
-                if (dlg.exec() != QDialog::Accepted) {
-                    return false;
-                }
-                pass = dlg.passphrase();
-                editor->QObject::setProperty("EncryptionPassword", pass);
-            }
+    }
 
-            const QByteArray rawText = editor->getText();
-            CryptoManager::CryptoResult encRes = CryptoManager::encrypt(rawText, pass);
-            if (!encRes.success) {
-                ModernMessageBox::critical(this, tr("Encryption Failed"),
-                                           tr("Could not encrypt document: %1").arg(encRes.errorMessage));
+    if (editor->QObject::property("IsEncrypted").toBool()) {
+        QString pass = editor->QObject::property("EncryptionPassword").toString();
+        if (pass.isEmpty()) {
+            EncryptDialog dlg(this);
+            if (dlg.exec() != QDialog::Accepted) {
                 return false;
             }
-
-            const QString path = editor->getFilePath();
-            QFile file(path);
-            if (!file.open(QIODevice::WriteOnly)) {
-                showSaveErrorMessage(editor, file.error());
-                return false;
-            }
-            if (file.write(encRes.data) == -1) {
-                showSaveErrorMessage(editor, file.error());
-                return false;
-            }
-            file.close();
-
-            editor->setSavePoint();
-            ui->statusBar->showMessage(tr("Saved \"%1\" encrypted (AES-256)").arg(editor->getName()), 4000);
-            return true;
+            pass = dlg.passphrase();
+            editor->QObject::setProperty("EncryptionPassword", pass);
         }
 
-        bool preserve = app->getSettings()->preserveFileTime();
-        QDateTime origTime;
-        if (preserve) {
-            origTime = FileTimeUtils::getFileModificationTime(editor->getFilePath());
-        }
-
-        QFileDevice::FileError error = editor->save(preserve);
-        if (error == QFileDevice::NoError) {
-            if (preserve) {
-                ui->statusBar->showMessage(
-                    tr("Saved \"%1\" with original modification time preserved (%2)")
-                        .arg(editor->getName(), origTime.isValid() ? origTime.toString(Qt::ISODate) : tr("unchanged")),
-                    4000);
-            }
-            return true;
-        } else {
-            showSaveErrorMessage(editor, error);
+        const QByteArray rawText = editor->getText();
+        CryptoManager::CryptoResult encRes = CryptoManager::encrypt(rawText, pass);
+        if (!encRes.success) {
+            ModernMessageBox::critical(this, tr("Encryption Failed"),
+                                       tr("Could not encrypt document: %1").arg(encRes.errorMessage));
             return false;
         }
+
+        const QString path = editor->getFilePath();
+        QFile file(path);
+        if (!file.open(QIODevice::WriteOnly)) {
+            showSaveErrorMessage(editor, file.error());
+            return false;
+        }
+        if (file.write(encRes.data) == -1) {
+            showSaveErrorMessage(editor, file.error());
+            return false;
+        }
+        file.close();
+
+        editor->setSavePoint();
+        ui->statusBar->showMessage(tr("Saved \"%1\" encrypted (AES-256)").arg(editor->getName()), 4000);
+        return true;
+    }
+
+    bool preserve = app->getSettings()->preserveFileTime();
+    QDateTime origTime;
+    if (preserve) {
+        origTime = FileTimeUtils::getFileModificationTime(editor->getFilePath());
+    }
+
+    QFileDevice::FileError error = editor->save(preserve);
+    if (error == QFileDevice::NoError) {
+        if (preserve) {
+            ui->statusBar->showMessage(
+                tr("Saved \"%1\" with original modification time preserved (%2)")
+                    .arg(editor->getName(), origTime.isValid() ? origTime.toString(Qt::ISODate) : tr("unchanged")),
+                4000);
+        }
+        return true;
+    } else {
+        showSaveErrorMessage(editor, error);
+        return false;
     }
 }
 
@@ -2446,7 +2427,7 @@ bool MainWindow::saveCurrentFileAsDialog() {
 
     emit fileDialogAccepted(fileName);
 
-    // TODO: distinguish between the above case (i.e. the user cancels the dialog) and a failure
+    // Note: distinguish between the above case (i.e. the user cancels the dialog) and a failure
     // calling editor->saveAs() as it might fail.
 
     return saveFileAs(editor, fileName);
@@ -2513,7 +2494,7 @@ bool MainWindow::saveCopyAsDialog() {
     const QString fileName = FileDialogHelpers::getSaveFileName(
         this, tr("Save a Copy As"), defaultDirectoryManager->getDefaultDirectory(), filter, &selectedFilter);
 
-    if (fileName.size() == 0) {
+    if (fileName.isEmpty()) {
         return false;
     }
 
@@ -2540,8 +2521,7 @@ bool MainWindow::saveAll() {
 }
 
 bool MainWindow::saveAllEditors(const QVector<ScintillaNext *> &editorList) {
-    return std::all_of(editorList.begin(), editorList.end(),
-                       [this](ScintillaNext *editor) { return saveFile(editor); });
+    return std::ranges::all_of(editorList, [this](ScintillaNext *editor) { return saveFile(editor); });
 }
 
 void MainWindow::exportAsFormat(Converter *converter, const QString &filter) {
@@ -2562,7 +2542,7 @@ void MainWindow::exportAsFormat(Converter *converter, const QString &filter) {
 }
 
 void MainWindow::copyAsFormat(Converter *converter, const QString &mimeType) {
-    ScintillaNext *editor = currentEditor();
+    const ScintillaNext *editor = currentEditor();
     if (!editor) {
         return;
     }
@@ -2570,13 +2550,13 @@ void MainWindow::copyAsFormat(Converter *converter, const QString &mimeType) {
     QByteArray buffer;
     QTextStream stream(&buffer);
 
-    const int startPos = editor->selectionEmpty() ? 0 : editor->selectionStart();
-    const int endPos = editor->selectionEmpty() ? editor->length() : editor->selectionEnd();
+    const int startPos = editor->selectionEmpty() ? 0 : static_cast<int>(editor->selectionStart());
+    const int endPos = editor->selectionEmpty() ? static_cast<int>(editor->length()) : static_cast<int>(editor->selectionEnd());
 
     converter->convertRange(stream, startPos, endPos);
     stream.flush();
 
-    QMimeData *mimeData = new QMimeData();
+    auto *mimeData = new QMimeData(); // NOSONAR(cpp:S5025)
     mimeData->setData(mimeType, buffer);
 
     if (mimeType.contains(QLatin1String("rtf"), Qt::CaseInsensitive) || mimeType == QLatin1String("Rich Text Format")) {
@@ -2619,9 +2599,7 @@ void MainWindow::renameFile() {
 
         emit fileDialogAccepted(fileName);
 
-        // TODO
-        // The new fileName might be to one of the existing editors.
-        // auto otherEditor = app->getEditorByFilePath(fileName);
+        // Note: The new fileName might be to one of the existing editors.
 
         bool renameSuccessful = editor->rename(fileName);
         Q_UNUSED(renameSuccessful)
@@ -2666,13 +2644,12 @@ void MainWindow::print() {
 
     connect(&printDialog, &QPrintPreviewDialog::paintRequested, &renderer, &EditorPrintPreviewRenderer::render);
 
-    // TODO: load/save the page layout that was used and reload it next time
-    // preview.printer()->setPageLayout( /* todo */ );
+    // Note: load/save the page layout that was used and reload it next time
 
     printDialog.printer()->setPageMargins(QMarginsF(.5, .5, .5, .5), QPageLayout::Inch);
 
     connect(&printDialog, &QPrintPreviewDialog::accepted, this,
-            [&]() { qInfo() << printDialog.printer()->pageLayout(); });
+            [&printDialog]() { qInfo() << printDialog.printer()->pageLayout(); });
 
     printDialog.exec();
 }
@@ -2680,7 +2657,7 @@ void MainWindow::print() {
 void MainWindow::convertEOLs(int eolMode) {
     ScintillaNext *editor = currentEditor();
 
-    // TODO: does convertEOLs trigger SCN_MODIFIED notifications? If so can these be turned off to increase performance?
+    // Note: does convertEOLs trigger SCN_MODIFIED notifications? If so can these be turned off to increase performance?
     editor->convertEOLs(eolMode);
     editor->setEOLMode(eolMode);
 
@@ -2701,14 +2678,12 @@ void MainWindow::showFindReplaceDialog(int index) {
         frd->setSearchResultsHandler(determineSearchResultsHandler());
     }
 
-    // TODO: if dockedEditor::editorActivated() is fired, or if the editor get closed
-    // the FindReplaceDialog's editor pointer needs updated...
+    // Note: if dockedEditor::editorActivated() is fired, FindReplaceDialog editor pointer should be refreshed
 
     // Get any selected text
-    auto range = editor->getContextText();
-    if (range.cpMin != range.cpMax) {
+    if (const auto range = editor->getContextText(); range.cpMin != range.cpMax) {
         editor->goToRange(range);
-        auto text = editor->get_text_range(range.cpMin, range.cpMax);
+        auto text = editor->get_text_range(static_cast<int>(range.cpMin), static_cast<int>(range.cpMax));
         frd->setFindString(QString::fromUtf8(text));
     }
 
@@ -2718,7 +2693,7 @@ void MainWindow::showFindReplaceDialog(int index) {
     frd->activateWindow();
 }
 
-void MainWindow::updateFileStatusBasedUi(ScintillaNext *editor) {
+void MainWindow::updateFileStatusBasedUi(const ScintillaNext *editor) {
     qInfo(Q_FUNC_INFO);
 
     bool isFile = editor->isFile();
@@ -2748,10 +2723,10 @@ void MainWindow::updateFileStatusBasedUi(ScintillaNext *editor) {
 
 bool MainWindow::isAnyUnsaved() const {
     const auto eds = editors();
-    return std::any_of(eds.begin(), eds.end(), [](const ScintillaNext *editor) { return !editor->isSavedToDisk(); });
+    return std::ranges::any_of(eds, [](const ScintillaNext *editor) { return !editor->isSavedToDisk(); });
 }
 
-void MainWindow::updateEOLBasedUi(ScintillaNext *editor) {
+void MainWindow::updateEOLBasedUi(const ScintillaNext *editor) {
     qInfo(Q_FUNC_INFO);
 
     switch (editor->eOLMode()) {
@@ -2764,10 +2739,12 @@ void MainWindow::updateEOLBasedUi(ScintillaNext *editor) {
         case SC_EOL_LF:
             ui->actionUnix->setChecked(true);
             break;
+        default:
+            break;
     }
 }
 
-void MainWindow::updateSaveStatusBasedUi(ScintillaNext *editor) {
+void MainWindow::updateSaveStatusBasedUi(const ScintillaNext *editor) {
     qInfo(Q_FUNC_INFO);
 
     bool isDirty = editor && !editor->isSavedToDisk();
@@ -2790,24 +2767,30 @@ void MainWindow::updateSaveStatusBasedUi(ScintillaNext *editor) {
 }
 
 void MainWindow::updateEditorPositionBasedUi() {
-    const int index = dockedEditor->currentDockArea()->currentIndex();
-    const int total = dockedEditor->currentDockArea()->dockWidgetsCount();
+    auto *dockArea = dockedEditor->currentDockArea();
+    if (!dockArea) {
+        ui->actionCloseAllToLeft->setEnabled(false);
+        ui->actionCloseAllToRight->setEnabled(false);
+        ui->actionCloseAllExceptActive->setEnabled(false);
+        return;
+    }
+
+    const int index = dockArea->currentIndex();
+    const int total = dockArea->dockWidgetsCount();
 
     ui->actionCloseAllToLeft->setEnabled(index > 0);
     ui->actionCloseAllToRight->setEnabled(index < (total - 1));
     ui->actionCloseAllExceptActive->setEnabled(editorCount() > 1);
 }
 
-void MainWindow::updateLanguageBasedUi(const ScintillaNext *editor) {
+void MainWindow::updateLanguageBasedUi(const ScintillaNext *editor) const {
     qInfo(Q_FUNC_INFO);
 
     const QString language_name = editor->languageName;
     const auto actions = languageActionGroup->actions();
 
-    auto it = std::find_if(actions.begin(), actions.end(),
-                           [&](const QAction *action) { return action->data().toString() == language_name; });
-
-    if (it != actions.end()) {
+    if (auto it = std::ranges::find_if(actions, [&](const QAction *action) { return action->data().toString() == language_name; });
+        it != actions.end()) {
         (*it)->setChecked(true);
         return;
     }
@@ -2838,7 +2821,7 @@ void MainWindow::updateGui(ScintillaNext *editor) {
 void MainWindow::updateDocumentBasedUi(Scintilla::Update updated) {
     ScintillaNext *editor = qobject_cast<ScintillaNext *>(sender());
 
-    // TODO: what if this is triggered by an editor that is not the active editor?
+    // Note: what if this is triggered by an editor that is not the active editor?
 
     if (Scintilla::FlagSet(updated, Scintilla::Update::Text)) {
         updateSelectionBasedUi(editor);
@@ -2922,13 +2905,10 @@ void MainWindow::detectLanguage(ScintillaNext *editor) {
         // Default to some specific language if it is not a file.
         setLanguage(editor, "Text");
         return;
-    } else {
-        const QString language_name = app->detectLanguage(editor);
-
-        setLanguage(editor, language_name);
     }
 
-    return;
+    const QString language_name = app->detectLanguage(editor);
+    setLanguage(editor, language_name);
 }
 
 void MainWindow::activateEditor(ScintillaNext *editor) {
@@ -2936,7 +2916,7 @@ void MainWindow::activateEditor(ScintillaNext *editor) {
 
     checkFileForModification(editor);
     if (editor) {
-        int curIdx = editors().indexOf(editor);
+        int curIdx = static_cast<int>(editors().indexOf(editor));
         int total = editorCount();
         AccessibilityManager::instance()->announceDocumentState(editor, curIdx, total);
     }
@@ -2963,9 +2943,8 @@ void MainWindow::applyStyleSheet() {
     QString sheet = ThemeManager::instance()->getThemeStyleSheet();
 
     // If there is a "custom.css" file where the ini is located, load it as a style sheet addition
-    QString directoryPath = QFileInfo(app->getSettings()->fileName()).absolutePath();
-    QString fullPath = QDir(directoryPath).filePath("custom.css");
-    if (QFile::exists(fullPath)) {
+    const QString directoryPath = QFileInfo(app->getSettings()->fileName()).absolutePath();
+    if (const QString fullPath = QDir(directoryPath).filePath("custom.css"); QFile::exists(fullPath)) {
         QFile custom(fullPath);
         qInfo() << "Loading stylesheet:" << custom.fileName();
 
@@ -3036,9 +3015,7 @@ bool MainWindow::checkFileForModification(ScintillaNext *editor) {
         return false;
     }
 
-    auto state = editor->checkFileForStateChange();
-
-    if (state == ScintillaNext::NoChange) {
+    if (const auto state = editor->checkFileForStateChange(); state == ScintillaNext::NoChange) {
         return false;
     } else if (state == ScintillaNext::Modified) {
         qInfo("ScintillaNext::Modified");
@@ -3059,7 +3036,7 @@ bool MainWindow::checkFileForModification(ScintillaNext *editor) {
     return true;
 }
 
-void MainWindow::showSaveErrorMessage(ScintillaNext *editor, QFileDevice::FileError error) {
+void MainWindow::showSaveErrorMessage(const ScintillaNext *editor, QFileDevice::FileError error) {
     const QString name = editor->isFile() ? editor->getFilePath() : editor->getName();
 
     // Map error code to human-readable string
@@ -3116,26 +3093,25 @@ void MainWindow::showSaveErrorMessage(ScintillaNext *editor, QFileDevice::FileEr
                               tr("An error occurred when saving <b>%1</b><br><br>Error: %2").arg(name, errorString));
 }
 
-void MainWindow::showEditorZoomLevelIndicator() {
+void MainWindow::showEditorZoomLevelIndicator() const {
     // Not sure if Scintilla's zoom level matches up to an exact percentage, but visibly this is close
     FadingIndicator::showText(currentEditor(), tr("Zoom: %1%").arg(zoomLevel * 10 + 100));
 }
 
 MainWindow::UserSaveAction MainWindow::promptForSave(const QVector<ScintillaNext *> &editorList) {
+    using enum UserSaveAction;
     ModernMessageBox::ActionChoice choice = ModernMessageBox::promptForSave(this, editorList);
     if (choice == ModernMessageBox::ActionChoice::SaveOrAccept)
-        return UserSaveAction::SaveAll;
+        return SaveAll;
     if (choice == ModernMessageBox::ActionChoice::Discard)
-        return UserSaveAction::DiscardAll;
-    return UserSaveAction::Cancel;
+        return DiscardAll;
+    return Cancel;
 }
 
-void MainWindow::newWindow() {
+void MainWindow::newWindow() const {
 #if defined(Q_OS_MACOS)
-    QString appPath = QCoreApplication::applicationFilePath();
-    QDir dir(appPath);
-    if (dir.cdUp() && dir.cdUp() && dir.cdUp()) {
-        QString bundlePath = dir.absolutePath();
+    if (QDir dir(QCoreApplication::applicationFilePath()); dir.cdUp() && dir.cdUp() && dir.cdUp()) {
+        const QString bundlePath = dir.absolutePath();
         if (bundlePath.endsWith(QStringLiteral(".app"), Qt::CaseInsensitive)) {
             QProcess::startDetached(QStringLiteral("/usr/bin/open"),
                                     QStringList() << QStringLiteral("-n") << bundlePath << QStringLiteral("--args")
@@ -3157,8 +3133,7 @@ void MainWindow::exportPdf() {
     if (defaultName.isEmpty())
         defaultName = tr("Untitled");
     if (!defaultName.endsWith(QStringLiteral(".pdf"), Qt::CaseInsensitive)) {
-        int dot = defaultName.lastIndexOf('.');
-        if (dot > 0)
+        if (const int dot = static_cast<int>(defaultName.lastIndexOf('.')); dot > 0)
             defaultName = defaultName.left(dot);
         defaultName += QStringLiteral(".pdf");
     }
@@ -3211,7 +3186,7 @@ void MainWindow::exportPdf() {
     int yPos = startY;
     int pageNum = 1;
 
-    int totalLines = editor->linesOnScreen() > 0 ? editor->lineCount() : 1;
+    int totalLines = static_cast<int>(editor->linesOnScreen() > 0 ? editor->lineCount() : 1);
     for (int i = 0; i < totalLines; ++i) {
         if (yPos + lineHeight > pageRect.bottom() - 30) {
             painter.setPen(QColor(128, 128, 128));
@@ -3293,7 +3268,7 @@ ISearchResultsHandler *MainWindow::determineSearchResultsHandler() {
 }
 
 void MainWindow::restoreWindowState() {
-    ApplicationSettings *settings = app->getSettings();
+    const ApplicationSettings *settings = app->getSettings();
 
     restoreGeometry(settings->value("MainWindow/geometry").toByteArray());
     restoreState(settings->value("MainWindow/windowState").toByteArray());
@@ -3316,12 +3291,8 @@ void MainWindow::switchToEditor(const ScintillaNext *editor) {
 void MainWindow::focusIn() {
     qInfo(Q_FUNC_INFO);
 
-    ScintillaNext *editor = currentEditor();
-
-    if (editor) {
-        if (checkFileForModification(currentEditor())) {
-            updateGui(currentEditor());
-        }
+    if (const ScintillaNext *editor = currentEditor(); editor && checkFileForModification(currentEditor())) {
+        updateGui(currentEditor());
     }
 }
 
@@ -3331,11 +3302,11 @@ void MainWindow::addEditor(ScintillaNext *editor) {
     detectLanguage(editor);
 
     // These should only ever occur for the focused editor??
-    // TODO: look at editor inspector as an example to ensure updates are only coming from one editor.
+    // Note: look at editor inspector as an example to ensure updates are only coming from one editor.
     // Can save the connection objects and disconnected from them and only connect to the editor as it is activated.
-    connect(editor, &ScintillaNext::savePointChanged, this, [=, this]() { updateSaveStatusBasedUi(editor); });
-    connect(editor, &ScintillaNext::renamed, this, [=, this]() { detectLanguage(editor); });
-    connect(editor, &ScintillaNext::renamed, this, [=, this]() { updateFileStatusBasedUi(editor); });
+    connect(editor, &ScintillaNext::savePointChanged, this, [this, editor]() { updateSaveStatusBasedUi(editor); });
+    connect(editor, &ScintillaNext::renamed, this, [this, editor]() { detectLanguage(editor); });
+    connect(editor, &ScintillaNext::renamed, this, [this, editor]() { updateFileStatusBasedUi(editor); });
     connect(editor, &ScintillaNext::updateUi, this, &MainWindow::updateDocumentBasedUi);
 
     // Scintilla pastes the primary selection on middle-click. Suppress an
@@ -3354,8 +3325,8 @@ void MainWindow::addEditor(ScintillaNext *editor) {
     editor->setZoom(zoomLevel);
 
     editor->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(editor, &ScintillaNext::customContextMenuRequested, this, [=, this](const QPoint &pos) {
-        contextMenuPos = editor->positionFromPoint(pos.x(), pos.y());
+    connect(editor, &ScintillaNext::customContextMenuRequested, this, [this, editor](const QPoint &pos) {
+        contextMenuPos = static_cast<int>(editor->positionFromPoint(pos.x(), pos.y()));
 
         // If the click landed outside the current selection, move the caret there
         // and clear the selection so caret-based actions use the clicked location.
@@ -3368,14 +3339,13 @@ void MainWindow::addEditor(ScintillaNext *editor) {
             "Base64Encode", "URLEncode", "",      "Base64Decode", "URLDecode"};
 
         // If the entry exists in the settings, use that
-        ApplicationSettings *settings = app->getSettings();
-        if (settings->contains("Gui/EditorContextMenu")) {
+        if (const auto *settings = app->getSettings(); settings->contains("Gui/EditorContextMenu")) {
             actionNames = settings->value("Gui/EditorContextMenu").toStringList();
         }
 
         // If the cursor is at a URL, prepend the actions
-        URLFinder *urlFinder = editor->findChild<URLFinder *>(QString(), Qt::FindDirectChildrenOnly);
-        if (urlFinder && urlFinder->isEnabled() && urlFinder->isURL(contextMenuPos)) {
+        if (const auto *urlFinder = editor->findChild<URLFinder *>(QString(), Qt::FindDirectChildrenOnly);
+            urlFinder && urlFinder->isEnabled() && urlFinder->isURL(contextMenuPos)) {
             actionNames.prepend("");
             actionNames.prepend("CopyURL");
             actionNames.prepend("OpenURL");
@@ -3404,9 +3374,7 @@ void MainWindow::checkForUpdates(bool silent) {
     }
 }
 
-void MainWindow::checkForUpdatesFinished(const QString &url) {
-    Q_UNUSED(url);
-}
+void MainWindow::checkForUpdatesFinished(const QString & /*url*/) {}
 
 void MainWindow::initUpdateCheck() {
     ui->actionCheckForUpdates->setEnabled(true);
@@ -3477,20 +3445,21 @@ void MainWindow::dropEvent(QDropEvent *event) {
         // Get the urls into a stringlist
         QStringList fileNames;
         for (const QUrl &url : event->mimeData()->urls()) {
-            if (url.isLocalFile()) {
-                QFileInfo info(url.toLocalFile());
-
-                if (info.exists()) {
-                    if (info.isDir()) {
-                        QDirIterator it(url.toLocalFile(), QDir::Files,
-                                        QDirIterator::FollowSymlinks | QDirIterator::Subdirectories);
-                        while (it.hasNext()) {
-                            fileNames << it.next();
-                        }
-                    } else {
-                        fileNames.append(url.toLocalFile());
-                    }
+            if (!url.isLocalFile()) {
+                continue;
+            }
+            QFileInfo info(url.toLocalFile());
+            if (!info.exists()) {
+                continue;
+            }
+            if (info.isDir()) {
+                QDirIterator it(url.toLocalFile(), QDir::Files,
+                                QDirIterator::FollowSymlinks | QDirIterator::Subdirectories);
+                while (it.hasNext()) {
+                    fileNames << it.next();
                 }
+            } else {
+                fileNames.append(url.toLocalFile());
             }
         }
 
@@ -3535,7 +3504,7 @@ void MainWindow::changeEvent(QEvent *event) {
 }
 
 QMenu *MainWindow::buildMenu(const QStringList &actionNames) {
-    QMenu *menu = new QMenu(this);
+    auto *menu = new QMenu(this); // NOSONAR(cpp:S5025)
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
     ActionUtils::populateActionContainer(menu, this, actionNames);
@@ -3543,7 +3512,7 @@ QMenu *MainWindow::buildMenu(const QStringList &actionNames) {
     return menu;
 }
 
-void MainWindow::tabBarRightClicked(ScintillaNext *editor) {
+void MainWindow::tabBarRightClicked(const ScintillaNext *editor) {
     qInfo(Q_FUNC_INFO);
 
     // Focus on the correct tab
@@ -3569,8 +3538,7 @@ void MainWindow::tabBarRightClicked(ScintillaNext *editor) {
                             "CopyFileDirectory"};
 
     // If the entry exists in the settings, use that
-    ApplicationSettings *settings = app->getSettings();
-    if (settings->contains("Gui/TabBarContextMenu")) {
+    if (const auto *settings = app->getSettings(); settings->contains("Gui/TabBarContextMenu")) {
         actionNames = settings->value("Gui/TabBarContextMenu").toStringList();
     }
 
@@ -3593,7 +3561,7 @@ void MainWindow::setupRunMenu() {
     ui->menuBar->insertMenu(ui->menuHelp->menuAction(), menuRun);
 
     // 1. Run... (Ctrl+Alt+R, F6)
-    QAction *actionRun = new QAction(tr("&Run..."), this);
+    auto *actionRun = new QAction(tr("&Run..."), this);
     actionRun->setShortcuts({QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_R), QKeySequence(Qt::Key_F6)});
     connect(actionRun, &QAction::triggered, this, &MainWindow::onRunTriggered);
     menuRun->addAction(actionRun);
@@ -3601,29 +3569,29 @@ void MainWindow::setupRunMenu() {
     menuRun->addSeparator();
 
     // 2. Run Current File in Terminal (Ctrl+Alt+Return)
-    QAction *actionRunCurrentFile = new QAction(tr("Run Current &File in Terminal"), this);
+    auto *actionRunCurrentFile = new QAction(tr("Run Current &File in Terminal"), this);
     actionRunCurrentFile->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_Return));
     connect(actionRunCurrentFile, &QAction::triggered, this, &MainWindow::onRunCurrentFileTriggered);
     menuRun->addAction(actionRunCurrentFile);
 
     // 3. Open Terminal Here (Ctrl+Alt+P)
-    QAction *actionTerminalHere = new QAction(tr("Open &Terminal Here"), this);
+    auto *actionTerminalHere = new QAction(tr("Open &Terminal Here"), this);
     actionTerminalHere->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_P));
     connect(actionTerminalHere, &QAction::triggered, this, &MainWindow::onOpenTerminalHereTriggered);
     menuRun->addAction(actionTerminalHere);
 
     // 4. Reveal in File Manager
-    QAction *actionReveal = new QAction(tr("Reveal in &File Manager"), this);
+    auto *actionReveal = new QAction(tr("Reveal in &File Manager"), this);
     connect(actionReveal, &QAction::triggered, this, &MainWindow::onRevealInFileManagerTriggered);
     menuRun->addAction(actionReveal);
 
     // 5. Open in Default Browser
-    QAction *actionBrowser = new QAction(tr("Open in Default &Web Browser"), this);
+    auto *actionBrowser = new QAction(tr("Open in Default &Web Browser"), this);
     connect(actionBrowser, &QAction::triggered, this, &MainWindow::onOpenInBrowserTriggered);
     menuRun->addAction(actionBrowser);
 
     // 6. Generate Development SSL Certificate (mkcert / OpenSSL)
-    QAction *actionGenerateCert = new QAction(tr("Generate Development SSL &Certificate (mkcert/OpenSSL)..."), this);
+    auto *actionGenerateCert = new QAction(tr("Generate Development SSL &Certificate (mkcert/OpenSSL)..."), this);
     actionGenerateCert->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_C));
     connect(actionGenerateCert, &QAction::triggered, this, &MainWindow::onGenerateCertTriggered);
     menuRun->addAction(actionGenerateCert);
@@ -3631,27 +3599,27 @@ void MainWindow::setupRunMenu() {
     menuRun->addSeparator();
 
     // 6. Web Searches
-    QAction *actionGoogle = new QAction(tr("Search on &Google"), this);
+    auto *actionGoogle = new QAction(tr("Search on &Google"), this);
     connect(actionGoogle, &QAction::triggered, this, &MainWindow::onSearchGoogleTriggered);
     menuRun->addAction(actionGoogle);
 
-    QAction *actionWiki = new QAction(tr("Search on &Wikipedia"), this);
+    auto *actionWiki = new QAction(tr("Search on &Wikipedia"), this);
     actionWiki->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_W));
     connect(actionWiki, &QAction::triggered, this, &MainWindow::onSearchWikipediaTriggered);
     menuRun->addAction(actionWiki);
 
-    QAction *actionGitHub = new QAction(tr("Search on &GitHub"), this);
+    auto *actionGitHub = new QAction(tr("Search on &GitHub"), this);
     connect(actionGitHub, &QAction::triggered, this, &MainWindow::onSearchGitHubTriggered);
     menuRun->addAction(actionGitHub);
 
-    QAction *actionSO = new QAction(tr("Search on &Stack Overflow"), this);
+    auto *actionSO = new QAction(tr("Search on &Stack Overflow"), this);
     connect(actionSO, &QAction::triggered, this, &MainWindow::onSearchStackOverflowTriggered);
     menuRun->addAction(actionSO);
 
     menuRun->addSeparator();
 
     // 7. Manage Tools
-    QAction *actionManage = new QAction(tr("&Manage External Tools..."), this);
+    auto *actionManage = new QAction(tr("&Manage External Tools..."), this);
     connect(actionManage, &QAction::triggered, this, &MainWindow::onManageToolsTriggered);
     menuRun->addAction(actionManage);
 
@@ -3679,10 +3647,8 @@ void MainWindow::updateCustomToolsMenu() {
         }
         connect(act, &QAction::triggered, this, [this, tool]() {
             QString err;
-            if (!ExternalToolManager::executeTool(tool, currentEditor(), &err)) {
-                if (!err.isEmpty()) {
-                    ModernMessageBox::warning(this, tr("Tool Execution Error"), err);
-                }
+            if (!ExternalToolManager::executeTool(tool, currentEditor(), &err) && !err.isEmpty()) {
+                ModernMessageBox::warning(this, tr("Tool Execution Error"), err);
             }
         });
     }
@@ -3697,14 +3663,12 @@ void MainWindow::onRunTriggered() {
 
 void MainWindow::onRunCurrentFileTriggered() {
     QString err;
-    if (!ExternalToolManager::runCurrentFileWithInterpreter(currentEditor(), &err)) {
-        if (!err.isEmpty()) {
-            ModernMessageBox::warning(this, tr("Run Current File"), err);
-        }
+    if (!ExternalToolManager::runCurrentFileWithInterpreter(currentEditor(), &err) && !err.isEmpty()) {
+        ModernMessageBox::warning(this, tr("Run Current File"), err);
     }
 }
 
-void MainWindow::onOpenTerminalHereTriggered() {
+void MainWindow::onOpenTerminalHereTriggered() const {
     QString dir;
     if (currentEditor() && currentEditor()->isFile()) {
         dir = currentEditor()->getFileInfo().dir().absolutePath();
@@ -3712,34 +3676,34 @@ void MainWindow::onOpenTerminalHereTriggered() {
     ExternalToolManager::openTerminal(dir);
 }
 
-void MainWindow::onRevealInFileManagerTriggered() {
+void MainWindow::onRevealInFileManagerTriggered() const {
     if (currentEditor() && currentEditor()->isFile()) {
         ExternalToolManager::revealInFileManager(currentEditor()->getFileInfo().absoluteFilePath());
     }
 }
 
-void MainWindow::onOpenInBrowserTriggered() {
+void MainWindow::onOpenInBrowserTriggered() const {
     if (currentEditor() && currentEditor()->isFile()) {
         ExternalToolManager::openInBrowser(currentEditor()->getFileInfo().absoluteFilePath());
     }
 }
 
-void MainWindow::onSearchGoogleTriggered() {
+void MainWindow::onSearchGoogleTriggered() const {
     ExternalToolManager::webSearch(ExternalToolManager::getSelectedOrCurrentWord(currentEditor()),
                                    QStringLiteral("google"));
 }
 
-void MainWindow::onSearchWikipediaTriggered() {
+void MainWindow::onSearchWikipediaTriggered() const {
     ExternalToolManager::webSearch(ExternalToolManager::getSelectedOrCurrentWord(currentEditor()),
                                    QStringLiteral("wikipedia"));
 }
 
-void MainWindow::onSearchGitHubTriggered() {
+void MainWindow::onSearchGitHubTriggered() const {
     ExternalToolManager::webSearch(ExternalToolManager::getSelectedOrCurrentWord(currentEditor()),
                                    QStringLiteral("github"));
 }
 
-void MainWindow::onSearchStackOverflowTriggered() {
+void MainWindow::onSearchStackOverflowTriggered() const {
     ExternalToolManager::webSearch(ExternalToolManager::getSelectedOrCurrentWord(currentEditor()),
                                    QStringLiteral("stackoverflow"));
 }
@@ -3808,7 +3772,7 @@ void MainWindow::onDecryptDocumentTriggered() {
     }
 }
 
-void MainWindow::onToggleClipboardMonitoringTriggered() {
+void MainWindow::onToggleClipboardMonitoringTriggered() const {
     ClipboardMonitor *mon = ClipboardMonitor::instance();
     mon->toggleMonitoring(currentEditor());
 }
@@ -3861,8 +3825,7 @@ void MainWindow::onTransparencyOptionsTriggered() {
     }
 }
 
-void MainWindow::onTransparencyChanged(bool enabled, int opacity, TransparentWindowManager::TransparencyMode mode) {
-    Q_UNUSED(mode);
+void MainWindow::onTransparencyChanged(bool enabled, int opacity, TransparentWindowManager::TransparencyMode /*mode*/) {
     if (actionToggleTransparency) {
         actionToggleTransparency->setChecked(enabled);
     }
@@ -3882,8 +3845,7 @@ void MainWindow::onToggleTailMonitoringTriggered() {
         return;
     }
 
-    const QString filePath = editor->getFilePath();
-    if (filePath.isEmpty() || !QFile::exists(filePath)) {
+    if (const QString filePath = editor->getFilePath(); filePath.isEmpty() || !QFile::exists(filePath)) {
         ui->statusBar->showMessage(tr("Cannot monitor: File is not saved to disk."), 4000);
         if (actionToggleTailMonitoring)
             actionToggleTailMonitoring->setChecked(false);
@@ -3920,7 +3882,7 @@ void MainWindow::setupWindowMenu() {
     ui->menuBar->insertMenu(ui->menuHelp->menuAction(), menuWindow);
 
     // 1. Minimize
-    QAction *actionMinimize = new QAction(tr("&Minimize"), this);
+    auto *actionMinimize = new QAction(tr("&Minimize"), this);
 #if defined(Q_OS_MACOS)
     actionMinimize->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_M));
 #else
@@ -3930,7 +3892,7 @@ void MainWindow::setupWindowMenu() {
     menuWindow->addAction(actionMinimize);
 
     // 2. Zoom
-    QAction *actionZoom = new QAction(tr("&Zoom"), this);
+    auto *actionZoom = new QAction(tr("&Zoom"), this);
     connect(actionZoom, &QAction::triggered, this, [this]() {
         if (isMaximized()) {
             showNormal();
@@ -3963,7 +3925,7 @@ void MainWindow::setupWindowMenu() {
     menuWindow->addSeparator();
 
     // 5. Bring All to Front
-    QAction *actionBringToFront = new QAction(tr("&Bring All to Front"), this);
+    auto *actionBringToFront = new QAction(tr("&Bring All to Front"), this);
     connect(actionBringToFront, &QAction::triggered, this, [this]() {
         raise();
         activateWindow();
@@ -3973,22 +3935,22 @@ void MainWindow::setupWindowMenu() {
     menuWindow->addSeparator();
 
     // Multi-Monitor and Retina screen management
-    QAction *actionMoveToNextScreen = new QAction(tr("Move to &Next Screen"), this);
+    auto *actionMoveToNextScreen = new QAction(tr("Move to &Next Screen"), this);
     actionMoveToNextScreen->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_Right));
     connect(actionMoveToNextScreen, &QAction::triggered, this, &MainWindow::onMoveToNextScreenTriggered);
     menuWindow->addAction(actionMoveToNextScreen);
 
-    QAction *actionMoveToPrevScreen = new QAction(tr("Move to &Previous Screen"), this);
+    auto *actionMoveToPrevScreen = new QAction(tr("Move to &Previous Screen"), this);
     actionMoveToPrevScreen->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_Left));
     connect(actionMoveToPrevScreen, &QAction::triggered, this, &MainWindow::onMoveToPreviousScreenTriggered);
     menuWindow->addAction(actionMoveToPrevScreen);
 
-    QAction *actionCenterScreen = new QAction(tr("&Center Window on Screen"), this);
+    auto *actionCenterScreen = new QAction(tr("&Center Window on Screen"), this);
     actionCenterScreen->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_C));
     connect(actionCenterScreen, &QAction::triggered, this, &MainWindow::onCenterOnScreenTriggered);
     menuWindow->addAction(actionCenterScreen);
 
-    QAction *actionDisplayDiagnostics = new QAction(tr("&Display & Retina Diagnostics..."), this);
+    auto *actionDisplayDiagnostics = new QAction(tr("&Display & Retina Diagnostics..."), this);
     actionDisplayDiagnostics->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_D));
     connect(actionDisplayDiagnostics, &QAction::triggered, this, &MainWindow::onDisplayDiagnosticsTriggered);
     menuWindow->addAction(actionDisplayDiagnostics);
@@ -4003,8 +3965,8 @@ void MainWindow::onNextDocumentTriggered() {
     if (allEditors.size() <= 1)
         return;
 
-    int curIdx = allEditors.indexOf(currentEditor());
-    int nextIdx = (curIdx + 1) % allEditors.size();
+    int curIdx = static_cast<int>(allEditors.indexOf(currentEditor()));
+    int nextIdx = static_cast<int>((curIdx + 1) % allEditors.size());
     dockedEditor->switchToEditor(allEditors[nextIdx]);
     allEditors[nextIdx]->grabFocus();
 }
@@ -4014,8 +3976,8 @@ void MainWindow::onPreviousDocumentTriggered() {
     if (allEditors.size() <= 1)
         return;
 
-    int curIdx = allEditors.indexOf(currentEditor());
-    int prevIdx = (curIdx - 1 + allEditors.size()) % allEditors.size();
+    int curIdx = static_cast<int>(allEditors.indexOf(currentEditor()));
+    int prevIdx = static_cast<int>((curIdx - 1 + allEditors.size()) % allEditors.size());
     dockedEditor->switchToEditor(allEditors[prevIdx]);
     allEditors[prevIdx]->grabFocus();
 }
@@ -4023,7 +3985,7 @@ void MainWindow::onPreviousDocumentTriggered() {
 void MainWindow::populateWindowMenuDocuments() {
     for (QAction *act : m_windowDocActions) {
         menuWindow->removeAction(act);
-        delete act;
+        delete act; // NOSONAR(cpp:S5025)
     }
     m_windowDocActions.clear();
 
@@ -4031,7 +3993,7 @@ void MainWindow::populateWindowMenuDocuments() {
     if (allEditors.isEmpty())
         return;
 
-    QActionGroup *docGroup = new QActionGroup(this);
+    auto *docGroup = new QActionGroup(this);
     docGroup->setExclusive(true);
 
     const ScintillaNext *current = currentEditor();
@@ -4042,7 +4004,7 @@ void MainWindow::populateWindowMenuDocuments() {
             name.prepend(QStringLiteral("● "));
         }
         QString label = (idx <= 9) ? QString("&%1  %2").arg(idx).arg(name) : name;
-        QAction *act = new QAction(label, menuWindow);
+        auto *act = new QAction(label, menuWindow);
         act->setCheckable(true);
         act->setChecked(ed == current);
         if (ed->isFile()) {
@@ -4087,7 +4049,7 @@ void MainWindow::setupThemeMenu() {
     QMenu *menuLightOnly = menuTheme->addMenu(tr("Light Themes Only"));
     QList<const ThemePalette *> lightPalettes = getThemesByDarkMode(false);
     for (const ThemePalette *pal : lightPalettes) {
-        QAction *act = menuLightOnly->addAction(QString::fromUtf8(pal->displayName));
+        const auto *act = menuLightOnly->addAction(QString::fromUtf8(pal->displayName));
         connect(act, &QAction::triggered, this, [this, pal]() {
             ThemeManager::instance()->setPalette(QString::fromLatin1(pal->id), this);
             ui->statusBar->showMessage(tr("Theme applied: %1").arg(QString::fromUtf8(pal->displayName)), 3000);
@@ -4098,7 +4060,7 @@ void MainWindow::setupThemeMenu() {
     QMenu *menuDarkOnly = menuTheme->addMenu(tr("Dark Themes Only"));
     QList<const ThemePalette *> darkPalettes = getThemesByDarkMode(true);
     for (const ThemePalette *pal : darkPalettes) {
-        QAction *act = menuDarkOnly->addAction(QString::fromUtf8(pal->displayName));
+        const auto *act = menuDarkOnly->addAction(QString::fromUtf8(pal->displayName));
         connect(act, &QAction::triggered, this, [this, pal]() {
             ThemeManager::instance()->setPalette(QString::fromLatin1(pal->id), this);
             ui->statusBar->showMessage(tr("Theme applied: %1").arg(QString::fromUtf8(pal->displayName)), 3000);
@@ -4120,7 +4082,7 @@ void MainWindow::setupThemeMenu() {
             } else {
                 itemLabel += QStringLiteral(" (Light)");
             }
-            QAction *act = famMenu->addAction(itemLabel);
+            const auto *act = famMenu->addAction(itemLabel);
             connect(act, &QAction::triggered, this, [this, pal]() {
                 ThemeManager::instance()->setPalette(QString::fromLatin1(pal->id), this);
                 ui->statusBar->showMessage(tr("Theme applied: %1").arg(QString::fromUtf8(pal->displayName)), 3000);
@@ -4220,8 +4182,7 @@ void MainWindow::restartApplication(bool safeMode) {
     // macOS: detect .app bundle root. If running from Foo.app/Contents/MacOS/SparkNotePad,
     // relaunch via /usr/bin/open -n -a Foo.app to get a proper macOS application lifecycle.
     const QDir appDir(QCoreApplication::applicationDirPath());
-    QDir bundleDir = appDir;
-    if (bundleDir.dirName() == QLatin1StringView("MacOS") && bundleDir.cdUp() && bundleDir.cdUp() &&
+    if (QDir bundleDir = appDir; bundleDir.dirName() == QLatin1StringView("MacOS") && bundleDir.cdUp() && bundleDir.cdUp() &&
         bundleDir.dirName().endsWith(QLatin1StringView(".app"))) {
         QStringList openArgs{QLatin1StringView("-n"), QLatin1StringView("-a"), bundleDir.absolutePath()};
         if (!args.isEmpty()) {

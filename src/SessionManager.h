@@ -29,12 +29,16 @@ class SparkNotePadApplication;
 
 class SessionManager {
 public:
-    enum SessionFileType {
+    enum class SessionFileType : std::uint8_t {
         None = 0,
         SavedFile = 1,
         UnsavedFile = 2,
         TempFile = 4,
     };
+    static constexpr auto None = SessionFileType::None;
+    static constexpr auto SavedFile = SessionFileType::SavedFile;
+    static constexpr auto UnsavedFile = SessionFileType::UnsavedFile;
+    static constexpr auto TempFile = SessionFileType::TempFile;
     Q_DECLARE_FLAGS(SessionFileTypes, SessionFileType)
 
     explicit SessionManager(SparkNotePadApplication *app, SessionFileTypes types = SessionFileTypes());

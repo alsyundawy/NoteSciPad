@@ -110,7 +110,7 @@ struct FontParameters {
 	const char *localeName;
 	Scintilla::FontStretch stretch;
 
-	constexpr FontParameters(
+	explicit constexpr FontParameters(
 		const char *faceName_,
 		XYPOSITION size_=10,
 		Scintilla::FontWeight weight_= Scintilla::FontWeight::Normal,
