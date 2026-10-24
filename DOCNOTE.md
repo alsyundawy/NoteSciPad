@@ -27,17 +27,17 @@ SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostic
 ### Key Milestones in v1.3.5
 
 1. **Eradication of IDE & Linter Diagnostics (945 IDE & 25 SonarQube Errors)**:
-   - **Header Indexing & Preprocessor Resolution**: Replaced broken compilation database generation with a modular `scripts/generate_compilation_database.py` that indexes all `.h` and `.hpp` files (`-x c++-header`) alongside `.cpp`, `.c`, and `.mm` files (286 entries total). Provided full Qt framework search paths (`QtCore`, `QtGui`, `QtWidgets`, `QtNetwork`, `QtPrintSupport`, `QtCore5Compat`, `QtTest`).
-   - **Clangd, SonarLint & C/C++ Extensions**: Added `.vscode/c_cpp_properties.json` and updated `.clangd` with `--query-driver` and complete include flags, eliminating missing `<QObject>`, `<QDialog>`, `<QtGlobal>`, and `#pragma once` warnings.
+   - **Header Indexing & Preprocessor Resolution**: Replaced broken compilation database generation with a modular `scripts/generate_compilation_database.py` that indexes all `.h` and `.hpp` files (`-x c++-header`) alongside `.cpp`, `.c`, and `.mm` files (286 entries total). Eliminated infinite recursive include loop caused by `-I.../include` matching Qt forwarding headers (`#include nested too deeply`), replacing raw include paths with `-iframework` and `-isystem .../Qt*.framework/Headers`.
+   - **Clangd, SonarLint & C/C++ Extensions**: Corrected `.clangd` configuration by removing misplaced `--query-driver` compiler flag, keeping it properly in `clangd.arguments` within `.vscode/settings.json`, and added `.vscode/c_cpp_properties.json` for full IntelliSense and compiler path mapping.
    - **C/C++ FlyLint Crash Fix**: Disabled erroneous external parser (`lizard` compression CLI) in `.vscode/settings.json`, resolving `Line could not be parsed: Usage :` crash.
    - **Code Modernization Across All Pillars**:
-     - `FindReplaceDialog`: Refactored to `std::unique_ptr<Ui::FindReplaceDialog>` and `std::unique_ptr<Finder>`, eliminated variable shadowing (`window` -> `mainWin`, `event` -> `ev`), added `const` member qualifiers, converted string literals to raw strings `R"(\\)"`, added explicit lambda captures, added `using enum Scintilla::FindOption;`, and cast sizes via `static_cast<int>`.
+     - `FindReplaceDialog`: Refactored to `std::unique_ptr<Ui::FindReplaceDialog>` and `std::unique_ptr<Finder>`, eliminated variable shadowing (`window` -> `mainWin`, `dialogEvent`, `showEvt`, `closeEvt`), added `const` member qualifiers, converted string literals to raw strings `R"(\\)"`, added explicit lambda captures, removed redundant lambda return types, replaced redundant explicit types with `auto`, added `using enum Scintilla::FindOption;`, and cast sizes via `static_cast<int>`.
      - `AboutDialog`: Decomposed nested ternaries in `updateThemeColors()`, dropping cognitive complexity under 25, marked `copySystemInfoToClipboard() const`, marked screen pointers `const QScreen *`, and replaced redundant types with `auto`.
      - `ThemeManager`: Defaulted special member functions, added `using enum ThemeManager::ThemeMode;`, decomposed nested ternaries, merged nested `if` statements, reduced scope of `sheet` inside `if (qApp)`, and eliminated pseudo-TODO comments.
-     - `ReleaseManager`: Cast integer sizes via `static_cast<int>`, adopted if-init statements, marked `const QAbstractButton *btnLater`, and cleaned up macro semicolons.
+     - `ReleaseManager`: Cast integer sizes via `static_cast<int>`, replaced redundant type with `auto`, adopted if-init statements, marked `const QAbstractButton *btnLater`, and cleaned up macro semicolons.
      - `LuaState`: Scoped loop counter `i` inside `for` statement, and renamed `module` to `modName`.
      - `TestCryptoManager` & `TestLuaSecurity`: Marked all slot methods `const`, adopted `std::array<std::string_view, 11>`, named test namespace, and used raw string literals.
-     - `generate_compilation_database.py`: Decomposed monolithic script into clean helper functions with cognitive complexity < 5.
+     - `generate_compilation_database.py`: Decomposed monolithic script into clean helper functions with cognitive complexity < 5, and extracted `CPM_CACHE_DIR` and `CLANGXX_PATH` constants.
      - `release.yml`: Refactored `secrets` access to comply with actionlint and workflow schema requirements.
 
 2. **Application Restart & Explicit Exit Lifecycle**:

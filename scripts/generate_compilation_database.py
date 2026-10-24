@@ -8,6 +8,19 @@ Decomposed into modular functions with cognitive complexity < 10.
 import json
 from pathlib import Path
 
+CPM_CACHE_DIR = ".cpm-cache"
+CLANGXX_PATH = "/usr/bin/clang++"
+
+
+FLYENV_NODE_LIB = "/Users/alsyundawy/Library/FlyEnv/env/node/lib"
+QT_MACOS_LIB = "/Users/alsyundawy/Qt/6.12.0/macos/lib"
+
+
+def get_framework_dirs() -> list[str]:
+    """Return framework search paths."""
+    candidates = [FLYENV_NODE_LIB, QT_MACOS_LIB]
+    return [d for d in candidates if Path(d).exists()]
+
 
 def get_include_dirs(root: Path) -> list[str]:
     """Return all project and dependency include paths."""
@@ -20,12 +33,12 @@ def get_include_dirs(root: Path) -> list[str]:
         str(root / "src" / "utils"),
         str(root / "src" / "widgets"),
         str(root / "build" / "src" / "SparkNotePad_autogen" / "include"),
-        str(root / ".cpm-cache" / "ads" / "fb9d" / "src"),
+        str(root / CPM_CACHE_DIR / "ads" / "fb9d" / "src"),
         str(root / "build" / "_deps" / "ads-build" / "src"),
-        str(root / ".cpm-cache" / "qsimpleupdater" / "531e" / "include"),
-        str(root / ".cpm-cache" / "qsimpleupdater" / "531e" / "src"),
-        str(root / ".cpm-cache" / "singleapplication" / "d282"),
-        str(root / ".cpm-cache" / "editorconfig_core_qt" / "87f1"),
+        str(root / CPM_CACHE_DIR / "qsimpleupdater" / "531e" / "include"),
+        str(root / CPM_CACHE_DIR / "qsimpleupdater" / "531e" / "src"),
+        str(root / CPM_CACHE_DIR / "singleapplication" / "d282"),
+        str(root / CPM_CACHE_DIR / "editorconfig_core_qt" / "87f1"),
         str(root / "thirdparty" / "scintilla" / "include"),
         str(root / "thirdparty" / "scintilla" / "src"),
         str(root / "thirdparty" / "scintilla" / "qt" / "ScintillaEditBase"),
@@ -36,23 +49,21 @@ def get_include_dirs(root: Path) -> list[str]:
         str(root / "thirdparty" / "lua" / "src"),
         str(root / "thirdparty" / "uchardet" / "src"),
         str(root / "tests"),
-        # Qt system includes
-        "/Users/alsyundawy/Library/FlyEnv/env/node/include",
-        "/Users/alsyundawy/Library/FlyEnv/env/node/include/QtCore",
-        "/Users/alsyundawy/Library/FlyEnv/env/node/include/QtGui",
-        "/Users/alsyundawy/Library/FlyEnv/env/node/include/QtWidgets",
-        "/Users/alsyundawy/Library/FlyEnv/env/node/include/QtNetwork",
-        "/Users/alsyundawy/Library/FlyEnv/env/node/include/QtPrintSupport",
-        "/Users/alsyundawy/Library/FlyEnv/env/node/include/QtCore5Compat",
-        "/Users/alsyundawy/Library/FlyEnv/env/node/include/QtTest",
-        "/Users/alsyundawy/Qt/6.12.0/macos/include",
-        "/Users/alsyundawy/Qt/6.12.0/macos/include/QtCore",
-        "/Users/alsyundawy/Qt/6.12.0/macos/include/QtGui",
-        "/Users/alsyundawy/Qt/6.12.0/macos/include/QtWidgets",
-        "/Users/alsyundawy/Qt/6.12.0/macos/include/QtNetwork",
-        "/Users/alsyundawy/Qt/6.12.0/macos/include/QtPrintSupport",
-        "/Users/alsyundawy/Qt/6.12.0/macos/include/QtCore5Compat",
-        "/Users/alsyundawy/Qt/6.12.0/macos/include/QtTest",
+        # Qt system framework headers
+        f"{FLYENV_NODE_LIB}/QtCore.framework/Headers",
+        f"{FLYENV_NODE_LIB}/QtGui.framework/Headers",
+        f"{FLYENV_NODE_LIB}/QtWidgets.framework/Headers",
+        f"{FLYENV_NODE_LIB}/QtNetwork.framework/Headers",
+        f"{FLYENV_NODE_LIB}/QtPrintSupport.framework/Headers",
+        f"{FLYENV_NODE_LIB}/QtCore5Compat.framework/Headers",
+        f"{FLYENV_NODE_LIB}/QtTest.framework/Headers",
+        f"{QT_MACOS_LIB}/QtCore.framework/Headers",
+        f"{QT_MACOS_LIB}/QtGui.framework/Headers",
+        f"{QT_MACOS_LIB}/QtWidgets.framework/Headers",
+        f"{QT_MACOS_LIB}/QtNetwork.framework/Headers",
+        f"{QT_MACOS_LIB}/QtPrintSupport.framework/Headers",
+        f"{QT_MACOS_LIB}/QtCore5Compat.framework/Headers",
+        f"{QT_MACOS_LIB}/QtTest.framework/Headers",
     ]
     return [d for d in dirs if Path(d).exists()]
 
@@ -61,6 +72,9 @@ def get_base_defines() -> list[str]:
     """Return common preprocessor defines."""
     return [
         '-DAPP_VERSION="1.3.5"',
+        '-DAPP_DISTRIBUTION="Source"',
+        '-DAPP_COPYRIGHT="Copyright 2019-2026 Justin Dailey & SparkNotePad Contributors"',
+        '-DAPP_COPYRIGHT_BUILDER="Copyright 2026 HARRY DS ALSYUNDAWY (SparkNotePad Maintainer)"',
         "-DSCI_OWNREGEX",
         "-DADS_STATIC",
         "-DQSIMPLEUPDATER_STATIC",
@@ -95,14 +109,18 @@ def determine_compiler_and_std(suffix: str) -> tuple[str, str]:
     if suffix == ".c":
         return "/usr/bin/clang", "-std=c17"
     if suffix == ".mm":
-        return "/usr/bin/clang++", "-std=c++20 -x objective-c++"
+        return CLANGXX_PATH, "-std=c++20 -x objective-c++"
     if suffix in {".h", ".hpp"}:
-        return "/usr/bin/clang++", "-std=c++20 -x c++-header"
-    return "/usr/bin/clang++", "-std=c++20"
+        return CLANGXX_PATH, "-std=c++20 -x c++-header"
+    return CLANGXX_PATH, "-std=c++20"
 
 
 def build_compile_entry(
-    sf: Path, root: Path, inc_flags: list[str], base_defines: list[str]
+    sf: Path,
+    root: Path,
+    inc_flags: list[str],
+    fw_flags: list[str],
+    base_defines: list[str],
 ) -> dict[str, str]:
     """Generate a single compile command dictionary."""
     rel_path = sf.relative_to(root)
@@ -115,6 +133,7 @@ def build_compile_entry(
     cmd_parts = [
         compiler,
         std_flag,
+        *fw_flags,
         *defines,
         *inc_flags,
         "-c",
@@ -154,11 +173,16 @@ def main() -> None:
 
     include_dirs = get_include_dirs(root)
     inc_flags = [f"-I{inc}" for inc in include_dirs]
+    framework_dirs = get_framework_dirs()
+    fw_flags: list[str] = []
+    for fw in framework_dirs:
+        fw_flags.extend(["-iframework", fw])
     base_defines = get_base_defines()
 
     source_files = collect_source_files([root / "src", root / "tests"])
     entries = [
-        build_compile_entry(sf, root, inc_flags, base_defines) for sf in source_files
+        build_compile_entry(sf, root, inc_flags, fw_flags, base_defines)
+        for sf in source_files
     ]
 
     write_database(entries, build_dir, root)

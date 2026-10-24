@@ -60,7 +60,7 @@ bool ReleaseManager::isNewerVersion(const QString &latestVersion, const QString 
     QStringList lParts = lCore.split('.');
     QStringList cParts = cCore.split('.');
 
-    const int maxLen = static_cast<int>(qMax(lParts.size(), cParts.size()));
+    const auto maxLen = static_cast<int>(qMax(lParts.size(), cParts.size()));
     for (int i = 0; i < maxLen; ++i) {
         int lNum = (i < lParts.size()) ? lParts[i].toInt() : 0;
         int cNum = (i < cParts.size()) ? cParts[i].toInt() : 0;

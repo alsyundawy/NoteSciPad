@@ -56,9 +56,9 @@ public:
     void setSearchResultsHandler(ISearchResultsHandler *searchResultsHandler);
 
 protected:
-    bool event(QEvent *ev) override;
-    void showEvent(QShowEvent *ev) override;
-    void closeEvent(QCloseEvent *ev) override;
+    bool event(QEvent *dialogEvent) override;
+    void showEvent(QShowEvent *showEvt) override;
+    void closeEvent(QCloseEvent *closeEvt) override;
 
 signals:
     void windowActivated();

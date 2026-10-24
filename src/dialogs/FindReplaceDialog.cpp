@@ -200,17 +200,17 @@ void FindReplaceDialog::setTab(int tab) {
     tabBar->setCurrentIndex(tab);
 }
 
-bool FindReplaceDialog::event(QEvent *ev) {
-    if (ev->type() == QEvent::WindowActivate) {
+bool FindReplaceDialog::event(QEvent *dialogEvent) {
+    if (dialogEvent->type() == QEvent::WindowActivate) {
         emit windowActivated();
-    } else if (ev->type() == QEvent::WindowDeactivate) {
+    } else if (dialogEvent->type() == QEvent::WindowDeactivate) {
         emit windowDeactivated();
     }
 
-    return QDialog::event(ev);
+    return QDialog::event(dialogEvent);
 }
 
-void FindReplaceDialog::showEvent(QShowEvent *ev) {
+void FindReplaceDialog::showEvent(QShowEvent *showEvt) {
     qInfo(Q_FUNC_INFO);
 
     if (!isFirstTime)
@@ -218,13 +218,13 @@ void FindReplaceDialog::showEvent(QShowEvent *ev) {
 
     isFirstTime = false;
 
-    QDialog::showEvent(ev);
+    QDialog::showEvent(showEvt);
 }
 
-void FindReplaceDialog::closeEvent(QCloseEvent *ev) {
+void FindReplaceDialog::closeEvent(QCloseEvent *closeEvt) {
     saveSettings();
 
-    QDialog::closeEvent(ev);
+    QDialog::closeEvent(closeEvt);
 }
 
 static void updateComboList(QComboBox *comboBox, const QString &text) {
@@ -281,16 +281,16 @@ void FindReplaceDialog::findAllInCurrentDocument() {
     QString text = findString();
 
     finder->options().text = text;
-    finder->forEachMatch([&firstMatch, this](int start, int end) -> int {
+    finder->forEachMatch([&firstMatch, this](int start, int end) {
         // Only add the file entry if there was a valid search result
         if (firstMatch) {
             searchResultsHandler->newFileEntry(editor);
             firstMatch = false;
         }
 
-        const int line = static_cast<int>(editor->lineFromPosition(start));
-        const int lineStartPosition = static_cast<int>(editor->positionFromLine(line));
-        const int lineEndPosition = static_cast<int>(editor->lineEndPosition(line));
+        const auto line = static_cast<int>(editor->lineFromPosition(start));
+        const auto lineStartPosition = static_cast<int>(editor->positionFromLine(line));
+        const auto lineEndPosition = static_cast<int>(editor->lineEndPosition(line));
         const int startPositionFromBeginning = start - lineStartPosition;
         const int endPositionFromBeginning = end - lineStartPosition;
         QString lineText = editor->get_text_range(lineStartPosition, lineEndPosition);
@@ -732,12 +732,12 @@ void FindReplaceDialog::markAll() {
     }
 
     int matchCount = 0;
-    finder->forEachMatch([this, &matchCount, bmDecorator](int start, int end) -> int {
+    finder->forEachMatch([this, &matchCount, bmDecorator](int start, int end) {
         editor->indicatorFillRange(start, end - start);
         matchCount++;
 
         if (bmDecorator) {
-            const int line = static_cast<int>(editor->lineFromPosition(start));
+            const auto line = static_cast<int>(editor->lineFromPosition(start));
             if (!bmDecorator->isBookmarkSet(line)) {
                 bmDecorator->addBookmark(line);
             }
@@ -766,7 +766,7 @@ void FindReplaceDialog::copyMarkedText() {
 
     QStringList markedTexts;
     int pos = 0;
-    const int len = static_cast<int>(editor->length());
+    const auto len = static_cast<int>(editor->length());
 
     while (pos < len) {
         if (editor->indicatorValueAt(markIndicator, pos)) {
