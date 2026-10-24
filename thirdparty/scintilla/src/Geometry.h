@@ -84,8 +84,7 @@ public:
 	XYPOSITION right;
 	XYPOSITION bottom;
 
-	// NOSONAR(cpp:S5498)
-	constexpr explicit PRectangle(XYPOSITION left_=0, XYPOSITION top_=0, XYPOSITION right_=0, XYPOSITION bottom_ = 0) noexcept :
+	constexpr explicit PRectangle(XYPOSITION left_=0, XYPOSITION top_=0, XYPOSITION right_=0, XYPOSITION bottom_ = 0) noexcept : // NOLINT // NOSONAR
 		left(left_), top(top_), right(right_), bottom(bottom_) {
 	}
 
@@ -198,7 +197,7 @@ public:
 	}
 
 	constexpr ColourRGBA(ColourRGBA cd, unsigned int alpha) noexcept :
-		ColourRGBA(static_cast<int>(cd.OpaqueRGB()) | static_cast<int>(alpha << aShift)) {
+		ColourRGBA(cd.OpaqueRGB() | static_cast<int>(alpha << aShift)) {
 	}
 
 	static constexpr ColourRGBA FromRGB(int co_) noexcept {
@@ -210,7 +209,7 @@ public:
 	}
 
 	static constexpr ColourRGBA FromIpRGB(intptr_t co_) noexcept {
-		const int rgb = static_cast<int>(co_ & rgbMask);
+		const auto rgb = static_cast<int>(co_ & rgbMask);
 		return ColourRGBA(rgb | static_cast<int>(maximumByte << aShift));
 	}
 
@@ -280,8 +279,7 @@ class Stroke {
 public:
 	ColourRGBA colour;
 	XYPOSITION width;
-	// NOSONAR(cpp:S1709) // cppcheck-suppress noExplicitConstructor
-	constexpr Stroke(ColourRGBA colour_, XYPOSITION width_=1.0) noexcept :
+	constexpr Stroke(ColourRGBA colour_, XYPOSITION width_=1.0) noexcept : // NOLINT // NOSONAR(cpp:S1709)
 		colour(colour_), width(width_) {
 	}
 	[[nodiscard]] constexpr float WidthF() const noexcept {
@@ -295,11 +293,7 @@ public:
 class Fill {
 public:
 	ColourRGBA colour;
-	// Not explicit as used very often from simple contexts so would just be noise.
-	// NOSONAR(cpp:S1709) // cppcheck-suppress noExplicitConstructor
-	constexpr Fill(ColourRGBA colour_) noexcept :
-		colour(colour_) {
-	}
+	constexpr Fill(ColourRGBA colour_) noexcept : colour(colour_) {} // NOLINT // NOSONAR(cpp:S1709)
 };
 
 /**
@@ -309,12 +303,10 @@ class FillStroke {
 public:
 	Fill fill;
 	Stroke stroke;
-	// NOSONAR(cpp:S5498)
-	constexpr FillStroke(ColourRGBA colourFill_, ColourRGBA colourStroke_, XYPOSITION widthStroke_=1.0) noexcept :
+	constexpr FillStroke(ColourRGBA colourFill_, ColourRGBA colourStroke_, XYPOSITION widthStroke_=1.0) noexcept : // NOLINT // NOSONAR(cpp:S5498)
 		fill(colourFill_), stroke(colourStroke_, widthStroke_) {
 	}
-	// NOSONAR(cpp:S1709) // cppcheck-suppress noExplicitConstructor
-	constexpr FillStroke(ColourRGBA colourBoth, XYPOSITION widthStroke_=1.0) noexcept :
+	constexpr FillStroke(ColourRGBA colourBoth, XYPOSITION widthStroke_=1.0) noexcept : // NOLINT // NOSONAR(cpp:S1709)
 		fill(colourBoth), stroke(colourBoth, widthStroke_) {
 	}
 };

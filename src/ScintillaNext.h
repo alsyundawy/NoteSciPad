@@ -30,7 +30,7 @@
 #include <algorithm>
 #include <cstdint>
 
-class ScintillaNext : public ScintillaEdit { // NOSONAR(cpp:S1448, cpp:S110, cpp:S5008)
+class ScintillaNext : public ScintillaEdit {  // NOSONAR(cpp:S1448, cpp:S110, cpp:S5008)
     Q_OBJECT
 
 public:
@@ -103,7 +103,7 @@ public:
 
     void deleteLine(int line);
 
-    void cutAllowLine(); // NOLINT // NOSONAR(cpp:S5495)
+    void cutAllowLine();  // NOLINT // NOSONAR(cpp:S5495)
 
     Sci_CharacterRange getContextText();
     Sci_CharacterRange wordAtPosition(int pos);
@@ -163,10 +163,10 @@ public:
     QString languageName;
     QByteArray languageSingleLineComment;
 
-#include "ScintillaEnums.h" // IWYU pragma: keep // NOLINT // NOSONAR
+#include "ScintillaEnums.h"  // IWYU pragma: keep // NOLINT // NOSONAR
 
 public slots:
-    void close(); // NOLINT // NOSONAR(cpp:S5495)
+    void close();  // NOLINT // NOSONAR(cpp:S5495)
     QFileDevice::FileError save(bool preserveTimestamp = false);
     QDateTime fileTimestamp();
     void updateTimestamp();
@@ -231,7 +231,7 @@ void ScintillaNext::forEachMatchInRange(const QByteArray &text, Func callback, S
     while (send(SCI_FINDTEXT, flags, reinterpret_cast<sptr_t>(&ttf)) != INVALID_POSITION) {
         if (ttf.chrgText.cpMin == ttf.chrgText.cpMax)
             break;
-        ttf.chrg.cpMin = callback(ttf.chrgText.cpMin, ttf.chrgText.cpMax);
+        ttf.chrg.cpMin = callback(static_cast<int>(ttf.chrgText.cpMin), static_cast<int>(ttf.chrgText.cpMax));
     }
 }
 

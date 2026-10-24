@@ -10,7 +10,7 @@
 #define PLATFORM_H
 
 #include <cstddef>
-#include <cstdint>
+#include <cstdint> // IWYU pragma: keep // NOLINT
 #include <memory>
 #include <optional>
 #include <string>
@@ -122,7 +122,7 @@ struct FontParameters {
 	const char *localeName;
 	Scintilla::FontStretch stretch;
 
-	// NOSONAR(cpp:S5498)
+	// NOSONAR(cpp:S107, cpp:S5498) // NOLINT
 	explicit constexpr FontParameters(
 		const char *faceName_,
 		XYPOSITION size_=10,
@@ -163,6 +163,7 @@ public:
 
 class IScreenLine {
 public:
+	virtual ~IScreenLine() noexcept = default;
 	virtual std::string_view Text() const = 0;
 	virtual size_t Length() const = 0;
 	virtual size_t RepresentationCount() const = 0;
@@ -213,7 +214,7 @@ public:
 
 	virtual void SetMode(SurfaceMode mode)=0;
 
-	enum class Ends {
+	enum class Ends : std::uint8_t {
 		semiCircles = 0x0,
 		leftFlat = 0x1,
 		leftAngle = 0x2,
@@ -237,7 +238,7 @@ public:
 	virtual void FillRectangle(PRectangle rc, Surface &surfacePattern)=0;
 	virtual void RoundedRectangle(PRectangle rc, FillStroke fillStroke)=0;
 	virtual void AlphaRectangle(PRectangle rc, XYPOSITION cornerSize, FillStroke fillStroke)=0;
-	enum class GradientOptions { leftToRight, topToBottom };
+	enum class GradientOptions : std::uint8_t { leftToRight, topToBottom };
 	virtual void GradientRectangle(PRectangle rc, const std::vector<ColourStop> &stops, GradientOptions options)=0;
 	virtual void DrawRGBAImage(PRectangle rc, int width, int height, const unsigned char *pixelsImage) = 0;
 	virtual void Ellipse(PRectangle rc, FillStroke fillStroke)=0;
@@ -276,7 +277,7 @@ public:
  */
 class Window {
 protected:
-	WindowID wid = nullptr; // NOSONAR(cpp:S5495)
+	WindowID wid = nullptr; // NOSONAR(cpp:S5495, cpp:S878)
 public:
 	Window() noexcept = default;
 	Window(const Window &source) = delete;
@@ -299,7 +300,7 @@ public:
 	void Show(bool show=true);
 	void InvalidateAll();
 	void InvalidateRectangle(PRectangle rc);
-	enum class Cursor { invalid, text, arrow, up, wait, horizontal, vertical, reverseArrow, hand };
+	enum class Cursor : std::uint8_t { invalid, text, arrow, up, wait, horizontal, vertical, reverseArrow, hand };
 	void SetCursor(Cursor curs);
 	PRectangle GetMonitorRect(Point pt);
 private:
@@ -313,7 +314,7 @@ private:
 // ScintillaBase implements IListBoxDelegate to receive ListBoxEvents from a ListBox
 
 struct ListBoxEvent {
-	enum class EventType { selectionChange, doubleClick };
+	enum class EventType : std::uint8_t { selectionChange, doubleClick };
 	EventType event;
 	explicit ListBoxEvent(EventType event_) noexcept : event(event_) {
 	}

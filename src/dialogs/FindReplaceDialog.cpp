@@ -167,7 +167,7 @@ FindReplaceDialog::FindReplaceDialog(ISearchResultsHandler *searchResults, MainW
 
         setEditor(current_editor);
 
-        showMessage(tr("Replaced %Ln matches", "", totalReplaced), "green");
+        showMessage(tr("Replaced %Ln matches", "", totalReplaced), MessageType::Success);
     });
     connect(ui->buttonClose, &QPushButton::clicked, this, &FindReplaceDialog::close);
     connect(ui->buttonMarkAll, &QPushButton::clicked, this, &FindReplaceDialog::markAll);
@@ -259,7 +259,8 @@ void FindReplaceDialog::performFind(SearchDirection direction) {
 
     if (result) {
         if (result.wrapped) {
-            showMessage(tr("The end of the document has been reached. Found 1st occurrence from the top."), "green");
+            showMessage(tr("The end of the document has been reached. Found 1st occurrence from the top."),
+                        MessageType::Success);
         }
 
         // Defensive handling for zero-length match boundaries
@@ -269,7 +270,7 @@ void FindReplaceDialog::performFind(SearchDirection direction) {
 
         editor->goToRange(result.range);
     } else {
-        showMessage(tr("No matches found."), "red");
+        showMessage(tr("No matches found."), MessageType::Error);
     }
 }
 
@@ -328,7 +329,7 @@ void FindReplaceDialog::replace() {
     }
 
     if (finder->replaceSelectionIfMatch(replaceText)) {
-        showMessage(tr("1 occurrence was replaced"), "blue");
+        showMessage(tr("1 occurrence was replaced"), MessageType::Info);
     }
 
     FindResult result = finder->findNext();
@@ -336,7 +337,7 @@ void FindReplaceDialog::replace() {
     if (result) {
         editor->goToRange(result.range);
     } else {
-        showMessage(tr("No more occurrences were found"), "red");
+        showMessage(tr("No more occurrences were found"), MessageType::Error);
         ui->comboFind->setFocus();
         ui->comboFind->lineEdit()->selectAll();
     }
@@ -354,7 +355,7 @@ void FindReplaceDialog::replaceAll() {
     }
 
     int replacedCount = finder->replaceAll(replaceText);
-    showMessage(tr("Replaced %Ln matches", "", replacedCount), "green");
+    showMessage(tr("Replaced %Ln matches", "", replacedCount), MessageType::Success);
 }
 
 void FindReplaceDialog::count() {
@@ -364,7 +365,7 @@ void FindReplaceDialog::count() {
 
     int total = finder->count();
 
-    showMessage(tr("Found %Ln matches", "", total), "green");
+    showMessage(tr("Found %Ln matches", "", total), MessageType::Success);
 }
 
 void FindReplaceDialog::setEditor(ScintillaNext *edit) {
@@ -751,7 +752,7 @@ void FindReplaceDialog::markAll() {
         return end;
     });
 
-    showMessage(tr("Mark: %Ln match in entire file", "", matchCount), "green");
+    showMessage(tr("Mark: %Ln match in entire file", "", matchCount), MessageType::Success);
 }
 
 void FindReplaceDialog::clearAllMarks() {
@@ -761,7 +762,7 @@ void FindReplaceDialog::clearAllMarks() {
     editor->setIndicatorCurrent(markIndicator);
     editor->indicatorClearRange(0, editor->length());
     clearAllBookmarks();
-    showMessage(tr("All marks cleared"), "green");
+    showMessage(tr("All marks cleared"), MessageType::Success);
 }
 
 void FindReplaceDialog::copyMarkedText() {
@@ -784,23 +785,27 @@ void FindReplaceDialog::copyMarkedText() {
     }
 
     if (markedTexts.isEmpty()) {
-        showMessage(tr("No marks to copy"), "red");
+        showMessage(tr("No marks to copy"), MessageType::Error);
         return;
     }
 
     QGuiApplication::clipboard()->setText(markedTexts.join("\n"));
-    showMessage(tr("Copied %Ln marked text(s)", "", static_cast<int>(markedTexts.size())), "green");
+    showMessage(tr("Copied %Ln marked text(s)", "", static_cast<int>(markedTexts.size())), MessageType::Success);
 }
 
-void FindReplaceDialog::showMessage(const QString &message, const QString &color) { // NOSONAR(cpp:S5498)
-    QString resolvedColor = color;
+void FindReplaceDialog::showMessage(const QString &message, MessageType type) {
     const bool dark = ThemeManager::instance()->isDarkActive();
-    if (color == QLatin1String("green")) {
-        resolvedColor = dark ? QStringLiteral("#3fb950") : QStringLiteral("#1a7f37");
-    } else if (color == QLatin1String("red")) {
-        resolvedColor = dark ? QStringLiteral("#f85149") : QStringLiteral("#cf222e");
-    } else if (color == QLatin1String("blue")) {
-        resolvedColor = dark ? QStringLiteral("#58a6ff") : QStringLiteral("#0969da");
+    QString resolvedColor;
+    switch (type) {
+        case MessageType::Success:
+            resolvedColor = dark ? QStringLiteral("#3fb950") : QStringLiteral("#1a7f37");
+            break;
+        case MessageType::Error:
+            resolvedColor = dark ? QStringLiteral("#f85149") : QStringLiteral("#cf222e");
+            break;
+        case MessageType::Info:
+            resolvedColor = dark ? QStringLiteral("#58a6ff") : QStringLiteral("#0969da");
+            break;
     }
     statusBar->setStyleSheet(QStringLiteral("color: %1; font-weight: 500;").arg(resolvedColor));
     statusBar->showMessage(message);

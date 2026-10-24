@@ -38,7 +38,7 @@ namespace Ui {
 class FindReplaceDialog;
 }
 
-class FindReplaceDialog : public QDialog { // NOSONAR(cpp:S1448)
+class FindReplaceDialog : public QDialog {  // NOSONAR(cpp:S1448)
     Q_OBJECT
 
 public:
@@ -103,7 +103,9 @@ private:
 
     FindOptions findOptions() const;
 
-    void showMessage(const QString &message, const QString &color); // NOSONAR(cpp:S5498)
+    enum class MessageType : std::uint8_t { Success, Error, Info };
+
+    void showMessage(const QString &message, MessageType type = MessageType::Info);
     int ensureMarkIndicator();
     BookMarkDecorator *bookMarkDecorator() const;
     void clearAllBookmarks() const;
