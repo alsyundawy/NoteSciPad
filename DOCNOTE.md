@@ -40,10 +40,12 @@ SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostic
      - `generate_compilation_database.py`: Decomposed monolithic script into clean helper functions with cognitive complexity < 5, and extracted `CPM_CACHE_DIR` and `CLANGXX_PATH` constants.
      - `release.yml`: Refactored `secrets` access to comply with actionlint and workflow schema requirements.
 
-2. **Application Restart & Explicit Exit Lifecycle**:
+2. **Application Restart, Explicit Exit Lifecycle & Modern Toolbar Design**:
    - Native application restart via `MainWindow::restartApplication()` (`Ctrl+Alt+R` / `Cmd+Option+R`).
    - Verifies unsaved tabs, flushes settings, terminates timers, releases `SingleApplication` locks, and relaunches with absolute binary path (`/usr/bin/open -n -a` on macOS, `QProcess::startDetached` on Linux).
    - Explicit File → Exit action with confirmation and status bar feedback.
+   - **Modern Elegant Toolbar Icons**: Replaced low-res PNGs and generic crosses with SVGO-optimized crisp vector SVGs (`icons/restart.svg` in vibrant blue `#2563eb` and `icons/exit.svg` in crimson `#ef4444`).
+   - **Toolbar Preferences Shortcut**: Embedded `actionPreferences` with modern vector icon `icons/settings.svg` directly beside the Restart action on `mainToolBar`.
 
 3. **2025–2026 Primary-Source CVE Audit & Security Hardening**:
    - **CVE-2026-95620 Mitigation**: Disabled HTTP/2 in `ReleaseManager::checkForUpdates()`, eliminating Qt QNetworkAccessManager HTTP/2 use-after-free risk across all Qt 6 versions.

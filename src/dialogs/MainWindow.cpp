@@ -1557,7 +1557,7 @@ MainWindow::MainWindow(SparkNotePadApplication *app)
     languageActionGroup = new QActionGroup(this);
     languageActionGroup->setExclusive(true);
 
-    connect(ui->actionPreferences, &QAction::triggered, this, [=, this] {
+    connect(ui->actionPreferences, &QAction::triggered, this, [this, app] {
         PreferencesDialog *pd = findChild<PreferencesDialog *>(QString(), Qt::FindDirectChildrenOnly);
 
         if (pd == Q_NULLPTR) {

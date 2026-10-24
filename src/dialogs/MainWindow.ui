@@ -551,6 +551,7 @@
    <addaction name="actionSaveCurrentRecordedMacro"/>
    <addaction name="separator"/>
    <addaction name="actionRestart"/>
+   <addaction name="actionPreferences"/>
    <addaction name="actionExit"/>
   </widget>
   <widget class="EditorInfoStatusBar" name="statusBar"/>
@@ -621,7 +622,7 @@
   <action name="actionRestart">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/arrow_refresh.png</normaloff>:/icons/arrow_refresh.png</iconset>
+     <normaloff>:/icons/restart.svg</normaloff>:/icons/restart.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Restart Application</string>
@@ -639,7 +640,7 @@
   <action name="actionExit">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/cross.svg</normaloff>:/icons/cross.svg</iconset>
+     <normaloff>:/icons/exit.svg</normaloff>:/icons/exit.svg</iconset>
    </property>
    <property name="text">
     <string>E&amp;xit</string>
@@ -1249,7 +1250,7 @@
   <action name="actionPreferences">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/icons/cog.png</normaloff>:/icons/cog.png</iconset>
+     <normaloff>:/icons/settings.svg</normaloff>:/icons/settings.svg</iconset>
    </property>
    <property name="text">
     <string>Preferences...</string>

@@ -16,7 +16,11 @@ SparkNotePad v1.3.5 delivers graceful application restart and explicit exit acti
 #### 🆕 Added
 
 - **Restart Application Action (`Ctrl+Alt+R` / `Cmd+Option+R`)**: Graceful restart from the File menu that verifies unsaved documents across all tabs (`checkEditorsBeforeClose()`), flushes `QSettings` (`saveSettings()`), stops the auto-save timer, releases the SingleApplication instance lock (`releaseSingleInstanceLock()`), and relaunches natively: macOS `.app` bundles via `/usr/bin/open -n -a <bundle>` (absolute path), Linux via `QProcess::startDetached(QCoreApplication::applicationFilePath(), args)`. Supports optional `--safe-mode` flag.
-- **Explicit Exit Application Action**: Enhanced clean shutdown with unsaved document confirmation, settings flush, and status bar feedback. Accessible via File → Exit with full `setAccessibleName` / `setStatusTip` metadata.
+- **Modern Elegant Toolbar Icons & Preferences Button**:
+  - Replaced low-resolution pixelated `arrow_refresh.png` with a modern crisp vector SVG circular reload icon (`icons/restart.svg`) in vibrant blue `#2563eb`.
+  - Replaced generic cross with an elegant modern Exit SVG icon (`icons/exit.svg`) featuring an intuitive door-exit vector in crimson `#ef4444`.
+  - Added Preferences shortcut (`actionPreferences`) with modern vector icon (`icons/settings.svg`) directly on `mainToolBar` beside the Restart action for immediate one-click access.
+  - Fully optimized all SVG vector assets via SVGO for crisp rendering across macOS Retina and Linux HiDPI displays.
 - **Security Regression Tests (`tests/test_lua_security.h`)**: Added `TestLuaSecurity` to the standard test suite verifying:
   - CVE-2026-42214 / GHSA-m5fq-c9x5-w54g: Extension injection payloads treated as literal Lua variable data (not code).
   - `LuaState::setVariable()` inert data contract (values pushed via `lua_pushstring`, never `luaL_loadstring`).
