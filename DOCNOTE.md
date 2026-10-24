@@ -22,7 +22,14 @@ Static Linter       : Trunk Check (cppcheck-qt, clang-format, pragma-once)
 
 ## 1. Executive Summary: Release v1.3.0
 
-SparkNotePad **v1.3.0** marks the definitive brand evolution from NoteSciPad into **SparkNotePad**. This release encompasses comprehensive identifier and target renaming across all source modules, packaging manifests, and deployment pipelines. Accompanying the rename is a complete 13-pillar code quality and performance audit, new high-contrast iconsets conforming to Apple HIG and Windows multi-resolution standards, dual-format cryptographic backward compatibility (`SPKENC01` + `NSPENC01`), and refined Indonesian localization adhering strictly to standard terminology.
+SparkNotePad **v1.3.0** marks the definitive brand evolution from NoteSciPad into **SparkNotePad**. This release encompasses comprehensive identifier and target renaming across all source modules, packaging manifests, and deployment pipelines. Accompanying the rename is a complete 13-pillar code quality and performance audit, Toolbar Settings and Exit action integrations with modern vector SVG icons, Find & Replace dialog single-input form enforcement on Find and Mark tabs, new high-contrast iconsets conforming to Apple HIG and Windows multi-resolution standards, dual-format cryptographic backward compatibility (`SPKENC01` + `NSPENC01`), and refined Indonesian localization adhering strictly to standard terminology.
+
+### Key Highlights in v1.3.0
+
+0. **Toolbar Polish & Find/Mark Single Input Enforcement**:
+   - Integrated `actionPreferences` (Settings) and `actionExit` (Exit) directly onto `mainToolBar` with vector SVG icons (`icons/settings.svg`, `icons/exit.svg`).
+   - Fixed `FindReplaceDialog` where `FIND_TAB` and `MARK_TAB` displayed an extra input box. Implemented explicit `ui->labelReplaceWith->hide(); ui->comboReplace->hide();` to enforce exactly 1 form input box on Find and Mark tabs.
+   - Updated `setTab(int tab)` to explicitly trigger `changeTab(tab)`.
 
 ### Key Milestones in v1.3.0
 

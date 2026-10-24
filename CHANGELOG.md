@@ -13,6 +13,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 SparkNotePad v1.3.0 represents a landmark release featuring the official transformation from NoteSciPad into **SparkNotePad** across all application targets, repositories, packaging pipelines, and system integrations. This release delivers an updated visual identity with a custom high-definition iconset adhering to Apple HIG and Windows standards, comprehensive 13-pillar code quality refactoring (eliminating performance bottlenecks, enforcing const-correctness, and resolving lint invariants), complete elimination of dark mode leakage in light mode dialogs, compiler scope hardening across multi-branch targets, refined Indonesian localization and documentation, and dual-format cryptographic compatibility supporting both `SPKENC01` and legacy `NSPENC01` encrypted files.
 
+#### 🛡️ Toolbar Polish & Dialog Form Enforcement
+
+- **Find & Replace Dialog Input Box Form Enforcement (Find & Mark Tabs)**:
+  - Fixed an issue where the Find and Mark tabs inadvertently displayed two input form boxes (showing a squashed or unhidden `Replace` field) because the original code only set `setMaximumHeight(0)` without invoking `hide()`.
+  - Replaced the height-only hack with explicit `ui->labelReplaceWith->hide(); ui->comboReplace->hide();` on `FIND_TAB` and `MARK_TAB`, and `ui->labelReplaceWith->show(); ui->comboReplace->show();` on `REPLACE_TAB`.
+  - Updated `FindReplaceDialog::setTab(int tab)` to explicitly invoke `changeTab(tab)` so that switching to Find or Mark tab reliably resets and enforces exactly ONE single search box on screen.
+- **Settings & Exit Action Icons on Main Toolbar**:
+  - Integrated Settings (`actionPreferences`) and Exit (`actionExit`) buttons directly onto `mainToolBar` with separator.
+  - Added modern vector SVG icons `icons/settings.svg` and `icons/exit.svg` for sharp rendering across Retina and standard displays.
+
 #### 🛡️ Theme Leakage Elimination & Dialog Polish
 
 - **Zero Dark Mode Leakage in Light Mode**: Completely eliminated all usage of fragile Qt `palette(alternate-base)` and `palette(base)` stylesheets across `AboutDialog` and `DisplayInfoDialog`. On host operating systems set to Dark Mode (such as macOS Sequoia/Sonoma or Linux dark themes), Qt previously resolved those palette macros to dark gray (`#2d2d2d`), resulting in unsightly dark rectangles inside light-mode dialogs.
