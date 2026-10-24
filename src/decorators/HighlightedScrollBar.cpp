@@ -73,25 +73,37 @@ void HighlightedScrollBar::drawMarker(QPainter &p, int marker) {
 }
 
 void HighlightedScrollBar::drawIndicator(QPainter &p, int indicator) {
-    int curPos = editor->indicatorEnd(indicator, 0);
+    const int docLength = editor->length();
+    if (docLength <= 0) {
+        return;
+    }
+
+    int curPos = 0;
     int color = editor->indicFore(indicator);
+    int safetyCount = 0;
 
-    if (curPos > 0) {
-        while ((curPos = editor->indicatorEnd(indicator, curPos)) < editor->length()) {
-            drawTickMark(p, posToScrollBarY(curPos), DEFAULT_TICK_HEIGHT, color);
-
-            curPos = editor->indicatorEnd(indicator, curPos);
+    while (curPos < docLength && safetyCount++ < 1500) {
+        int nextPos = editor->indicatorEnd(indicator, curPos);
+        if (nextPos <= curPos) {
+            break;
         }
+        if (editor->indicatorValueAt(indicator, curPos)) {
+            drawTickMark(p, posToScrollBarY(curPos), DEFAULT_TICK_HEIGHT, color);
+        }
+        curPos = nextPos;
     }
 }
 
 void HighlightedScrollBar::drawCursors(QPainter &p) {
-    for (int i = 0; i < editor->selections(); i++) {
+    const int numSelections = editor->selections();
+    for (int i = 0; i < numSelections; i++) {
         int startCaretY = posToScrollBarY(editor->selectionNCaret(i));
         int startAnchorY = posToScrollBarY(editor->selectionNAnchor(i));
 
         if (startCaretY != startAnchorY) {
-            drawTickMark(p, startAnchorY, startCaretY - startAnchorY, CURSOR_SELECTION_COLOR);
+            const int topY = qMin(startCaretY, startAnchorY);
+            const int h = qMax(1, qAbs(startCaretY - startAnchorY));
+            drawTickMark(p, topY, h, CURSOR_SELECTION_COLOR);
         }
 
         drawTickMark(p, startCaretY, DEFAULT_TICK_HEIGHT, CURSOR_CARET_COLOR);
@@ -114,6 +126,10 @@ int HighlightedScrollBar::lineToScrollBarY(int line) const {
 
     if (!editor->endAtLastLine()) {
         lineCount += editor->linesOnScreen();
+    }
+
+    if (lineCount <= 0) {
+        return 0;
     }
 
     return static_cast<double>(line) / lineCount * (rect().height() - scrollbarArrowHeight() * 2);

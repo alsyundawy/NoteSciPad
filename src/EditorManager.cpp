@@ -91,7 +91,7 @@ EditorManager::EditorManager(ApplicationSettings *settings, QObject *parent) : Q
         }
     });
 
-    connect(settings, &ApplicationSettings::fontNameChanged, this, [=, this](QString fontName) {
+    connect(settings, &ApplicationSettings::fontNameChanged, this, [this](const QString &fontName) {
         for (auto &editor : getEditors()) {
             for (int i = 0; i <= STYLE_MAX; ++i) {
                 editor->styleSetFont(i, fontName.toUtf8().data());
@@ -180,13 +180,10 @@ ScintillaNext *EditorManager::getEditorByFilePath(const QString &filePath) {
 
     purgeOldEditorPointers();
 
-    for (ScintillaNext *editor : qAsConst(editors)) {
-        if (editor->isFile() && editor->getFileInfo() == newInfo) {
-            return editor;
-        }
-    }
-
-    return Q_NULLPTR;
+    const auto it = std::find_if(editors.cbegin(), editors.cend(), [&newInfo](const QPointer<ScintillaNext> &editor) {
+        return editor && editor->isFile() && editor->getFileInfo() == newInfo;
+    });
+    return (it != editors.cend()) ? it->data() : nullptr;
 }
 
 void EditorManager::manageEditor(ScintillaNext *editor) {
@@ -273,6 +270,7 @@ void EditorManager::setupEditor(ScintillaNext *editor) {
     }
 
     editor->setScaleTechnique(SCALE_TECHNIQUE_PIXEL_ALIGNED);
+    editor->setCodePage(SC_CP_UTF8);
 
     editor->setIdleStyling(SC_IDLESTYLING_TOVISIBLE);
     editor->setEndAtLastLine(false);
@@ -450,7 +448,7 @@ QList<QPointer<ScintillaNext>> EditorManager::getEditors() {
     return editors;
 }
 
-int EditorManager::detectEOLMode(ScintillaNext *editor) const {
+int EditorManager::detectEOLMode(const ScintillaNext *editor) const {
     qInfo(Q_FUNC_INFO);
 
     const int MIN_LINE_THRESHOLD = 3;

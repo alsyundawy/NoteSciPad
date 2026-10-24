@@ -13,6 +13,7 @@
 #include "ColorPreviewCallTip.h"
 #include "ScintillaNext.h"
 
+#include <QApplication>
 #include <QColorDialog>
 #include <QRegularExpression>
 #include <QToolTip>
@@ -53,6 +54,11 @@ void ColorPreviewCallTip::notify(const Scintilla::NotificationData *pscn) {
 
 void ColorPreviewCallTip::onDwellStart(int x, int y) {
     if (!enabled || !editor) {
+        return;
+    }
+
+    // Do not pop up CallTip or steal mouse focus if text is being selected or mouse button is held down
+    if (!editor->selectionEmpty() || QApplication::mouseButtons() != Qt::NoButton) {
         return;
     }
 
@@ -296,7 +302,7 @@ QString ColorPreviewCallTip::formatColor(const QColor &color, ColorFormat format
 }
 
 bool ColorPreviewCallTip::showPreviewAt(int pos) {
-    if (!editor) {
+    if (!editor || !editor->selectionEmpty() || QApplication::mouseButtons() != Qt::NoButton) {
         return false;
     }
 

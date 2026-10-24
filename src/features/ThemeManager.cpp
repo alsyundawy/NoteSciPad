@@ -280,10 +280,22 @@ void ThemeManager::applyThemeToEditor(ScintillaNext *editor) const {
     editor->setElementColour(SC_ELEMENT_CARET_LINE_BACK, caretLineColor);
     editor->setCaretLineVisible(true);
 
-    // 6. Selection highlight
-    quint32 selColor = 0xFF000000 | scFromRgb(border.rgb());
+    // 6. Selection highlight (vivid high-contrast colors for both light and dark themes)
+    quint32 selColor = 0;
+    quint32 inactiveSelColor = 0;
+    quint32 additionalSelColor = 0;
+    if (pal->isDark) {
+        selColor = 0xFF000000 | scColor(45, 85, 140);
+        inactiveSelColor = 0xFF000000 | scColor(55, 65, 80);
+        additionalSelColor = 0xFF000000 | scColor(55, 95, 150);
+    } else {
+        selColor = 0xFF000000 | scColor(172, 206, 247);  // macOS vibrant selection light blue
+        inactiveSelColor = 0xFF000000 | scColor(215, 222, 230);
+        additionalSelColor = 0xFF000000 | scColor(185, 215, 250);
+    }
     editor->setElementColour(SC_ELEMENT_SELECTION_BACK, selColor);
-    editor->setElementColour(SC_ELEMENT_SELECTION_INACTIVE_BACK, selColor);
+    editor->setElementColour(SC_ELEMENT_SELECTION_INACTIVE_BACK, inactiveSelColor);
+    editor->setElementColour(SC_ELEMENT_SELECTION_ADDITIONAL_BACK, additionalSelColor);
 
     // 7. Fold margin colors
     editor->setFoldMarginColour(true, scFromRgb(card.rgb()));

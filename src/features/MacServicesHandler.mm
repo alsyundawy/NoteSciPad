@@ -144,6 +144,13 @@ void MacServicesHandler::postVoiceOverAnnouncement(const QString &text)
     }
 }
 
+void MacServicesHandler::activateApplication()
+{
+    @autoreleasepool {
+        [NSApp activateIgnoringOtherApps:YES];
+    }
+}
+
 
 void MacServicesHandler::handleOpenSelection(const QString &text)
 {

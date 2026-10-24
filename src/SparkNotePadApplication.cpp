@@ -39,6 +39,7 @@
 
 #include <QCommandLineParser>
 #include <QDirIterator>
+#include <QSessionManager>
 
 #ifdef Q_OS_WIN
 #include <Windows.h>
@@ -83,7 +84,7 @@ SparkNotePadApplication::SparkNotePadApplication(int &argc, char **argv) : Singl
     DebugManager::pauseDebugOutput();
 }
 
-bool SparkNotePadApplication::init() { // NOSONAR(cpp:S3776)
+bool SparkNotePadApplication::init() {  // NOSONAR(cpp:S3776)
     qInfo(Q_FUNC_INFO);
 
 #ifndef Q_OS_MACOS
@@ -117,7 +118,7 @@ bool SparkNotePadApplication::init() { // NOSONAR(cpp:S3776)
         translationManager->loadSystemDefaultTranslation();
     }
 
-    luaState = new LuaState(); // NOSONAR(cpp:S5025)
+    luaState = new LuaState();  // NOSONAR(cpp:S5025)
     if (parser.isSet(QStringLiteral("safe-mode"))) {
         qInfo("Safe Mode active: restricting dangerous Lua OS/IO APIs (sandbox enabled)");
         luaState->restrictDangerousApis();
@@ -164,6 +165,17 @@ bool SparkNotePadApplication::init() { // NOSONAR(cpp:S3776)
     });
 
     connect(this, &SingleApplication::instanceStarted, window, &MainWindow::bringWindowToForeground);
+    connect(this, &QGuiApplication::commitDataRequest, this, [this](QSessionManager &manager) {
+        if (!window)
+            return;
+
+        window->bringWindowToForeground();
+
+        // Attempt clean window close, which prompts for all unsaved and new documents
+        if (!window->close()) {
+            manager.cancel();
+        }
+    });
     connect(this, &SingleApplication::receivedMessage, this, &SparkNotePadApplication::receiveInfoFromSecondaryInstance,
             Qt::QueuedConnection);
 
@@ -419,6 +431,16 @@ bool SparkNotePadApplication::event(QEvent *ev) {
         qInfo("QFileOpenEvent %s", qUtf8Printable(fileOpenEvent->file()));
         openFiles(QStringList() << fileOpenEvent->file());
         return true;
+    }
+
+    if (ev->type() == QEvent::Quit || ev->type() == QEvent::Close) {
+        if (window && window->isVisible()) {
+            window->bringWindowToForeground();
+            if (!window->close()) {
+                ev->ignore();
+                return false;
+            }
+        }
     }
 
     return SingleApplication::event(ev);

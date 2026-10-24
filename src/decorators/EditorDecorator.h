@@ -24,7 +24,7 @@
 
 #include "ScintillaNext.h"
 
-class EditorDecorator : public QObject {
+class EditorDecorator : public QObject {  // NOSONAR(cpp:S5008)
     Q_OBJECT
     Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled NOTIFY stateChanged)
 
@@ -43,8 +43,8 @@ signals:
     void stateChanged(bool b);
 
 protected:
-    ScintillaNext *editor; // NOSONAR(cpp:S878, cpp:S5008)
-    bool enabled = false;  // NOSONAR(cpp:S878, cpp:S5008)
+    ScintillaNext *editor;  // NOSONAR(cpp:S878, cpp:S5008)
+    bool enabled = false;   // NOSONAR(cpp:S878, cpp:S5008)
 };
 
 #endif  // EDITORDECORATOR_H

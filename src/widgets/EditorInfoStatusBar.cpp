@@ -281,12 +281,18 @@ void EditorInfoStatusBar::updateSelectionInfo(ScintillaNext *editor) {
     } else {
         int start = editor->selectionStart();
         int end = editor->selectionEnd();
-        int lines = editor->lineFromPosition(end) - editor->lineFromPosition(start);
-
-        if (end > start)
-            lines++;
-
-        selectionText = tr("Sel: %L1 | %L2").arg(editor->countCharacters(start, end)).arg(lines);
+        if (start != end) {
+            int lines = editor->lineFromPosition(end) - editor->lineFromPosition(start) + 1;
+            int charCount = 0;
+            // On huge selections (e.g. Select All on tens of megabytes), countCharacters byte-by-byte
+            // stalls the main thread. Fallback to byte range above 2MB.
+            if (end - start > 2 * 1024 * 1024) {
+                charCount = end - start;
+            } else {
+                charCount = editor->countCharacters(start, end);
+            }
+            selectionText = tr("Sel: %L1 | %L2").arg(charCount).arg(lines);
+        }
     }
 
     const int pos = editor->currentPos();
@@ -309,7 +315,7 @@ void EditorInfoStatusBar::updateUnicodeChar(ScintillaNext *editor) {
     }
 }
 
-void EditorInfoStatusBar::updateLanguage(ScintillaNext *editor) {
+void EditorInfoStatusBar::updateLanguage(const ScintillaNext *editor) {
     if (!editor || !docType)
         return;
     docType->setText(editor->languageName);

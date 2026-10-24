@@ -30,7 +30,9 @@ public:
 
 private:
     void highlightCurrentView();
-    int indicator;
+    int indicator{0};
+    bool m_hasHighlights{false};
+    class QTimer *debounceTimer{nullptr};
 
 public slots:
     void notify(const Scintilla::NotificationData *pscn) override;

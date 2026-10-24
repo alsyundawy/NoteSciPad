@@ -58,26 +58,52 @@ void AutoCompletion::showAutoCompletion() {
         return;
 
     const QByteArray current_word = editor->get_text_range(startPos, curPos);
+    const bool isValidIdentifier = std::all_of(current_word.cbegin(), current_word.cend(), [](char c) {
+        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_';
+    });
+    if (!isValidIdentifier)
+        return;
+
     const QByteArray regex = "\\b" + current_word + "[\\w]*";
     QSet<QByteArray> words;
 
     editor->setSearchFlags(SCFIND_REGEXP);
 
+    // For large files (> 1MB or > 5,000 lines), constrain search to viewport +/- 200 lines
+    Sci_PositionCR searchStart = 0;
+    Sci_PositionCR searchEnd = static_cast<Sci_PositionCR>(editor->length());
+    if (editor->length() > 1024 * 1024 || editor->lineCount() > 5000) {
+        const int firstLine = qMax(0, static_cast<int>(editor->firstVisibleLine()) - 200);
+        const int lastLine = qMin(static_cast<int>(editor->lineCount()),
+                                  static_cast<int>(editor->firstVisibleLine() + editor->linesOnScreen() + 200));
+        searchStart = static_cast<Sci_PositionCR>(editor->positionFromLine(firstLine));
+        searchEnd = static_cast<Sci_PositionCR>(editor->lineEndPosition(lastLine));
+    }
+
+    int wordCount = 0;
     // Find words in buffer before caret
-    editor->forEachMatchInRange(regex,
-                                [&](int start, int end) {
-                                    words.insert(editor->get_text_range(start, end));
-                                    return end;
-                                },
-                                {0, startPos});
+    if (searchStart < startPos) {
+        editor->forEachMatchInRange(regex,
+                                    [&](int start, int end) {
+                                        words.insert(editor->get_text_range(start, end));
+                                        if (++wordCount >= 100)
+                                            return startPos;
+                                        return end;
+                                    },
+                                    {searchStart, startPos});
+    }
 
     // Find words in buffer after caret
-    editor->forEachMatchInRange(regex,
-                                [&](int start, int end) {
-                                    words.insert(editor->get_text_range(start, end));
-                                    return end;
-                                },
-                                {endPos, (Sci_PositionCR)editor->length()});
+    if (wordCount < 100 && endPos < searchEnd) {
+        editor->forEachMatchInRange(regex,
+                                    [&](int start, int end) {
+                                        words.insert(editor->get_text_range(start, end));
+                                        if (++wordCount >= 100)
+                                            return static_cast<int>(searchEnd);
+                                        return end;
+                                    },
+                                    {endPos, searchEnd});
+    }
 
     // Add matching language keywords
     const QString currentWordStr = QString::fromUtf8(current_word);

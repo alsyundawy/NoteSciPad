@@ -47,7 +47,7 @@ private:
     void setupEditor(ScintillaNext *editor);
     void purgeOldEditorPointers();
     QList<QPointer<ScintillaNext>> getEditors();
-    int detectEOLMode(ScintillaNext *editor) const;
+    int detectEOLMode(const ScintillaNext *editor) const;
 
     QList<QPointer<ScintillaNext>> editors;
     ApplicationSettings *settings;

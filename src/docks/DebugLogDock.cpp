@@ -42,5 +42,9 @@ DebugLogDock::DebugLogDock(QWidget *parent) : QDockWidget(parent), ui(new Ui::De
 }
 
 DebugLogDock::~DebugLogDock() {
+    // Messages can still be logged after this dock is destroyed (e.g. during shutdown)
+    DebugManager::removeMessageHandler(debugLogDockMessageHandler);
+    output = nullptr;
+
     delete ui;
 }

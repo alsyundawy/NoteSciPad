@@ -4061,6 +4061,15 @@ Atau URL daring cadangan:
         <translation>Hapus Baris Kosong</translation>
     </message>
     <message>
+        <source>Blank Operations</source>
+        <translation>Operasi Spasi Kosong</translation>
+    </message>
+    <message>
+        <source>Trim Trailing Space</source>
+        <translation>Pangkas Spasi di Akhir</translation>
+    </message>
+
+    <message>
         <location filename="../src/dialogs/MainWindow.ui" line="1578" />
         <location filename="../src/dialogs/MainWindow.ui" line="1581" />
         <source>Show in Explorer</source>

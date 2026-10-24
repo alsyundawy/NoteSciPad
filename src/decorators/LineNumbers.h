@@ -28,7 +28,7 @@ class LineNumbers : public EditorDecorator {
     Q_OBJECT
 
 public:
-    LineNumbers(ScintillaNext *editor);
+    explicit LineNumbers(ScintillaNext *editor);
 
 private:
     void adjustMarginWidth();

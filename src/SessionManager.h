@@ -20,6 +20,7 @@
 #ifndef SESSIONMANAGER_H
 #define SESSIONMANAGER_H
 
+#include <cstdint>
 #include <QDir>
 #include <QSettings>
 
@@ -35,10 +36,7 @@ public:
         UnsavedFile = 2,
         TempFile = 4,
     };
-    static constexpr auto None = SessionFileType::None;
-    static constexpr auto SavedFile = SessionFileType::SavedFile;
-    static constexpr auto UnsavedFile = SessionFileType::UnsavedFile;
-    static constexpr auto TempFile = SessionFileType::TempFile;
+    using enum SessionFileType;
     Q_DECLARE_FLAGS(SessionFileTypes, SessionFileType)
 
     explicit SessionManager(SparkNotePadApplication *app, SessionFileTypes types = SessionFileTypes());

@@ -52,38 +52,66 @@ BraceMatch::BraceMatch(ScintillaNext *editor) : EditorDecorator(editor) {
 }
 
 void BraceMatch::doHighlighting() {
+    if (!editor || !editor->selectionEmpty()) {
+        clearHighlighting();
+        return;
+    }
+
     static const QList<char> braces = {'[', ']', '(', ')', '{', '}'};
 
     const Sci_Position pos = static_cast<Sci_Position>(editor->currentPos());
+    const Sci_Position docLen = static_cast<Sci_Position>(editor->length());
 
-    // Check the character before the caret first
-    int match = editor->braceMatch(pos - 1, 0);
+    if (pos < 0 || pos > docLen) {
+        clearHighlighting();
+        return;
+    }
 
-    if (match != INVALID_POSITION) {
-        editor->braceHighlight(pos - 1, match);
-        editor->setHighlightGuide(editor->column(editor->lineIndentPosition(editor->lineFromPosition(pos - 1))));
-    } else {
-        // Check the character after the caret
-        match = editor->braceMatch(pos, 0);
-        if (match != INVALID_POSITION) {
-            editor->braceHighlight(pos, match);
-            editor->setHighlightGuide(editor->column(editor->lineIndentPosition(editor->lineFromPosition(pos))));
-        } else {
-            // Nothing was found, now check to see if we need to badlight something
-            // by checking the characters
-            char c = static_cast<char>(editor->charAt(pos - 1));
-            if (braces.contains(c)) {
-                editor->braceBadLight(pos - 1);
-            } else {
-                c = static_cast<char>(editor->charAt(pos));
-                if (braces.contains(c)) {
-                    editor->braceBadLight(pos);
-                } else {
-                    clearHighlighting();
-                }
+    // Check the character before the caret first (if within document bounds and not a UTF-8 continuation byte)
+    if (pos > 0) {
+        const auto prevByte = static_cast<unsigned char>(editor->charAt(pos - 1));
+        if ((prevByte & 0xC0) != 0x80) {
+            int match = editor->braceMatch(pos - 1, 0);
+            if (match != INVALID_POSITION) {
+                editor->braceHighlight(pos - 1, match);
+                editor->setHighlightGuide(
+                    editor->column(editor->lineIndentPosition(editor->lineFromPosition(pos - 1))));
+                return;
             }
         }
     }
+
+    // Check the character at the caret (if within document bounds and not a UTF-8 continuation byte)
+    if (pos < docLen) {
+        const auto curByte = static_cast<unsigned char>(editor->charAt(pos));
+        if ((curByte & 0xC0) != 0x80) {
+            int match = editor->braceMatch(pos, 0);
+            if (match != INVALID_POSITION) {
+                editor->braceHighlight(pos, match);
+                editor->setHighlightGuide(editor->column(editor->lineIndentPosition(editor->lineFromPosition(pos))));
+                return;
+            }
+        }
+    }
+
+    // Check for bad (unmatched) brace
+    if (pos > 0) {
+        char c = static_cast<char>(editor->charAt(pos - 1));
+        if (braces.contains(c)) {
+            editor->braceBadLight(pos - 1);
+            return;
+        }
+    }
+
+    if (pos < docLen) {
+        char c = static_cast<char>(editor->charAt(pos));
+        if (braces.contains(c)) {
+            editor->braceBadLight(pos);
+            return;
+        }
+    }
+
+    clearHighlighting();
 }
 
 void BraceMatch::clearHighlighting() {

@@ -68,6 +68,13 @@ SparkNotePad **v1.3.5** delivers comprehensive eradication of all IDE diagnostic
    - **CVE-2026-42214 Mitigation**: Verified inert `lua_pushlstring` / `setVariable()` contract in `SparkNotePadApplication::detectLanguageFromExtension()`, supplemented by `LuaState::restrictDangerousApis()` sandbox and 100% passing test regression suite (`tests/test_lua_security.h`).
    - **Verified Clean**: Scintilla 5.6.7, Lexilla 5.5.4, and Lua 5.5.1 confirm 0 relevant CVEs.
 
+4. **Multi-View Tab Closure, Massive Document & Selection Crash Eradication**:
+   - **Split-View Close Tab Safety**: Replaced raw pointers `currentEditor` and `latestDockArea` in `DockedEditor` with guarded `QPointer<ScintillaNext>` and `QPointer<ads::CDockAreaWidget>`. Added safe fallback iteration across all opened dock areas in `focusedDockWidgetChanged`, and hooked `editor->destroyed` cleanup to permanently prevent null pointer dereferences and use-after-free crashes when closing split tabs.
+   - **Massive File & Emoji/UTF-8 Caret Stability**: Initialized Scintilla buffer code page to `SC_CP_UTF8` (preventing single-byte slicing of multi-byte Unicode characters). Clamped character counting in `EditorInfoStatusBar` on documents > 2MB. Constrained `SmartHighlighter` (100ms debounce timer, maximum 128 chars, search window capped to viewport +/- 150 lines, 1500 matches limit) and `AutoCompletion` (viewport +/- 200 lines, 100 words limit).
+   - **Text Selection Visibility & Interaction Fix**: Set vibrant selection blue `#ACCEF7` (macOS accent) for light theme and `#2D558C` for dark theme, providing 4.5:1 contrast against editor canvas. Suppressed `ColorPreviewCallTip` hover dwell while mouse buttons are depressed, eliminating selection drag interruptions.
+   - **macOS Dock Right-Click Quit Save Prompt**: Implemented `MacServicesHandler::activateApplication()` via Cocoa `[NSApp activateIgnoringOtherApps:YES]`. Connected `commitDataRequest` and handled `QEvent::Quit`/`Close` in `SparkNotePadApplication` to ensure the save prompt surfaces in the foreground when quitting from the Dock, preventing silent quit and data loss.
+   - **Upstream Feature & Stability Synchronization**: Cleanly integrated `ScintillaNext::getToolTip()` for tab and File List dock path inspection, added `removeMessageHandler()` in `DebugManager` and `DebugLogDock` destructor to prevent exit crashes, and added `Blank Operations > Trim Trailing Space` in the Edit menu with full Indonesian translation.
+
 ---
 
 ## 1. Executive Summary: Release v1.3.0

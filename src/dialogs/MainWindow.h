@@ -59,7 +59,7 @@ class PerformanceDiagnosticsDialog;
 class MarkOccurrences;
 class FileBrowserDock;
 
-class MainWindow : public QMainWindow { // NOSONAR(cpp:S1448, cpp:S1820)
+class MainWindow : public QMainWindow {  // NOSONAR(cpp:S1448, cpp:S1820)
     Q_OBJECT
 
 public:
@@ -77,7 +77,7 @@ public:
     friend class ThemeManager;
 
 public slots:
-    void newFile();
+    void newFile() const;
     void newWindow() const;
     void exportPdf();
 
@@ -123,7 +123,7 @@ public slots:
     void renameFile();
 
     void moveCurrentFileToTrash();
-    void moveFileToTrash(ScintillaNext *editor);
+    void moveFileToTrash(const ScintillaNext *editor);
 
     void print();
 
@@ -141,9 +141,9 @@ public slots:
     void updateLanguageBasedUi(const ScintillaNext *editor) const;
     void updateGui(ScintillaNext *editor);
 
-    void detectLanguage(ScintillaNext *editor);
+    void detectLanguage(ScintillaNext *editor) const;
 
-    void setLanguage(ScintillaNext *editor, const QString &languageName);
+    void setLanguage(ScintillaNext *editor, const QString &languageName) const;
 
     void bringWindowToForeground();
     void focusIn();
@@ -169,7 +169,7 @@ protected:
 
 private slots:
     void tabBarRightClicked(const ScintillaNext *editor);
-    void languageMenuTriggered();
+    void languageMenuTriggered() const;
     static void checkForUpdatesFinished(const QString &url);
     void activateEditor(ScintillaNext *editor);
 
@@ -188,7 +188,7 @@ private:
     template <typename Method>
     void connectEditorAction(QAction *action, Method method) {
         connect(action, &QAction::triggered, this, [this, method]() {
-            if (auto *editor = currentEditor()) { // NOSONAR(cpp:S5417)
+            if (auto *editor = currentEditor()) {  // NOSONAR(cpp:S5417)
                 (editor->*method)();
             }
         });
@@ -196,7 +196,7 @@ private:
     template <typename Method, typename Arg>
     void connectEditorAction(QAction *action, Method method, Arg value) {
         connect(action, &QAction::triggered, this, [this, method, value]() {
-            if (auto *editor = currentEditor()) { // NOSONAR(cpp:S5417)
+            if (auto *editor = currentEditor()) {  // NOSONAR(cpp:S5417)
                 (editor->*method)(value);
             }
         });
@@ -209,6 +209,7 @@ private:
     bool checkFileForModification(ScintillaNext *editor);
     void showSaveErrorMessage(const ScintillaNext *editor, QFileDevice::FileError error);
     void showEditorZoomLevelIndicator() const;
+    void showEditorContextMenu(ScintillaNext *editor, const QPoint &pos);
 
     enum class UserSaveAction : std::uint8_t { SaveAll, DiscardAll, Cancel };
     UserSaveAction promptForSave(const QVector<ScintillaNext *> &editorList);

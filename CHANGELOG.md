@@ -26,9 +26,16 @@ SparkNotePad v1.3.5 delivers graceful application restart and explicit exit acti
   - `LuaState::setVariable()` inert data contract (values pushed via `lua_pushstring`, never `luaL_loadstring`).
   - `LuaState::restrictDangerousApis()` sandbox removes `os.execute`, `os.exit`, `io.popen`, `package.loadlib`.
 - **`LuaState::restrictDangerousApis()` Sandbox Method**: Strips dangerous OS/IO Lua primitives (`os.execute`, `os.exit`, `os.tmpname`, `io.popen`, `package.loadlib`, `package.loadclib`) for untrusted macro/extension execution contexts.
+- **Trim Trailing Space Action (`Edit > Blank Operations`)**: Quick command to trim all trailing whitespace and tabs across the buffer in a single atomic undo step. Fully localized in Indonesian (_Pangkas Spasi di Akhir_).
+- **Full Path Tooltips on Tabs & File List Dock**: Hovering over tabs and file list items now displays the full path of the document, making it effortless to distinguish identically named files across different directories.
 
 #### 🔧 Fixed
 
+- **Multi-View (Split Horizontal & Vertical) Tab Closure Crash**: Guarded editor pointers with `QPointer<ScintillaNext>` and `QPointer<ads::CDockAreaWidget>`, added fallback editor resolution, and connected destruction listeners, eliminating null-pointer dereferences when closing split tabs.
+- **Massive Documents & Unicode Emoji Stability**: Initialized Scintilla code page to `SC_CP_UTF8` to prevent multi-byte UTF-8 emoji splitting during caret operations, clamped character counting in the status bar on files > 2MB, and bounded highlighter and autocompletion searches to the active viewport.
+- **macOS Dock Right-Click Quit Save Prompt**: Implemented `MacServicesHandler::activateApplication()` via Cocoa `[NSApp activateIgnoringOtherApps:YES]` and handled `commitDataRequest` to ensure save prompts always surface when quitting from the Dock.
+- **Text Selection High Contrast & Interaction Fix**: Set vibrant selection blue `#ACCEF7` (macOS accent) for light theme and `#2D558C` for dark theme, and prevented CallTip hover dwell from interrupting active selection drags.
+- **Debug Log Dock Crash on Exit**: Added `DebugManager::removeMessageHandler()` in `~DebugLogDock()` to prevent writing to deleted widgets during shutdown.
 - **Find & Replace Dialog Input Box Form Alignment (Find & Mark Tabs)**:
   - Fixed an issue where the Find and Mark tabs inadvertently displayed two input form boxes (showing a squashed or unhidden `Replace` field) because the original code only set `setMaximumHeight(0)` without invoking `hide()`.
   - Replaced the height-only hack with explicit `ui->labelReplaceWith->hide(); ui->comboReplace->hide();` on `FIND_TAB` and `MARK_TAB`, and `ui->labelReplaceWith->show(); ui->comboReplace->show();` on `REPLACE_TAB`.
