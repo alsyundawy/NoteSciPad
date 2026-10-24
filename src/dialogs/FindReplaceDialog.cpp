@@ -796,14 +796,15 @@ void FindReplaceDialog::copyMarkedText() {
 void FindReplaceDialog::showMessage(const QString &message, MessageType type) {
     const bool dark = ThemeManager::instance()->isDarkActive();
     QString resolvedColor;
+    using enum MessageType;
     switch (type) {
-        case MessageType::Success:
+        case Success:
             resolvedColor = dark ? QStringLiteral("#3fb950") : QStringLiteral("#1a7f37");
             break;
-        case MessageType::Error:
+        case Error:
             resolvedColor = dark ? QStringLiteral("#f85149") : QStringLiteral("#cf222e");
             break;
-        case MessageType::Info:
+        case Info:
             resolvedColor = dark ? QStringLiteral("#58a6ff") : QStringLiteral("#0969da");
             break;
     }
